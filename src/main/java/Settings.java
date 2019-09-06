@@ -6,42 +6,57 @@ import java.util.Scanner;
 
 public class Settings
 {
+    private transient File pluginFolder;
+    private transient File configFile;
+
+    public String Version = "1.0";
+
     public boolean Enabled = true;
     public boolean DropsEnabled = true;
     public boolean CraftingEnabled = true;
 
-    public int BeerChance = 1;
+    public int BeerChance = 5;
     public int BooksChance = 10;
     public int SnowmanChance = 1;
     public int TreeFruitChance = 3;
-    public int CoconutChance = 2;
-    public int OakLogChance = 1;
+    public int CoconutChance = 3;
+    public int OakLogChance = 2;
     public int DirtChance = 1;
-    public int LeavesChance = 1;
-    public int MelonChance = 1;
+    public int LeavesChance = 2;
+    public int MelonChance = 2;
     public int PumpkinChance = 2;
     public int CactusChance = 2;
-    public int SushiChance = 5;
+    public int SushiChance = 8;
     public int BreadChance = 1;
-    public int CookieChance = 1;
-    public int CakeChance = 10;
+    public int CookieChance = 3;
+    public int CakeChance = 15;
     public int BurgerChance = 1;
     public int ChickenChance = 1;
+    public int RedstoneBlockChance = 3;
+    public int GravelChance = 2;
+    public int CobblestoneChance = 2;
+    public int OakCharactersChance = 4;
 
     public Settings(File pluginFolder) throws IOException
     {
-        File configFile = new File(pluginFolder.getPath()+"/config.yml");
+        this.pluginFolder = pluginFolder;
+        configFile = new File(pluginFolder.getPath()+"/config.yml");
+
         if (!configFile.exists())
         {
-            save(pluginFolder, configFile);
+            save();
         }
         else
         {
-            load(configFile);
+            load();
+            if (!getConfigVersion().equals(Version))
+            {
+                save();
+            }
         }
     }
 
-    public void load(File configFile) throws IOException
+    public void load() throws IOException
     {
         Scanner scanner = new Scanner(configFile);
         while (scanner.hasNextLine())
@@ -51,7 +66,7 @@ public class Settings
         scanner.close();
     }
 
-    public void save(File pluginFolder, File configFile) throws IOException
+    public void save() throws IOException
     {
         if (!configFile.exists())
         {
@@ -60,6 +75,7 @@ public class Settings
         }
         FileWriter fileWriter = new FileWriter(configFile, false);
         PrintWriter printWriter = new PrintWriter(fileWriter);
+        printWriter.println("Version: "+Version);
         printWriter.println("Enabled: "+Enabled);
         printWriter.println("DropsEnabled: "+DropsEnabled);
         printWriter.println("CraftingEnabled: "+CraftingEnabled);
@@ -81,6 +97,10 @@ public class Settings
         printWriter.println("CakeChance: "+CakeChance);
         printWriter.println("BurgerChance: "+BurgerChance);
         printWriter.println("ChickenChance: "+ChickenChance);
+        printWriter.println("RedstoneBlockChance: "+RedstoneBlockChance);
+        printWriter.println("GravelChance: "+GravelChance);
+        printWriter.println("CobblestoneChance: "+CobblestoneChance);
+        printWriter.println("OakCharactersChance: "+OakCharactersChance);
         printWriter.close();
         fileWriter.close();
     }
@@ -153,8 +173,35 @@ public class Settings
                 case "ChickenChance":
                     ChickenChance = Integer.parseInt(value);
                     break;
+                case "RedstoneBlockChance":
+                    RedstoneBlockChance = Integer.parseInt(value);
+                    break;
+                case "GravelChance":
+                    GravelChance = Integer.parseInt(value);
+                    break;
+                case "CobblestoneChance":
+                    CobblestoneChance = Integer.parseInt(value);
+                    break;
+                case "OakCharactersChance":
+                    OakCharactersChance = Integer.parseInt(value);
+                    break;
 
             }
         }
+    }
+
+    private String getConfigVersion() throws IOException
+    {
+        Scanner scanner = new Scanner(configFile);
+        while (scanner.hasNextLine())
+        {
+            String line = scanner.nextLine();
+            if (line.startsWith("Version"))
+            {
+                return line.substring(line.indexOf(":")+1).trim();
+            }
+        }
+        scanner.close();
+        return "";
     }
 }
