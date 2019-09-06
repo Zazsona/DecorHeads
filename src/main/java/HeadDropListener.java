@@ -1,9 +1,7 @@
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
-import org.bukkit.block.Skull;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -15,10 +13,6 @@ import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-
-import java.util.UUID;
 
 public class HeadDropListener implements Listener
 {
@@ -26,7 +20,7 @@ public class HeadDropListener implements Listener
     public void onBrewComplete(BrewEvent e)
     {
         Location loc = e.getBlock().getLocation();
-        ItemStack item = new ItemStack(Material.DIAMOND); //Beer
+        ItemStack item = createSkull("Thanauser", "Beer");
         e.getBlock().getWorld().dropItemNaturally(loc, item);
     }
 
@@ -36,42 +30,54 @@ public class HeadDropListener implements Listener
         Block block = e.getBlock();
         if (block.getType() == Material.BOOKSHELF)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //Books
+            ItemStack item = createSkull("GoodBook1", "Books");
             block.getWorld().dropItemNaturally(block.getLocation(), item);
         }
         else if (block.getType() == Material.SNOW_BLOCK)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //Snowman head
+            ItemStack item = createSkull("Snowman_7", "Snowman Head");
             block.getWorld().dropItemNaturally(block.getLocation(), item);
         }
         else if (block.getType() == Material.ACACIA_LEAVES || block.getType() == Material.BIRCH_LEAVES || block.getType() == Material.DARK_OAK_LEAVES || block.getType() == Material.JUNGLE_LEAVES || block.getType() == Material.OAK_LEAVES || block.getType() == Material.SPRUCE_LEAVES)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //Apple, blueberry, lemon head
-            block.getWorld().dropItemNaturally(block.getLocation(), item);
+            ItemStack item1 = createSkull("TheReapHorn", "Blueberry");
+            ItemStack item2 = createSkull("MHF_Apple", "Apple");
+            block.getWorld().dropItemNaturally(block.getLocation(), item1);
+            block.getWorld().dropItemNaturally(block.getLocation(), item2);
         }
         else if (block.getType() == Material.JUNGLE_LOG)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //Coconut head
+            ItemStack item = createSkull("MHF_CoconutB", "Coconut");
             block.getWorld().dropItemNaturally(block.getLocation(), item);
         }
         else if (block.getType() == Material.OAK_LOG)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //log head
+            ItemStack item = createSkull("MHF_OakLog", "Oak Log");
             block.getWorld().dropItemNaturally(block.getLocation(), item);
         }
-        else if (block.getType() == Material.DIRT)
+        else if (block.getType() == Material.DIRT || block.getType() == Material.GRASS_BLOCK)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //dirt head
+            ItemStack item = createSkull("Zyne", "Dirt");
             block.getWorld().dropItemNaturally(block.getLocation(), item);
         }
         else if (block.getType() == Material.OAK_LEAVES)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //leaves head
+            ItemStack item = createSkull("Plant", "Leaves");
             block.getWorld().dropItemNaturally(block.getLocation(), item);
         }
         else if (block.getType() == Material.MELON)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //melon head
+            ItemStack item = createSkull("MHF_Melon", "Melon");
+            block.getWorld().dropItemNaturally(block.getLocation(), item);
+        }
+        else if (block.getType() == Material.PUMPKIN)
+        {
+            ItemStack item = createSkull("MHF_Pumpkin", "Melon");
+            block.getWorld().dropItemNaturally(block.getLocation(), item);
+        }
+        else if (block.getType() == Material.CACTUS)
+        {
+            ItemStack item = createSkull("MHF_Cactus", "Cactus");
             block.getWorld().dropItemNaturally(block.getLocation(), item);
         }
 
@@ -83,7 +89,7 @@ public class HeadDropListener implements Listener
         LivingEntity entity = e.getEntity();
         if (entity.getType() == EntityType.PUFFERFISH || entity.getType() == EntityType.SALMON || entity.getType() == EntityType.COD || entity.getType() == EntityType.TROPICAL_FISH)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //Sushi
+            ItemStack item = createSkull("lmaoki", "Sushi");
             entity.getWorld().dropItemNaturally(entity.getLocation(), item);
         }
     }
@@ -97,17 +103,17 @@ public class HeadDropListener implements Listener
         {
             if (resultingItem == Material.BREAD)
             {
-                ItemStack item = new ItemStack(Material.DIAMOND); //bread head
+                ItemStack item = createSkull("BedHeadBread", "Bread");
                 e.getWhoClicked().getWorld().dropItemNaturally(e.getWhoClicked().getLocation(), item);
             }
             else if (resultingItem == Material.COOKIE)
             {
-                ItemStack item = new ItemStack(Material.DIAMOND); //cookie head
+                ItemStack item = createSkull("QuadratCookie", "Cookie");
                 e.getWhoClicked().getWorld().dropItemNaturally(e.getWhoClicked().getLocation(), item);
             }
             else if (resultingItem == Material.CAKE)
             {
-                ItemStack item = new ItemStack(Material.DIAMOND); //cake head
+                ItemStack item = createSkull("MHF_Cake", "Cake");
                 e.getWhoClicked().getWorld().dropItemNaturally(e.getWhoClicked().getLocation(), item);
             }
         }
@@ -120,12 +126,12 @@ public class HeadDropListener implements Listener
         ItemStack smeltResult = e.getResult();
         if (smeltResult.getType() == Material.COOKED_BEEF)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //Burger
+            ItemStack item = createSkull("Pesquiburguer", "Burger");
             e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
         }
         else if (smeltResult.getType() == Material.COOKED_CHICKEN)
         {
-            ItemStack item = new ItemStack(Material.DIAMOND); //Turkey dinner
+            ItemStack item = createSkull("Ernie77", "Chicken Dinner");
             e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
         }
     }
@@ -147,4 +153,10 @@ public class HeadDropListener implements Listener
         return minimumAmount;
     }
 
+    private ItemStack createSkull(String playerName, String skullName)
+    {
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+        Bukkit.getUnsafe().modifyItemStack(skull, "{display:{Name:\"{\\\"text\\\":\\\""+skullName+"\\\"}\"},SkullOwner:\""+playerName+"\"}");
+        return skull;
+    }
 }
