@@ -1,0 +1,9 @@
+name: DecorHeads
+version: 1.0
+author: Zazsona
+main: Start
+api-version: 1.14
+//commands:
+   DecorHeads:
+      description: Toggles DecorHeads
+      usage: /DecorHeads
