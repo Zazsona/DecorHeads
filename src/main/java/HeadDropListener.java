@@ -121,6 +121,40 @@ public class HeadDropListener implements Listener
                 block.getWorld().dropItemNaturally(block.getLocation(), item);
             }
         }
+        else if (block.getType() == Material.REDSTONE_ORE)
+        {
+            if (roll() <= Core.getSettings().RedstoneBlockChance)
+            {
+                ItemStack item = createSkull("TheNewTsar", "Redstone Mini-Block");
+                block.getWorld().dropItemNaturally(block.getLocation(), item);
+            }
+        }
+        else if (block.getType() == Material.GRAVEL)
+        {
+            if (roll() <= Core.getSettings().GravelChance)
+            {
+                ItemStack item = createSkull("MushTurf", "Gravel Mini-Block");
+                block.getWorld().dropItemNaturally(block.getLocation(), item);
+            }
+        }
+        else if (block.getType() == Material.COBBLESTONE)
+        {
+            if (roll() <= Core.getSettings().CobblestoneChance)
+            {
+                ItemStack item = createSkull("JuanFco", "Gravel Mini-Block");
+                block.getWorld().dropItemNaturally(block.getLocation(), item);
+            }
+        }
+        else if (block.getType() == Material.OAK_PLANKS)
+        {
+            if (roll() <= Core.getSettings().OakCharactersChance)
+            {
+                String[] signs = {"ArrowRight", "ArrowLeft", "ArrowUp", "ArrowDown", "Exclamation", "Question"};
+                int selection = r.nextInt(signs.length);
+                ItemStack item = createSkull("MHF_"+signs[selection], signs[selection]+" Sign");
+                block.getWorld().dropItemNaturally(block.getLocation(), item);
+            }
+        }
 
     }
 
