@@ -3,30 +3,6 @@ import org.bukkit.plugin.Plugin;
 public class Settings
 {
     private static Plugin plugin = Core.getPlugin(Core.class);
-    public enum DropChanceCategory
-    {
-        BeerChance,
-        BooksChance,
-        SnowmanChance,
-        TreeFruitChance,
-        CoconutChance,
-        OakLogChance,
-        DirtChance,
-        LeavesChance,
-        MelonChance,
-        PumpkinChance,
-        CactusChance,
-        SushiChance,
-        BreadChance,
-        CookieChance,
-        CakeChance,
-        BurgerChance,
-        ChickenChance,
-        RedstoneBlockChance,
-        GravelChance,
-        CobblestoneChance,
-        OakCharactersChance
-    }
 
     public static void save()
     {
@@ -66,14 +42,14 @@ public class Settings
         return (boolean) plugin.getConfig().get("CraftingEnabled");
     }
 
-    public static void setDropChance(DropChanceCategory dropChanceCategory, int dropPercentage)
+    public static void setDropChance(HeadManager.HeadType headType, int dropPercentage)
     {
-        plugin.getConfig().set("DropPercentages."+dropChanceCategory.name(), dropPercentage);
+        plugin.getConfig().set("DropPercentages."+headType.name(), dropPercentage);
         save();
     }
 
-    public static int getDropChance(DropChanceCategory dropChanceCategory)
+    public static int getDropChance(HeadManager.HeadType headType)
     {
-        return (int) plugin.getConfig().get("DropPercentages."+dropChanceCategory.name());
+        return (int) plugin.getConfig().get("DropPercentages."+headType.name());
     }
 }
