@@ -14,6 +14,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.LinkedList;
 import java.util.Random;
 
 public class HeadDropListener implements Listener
@@ -54,9 +55,12 @@ public class HeadDropListener implements Listener
         }
         else if (block.getType() == Material.ACACIA_LEAVES || block.getType() == Material.BIRCH_LEAVES || block.getType() == Material.DARK_OAK_LEAVES || block.getType() == Material.JUNGLE_LEAVES || block.getType() == Material.OAK_LEAVES || block.getType() == Material.SPRUCE_LEAVES)
         {
-            HeadManager.HeadType headType = getMultiOptionSelection(HeadManager.HeadType.Apple, HeadManager.HeadType.Blueberry);
-            ItemStack item = HeadManager.getSkull(headType);
-            block.getWorld().dropItemNaturally(block.getLocation(), item);
+            HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.Apple, HeadManager.HeadType.Blueberry);
+            for (HeadManager.HeadType head : headTypes)
+            {
+                ItemStack item = HeadManager.getSkull(head);
+                block.getWorld().dropItemNaturally(block.getLocation(), item);
+            }
         }
         else if (block.getType() == Material.JUNGLE_LOG)
         {
@@ -140,9 +144,13 @@ public class HeadDropListener implements Listener
         }
         else if (block.getType() == Material.OAK_PLANKS)
         {
-            HeadManager.HeadType headType = getMultiOptionSelection(HeadManager.HeadType.OakCharacterExclamation, HeadManager.HeadType.OakCharacterQuestion, HeadManager.HeadType.OakCharacterUp, HeadManager.HeadType.OakCharacterDown, HeadManager.HeadType.OakCharacterLeft, HeadManager.HeadType.OakCharacterRight);
-            ItemStack item = HeadManager.getSkull(headType);
-            block.getWorld().dropItemNaturally(block.getLocation(), item);
+            HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.OakCharacterExclamation, HeadManager.HeadType.OakCharacterQuestion, HeadManager.HeadType.OakCharacterUp, HeadManager.HeadType.OakCharacterDown, HeadManager.HeadType.OakCharacterLeft, HeadManager.HeadType.OakCharacterRight);
+            for (HeadManager.HeadType head : headTypes)
+            {
+                ItemStack item = HeadManager.getSkull(head);
+                block.getWorld().dropItemNaturally(block.getLocation(), item);
+            }
+
         }
 
     }
@@ -235,29 +243,17 @@ public class HeadDropListener implements Listener
         return minimumAmount;
     }
 
-    private HeadManager.HeadType getMultiOptionSelection(HeadManager.HeadType... possibleHeads)
+    private HeadManager.HeadType[] getMultiOptionSelections(HeadManager.HeadType... possibleHeads)
     {
-        int[] chances = new int[possibleHeads.length];
-        int chanceTotal = 0;
-        for (int i = 0; i<possibleHeads.length; i++)
+        LinkedList<HeadManager.HeadType> headsToSpawn = new LinkedList<>();
+        for (HeadManager.HeadType head : possibleHeads)
         {
-            chances[i] = Settings.getDropChance(possibleHeads[i]);
-            chanceTotal += chances[i];
-        }
-        int rollResult = roll();
-        if (rollResult <= chanceTotal)
-        {
-            int workingRollResult = rollResult;
-            for (int i = 0; i<chances.length; i++)
+            if (roll() <= Settings.getDropChance(head))
             {
-                workingRollResult -= chances[i];
-                if (workingRollResult <= 0)
-                {
-                    return possibleHeads[i];
-                }
+                headsToSpawn.add(head);
             }
         }
-        return null;
+        return headsToSpawn.toArray(new HeadManager.HeadType[0]);
     }
 
     private int roll()

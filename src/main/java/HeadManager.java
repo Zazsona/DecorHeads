@@ -56,7 +56,7 @@ public class HeadManager
             case Books:
                 return createSkull("GoodBook1", "Books");
             case Cake:
-                createSkull("MHF_Cake", "Cupcake");
+                return createSkull("MHF_Cake", "Cupcake");
             case Dirt:
                 return createSkull("Zyne", "Mini Dirt");
             case Bread:
@@ -72,7 +72,7 @@ public class HeadManager
             case Cookie:
                 return createSkull("QuadratCookie", "Cookie");
             case Gravel:
-                createSkull("MushTurf", "Mini Gravel");
+                return createSkull("MushTurf", "Mini Gravel");
             case Leaves:
                 return createSkull("Plant", "Mini Leaves");
             case OakLog:
@@ -80,7 +80,7 @@ public class HeadManager
             case Coconut:
                 return createSkull("MHF_CoconutB", "Coconut");
             case Pumpkin:
-                createSkull("MHF_Pumpkin", "Mini Pumpkin");
+                return createSkull("MHF_Pumpkin", "Mini Pumpkin");
             case Snowman:
                 return createSkull("Snowman_7", "Snowman Head");
             case Apple:
@@ -92,7 +92,7 @@ public class HeadManager
             case ChickenDinner:
                 return createSkull("Ernie77", "Chicken Dinner");
             case RedstoneBlock:
-                createSkull("TheNewTsar", "Mini Redstone Block");
+                return createSkull("TheNewTsar", "Mini Redstone Block");
             case OakCharacterExclamation:
                 return createSkull("MHF_Exclamation", "Exclamation");
             case OakCharacterQuestion:
