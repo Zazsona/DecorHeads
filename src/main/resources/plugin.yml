@@ -5,5 +5,5 @@ main: Core
 api-version: 1.14
 commands:
    DecorHeads:
-      description: Basic Information about DecorHeads
+      description: DecorHeads master command
       usage: /DecorHeads
