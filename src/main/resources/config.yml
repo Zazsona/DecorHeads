@@ -1,0 +1,25 @@
+Enabled: true
+DropsEnabled: true
+CraftingEnabled: true
+DropPercentages:
+  BeerChance: 5
+  BooksChance: 10
+  SnowmanChance: 1
+  TreeFruitChance: 3
+  CoconutChance: 3
+  OakLogChance: 2
+  DirtChance: 1
+  LeavesChance: 2
+  MelonChance: 2
+  PumpkinChance: 2
+  CactusChance: 2
+  SushiChance: 8
+  BreadChance: 1
+  CookieChance: 3
+  CakeChance: 15
+  BurgerChance: 1
+  ChickenChance: 1
+  RedstoneBlockChance: 3
+  GravelChance: 2
+  CobblestoneChance: 2
+  OakCharactersChance: 4
