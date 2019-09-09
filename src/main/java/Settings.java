@@ -15,7 +15,7 @@ public class Settings
         save();
     }
 
-    public static boolean getEnabled()
+    public static boolean isEnabled()
     {
         return (boolean) plugin.getConfig().get("Enabled");
     }
@@ -26,7 +26,7 @@ public class Settings
         save();
     }
 
-    public static boolean getDropsEnabled()
+    public static boolean isDropsEnabled()
     {
         return (boolean) plugin.getConfig().get("DropsEnabled");
     }
@@ -37,7 +37,7 @@ public class Settings
         save();
     }
 
-    public static boolean getCraftingEnabled()
+    public static boolean isCraftingEnabled()
     {
         return (boolean) plugin.getConfig().get("CraftingEnabled");
     }

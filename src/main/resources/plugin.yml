@@ -6,4 +6,19 @@ api-version: 1.14
 commands:
    DecorHeads:
       description: DecorHeads master command
-      usage: /DecorHeads
+      usage: /DecorHeads [Function] [Args]
+permissions:
+   DecorHeads.HeadDrop:
+      description: Allows heads to drop for this player
+      default: true
+   DecorHeads.CraftHead:
+      description: Allows heads to be crafted by this player
+      default: true
+   DecorHeads.SummonHead:
+      description: Allows players to get a head via command
+      default: op
+   DecorHeads.Admin:
+      description: Manage the plugin
+      default: op
+      children:
+         DecorHeads.SummonHead: true

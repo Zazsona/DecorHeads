@@ -2,6 +2,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 
 public class DecorHeadsCommand implements CommandExecutor
 {
@@ -22,23 +23,28 @@ public class DecorHeadsCommand implements CommandExecutor
         {
             if (args[0].equalsIgnoreCase("Toggle"))
             {
-                toggleHeads(sender);
-            }
-            else if (args[0].equalsIgnoreCase("AllHeads"))
-            {
-                giveAllHeads(sender);
+                if (sender.hasPermission("DecorHeads.Admin"))
+                    toggleHeads(sender);
             }
             else if (args[0].equalsIgnoreCase("DropRate"))
             {
-                editDropRate(sender, args);
+                if (sender.hasPermission("DecorHeads.Admin"))
+                    editDropRate(sender, args);
             }
             else if (args[0].equalsIgnoreCase("Head"))
             {
-                giveHead(sender, args);
+                if (sender.hasPermission("DecorHeads.Admin") || sender.hasPermission("DecorHeads.SummonHead"))
+                    giveHead(sender, args);
+            }
+            else if (args[0].equalsIgnoreCase("AllHeads"))
+            {
+                if (sender.hasPermission("DecorHeads.Admin") || sender.hasPermission("DecorHeads.SummonHead"))
+                    giveAllHeads(sender);
             }
             else if (args[0].equalsIgnoreCase("list"))
             {
-                listHeads(sender);
+                if (sender.hasPermission("DecorHeads.Admin") || sender.hasPermission("DecorHeads.SummonHead"))
+                    listHeads(sender);
             }
         }
         return true;
@@ -83,9 +89,9 @@ public class DecorHeadsCommand implements CommandExecutor
 
     private void toggleHeads(CommandSender sender)
     {
-        boolean isEnabled = Settings.getEnabled();
+        boolean isEnabled = Settings.isEnabled();
         Settings.setEnabled(!isEnabled);
-        isEnabled = Settings.getEnabled();
+        isEnabled = Settings.isEnabled();
         sender.sendMessage("DecorHeads is now "+((isEnabled) ? "enabled." : "disabled."));
     }
 
