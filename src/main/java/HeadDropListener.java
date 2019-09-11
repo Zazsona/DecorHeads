@@ -1,4 +1,4 @@
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -182,38 +182,49 @@ public class HeadDropListener implements Listener
     @EventHandler (priority = EventPriority.LOWEST)
     public void onItemCrafted(CraftItemEvent e)
     {
-        if (canGetHeadDrop(e.getWhoClicked().getKiller()))
+        if (e.getWhoClicked() instanceof Player)
         {
             Material resultingItem = e.getInventory().getResult().getType();
-            int minimumAmount = getCraftedAmount(e);
-            for (int i = 0; i<minimumAmount; i++)
+            Player player = (Player) e.getWhoClicked();
+            if (canGetHeadDrop(player))
             {
-                if (resultingItem == Material.BREAD)
+                int minimumAmount = getCraftedAmount(e);
+                for (int i = 0; i<minimumAmount; i++)
                 {
-                    if (roll() <= Settings.getDropChance(HeadManager.HeadType.Bread))
+                    if (resultingItem == Material.BREAD)
                     {
-                        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Bread);
-                        e.getWhoClicked().getWorld().dropItemNaturally(e.getWhoClicked().getLocation(), item);
+                        if (roll() <= Settings.getDropChance(HeadManager.HeadType.Bread))
+                        {
+                            ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Bread);
+                            player.getWorld().dropItemNaturally(player.getLocation(), item);
+                        }
                     }
-                }
-                else if (resultingItem == Material.COOKIE)
-                {
-                    if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cookie))
+                    else if (resultingItem == Material.COOKIE)
                     {
-                        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cookie);
-                        e.getWhoClicked().getWorld().dropItemNaturally(e.getWhoClicked().getLocation(), item);
+                        if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cookie))
+                        {
+                            ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cookie);
+                            player.getWorld().dropItemNaturally(player.getLocation(), item);
+                        }
                     }
-                }
-                else if (resultingItem == Material.CAKE)
-                {
-                    if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cake))
+                    else if (resultingItem == Material.CAKE)
                     {
-                        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cake);
-                        e.getWhoClicked().getWorld().dropItemNaturally(e.getWhoClicked().getLocation(), item);
+                        if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cake))
+                        {
+                            ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cake);
+                            player.getWorld().dropItemNaturally(player.getLocation(), item);
+                        }
                     }
                 }
             }
+            if (resultingItem == Material.PLAYER_HEAD && !canCraftHead(player))
+            {
+                player.sendMessage(ChatColor.RED+"You do not have permission to craft heads.");
+                e.setCancelled(true);
+
+            }
         }
+
     }
 
     @EventHandler (priority = EventPriority.LOWEST)
