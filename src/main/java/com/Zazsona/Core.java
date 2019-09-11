@@ -1,3 +1,5 @@
+package com.Zazsona;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Core extends JavaPlugin
@@ -9,6 +11,7 @@ public class Core extends JavaPlugin
         saveConfig();
         getServer().getPluginManager().registerEvents(new HeadDropListener(), this);
         this.getCommand("DecorHeads").setExecutor(new DecorHeadsCommand());
+        CraftingManager.addRecipes();
     }
 
     @Override
