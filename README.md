@@ -3,13 +3,14 @@
   <img width="768" height="432" src="https://i.imgur.com/eCd1yYu.png">
 </p> 
 <p align="center">
-  <a href=https://github.com/Zazsona/DecorHeads/releases><img width="430" height="104" src="https://i.imgur.com/LHKZhCC.png"></a>
+  <a href=https://dev.bukkit.org/projects/decorheads/files><img width="430" height="104" src="https://i.imgur.com/LHKZhCC.png"></a>
 </p> 
 
 # Information
 Ever found some beer with your brewing? A small branch when chopping a log? Or a chunk of redstone from some ore?
 
-DecorHeads is a plugin for Bukkit/Spigot/Paper that aims to introduce decorative head blocks into Minecraft in a natural way, allowing for more intricate builds in a mostly vanilla setting.
+DecorHeads is a plugin for Bukkit/Spigot/Paper that aims to introduce decorative head blocks into Minecraft in a natural way, allowing for more intricate builds in a mostly vanilla setting.  
+For all other needs, check the [Wiki](https://decorheads.fandom.com/wiki/DecorHeads_Wiki)
 
 # Configuration
 
