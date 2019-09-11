@@ -1,3 +1,5 @@
+package com.Zazsona;
+
 import org.bukkit.plugin.Plugin;
 
 public class Settings
@@ -42,14 +44,15 @@ public class Settings
         return (boolean) plugin.getConfig().get("CraftingEnabled");
     }
 
-    public static void setDropChance(HeadManager.HeadType headType, int dropPercentage)
+    public static void setDropChance(HeadManager.HeadType headType, double dropPercentage)
     {
         plugin.getConfig().set("DropPercentages."+headType.name(), dropPercentage);
         save();
     }
 
-    public static int getDropChance(HeadManager.HeadType headType)
+    public static double getDropChance(HeadManager.HeadType headType)
     {
-        return (int) plugin.getConfig().get("DropPercentages."+headType.name());
+        String value = String.valueOf(plugin.getConfig().get("DropPercentages."+headType.name()));
+        return Double.parseDouble(value);
     }
 }

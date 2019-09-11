@@ -1,7 +1,7 @@
 name: DecorHeads
-version: 1.0
+version: 1.0-BETA
 author: Zazsona
-main: Core
+main: com.Zazsona.Core
 api-version: 1.14
 commands:
    DecorHeads:

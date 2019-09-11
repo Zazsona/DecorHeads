@@ -1,3 +1,5 @@
+package com.Zazsona;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -282,9 +284,11 @@ public class HeadDropListener implements Listener
         return headsToSpawn.toArray(new HeadManager.HeadType[0]);
     }
 
-    private int roll()
+    private double roll()
     {
-        return r.nextInt(99)+1;
+        double roll = ((r.nextInt(9999)+1.0)/100.0);
+        System.out.println(roll);
+        return roll;
     }
 
     private boolean canGetHeadDrop(Player player)

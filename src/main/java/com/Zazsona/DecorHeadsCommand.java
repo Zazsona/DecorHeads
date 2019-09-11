@@ -1,3 +1,6 @@
+package com.Zazsona;
+
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +16,8 @@ public class DecorHeadsCommand implements CommandExecutor
             sender.sendMessage("DecorHeads adds custom heads in a natural way.\n" +
                                        "Commands:\n" +
                                        "/DecorHeads Toggle - Disable/Enable DecorHeads\n" +
-                                       "/DecorHeads DropRate [Head] [Percentage] - Set drop rates\n" +
+                                       "/DecorHeads DropRate [Head] [Rate] - Set drop percentage\n" +
+                                       "/DecorHeads DropRate [Head] - Get drop rate of a head\n" +
                                        "/DecorHeads Head [Head] - Get a head\n" +
                                        "/DecorHeads AllHeads - Get all heads\n" +
                                        "/DecorHeads List - List all heads");
@@ -51,38 +55,46 @@ public class DecorHeadsCommand implements CommandExecutor
 
     private void editDropRate(CommandSender sender, String[] args)
     {
-        if (args.length >= 3)
+        if (args.length >= 2)
         {
             HeadManager.HeadType head = HeadManager.getHeadByName(args[1]);
             if (head != null)
             {
-                if (args[2].matches("[0-9]+"))
+                if (args.length >= 3)
                 {
-                    int dropRate = Integer.parseInt(args[2]);
-                    if (dropRate >= 0 && dropRate <= 100)
+                    if (args[2].matches("[0-9]+") || args[2].matches("[0-9]+(\\.[0-9][0-9]?)?"))
                     {
-                        Settings.setDropChance(head, dropRate);
-                        sender.sendMessage("Drop rate for "+head.name()+" has been set to "+dropRate+"%!");
+                        double dropRate = Double.parseDouble(args[2]);
+                        if (dropRate >= 0.0 && dropRate <= 100.0)
+                        {
+                            Settings.setDropChance(head, dropRate);
+                            sender.sendMessage(ChatColor.GREEN+"Drop rate for "+head.name()+" has been set to "+dropRate+"%!");
+                        }
+                        else
+                        {
+                            sender.sendMessage(ChatColor.RED+"The drop rate must be between 0.00 and 100.00.");
+                        }
+
                     }
                     else
                     {
-                        sender.sendMessage("The drop rate must be between 0 and 100.");
+                        sender.sendMessage(ChatColor.RED+"Invalid drop rate. It must be a value between 0.00 and 100.00.");
                     }
-
                 }
                 else
                 {
-                    sender.sendMessage("Invalid drop rate.");
+                    double dropChance = Settings.getDropChance(head);
+                    sender.sendMessage(head.name()+" has a "+dropChance+"% chance of dropping.");
                 }
             }
             else
             {
-                sender.sendMessage("Invalid head.");
+                sender.sendMessage(ChatColor.RED+"Unrecognised head. Use /DecorHeads list for a list of heads.");
             }
         }
         else
         {
-            sender.sendMessage("Invalid parameters.");
+            sender.sendMessage(ChatColor.RED+"Invalid parameters. Use /DecorHeads for usage instructions.");
         }
     }
 
@@ -91,7 +103,7 @@ public class DecorHeadsCommand implements CommandExecutor
         boolean isEnabled = Settings.isEnabled();
         Settings.setEnabled(!isEnabled);
         isEnabled = Settings.isEnabled();
-        sender.sendMessage("DecorHeads is now "+((isEnabled) ? "enabled." : "disabled."));
+        sender.sendMessage(ChatColor.GREEN+"DecorHeads is now "+((isEnabled) ? ChatColor.BLUE+"enabled." : ChatColor.RED+"disabled."));
     }
 
     private void giveAllHeads(CommandSender sender)
@@ -101,12 +113,19 @@ public class DecorHeadsCommand implements CommandExecutor
             Player player = (Player) sender;
             for (HeadManager.HeadType head : HeadManager.HeadType.values())
             {
-                player.getInventory().addItem(HeadManager.getSkull(head));
+                if (player.getInventory().firstEmpty() != -1)
+                {
+                    player.getInventory().addItem(HeadManager.getSkull(head));
+                }
+                else
+                {
+                    player.getWorld().dropItem(player.getLocation(), HeadManager.getSkull(head));
+                }
             }
         }
         else
         {
-            sender.sendMessage("You are not a player.");
+            sender.sendMessage(ChatColor.RED+"You are not a player.");
         }
     }
 
@@ -124,17 +143,17 @@ public class DecorHeadsCommand implements CommandExecutor
                 }
                 else
                 {
-                    sender.sendMessage("Invalid head.");
+                    sender.sendMessage(ChatColor.RED+"Unrecognised head. Use /DecorHeads list for a list of heads.");
                 }
             }
             else
             {
-                sender.sendMessage("You are not a player.");
+                sender.sendMessage(ChatColor.RED+"You are not a player.");
             }
         }
         else
         {
-            sender.sendMessage("Invalid parameters.");
+            sender.sendMessage(ChatColor.RED+"Invalid parameters. Use /DecorHeads for usage instructions.");
         }
     }
 

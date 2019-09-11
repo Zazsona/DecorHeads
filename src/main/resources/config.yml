@@ -1,31 +1,33 @@
 Enabled: true
 DropsEnabled: true
 CraftingEnabled: true
+#These drop percentages are valid between 0 and 100
+#They can, however, be to two decimal places (E.g, 0.01)
 DropPercentages:
-  Beer: 5
+  Beer: 3
   Books: 10
   Snowman: 1
-  Apple: 2
-  Blueberry: 1
+  Apple: 0.2
+  Blueberry: 0.2
   Coconut: 3
-  OakLog: 2
-  Dirt: 1
-  Leaves: 2
-  Melon: 2
+  OakLog: 0.6
+  Dirt: 0.2
+  Leaves: 1
+  Melon: 1
   Pumpkin: 2
   Cactus: 2
   Sushi: 8
-  Bread: 1
-  Cookie: 3
+  Bread: 0.5
+  Cookie: 2
   Cake: 15
-  Burger: 1
-  ChickenDinner: 1
-  RedstoneBlock: 3
+  Burger: 0.5
+  ChickenDinner: 0.5
+  RedstoneBlock: 2
   Gravel: 2
   Cobblestone: 2
-  OakCharacterExclamation: 1
-  OakCharacterQuestion: 1
-  OakCharacterLeft: 1
-  OakCharacterRight: 1
-  OakCharacterUp: 1
-  OakCharacterDown: 1
+  OakCharacterExclamation: 0.16
+  OakCharacterQuestion: 0.16
+  OakCharacterLeft: 0.16
+  OakCharacterRight: 0.16
+  OakCharacterUp: 0.16
+  OakCharacterDown: 0.16
