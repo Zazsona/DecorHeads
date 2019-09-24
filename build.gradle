@@ -3,7 +3,6 @@ plugins {
 }
 
 group 'com.Zazsona'
-version '1.0-BETA'
 
 sourceCompatibility = 1.8
 libsDirName = '../SERVER/plugins/'

@@ -10,6 +10,7 @@ public class Core extends JavaPlugin
         getConfig().options().copyDefaults(true);
         saveConfig();
         getServer().getPluginManager().registerEvents(new HeadDropListener(), this);
+        getServer().getPluginManager().registerEvents(new PlacedHeadRetriever(), this);
         this.getCommand("DecorHeads").setExecutor(new DecorHeadsCommand());
         CraftingManager.addRecipes();
     }
