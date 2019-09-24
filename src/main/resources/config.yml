@@ -6,28 +6,28 @@ CraftingEnabled: true
 DropPercentages:
   Beer: 3
   Books: 10
-  Snowman: 1
+  SnowmanHead: 1
   Apple: 0.2
   Blueberry: 0.2
   Coconut: 3
-  OakLog: 0.6
-  Dirt: 0.2
-  Leaves: 1
-  Melon: 1
-  Pumpkin: 2
-  Cactus: 2
+  MiniOakLog: 0.6
+  MiniDirt: 0.2
+  MiniLeaves: 1
+  MiniMelon: 1
+  MiniPumpkin: 2
+  MiniCactus: 2
   Sushi: 8
   Bread: 0.5
   Cookie: 2
-  Cake: 15
+  Cupcake: 15
   Burger: 0.5
   ChickenDinner: 0.5
-  RedstoneBlock: 2
-  Gravel: 2
-  Cobblestone: 2
+  MiniRedstoneBlock: 2
+  MiniGravel: 2
+  MiniCobblestone: 2
   OakCharacterExclamation: 0.16
   OakCharacterQuestion: 0.16
-  OakCharacterLeft: 0.16
-  OakCharacterRight: 0.16
-  OakCharacterUp: 0.16
-  OakCharacterDown: 0.16
+  OakCharacterLeftArrow: 0.16
+  OakCharacterRightArrow: 0.16
+  OakCharacterUpArrow: 0.16
+  OakCharacterDownArrow: 0.16

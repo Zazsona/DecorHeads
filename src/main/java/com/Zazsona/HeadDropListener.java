@@ -56,9 +56,9 @@ public class HeadDropListener implements Listener
             }
             else if (block.getType() == Material.SNOW_BLOCK)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Snowman))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.SnowmanHead))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Snowman);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.SnowmanHead);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
@@ -81,79 +81,79 @@ public class HeadDropListener implements Listener
             }
             else if (block.getType() == Material.OAK_LOG)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.OakLog))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniOakLog))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.OakLog);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniOakLog);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
             else if (block.getType() == Material.DIRT || block.getType() == Material.GRASS_BLOCK)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Dirt))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniDirt))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Dirt);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniDirt);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
             else if (block.getType() == Material.OAK_LEAVES)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Leaves))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniLeaves))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Leaves);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniLeaves);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
             else if (block.getType() == Material.MELON)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Melon))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniMelon))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Melon);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniMelon);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
             else if (block.getType() == Material.PUMPKIN)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Pumpkin))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniPumpkin))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Pumpkin);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniPumpkin);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
             else if (block.getType() == Material.CACTUS)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cactus))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniCactus))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cactus);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniCactus);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
             else if (block.getType() == Material.REDSTONE_ORE)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.RedstoneBlock))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniRedstoneBlock))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.RedstoneBlock);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniRedstoneBlock);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
             else if (block.getType() == Material.GRAVEL)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Gravel))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniGravel))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Gravel);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniGravel);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
             else if (block.getType() == Material.COBBLESTONE)
             {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cobblestone))
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniCobblestone))
                 {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cobblestone);
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniCobblestone);
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
             }
             else if (block.getType() == Material.OAK_PLANKS)
             {
-                HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.OakCharacterExclamation, HeadManager.HeadType.OakCharacterQuestion, HeadManager.HeadType.OakCharacterUp, HeadManager.HeadType.OakCharacterDown, HeadManager.HeadType.OakCharacterLeft, HeadManager.HeadType.OakCharacterRight);
+                HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.OakCharacterExclamation, HeadManager.HeadType.OakCharacterQuestion, HeadManager.HeadType.OakCharacterUpArrow, HeadManager.HeadType.OakCharacterDownArrow, HeadManager.HeadType.OakCharacterLeftArrow, HeadManager.HeadType.OakCharacterRightArrow);
                 for (HeadManager.HeadType head : headTypes)
                 {
                     ItemStack item = HeadManager.getSkull(head);
@@ -211,9 +211,9 @@ public class HeadDropListener implements Listener
                     }
                     else if (resultingItem == Material.CAKE)
                     {
-                        if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cake))
+                        if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cupcake))
                         {
-                            ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cake);
+                            ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cupcake);
                             player.getWorld().dropItemNaturally(player.getLocation(), item);
                         }
                     }
@@ -287,7 +287,6 @@ public class HeadDropListener implements Listener
     private double roll()
     {
         double roll = ((r.nextInt(9999)+1.0)/100.0);
-        System.out.println(roll);
         return roll;
     }
 

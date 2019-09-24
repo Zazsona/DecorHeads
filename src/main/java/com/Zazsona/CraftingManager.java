@@ -40,7 +40,7 @@ public class CraftingManager
 
     private static void addMonitorRecipe()
     {
-        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Monitor);
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.TV);
         NamespacedKey nsk = new NamespacedKey(plugin, "Monitor");
         ShapedRecipe recipe = new ShapedRecipe(nsk, item);
         recipe.shape("XXX", "XOX", "XXX");
@@ -159,7 +159,7 @@ public class CraftingManager
 
     private static void addCardBoxRecipe()
     {
-        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.CardBox);
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.CardboardBox);
         NamespacedKey nsk = new NamespacedKey(plugin, "CardBox");
         ShapedRecipe recipe = new ShapedRecipe(nsk, item);
         recipe.shape("XXX", "X X", "XXX");
