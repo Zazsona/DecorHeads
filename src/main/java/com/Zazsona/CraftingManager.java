@@ -54,8 +54,9 @@ public class CraftingManager
         ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Toaster);
         NamespacedKey nsk = new NamespacedKey(plugin, "Toaster");
         ShapedRecipe recipe = new ShapedRecipe(nsk, item);
-        recipe.shape("   ", "X X", "XXX");
+        recipe.shape("   ", "XZX", "XXX");
         recipe.setIngredient('X', Material.IRON_INGOT);
+        recipe.setIngredient('Z', Material.BREAD);
         plugin.getServer().addRecipe(recipe);
     }
 
