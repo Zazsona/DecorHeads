@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
 
 public class CraftingManager
@@ -25,6 +26,12 @@ public class CraftingManager
         addCardBoxRecipe();
         addChimneyRecipe();
         addPottedPlants();
+        addToiletRoll();
+        addPotion();
+        addInkJar();
+        addNewspapers();
+        addFruitBasket();
+        addWoodenCrate();
     }
 
     private static void addDiceRecipe()
@@ -206,6 +213,71 @@ public class CraftingManager
         recipe.setIngredient('X', Material.OAK_PLANKS);
         recipe.setIngredient('O', Material.OXEYE_DAISY);
         recipe.setIngredient('Z', Material.OAK_LEAVES);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addToiletRoll()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.ToiletPaper);
+        NamespacedKey nsk = new NamespacedKey(plugin, "ToiletPaper");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape("OOO", "OXO", "OOO");
+        recipe.setIngredient('X', Material.OAK_PLANKS);
+        recipe.setIngredient('O', Material.PAPER);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addPotion()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Potion);
+        NamespacedKey nsk = new NamespacedKey(plugin, "Potion");
+        ShapelessRecipe recipe = new ShapelessRecipe(nsk, item);
+        recipe.addIngredient(Material.POTION);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addInkJar()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.InkJar);
+        NamespacedKey nsk = new NamespacedKey(plugin, "InkJar");
+        ShapelessRecipe recipe = new ShapelessRecipe(nsk, item);
+        recipe.addIngredient(Material.GLASS_BOTTLE);
+        recipe.addIngredient(Material.INK_SAC);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addNewspapers()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Newspapers);
+        NamespacedKey nsk = new NamespacedKey(plugin, "Newspapers");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape(" X ", "OOO", " X ");
+        recipe.setIngredient('X', Material.STRING);
+        recipe.setIngredient('O', Material.PAPER);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addFruitBasket()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.FruitBasket);
+        NamespacedKey nsk = new NamespacedKey(plugin, "FruitBasket");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape(" I ", "ABC", "XXX");
+        recipe.setIngredient('X', Material.OAK_PLANKS);
+        recipe.setIngredient('I', Material.STICK);
+        recipe.setIngredient('A', Material.APPLE);
+        recipe.setIngredient('B', Material.MELON_SLICE);
+        recipe.setIngredient('C', Material.SWEET_BERRIES);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addWoodenCrate()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.WoodenCrate);
+        NamespacedKey nsk = new NamespacedKey(plugin, "WoodenCrate");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape("XXX", "XXX", "XXX");
+        recipe.setIngredient('X', Material.OAK_PLANKS);
         plugin.getServer().addRecipe(recipe);
     }
 }

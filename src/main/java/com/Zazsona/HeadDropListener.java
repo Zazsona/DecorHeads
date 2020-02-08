@@ -64,7 +64,7 @@ public class HeadDropListener implements Listener
             }
             else if (block.getType() == Material.ACACIA_LEAVES || block.getType() == Material.BIRCH_LEAVES || block.getType() == Material.DARK_OAK_LEAVES || block.getType() == Material.JUNGLE_LEAVES || block.getType() == Material.OAK_LEAVES || block.getType() == Material.SPRUCE_LEAVES)
             {
-                HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.Apple, HeadManager.HeadType.Blueberry);
+                HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.Apple, HeadManager.HeadType.Blueberry, HeadManager.HeadType.FruitBasket);
                 for (HeadManager.HeadType head : headTypes)
                 {
                     ItemStack item = HeadManager.getSkull(head);
@@ -175,6 +175,14 @@ public class HeadDropListener implements Listener
                 if (roll() <= Settings.getDropChance(HeadManager.HeadType.Sushi))
                 {
                     ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Sushi);
+                    entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+                }
+            }
+            else if (entity.getType() == EntityType.SLIME)
+            {
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Slimeball))
+                {
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Slimeball);
                     entity.getWorld().dropItemNaturally(entity.getLocation(), item);
                 }
             }
