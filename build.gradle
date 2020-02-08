@@ -5,7 +5,6 @@ plugins {
 group 'com.Zazsona'
 
 sourceCompatibility = 1.8
-libsDirName = '../SERVER/plugins/'
 
 repositories {
     mavenCentral()

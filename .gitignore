@@ -9,3 +9,4 @@ SERVER/
 .gradle
 *.iml
 *.log
+*.lnk
