@@ -33,3 +33,13 @@ DropPercentages:
   OakCharacterDownArrow: 0.16
   Slimeball: 2
   FruitBasket: 0.01
+  Chicken: 0.01
+  Cow: 0.01
+  Fox: 1
+  Mooshroom: 2
+  Ocelot: 1
+  Pig: 0.01
+  Sheep: 0.01
+  Squid: 0.01
+  Villager: 0.1
+  WanderingTrader: 3

@@ -170,6 +170,7 @@ public class HeadDropListener implements Listener
         LivingEntity entity = e.getEntity();
         if (canGetHeadDrop(entity.getKiller()))
         {
+            dropMobHead(entity);
             if (entity.getType() == EntityType.PUFFERFISH || entity.getType() == EntityType.SALMON || entity.getType() == EntityType.COD || entity.getType() == EntityType.TROPICAL_FISH)
             {
                 if (roll() <= Settings.getDropChance(HeadManager.HeadType.Sushi))
@@ -185,6 +186,90 @@ public class HeadDropListener implements Listener
                     ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Slimeball);
                     entity.getWorld().dropItemNaturally(entity.getLocation(), item);
                 }
+            }
+        }
+    }
+
+    private void dropMobHead(LivingEntity entity)
+    {
+        if (entity.getType() == EntityType.CHICKEN)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Chicken))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Chicken);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.COW)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cow))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cow);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.FOX)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Fox))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Fox);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.MUSHROOM_COW)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Mooshroom))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Mooshroom);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.OCELOT)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Ocelot))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Ocelot);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.PIG)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Pig))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Pig);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.SHEEP) //TODO: Get colour
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Sheep))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Sheep);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.SQUID)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Squid))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Squid);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.VILLAGER)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Villager))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Villager);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.WANDERING_TRADER)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.WanderingTrader))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.WanderingTrader);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
             }
         }
     }
