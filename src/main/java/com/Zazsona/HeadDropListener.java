@@ -272,6 +272,54 @@ public class HeadDropListener implements Listener
                 entity.getWorld().dropItemNaturally(entity.getLocation(), item);
             }
         }
+        else if (entity.getType() == EntityType.SPIDER)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Spider))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Spider);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.CAVE_SPIDER)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.CaveSpider))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.CaveSpider);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.ENDERMAN)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Enderman))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Enderman);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.PIG_ZOMBIE)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.ZombiePigman))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.ZombiePigman);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.IRON_GOLEM)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.IronGolem))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.IronGolem);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.DOLPHIN)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Dolphin))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Dolphin);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
     }
 
     @EventHandler (priority = EventPriority.LOWEST)

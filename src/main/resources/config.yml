@@ -43,3 +43,9 @@ DropPercentages:
   Squid: 0.01
   Villager: 0.1
   WanderingTrader: 3
+  Spider: 0.05
+  CaveSpider: 0.03
+  Enderman: 0.02
+  ZombiePigman: 0.02
+  IronGolem: 1
+  Dolphin: 1
