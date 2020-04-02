@@ -69,7 +69,14 @@ public class HeadManager
         Sheep,
         Squid,
         Villager,
-        WanderingTrader
+        WanderingTrader,
+
+        Spider,
+        CaveSpider,
+        Enderman,
+        ZombiePigman,
+        IronGolem,
+        Dolphin
 
     }
 
@@ -213,6 +220,20 @@ public class HeadManager
                 return createSkull("Villager", "0a9e8efb-9191-4c81-80f5-e27ca5433156", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIyZDhlNzUxYzhmMmZkNGM4OTQyYzQ0YmRiMmY1Y2E0ZDhhZThlNTc1ZWQzZWIzNGMxOGE4NmU5M2IifX19\"}]");
             case WanderingTrader:
                 return createSkull("Wandering Trader", "943947ea-3e1a-4fdc-85e5-f538379f05e9", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWYxMzc5YTgyMjkwZDdhYmUxZWZhYWJiYzcwNzEwZmYyZWMwMmRkMzRhZGUzODZiYzAwYzkzMGM0NjFjZjkzMiJ9fX0=\"}]");
+
+
+            case Spider:
+                return createSkull("Spider", "8bdb71d0-4724-48b2-9344-e79480424798", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q1NDE1NDFkYWFmZjUwODk2Y2QyNThiZGJkZDRjZjgwYzNiYTgxNjczNTcyNjA3OGJmZTM5MzkyN2U1N2YxIn19fQ==\"}]");
+            case CaveSpider:
+                return createSkull("Cave Spider", "39173a7a-c957-4ec1-ac1a-43e5a64983df", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDE2NDVkZmQ3N2QwOTkyMzEwN2IzNDk2ZTk0ZWViNWMzMDMyOWY5N2VmYzk2ZWQ3NmUyMjZlOTgyMjQifX19\"}]");
+            case Enderman:
+                return createSkull("Enderman", "0de98464-1274-4dd6-bba8-370efa5d41a8", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2E1OWJiMGE3YTMyOTY1YjNkOTBkOGVhZmE4OTlkMTgzNWY0MjQ1MDllYWRkNGU2YjcwOWFkYTUwYjljZiJ9fX0=\"}]");
+            case ZombiePigman:
+                return createSkull("Zombie Pigman", "6540c046-d6ea-4aff-9766-32a54ebe6958", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzRlOWM2ZTk4NTgyZmZkOGZmOGZlYjMzMjJjZDE4NDljNDNmYjE2YjE1OGFiYjExY2E3YjQyZWRhNzc0M2ViIn19fQ==\"}]");
+            case IronGolem:
+                return createSkull("Iron Golem", "7cb6e9a5-994f-40d5-9bfc-4ba5d796d21e", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODkwOTFkNzllYTBmNTllZjdlZjk0ZDdiYmE2ZTVmMTdmMmY3ZDQ1NzJjNDRmOTBmNzZjNDgxOWE3MTQifX19\"}]");
+            case Dolphin:
+                return createSkull("Dolphin", "8b7ccd6d-36de-47e0-8d5a-6f6799c6feb8", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU5Njg4Yjk1MGQ4ODBiNTViN2FhMmNmY2Q3NmU1YTBmYTk0YWFjNmQxNmY3OGU4MzNmNzQ0M2VhMjlmZWQzIn19fQ==\"}]");
         }
         return null;
     }
