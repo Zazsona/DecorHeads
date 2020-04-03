@@ -49,3 +49,20 @@ DropPercentages:
   ZombiePigman: 0.02
   IronGolem: 1
   Dolphin: 1
+  Blaze: 0.5
+  Creeper: 0.01
+  Drowned: 0.5
+  ElderGuardian: 10
+  Ghast: 3
+  Guardian: 1
+  Husk: 0.5
+  MagmaCube: 1
+  Pillager: 0.01
+  Skeleton: 0.01
+  Slime: 1
+  Stray: 0.5
+  Vex: 1
+  Witch: 1
+  WitherSkeleton: 0.02
+  Zombie: 0.01
+  ZombieVillager: 2

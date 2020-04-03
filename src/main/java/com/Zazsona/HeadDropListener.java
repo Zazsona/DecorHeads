@@ -320,6 +320,142 @@ public class HeadDropListener implements Listener
                 entity.getWorld().dropItemNaturally(entity.getLocation(), item);
             }
         }
+        else if (entity.getType() == EntityType.BLAZE)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Blaze))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Blaze);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.CREEPER)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Creeper))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Creeper);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.DROWNED)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Drowned))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Drowned);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.ELDER_GUARDIAN)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.ElderGuardian))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.ElderGuardian);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.GHAST)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Ghast))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Ghast);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.GUARDIAN)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Guardian))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Guardian);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.HUSK)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Husk))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Husk);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.MAGMA_CUBE)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.MagmaCube))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MagmaCube);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.PILLAGER || entity.getType() == EntityType.EVOKER)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Pillager))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Pillager);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.SKELETON)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Skeleton))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Skeleton);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.SLIME)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Slime))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Slime);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.STRAY)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Stray))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Stray);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.VEX)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Vex))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Vex);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.WITCH)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Witch))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Witch);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.WITHER_SKELETON)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.WitherSkeleton))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.WitherSkeleton);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.ZOMBIE)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Zombie))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Zombie);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+        else if (entity.getType() == EntityType.ZOMBIE_VILLAGER)
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.ZombieVillager))
+            {
+                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.ZombieVillager);
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
     }
 
     @EventHandler (priority = EventPriority.LOWEST)
