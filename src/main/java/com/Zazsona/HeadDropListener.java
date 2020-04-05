@@ -192,6 +192,9 @@ public class HeadDropListener implements Listener
 
     private void dropMobHead(LivingEntity entity)
     {
+        if (!Settings.isMobDropsEnabled())
+            return;
+
         if (entity.getType() == EntityType.CHICKEN)
         {
             if (roll() <= Settings.getDropChance(HeadManager.HeadType.Chicken))

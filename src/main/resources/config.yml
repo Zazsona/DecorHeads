@@ -1,6 +1,7 @@
 Enabled: true
 DropsEnabled: true
 CraftingEnabled: true
+MobDropsEnabled: true
 #These drop percentages are valid between 0 and 100
 #They can, however, be to two decimal places (E.g, 0.01)
 DropPercentages:

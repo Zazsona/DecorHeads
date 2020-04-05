@@ -44,6 +44,17 @@ public class Settings
         return (boolean) plugin.getConfig().get("CraftingEnabled");
     }
 
+    public static void setMobDropsEnabled(boolean newEnabled)
+    {
+        plugin.getConfig().set("MobDropsEnabled", newEnabled);
+        save();
+    }
+
+    public static boolean isMobDropsEnabled()
+    {
+        return (boolean) plugin.getConfig().get("MobDropsEnabled");
+    }
+
     public static void setDropChance(HeadManager.HeadType headType, double dropPercentage)
     {
         plugin.getConfig().set("DropPercentages."+headType.name(), dropPercentage);
