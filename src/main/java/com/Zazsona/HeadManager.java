@@ -8,6 +8,7 @@ public class HeadManager
 {
     public enum HeadType
     {
+        //V1
         Beer,
         Books,
         SnowmanHead,
@@ -36,6 +37,7 @@ public class HeadManager
         OakCharacterUpArrow,
         OakCharacterDownArrow,
 
+        //V2
         Dice,
         TV,
         Toaster,
@@ -52,6 +54,7 @@ public class HeadManager
         PottedDandelion,
         PottedDaisy,
 
+        //V3
         Slimeball,
         ToiletPaper,
         Potion,
@@ -60,6 +63,7 @@ public class HeadManager
         FruitBasket,
         WoodenCrate,
 
+        //V4 (Mob update)
         Chicken,
         Cow,
         Fox,
@@ -94,7 +98,13 @@ public class HeadManager
         Witch,
         WitherSkeleton,
         Zombie,
-        ZombieVillager
+        ZombieVillager,
+
+        //V5 (Summer Update)
+        BeachBall,
+        Sandcastle,
+        PicnicBasket,
+        SandBucket
     }
 
     public static HeadType getHeadByName(String name)
@@ -287,6 +297,16 @@ public class HeadManager
                 return createSkull("Zombie", "9959dd98-efb3-4ee9-a8fb-2fda0218cda0", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTZmYzg1NGJiODRjZjRiNzY5NzI5Nzk3M2UwMmI3OWJjMTA2OTg0NjBiNTFhNjM5YzYwZTVlNDE3NzM0ZTExIn19fQ==\"}]");
             case ZombieVillager:
                 return createSkull("Zombie Villager", "dd1b157c-d732-4d1c-8185-da205188a8cf", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTVlMDhhODc3NmMxNzY0YzNmZTZhNmRkZDQxMmRmY2I4N2Y0MTMzMWRhZDQ3OWFjOTZjMjFkZjRiZjNhYzg5YyJ9fX0=\"}]");
+
+
+            case BeachBall:
+                return createSkull("Beach Ball", "146d93d9-fb52-43c7-895c-f18eb24facaa", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWIyNTEzYzhkMDhjNjBhZDM3ODVkM2E5YTY1MWI3MzI5YzVmMjY5MzdhY2EyZmM4ZGZhZjM0NDFjOWJkOWRhMiJ9fX0=\"}]");
+            case Sandcastle:
+                return createSkull("Sandcastle", "6d744145-05e0-47d0-8f8f-c7edbcbc0131", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWE0YjdlODc4MjFkYjRlNmU0MmU3OGQ3ZjI2MGI2Mzc5OTNkNmJlOGRlOTRmNDNlNDMxNzViYWZmOTFmNSJ9fX0=\"}]");
+            case PicnicBasket:
+                return createSkull("Picnic Basket", "6e9086e2-f0f1-4f23-a82f-059dab5bd3bd", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTEwMDMzMTg5MzQyMDUwNTZjNWRhYWEzOGI3YjY2ZDgxZmI0NTAwYWZlMGJkYzQ0NzNhNGY4NmQ1MDI1Y2UzIn19fQ==\"}]");
+            case SandBucket:
+                return createSkull("Sand Bucket", "71b586db-59ad-4134-a8b8-1785b8641ad3", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ0MzdkMTY4ODU5MjBjZTU1NzczM2Y0YzcxMGJiNTAwN2YwYTRmMWEwZGRkMzJkNTk0NjlhYmM0ZjdlN2JlMCJ9fX0=\"}]");
         }
         return null;
     }
