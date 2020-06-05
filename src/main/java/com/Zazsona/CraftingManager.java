@@ -32,6 +32,8 @@ public class CraftingManager
         addNewspapers();
         addFruitBasket();
         addWoodenCrate();
+        addBeachball();
+        addPicnicBasket();
     }
 
     private static void addDiceRecipe()
@@ -278,6 +280,35 @@ public class CraftingManager
         ShapedRecipe recipe = new ShapedRecipe(nsk, item);
         recipe.shape("XXX", "XXX", "XXX");
         recipe.setIngredient('X', Material.OAK_PLANKS);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addBeachball()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.BeachBall);
+        NamespacedKey nsk = new NamespacedKey(plugin, "Beachball");
+        ShapelessRecipe recipe = new ShapelessRecipe(nsk, item);
+        recipe.addIngredient(Material.BLUE_DYE);
+        recipe.addIngredient(Material.GREEN_DYE);
+        recipe.addIngredient(Material.YELLOW_DYE);
+        recipe.addIngredient(Material.ORANGE_DYE);
+        recipe.addIngredient(Material.RED_DYE);
+        recipe.addIngredient(Material.PURPLE_DYE);
+        recipe.addIngredient(Material.WHITE_DYE);
+        recipe.addIngredient(Material.LEATHER);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addPicnicBasket()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.PicnicBasket);
+        NamespacedKey nsk = new NamespacedKey(plugin, "PicnicBasket");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape(" I ", "ABA", "XXX");
+        recipe.setIngredient('X', Material.OAK_PLANKS);
+        recipe.setIngredient('I', Material.STICK);
+        recipe.setIngredient('A', Material.RED_CARPET);
+        recipe.setIngredient('B', Material.WHITE_CARPET);
         plugin.getServer().addRecipe(recipe);
     }
 }

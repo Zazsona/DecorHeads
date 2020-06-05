@@ -3,6 +3,8 @@ package com.Zazsona;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -160,6 +162,15 @@ public class HeadDropListener implements Listener
                     block.getWorld().dropItemNaturally(block.getLocation(), item);
                 }
 
+            }
+            else if (block.getType() == Material.SAND && isPlayerInBiome(e.getPlayer(), Biome.BEACH))
+            {
+                HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.Sandcastle, HeadManager.HeadType.SandBucket);
+                for (HeadManager.HeadType head : headTypes)
+                {
+                    ItemStack item = HeadManager.getSkull(head);
+                    block.getWorld().dropItemNaturally(block.getLocation(), item);
+                }
             }
         }
     }
@@ -600,6 +611,13 @@ public class HeadDropListener implements Listener
             }
         }
         return false;
+    }
+
+    private boolean isPlayerInBiome(Player player, Biome biome)
+    {
+        World world = player.getWorld();
+        Biome currentBiome = world.getBiome(player.getLocation().getBlockX(), player.getLocation().getBlockZ());
+        return (currentBiome == biome);
     }
 
 }
