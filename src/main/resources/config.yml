@@ -67,3 +67,5 @@ DropPercentages:
   WitherSkeleton: 0.02
   Zombie: 0.01
   ZombieVillager: 2
+  Sandcastle: 0.5
+  SandBucket: 0.05
