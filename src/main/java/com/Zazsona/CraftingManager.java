@@ -34,6 +34,9 @@ public class CraftingManager
         addWoodenCrate();
         addBeachball();
         addPicnicBasket();
+        addVase();
+        addGoldMedal();
+        addStevePlush();
     }
 
     private static void addDiceRecipe()
@@ -309,6 +312,40 @@ public class CraftingManager
         recipe.setIngredient('I', Material.STICK);
         recipe.setIngredient('A', Material.RED_CARPET);
         recipe.setIngredient('B', Material.WHITE_CARPET);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addVase()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.PorcelainVase);
+        NamespacedKey nsk = new NamespacedKey(plugin, "PorcelainVase");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape("A A", "B B", "AAA");
+        recipe.setIngredient('A', Material.CLAY_BALL);
+        recipe.setIngredient('B', Material.BLUE_DYE);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addGoldMedal()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.GoldMedal);
+        NamespacedKey nsk = new NamespacedKey(plugin, "GoldMedal");
+        ShapelessRecipe recipe = new ShapelessRecipe(nsk, item);
+        recipe.addIngredient(Material.GOLD_INGOT);
+        recipe.addIngredient(Material.IRON_BLOCK);
+        recipe.addIngredient(Material.STRING);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addStevePlush()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.StevePlush);
+        NamespacedKey nsk = new NamespacedKey(plugin, "StevePlush");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape("A", "B", "C");
+        recipe.setIngredient('A', Material.YELLOW_WOOL);
+        recipe.setIngredient('B', Material.LIGHT_BLUE_WOOL);
+        recipe.setIngredient('C', Material.BLUE_WOOL);
         plugin.getServer().addRecipe(recipe);
     }
 }

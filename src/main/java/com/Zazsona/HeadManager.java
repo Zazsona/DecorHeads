@@ -104,7 +104,11 @@ public class HeadManager
         BeachBall,
         Sandcastle,
         PicnicBasket,
-        SandBucket
+        SandBucket,
+
+        PorcelainVase,
+        GoldMedal,
+        StevePlush
     }
 
     public static HeadType getHeadByName(String name)
@@ -307,6 +311,13 @@ public class HeadManager
                 return createSkull("Picnic Basket", "6e9086e2-f0f1-4f23-a82f-059dab5bd3bd", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTEwMDMzMTg5MzQyMDUwNTZjNWRhYWEzOGI3YjY2ZDgxZmI0NTAwYWZlMGJkYzQ0NzNhNGY4NmQ1MDI1Y2UzIn19fQ==\"}]");
             case SandBucket:
                 return createSkull("Sand Bucket", "71b586db-59ad-4134-a8b8-1785b8641ad3", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ0MzdkMTY4ODU5MjBjZTU1NzczM2Y0YzcxMGJiNTAwN2YwYTRmMWEwZGRkMzJkNTk0NjlhYmM0ZjdlN2JlMCJ9fX0=\"}]");
+
+            case PorcelainVase:
+                return createSkull("Vase", "c03cbe5a-dc07-487a-b4b7-1e87fa30d389", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0NTA1NWZhNjQ4Y2RiYjJjNjIwYmE1NjUwYjI5ZWMwM2MwMzAyNmJhNGZhODhhZmYwNTUyOTc0NzM3YjJiNyJ9fX0=\"}]");
+            case GoldMedal:
+                return createSkull("Gold Medal", "c38cafc5-b2f1-4cb3-a98a-2369b9a37cbc", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzMxNzhkMDFhYWYxMWU1Y2NmYTM4YjE5MGQ3MDg1ZmYzN2RkMDQ4ZDA5YjY2NGYwMjU3MDc3NmY5Yjk4MTQ2NiJ9fX0=\"}]");
+            case StevePlush:
+                return createSkull("Steve Plush", "4b853c0b-d0cd-48fc-bc27-3ff98931ce2b", "textures:[{Value:\"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjYyMjE3ZDkwMmVkYzkyOWRlNGY1MWI5MDcxZjU2YmFhYWMwNDVkMDRlYzA0Yjg0MGNjYzhlYzk5NjJmNjJlMyJ9fX0=\"}]");
         }
         return null;
     }
