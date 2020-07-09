@@ -13,14 +13,16 @@ public class DecorHeadsCommand implements CommandExecutor
     {
         if (args.length == 0)
         {
-            sender.sendMessage("DecorHeads adds custom heads in a natural way.\n" +
-                                       "Commands:\n" +
-                                       "/DecorHeads Toggle - Disable/Enable DecorHeads\n" +
-                                       "/DecorHeads DropRate [Head] [Rate] - Set drop percentage\n" +
-                                       "/DecorHeads DropRate [Head] - Get drop rate of a head\n" +
-                                       "/DecorHeads Head [Head] - Get a head\n" +
-                                       "/DecorHeads AllHeads - Get all heads\n" +
-                                       "/DecorHeads List - List all heads");
+            StringBuilder sb = new StringBuilder();
+            sb.append(ChatColor.YELLOW + "---------" + ChatColor.WHITE + " DecorHeads ").append(ChatColor.YELLOW).append("--------------------").append(ChatColor.WHITE).append("\n");
+            sb.append(ChatColor.GRAY+"Bringing custom heads into the natural Minecraft world!\n"+ChatColor.WHITE);
+            sb.append(ChatColor.GOLD+"/DecorHeads Toggle - ").append(ChatColor.WHITE+"Disable/Enable DecorHeads\n");
+            sb.append(ChatColor.GOLD+"/DecorHeads DropRate [Head] [Rate] - ").append(ChatColor.WHITE+"Set drop percentage\n");
+            sb.append(ChatColor.GOLD+"/DecorHeads DropRate [Head] - ").append(ChatColor.WHITE+"Get drop rate of a head\n");
+            sb.append(ChatColor.GOLD+"/DecorHeads Head [Head] - ").append(ChatColor.WHITE+"Get a head\n");
+            sb.append(ChatColor.GOLD+"/DecorHeads AllHeads - ").append(ChatColor.WHITE+"Get all heads\n");
+            sb.append(ChatColor.GOLD+"/DecorHeads List [Page] - ").append(ChatColor.WHITE+"List heads\n");
+            sender.sendMessage(sb.toString());
         }
         else
         {
@@ -47,7 +49,7 @@ public class DecorHeadsCommand implements CommandExecutor
             else if (args[0].equalsIgnoreCase("list"))
             {
                 if (sender.hasPermission("DecorHeads.Admin") || sender.hasPermission("DecorHeads.SummonHead"))
-                    listHeads(sender);
+                    listHeads(sender, args);
             }
         }
         return true;
@@ -157,15 +159,30 @@ public class DecorHeadsCommand implements CommandExecutor
         }
     }
 
-    private void listHeads(CommandSender sender)
+    private void listHeads(CommandSender sender, String[] args)
     {
+        int headsPerPage = 8;
+        int pages = (int) Math.ceil(HeadManager.HeadType.values().length/8);
+        int pageNo = getHeadsPageNo(args, pages);
         StringBuilder sb = new StringBuilder();
-        sb.append("Heads:\n");
-        for (HeadManager.HeadType head : HeadManager.HeadType.values())
+        sb.append(ChatColor.YELLOW + "---------" + ChatColor.WHITE + " Heads (Page: ").append(pageNo + 1).append("/").append(pages + 1).append(") ").append(ChatColor.YELLOW).append("--------------------").append(ChatColor.WHITE).append("\n");
+        sb.append(ChatColor.GRAY + "Use /Decorheads List [n] to get page n of heads.\n" + ChatColor.WHITE);
+        int startingHeadIndex = headsPerPage*(pageNo);
+        int endingHeadIndex = Math.min(startingHeadIndex+headsPerPage, HeadManager.HeadType.values().length);
+        for (int i = startingHeadIndex; i<endingHeadIndex; i++)
         {
-            sb.append(head.name()).append(", ");
+            sb.append(HeadManager.HeadType.values()[i].name()).append("\n");
         }
-        sb.setLength(sb.length()-2);
         sender.sendMessage(sb.toString());
+    }
+
+    private int getHeadsPageNo(String[] args, int maxPages)
+    {
+        if (args.length >= 2 && args[1].matches("[0-9]+"))
+        {
+            return Math.min(maxPages, Integer.parseInt(args[1])-1); //-1 as pages start at 1, but arrays start at 0
+        }
+        return 0;
+
     }
 }
