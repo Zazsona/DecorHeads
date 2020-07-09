@@ -161,19 +161,26 @@ public class DecorHeadsCommand implements CommandExecutor
 
     private void listHeads(CommandSender sender, String[] args)
     {
-        int headsPerPage = 8;
-        int pages = (int) Math.ceil(HeadManager.HeadType.values().length/8);
-        int pageNo = getHeadsPageNo(args, pages);
-        StringBuilder sb = new StringBuilder();
-        sb.append(ChatColor.YELLOW + "---------" + ChatColor.WHITE + " Heads (Page: ").append(pageNo + 1).append("/").append(pages + 1).append(") ").append(ChatColor.YELLOW).append("--------------------").append(ChatColor.WHITE).append("\n");
-        sb.append(ChatColor.GRAY + "Use /Decorheads List [n] to get page n of heads.\n" + ChatColor.WHITE);
-        int startingHeadIndex = headsPerPage*(pageNo);
-        int endingHeadIndex = Math.min(startingHeadIndex+headsPerPage, HeadManager.HeadType.values().length);
-        for (int i = startingHeadIndex; i<endingHeadIndex; i++)
+        try
         {
-            sb.append(HeadManager.HeadType.values()[i].name()).append("\n");
+            int headsPerPage = 8;
+            int pages = (int) Math.ceil(HeadManager.HeadType.values().length/8);
+            int pageNo = getHeadsPageNo(args, pages);
+            StringBuilder sb = new StringBuilder();
+            sb.append(ChatColor.YELLOW + "---------" + ChatColor.WHITE + " Heads (Page: ").append(pageNo + 1).append("/").append(pages + 1).append(") ").append(ChatColor.YELLOW).append("--------------------").append(ChatColor.WHITE).append("\n");
+            sb.append(ChatColor.GRAY + "Use /Decorheads List [n] to get page n of heads.\n" + ChatColor.WHITE);
+            int startingHeadIndex = headsPerPage*(pageNo);
+            int endingHeadIndex = Math.min(startingHeadIndex+headsPerPage, HeadManager.HeadType.values().length);
+            for (int i = startingHeadIndex; i<endingHeadIndex; i++)
+            {
+                sb.append(HeadManager.HeadType.values()[i].name()).append("\n");
+            }
+            sender.sendMessage(sb.toString());
         }
-        sender.sendMessage(sb.toString());
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            sender.sendMessage(ChatColor.RED+"That page does not exist!");
+        }
     }
 
     private int getHeadsPageNo(String[] args, int maxPages)
