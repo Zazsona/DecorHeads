@@ -359,6 +359,29 @@ public class HeadManager
             skullMeta.setOwningPlayer(offlinePlayer);
             skull.setItemMeta(skullMeta);
         }
+        else
+        {
+            try
+            {
+                URL restRequest = new URL("https://sessionserver.mojang.com/session/minecraft/profile/"+uuid.toString());
+                InputStreamReader inputStreamReader = new InputStreamReader(restRequest.openStream());
+                BufferedReader reader = new BufferedReader((inputStreamReader));
+                StringBuilder responseBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null)
+                {
+                    responseBuilder.append(line);
+                }
+                Gson gson = new Gson();
+                ProfileResponse pr = gson.fromJson(responseBuilder.toString(), ProfileResponse.class);
+                return createSkull(pr.getName(), pr.getPropertyByName("textures").getValue());
+            }
+            catch (IOException e)
+            {
+                Bukkit.getLogger().log(Level.SEVERE, e.toString());
+                e.printStackTrace();
+            }
+        }
         return skull;
     }
 }

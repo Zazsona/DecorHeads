@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'com.Zazsona'
+group 'com.zazsona.decorheads'
 
 sourceCompatibility = 1.8
 
@@ -22,6 +22,7 @@ repositories {
 
 
 dependencies {
+    compile 'com.google.code.gson:gson:2.8.5'
     compileOnly "org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT"
     compileOnly "com.mojang:authlib:1.5.21"
 }
