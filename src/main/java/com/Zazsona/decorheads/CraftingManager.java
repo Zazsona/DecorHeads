@@ -1,4 +1,4 @@
-package com.Zazsona;
+package com.zazsona.decorheads;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

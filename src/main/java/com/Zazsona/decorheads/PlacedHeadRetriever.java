@@ -1,4 +1,4 @@
-package com.Zazsona;
+package com.zazsona.decorheads;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;

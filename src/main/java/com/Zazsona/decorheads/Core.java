@@ -1,4 +1,4 @@
-package com.Zazsona;
+package com.zazsona.decorheads;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
