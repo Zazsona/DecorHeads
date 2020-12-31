@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import com.zazsona.decorheads.apiresponse.NameUUIDResponse;
 import com.zazsona.decorheads.apiresponse.ProfileResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -326,7 +327,6 @@ public class HeadManager
         }
         return null;
     }
-
     private static ItemStack createSkull(String skullName, String texture)
     {
         try
@@ -347,6 +347,35 @@ public class HeadManager
             Bukkit.getLogger().log(Level.SEVERE, "INVALID HEAD ITEM \""+skullName+"\" - NO PROFILE FIELD!");
             return new ItemStack(Material.PLAYER_HEAD);
         }
+    }
+
+    public static ItemStack getPlayerSkull(String username)
+    {
+        try
+        {
+            URL restRequest = new URL("https://api.mojang.com/users/profiles/minecraft/"+username);
+            InputStreamReader inputStreamReader = new InputStreamReader(restRequest.openStream());
+            BufferedReader reader = new BufferedReader((inputStreamReader));
+            StringBuilder responseBuilder = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                responseBuilder.append(line);
+            }
+            Gson gson = new Gson();
+            NameUUIDResponse uuidResponse = gson.fromJson(responseBuilder.toString(), NameUUIDResponse.class);
+            if (uuidResponse.isSuccess())
+            {
+                String uuid = uuidResponse.getId().replaceFirst( "([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5" );
+                return getPlayerSkull(UUID.fromString(uuid));
+            }
+        }
+        catch (IOException | NullPointerException e)
+        {
+            Bukkit.getLogger().log(Level.SEVERE, e.toString());
+            e.printStackTrace();
+        }
+        return new ItemStack(Material.PLAYER_HEAD);
     }
 
     public static ItemStack getPlayerSkull(UUID uuid)
@@ -374,7 +403,8 @@ public class HeadManager
                 }
                 Gson gson = new Gson();
                 ProfileResponse pr = gson.fromJson(responseBuilder.toString(), ProfileResponse.class);
-                return createSkull(pr.getName(), pr.getPropertyByName("textures").getValue());
+                if (pr.isSuccess())
+                    return createSkull(pr.getName(), pr.getPropertyByName("textures").getValue());
             }
             catch (IOException e)
             {

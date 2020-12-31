@@ -27,7 +27,7 @@ public class DecorHeadsCommand implements CommandExecutor
             sb.append(ChatColor.GOLD+"/DecorHeads Head [Head] - ").append(ChatColor.WHITE+"Get a head\n");
             sb.append(ChatColor.GOLD+"/DecorHeads AllHeads - ").append(ChatColor.WHITE+"Get all heads\n");
             sb.append(ChatColor.GOLD+"/DecorHeads List [Page] - ").append(ChatColor.WHITE+"List heads\n");
-            sb.append(ChatColor.GOLD+"/DecorHeads PlayerHead [UUID] - ").append(ChatColor.WHITE+"Get a player's head\n");
+            sb.append(ChatColor.GOLD+"/DecorHeads PlayerHead [UUID/Name] - ").append(ChatColor.WHITE+"Get a player's head\n");
             sender.sendMessage(sb.toString());
         }
         else
@@ -177,7 +177,20 @@ public class DecorHeadsCommand implements CommandExecutor
             if (sender instanceof Player)
             {
                 Player player = (Player) sender;
-                player.getInventory().addItem(HeadManager.getPlayerSkull(UUID.fromString(args[1])));
+                String identifier = args[1];
+                if (identifier.length() == 32)
+                    identifier = identifier.replaceFirst( "([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5" );
+
+                if (identifier.length() == 36) //UUID
+                {
+                    UUID uuid = UUID.fromString(identifier);
+                    player.getInventory().addItem(HeadManager.getPlayerSkull(uuid));
+                }
+                else //PlayerName
+                {
+                    player.getInventory().addItem(HeadManager.getPlayerSkull(identifier));
+                }
+
             }
             else
             {
