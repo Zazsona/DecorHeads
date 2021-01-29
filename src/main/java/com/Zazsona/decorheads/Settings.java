@@ -55,6 +55,28 @@ public class Settings
         return (boolean) plugin.getConfig().get("MobDropsEnabled");
     }
 
+    public static void setPlayerDropsEnabled(boolean newEnabled)
+    {
+        plugin.getConfig().set("PlayerDropsEnabled", newEnabled);
+        save();
+    }
+
+    public static boolean isPlayerDropsEnabled()
+    {
+        return (boolean) plugin.getConfig().get("PlayerDropsEnabled");
+    }
+
+    public static void setPlayersHeadPvPOnly(boolean pvpOnly)
+    {
+        plugin.getConfig().set("PlayersHeadsPvPOnly", pvpOnly);
+        save();
+    }
+
+    public static boolean isPlayerHeadsPvPOnly()
+    {
+        return (boolean) plugin.getConfig().get("PlayersHeadsPvPOnly");
+    }
+
     public static void setDropChance(HeadManager.HeadType headType, double dropPercentage)
     {
         plugin.getConfig().set("DropPercentages."+headType.name(), dropPercentage);

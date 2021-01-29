@@ -181,32 +181,35 @@ public class HeadDropListener implements Listener
         LivingEntity entity = e.getEntity();
         if (canGetHeadDrop(entity.getKiller()))
         {
-            if (e.getEntity().getType() == EntityType.PLAYER && roll() <= Settings.getDropChance(HeadManager.HeadType.Player))
+            if (e.getEntity().getType() == EntityType.PLAYER)
             {
-                Player player = (Player) e.getEntity();
-                ItemStack item = HeadManager.getPlayerSkull(player.getUniqueId());
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-            else
-            {
-                dropMobHead(entity);
-                if (entity.getType() == EntityType.PUFFERFISH || entity.getType() == EntityType.SALMON || entity.getType() == EntityType.COD || entity.getType() == EntityType.TROPICAL_FISH)
+                if (Settings.isPlayerDropsEnabled() && roll() <= Settings.getDropChance(HeadManager.HeadType.Player))
                 {
-                    if (roll() <= Settings.getDropChance(HeadManager.HeadType.Sushi))
+                    if (!Settings.isPlayerHeadsPvPOnly() || (Settings.isPlayerHeadsPvPOnly() && entity.getKiller() != null && entity.getKiller() != e.getEntity()))
                     {
-                        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Sushi);
-                        entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-                    }
-                }
-                else if (entity.getType() == EntityType.SLIME)
-                {
-                    if (roll() <= Settings.getDropChance(HeadManager.HeadType.Slimeball))
-                    {
-                        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Slimeball);
+                        Player player = (Player) e.getEntity();
+                        ItemStack item = HeadManager.getPlayerSkull(player.getUniqueId());
                         entity.getWorld().dropItemNaturally(entity.getLocation(), item);
                     }
                 }
             }
+            else if (entity.getType() == EntityType.PUFFERFISH || entity.getType() == EntityType.SALMON || entity.getType() == EntityType.COD || entity.getType() == EntityType.TROPICAL_FISH)
+            {
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Sushi))
+                {
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Sushi);
+                    entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+                }
+            }
+            else if (entity.getType() == EntityType.SLIME)
+            {
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Slimeball))
+                {
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Slimeball);
+                    entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+                }
+            }
+            dropMobHead(entity); //This is not in an else, so that mob heads can be dropped with item heads (E.g, slime head AND slime ball)
         }
     }
 

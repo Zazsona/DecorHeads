@@ -2,37 +2,39 @@ Enabled: true
 DropsEnabled: true
 CraftingEnabled: true
 MobDropsEnabled: true
+PlayerDropsEnabled: true
+PlayersHeadsPvPOnly: false
 #These drop percentages are valid between 0 and 100
 #They can, however, be to two decimal places (E.g, 0.01)
 DropPercentages:
-  Beer: 3
-  Books: 10
+  Beer: 1
+  Books: 5
   SnowmanHead: 1
   Apple: 0.2
   Blueberry: 0.2
   Coconut: 3
-  MiniOakLog: 0.6
-  MiniDirt: 0.2
+  MiniOakLog: 0.05
+  MiniDirt: 0.01
   MiniLeaves: 1
-  MiniMelon: 1
-  MiniPumpkin: 2
-  MiniCactus: 2
+  MiniMelon: 0.01
+  MiniPumpkin: 0.05
+  MiniCactus: 1
   Sushi: 8
-  Bread: 0.5
-  Cookie: 2
+  Bread: 0.25
+  Cookie: 1
   Cupcake: 15
   Burger: 0.5
   ChickenDinner: 0.5
-  MiniRedstoneBlock: 2
-  MiniGravel: 2
-  MiniCobblestone: 2
+  MiniRedstoneBlock: 0.05
+  MiniGravel: 0.01
+  MiniCobblestone: 0.01
   OakCharacterExclamation: 0.16
   OakCharacterQuestion: 0.16
   OakCharacterLeftArrow: 0.16
   OakCharacterRightArrow: 0.16
   OakCharacterUpArrow: 0.16
   OakCharacterDownArrow: 0.16
-  Slimeball: 2
+  Slimeball: 1
   FruitBasket: 0.01
   Chicken: 0.01
   Cow: 0.01
@@ -48,7 +50,7 @@ DropPercentages:
   CaveSpider: 0.03
   Enderman: 0.02
   ZombiePigman: 0.02
-  IronGolem: 1
+  IronGolem: 0.5
   Dolphin: 1
   Blaze: 0.5
   Creeper: 0.01
@@ -69,4 +71,4 @@ DropPercentages:
   ZombieVillager: 2
   Sandcastle: 0.5
   SandBucket: 0.05
-  Player: 5
+  Player: 2
