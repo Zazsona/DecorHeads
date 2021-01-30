@@ -37,6 +37,9 @@ public class CraftingManager
         addVase();
         addGoldMedal();
         addStevePlush();
+        addCarrotStack();
+        addStool();
+        addLogStool();
     }
 
     private static void addDiceRecipe()
@@ -346,6 +349,37 @@ public class CraftingManager
         recipe.setIngredient('A', Material.YELLOW_WOOL);
         recipe.setIngredient('B', Material.LIGHT_BLUE_WOOL);
         recipe.setIngredient('C', Material.BLUE_WOOL);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addCarrotStack()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.StackOfCarrots);
+        NamespacedKey nsk = new NamespacedKey(plugin, "StackOfCarrots");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape("AA", "AA");
+        recipe.setIngredient('A', Material.CARROT);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addStool()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Stool);
+        NamespacedKey nsk = new NamespacedKey(plugin, "Stool");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape("PPP", "PPP", "P P");
+        recipe.setIngredient('P', Material.OAK_PLANKS);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addLogStool()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.StoolLog);
+        NamespacedKey nsk = new NamespacedKey(plugin, "StoolLog");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape("LLL", "PPP", "P P");
+        recipe.setIngredient('L', Material.OAK_LOG);
+        recipe.setIngredient('P', Material.OAK_PLANKS);
         plugin.getServer().addRecipe(recipe);
     }
 }

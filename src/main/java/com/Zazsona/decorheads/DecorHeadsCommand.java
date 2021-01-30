@@ -1,6 +1,7 @@
 package com.zazsona.decorheads;
 
 import com.mojang.authlib.GameProfile;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
@@ -126,6 +127,8 @@ public class DecorHeadsCommand implements CommandExecutor
             Player player = (Player) sender;
             for (HeadManager.HeadType head : HeadManager.HeadType.values())
             {
+                if (head == HeadManager.HeadType.Player)
+                    continue;
                 if (player.getInventory().firstEmpty() != -1)
                 {
                     player.getInventory().addItem(HeadManager.getSkull(head));
