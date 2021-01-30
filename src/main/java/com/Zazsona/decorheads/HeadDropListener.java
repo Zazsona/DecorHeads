@@ -113,6 +113,10 @@ public class HeadDropListener implements Listener
             dropHead(HeadManager.HeadType.OakCharacterRightArrow, block.getWorld(), block.getLocation());
             dropHead(HeadManager.HeadType.OakCharacterExclamation, block.getWorld(), block.getLocation());
         }
+        if (block.getType() == Material.BROWN_MUSHROOM)
+            dropHead(HeadManager.HeadType.MushroomBrown, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.RED_MUSHROOM)
+            dropHead(HeadManager.HeadType.MushroomRed, block.getWorld(), block.getLocation());
     }
 
     private void checkBiomeBlockDrops(BlockBreakEvent e, Block block)
