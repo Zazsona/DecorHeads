@@ -18,15 +18,12 @@ import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
-import java.util.LinkedList;
 import java.util.Random;
 
 public class HeadDropListener implements Listener
 {
-    private Random r = new Random();
-    private static Plugin plugin = Core.getPlugin(Core.class);
+    private final Random r = new Random();
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onBrewComplete(BrewEvent e)
@@ -48,130 +45,60 @@ public class HeadDropListener implements Listener
         if (canGetHeadDrop(e.getPlayer()))
         {
             Block block = e.getBlock();
-            if (block.getType() == Material.BOOKSHELF)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Books))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Books);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.SNOW_BLOCK)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.SnowmanHead))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.SnowmanHead);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.ACACIA_LEAVES || block.getType() == Material.BIRCH_LEAVES || block.getType() == Material.DARK_OAK_LEAVES || block.getType() == Material.JUNGLE_LEAVES || block.getType() == Material.OAK_LEAVES || block.getType() == Material.SPRUCE_LEAVES)
-            {
-                HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.Apple, HeadManager.HeadType.Blueberry, HeadManager.HeadType.FruitBasket);
-                for (HeadManager.HeadType head : headTypes)
-                {
-                    ItemStack item = HeadManager.getSkull(head);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.JUNGLE_LOG)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Coconut))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Coconut);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.OAK_LOG)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniOakLog))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniOakLog);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.DIRT || block.getType() == Material.GRASS_BLOCK)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniDirt))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniDirt);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.OAK_LEAVES)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniLeaves))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniLeaves);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.MELON)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniMelon))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniMelon);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.PUMPKIN)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniPumpkin))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniPumpkin);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.CACTUS)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniCactus))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniCactus);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.REDSTONE_ORE)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniRedstoneBlock))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniRedstoneBlock);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.GRAVEL)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniGravel))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniGravel);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.COBBLESTONE)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.MiniCobblestone))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MiniCobblestone);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
-            else if (block.getType() == Material.OAK_PLANKS)
-            {
-                HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.OakCharacterExclamation, HeadManager.HeadType.OakCharacterQuestion, HeadManager.HeadType.OakCharacterUpArrow, HeadManager.HeadType.OakCharacterDownArrow, HeadManager.HeadType.OakCharacterLeftArrow, HeadManager.HeadType.OakCharacterRightArrow);
-                for (HeadManager.HeadType head : headTypes)
-                {
-                    ItemStack item = HeadManager.getSkull(head);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
+            checkGlobalBlockDrops(block);
+            checkBiomeBlockDrops(e, block);
+        }
+    }
+    private void checkGlobalBlockDrops(Block block)
+    {
+        if (block.getType() == Material.BOOKSHELF)
+            dropHead(HeadManager.HeadType.Books, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.SNOW_BLOCK)
+            dropHead(HeadManager.HeadType.SnowmanHead, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.ACACIA_LEAVES || block.getType() == Material.BIRCH_LEAVES || block.getType() == Material.DARK_OAK_LEAVES || block.getType() == Material.JUNGLE_LEAVES || block.getType() == Material.OAK_LEAVES || block.getType() == Material.SPRUCE_LEAVES)
+        {
+            dropHead(HeadManager.HeadType.Apple, block.getWorld(), block.getLocation());
+            dropHead(HeadManager.HeadType.Blueberry, block.getWorld(), block.getLocation());
+            dropHead(HeadManager.HeadType.FruitBasket, block.getWorld(), block.getLocation());
+        }
+        if (block.getType() == Material.JUNGLE_LOG)
+            dropHead(HeadManager.HeadType.Coconut, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.OAK_LOG)
+            dropHead(HeadManager.HeadType.MiniOakLog, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.DIRT || block.getType() == Material.GRASS_BLOCK)
+            dropHead(HeadManager.HeadType.MiniDirt, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.OAK_LEAVES)
+            dropHead(HeadManager.HeadType.MiniLeaves, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.MELON)
+            dropHead(HeadManager.HeadType.MiniMelon, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.PUMPKIN)
+            dropHead(HeadManager.HeadType.MiniPumpkin, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.CACTUS)
+            dropHead(HeadManager.HeadType.MiniCactus, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.REDSTONE_ORE)
+            dropHead(HeadManager.HeadType.MiniRedstoneBlock, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.GRAVEL)
+            dropHead(HeadManager.HeadType.MiniGravel, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.COBBLESTONE)
+            dropHead(HeadManager.HeadType.MiniCobblestone, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.OAK_PLANKS)
+        {
+            dropHead(HeadManager.HeadType.OakCharacterExclamation, block.getWorld(), block.getLocation());
+            dropHead(HeadManager.HeadType.OakCharacterQuestion, block.getWorld(), block.getLocation());
+            dropHead(HeadManager.HeadType.OakCharacterUpArrow, block.getWorld(), block.getLocation());
+            dropHead(HeadManager.HeadType.OakCharacterDownArrow, block.getWorld(), block.getLocation());
+            dropHead(HeadManager.HeadType.OakCharacterLeftArrow, block.getWorld(), block.getLocation());
+            dropHead(HeadManager.HeadType.OakCharacterRightArrow, block.getWorld(), block.getLocation());
+            dropHead(HeadManager.HeadType.OakCharacterExclamation, block.getWorld(), block.getLocation());
+        }
+    }
 
-            }
-            else if (block.getType() == Material.SAND && isPlayerInBiome(e.getPlayer(), Biome.BEACH))
-            {
-                HeadManager.HeadType[] headTypes = getMultiOptionSelections(HeadManager.HeadType.Sandcastle, HeadManager.HeadType.SandBucket);
-                for (HeadManager.HeadType head : headTypes)
-                {
-                    ItemStack item = HeadManager.getSkull(head);
-                    block.getWorld().dropItemNaturally(block.getLocation(), item);
-                }
-            }
+    private void checkBiomeBlockDrops(BlockBreakEvent e, Block block)
+    {
+        if (block.getType() == Material.SAND && isPlayerInBiome(e.getPlayer(), Biome.BEACH))
+        {
+            dropHead(HeadManager.HeadType.SandBucket, block.getWorld(), block.getLocation());
+            dropHead(HeadManager.HeadType.Sandcastle, block.getWorld(), block.getLocation());
         }
     }
 
@@ -181,307 +108,104 @@ public class HeadDropListener implements Listener
         LivingEntity entity = e.getEntity();
         if (canGetHeadDrop(entity.getKiller()))
         {
-            if (e.getEntity().getType() == EntityType.PLAYER)
-            {
-                if (Settings.isPlayerDropsEnabled() && roll() <= Settings.getDropChance(HeadManager.HeadType.Player))
-                {
-                    if (!Settings.isPlayerHeadsPvPOnly() || (Settings.isPlayerHeadsPvPOnly() && entity.getKiller() != null && entity.getKiller() != e.getEntity()))
-                    {
-                        Player player = (Player) e.getEntity();
-                        ItemStack item = HeadManager.getPlayerSkull(player.getUniqueId());
-                        entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-                    }
-                }
-            }
-            else if (entity.getType() == EntityType.PUFFERFISH || entity.getType() == EntityType.SALMON || entity.getType() == EntityType.COD || entity.getType() == EntityType.TROPICAL_FISH)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Sushi))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Sushi);
-                    entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-                }
-            }
-            else if (entity.getType() == EntityType.SLIME)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Slimeball))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Slimeball);
-                    entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-                }
-            }
-            dropMobHead(entity); //This is not in an else, so that mob heads can be dropped with item heads (E.g, slime head AND slime ball)
+            checkPlayerHeadDrops(e, entity);
+            checkMobItemDrops(entity);
+            checkMobHeadDrops(entity); //This is not in an else, so that mob heads can be dropped with item heads (E.g, slime head AND slime ball)
         }
     }
 
-    private void dropMobHead(LivingEntity entity)
+    private void checkPlayerHeadDrops(EntityDeathEvent e, LivingEntity entity)
+    {
+        if (e.getEntity().getType() == EntityType.PLAYER && Settings.isPlayerDropsEnabled() && (!Settings.isPlayerHeadsPvPOnly() || (Settings.isPlayerHeadsPvPOnly() && entity.getKiller() != null && entity.getKiller() != e.getEntity())))
+        {
+            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Player))
+            {
+                Player player = (Player) e.getEntity();
+                ItemStack item = HeadManager.getPlayerSkull(player.getUniqueId());
+                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
+            }
+        }
+    }
+
+    private void checkMobItemDrops(LivingEntity entity)
+    {
+        if (entity.getType() == EntityType.PUFFERFISH || entity.getType() == EntityType.SALMON || entity.getType() == EntityType.COD || entity.getType() == EntityType.TROPICAL_FISH)
+            dropHead(HeadManager.HeadType.Sushi, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.SLIME)
+            dropHead(HeadManager.HeadType.Slimeball, entity.getWorld(), entity.getLocation());
+    }
+
+    private void checkMobHeadDrops(LivingEntity entity)
     {
         if (!Settings.isMobDropsEnabled())
             return;
 
         if (entity.getType() == EntityType.CHICKEN)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Chicken))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Chicken);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.COW)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cow))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cow);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.FOX)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Fox))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Fox);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.MUSHROOM_COW)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Mooshroom))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Mooshroom);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.OCELOT)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Ocelot))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Ocelot);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.PIG)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Pig))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Pig);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.SHEEP) //TODO: Get colour
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Sheep))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Sheep);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.SQUID)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Squid))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Squid);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.VILLAGER)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Villager))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Villager);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.WANDERING_TRADER)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.WanderingTrader))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.WanderingTrader);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.SPIDER)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Spider))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Spider);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.CAVE_SPIDER)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.CaveSpider))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.CaveSpider);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.ENDERMAN)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Enderman))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Enderman);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.PIG_ZOMBIE)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.ZombiePigman))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.ZombiePigman);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.IRON_GOLEM)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.IronGolem))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.IronGolem);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.DOLPHIN)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Dolphin))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Dolphin);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.BLAZE)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Blaze))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Blaze);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.CREEPER)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Creeper))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Creeper);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.DROWNED)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Drowned))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Drowned);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.ELDER_GUARDIAN)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.ElderGuardian))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.ElderGuardian);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.GHAST)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Ghast))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Ghast);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.GUARDIAN)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Guardian))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Guardian);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.HUSK)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Husk))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Husk);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.MAGMA_CUBE)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.MagmaCube))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.MagmaCube);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.PILLAGER || entity.getType() == EntityType.EVOKER)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Pillager))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Pillager);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.SKELETON)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Skeleton))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Skeleton);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.SLIME)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Slime))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Slime);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.STRAY)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Stray))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Stray);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.VEX)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Vex))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Vex);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.WITCH)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Witch))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Witch);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.WITHER_SKELETON)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.WitherSkeleton))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.WitherSkeleton);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.ZOMBIE)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Zombie))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Zombie);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
-        else if (entity.getType() == EntityType.ZOMBIE_VILLAGER)
-        {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.ZombieVillager))
-            {
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.ZombieVillager);
-                entity.getWorld().dropItemNaturally(entity.getLocation(), item);
-            }
-        }
+            dropHead(HeadManager.HeadType.Chicken, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.COW)
+            dropHead(HeadManager.HeadType.Cow, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.FOX)
+            dropHead(HeadManager.HeadType.Fox, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.MUSHROOM_COW)
+            dropHead(HeadManager.HeadType.Mooshroom, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.OCELOT)
+            dropHead(HeadManager.HeadType.Ocelot, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.PIG)
+            dropHead(HeadManager.HeadType.Pig, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.SHEEP) //TODO: Get colour
+            dropHead(HeadManager.HeadType.Sheep, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.SQUID)
+            dropHead(HeadManager.HeadType.Squid, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.VILLAGER)
+            dropHead(HeadManager.HeadType.Villager, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.WANDERING_TRADER)
+            dropHead(HeadManager.HeadType.WanderingTrader, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.SPIDER)
+            dropHead(HeadManager.HeadType.Spider, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.CAVE_SPIDER)
+            dropHead(HeadManager.HeadType.CaveSpider, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.ENDERMAN)
+            dropHead(HeadManager.HeadType.Enderman, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.PIG_ZOMBIE)
+            dropHead(HeadManager.HeadType.ZombiePigman, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.IRON_GOLEM)
+            dropHead(HeadManager.HeadType.IronGolem, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.DOLPHIN)
+            dropHead(HeadManager.HeadType.Dolphin, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.BLAZE)
+            dropHead(HeadManager.HeadType.Blaze, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.CREEPER)
+            dropHead(HeadManager.HeadType.Creeper, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.DROWNED)
+            dropHead(HeadManager.HeadType.Drowned, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.ELDER_GUARDIAN)
+            dropHead(HeadManager.HeadType.ElderGuardian, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.GHAST)
+            dropHead(HeadManager.HeadType.Ghast, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.GUARDIAN)
+            dropHead(HeadManager.HeadType.Guardian, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.HUSK)
+            dropHead(HeadManager.HeadType.Husk, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.MAGMA_CUBE)
+            dropHead(HeadManager.HeadType.MagmaCube, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.PILLAGER || entity.getType() == EntityType.EVOKER)
+            dropHead(HeadManager.HeadType.Pillager, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.SKELETON)
+            dropHead(HeadManager.HeadType.Skeleton, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.SLIME)
+            dropHead(HeadManager.HeadType.Slime, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.STRAY)
+            dropHead(HeadManager.HeadType.Stray, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.VEX)
+            dropHead(HeadManager.HeadType.Vex, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.WITCH)
+            dropHead(HeadManager.HeadType.Witch, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.WITHER_SKELETON)
+            dropHead(HeadManager.HeadType.WitherSkeleton, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.ZOMBIE)
+            dropHead(HeadManager.HeadType.Zombie, entity.getWorld(), entity.getLocation());
+        if (entity.getType() == EntityType.ZOMBIE_VILLAGER)
+            dropHead(HeadManager.HeadType.ZombieVillager, entity.getWorld(), entity.getLocation());
     }
 
     @EventHandler (priority = EventPriority.LOWEST)
@@ -493,40 +217,21 @@ public class HeadDropListener implements Listener
             Player player = (Player) e.getWhoClicked();
             if (canGetHeadDrop(player))
             {
-                int minimumAmount = getCraftedAmount(e);
-                for (int i = 0; i<minimumAmount; i++)
+                int craftedAmount = getCraftedAmount(e);
+                for (int i = 0; i<craftedAmount; i++)
                 {
                     if (resultingItem == Material.BREAD)
-                    {
-                        if (roll() <= Settings.getDropChance(HeadManager.HeadType.Bread))
-                        {
-                            ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Bread);
-                            player.getWorld().dropItemNaturally(player.getLocation(), item);
-                        }
-                    }
-                    else if (resultingItem == Material.COOKIE)
-                    {
-                        if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cookie))
-                        {
-                            ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cookie);
-                            player.getWorld().dropItemNaturally(player.getLocation(), item);
-                        }
-                    }
-                    else if (resultingItem == Material.CAKE)
-                    {
-                        if (roll() <= Settings.getDropChance(HeadManager.HeadType.Cupcake))
-                        {
-                            ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Cupcake);
-                            player.getWorld().dropItemNaturally(player.getLocation(), item);
-                        }
-                    }
+                        dropHead(HeadManager.HeadType.Bread, player.getWorld(), player.getLocation());
+                    if (resultingItem == Material.COOKIE)
+                        dropHead(HeadManager.HeadType.Cookie, player.getWorld(), player.getLocation());
+                    if (resultingItem == Material.CAKE)
+                        dropHead(HeadManager.HeadType.Cupcake, player.getWorld(), player.getLocation());
                 }
             }
             if (resultingItem == Material.PLAYER_HEAD && !canCraftHead(player))
             {
                 player.sendMessage(ChatColor.RED+"You do not have permission to craft heads.");
                 e.setCancelled(true);
-
             }
         }
 
@@ -539,24 +244,35 @@ public class HeadDropListener implements Listener
         {
             ItemStack smeltResult = e.getResult();
             if (smeltResult.getType() == Material.COOKED_BEEF)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Burger))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Burger);
-                    e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
-                }
-            }
-            else if (smeltResult.getType() == Material.COOKED_CHICKEN)
-            {
-                if (roll() <= Settings.getDropChance(HeadManager.HeadType.ChickenDinner))
-                {
-                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.ChickenDinner);
-                    e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), item);
-                }
-            }
+                dropHead(HeadManager.HeadType.Burger, e.getBlock().getWorld(), e.getBlock().getLocation());
+            if (smeltResult.getType() == Material.COOKED_CHICKEN)
+                dropHead(HeadManager.HeadType.ChickenDinner, e.getBlock().getWorld(), e.getBlock().getLocation());
         }
     }
 
+    /**
+     * Performs a roll check against the chance to drop. If it succeeds, the head is dropped at the location provided.
+     * @param headType the head to drop
+     * @param world the world to drop in
+     * @param location the point in the world to drop
+     * @return true/false on head dropped.
+     */
+    private boolean dropHead(HeadManager.HeadType headType, World world, Location location)
+    {
+        if (roll() <= Settings.getDropChance(headType))
+        {
+            ItemStack item = HeadManager.getSkull(headType);
+            world.dropItemNaturally(location, item);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the amount of items crafted for a given crafting event
+     * @param e the crafting event
+     * @return # of items crafted
+     */
     private int getCraftedAmount(CraftItemEvent e)
     {
         int minimumAmount = Integer.MAX_VALUE;
@@ -574,25 +290,20 @@ public class HeadDropListener implements Listener
         return minimumAmount;
     }
 
-    private HeadManager.HeadType[] getMultiOptionSelections(HeadManager.HeadType... possibleHeads)
-    {
-        LinkedList<HeadManager.HeadType> headsToSpawn = new LinkedList<>();
-        for (HeadManager.HeadType head : possibleHeads)
-        {
-            if (roll() <= Settings.getDropChance(head))
-            {
-                headsToSpawn.add(head);
-            }
-        }
-        return headsToSpawn.toArray(new HeadManager.HeadType[0]);
-    }
-
+    /**
+     * Rolls a value to compare against the drop chance saved in settings. If this value is less then the drop chance, the head should be dropped.
+     * @return the rolled value
+     */
     private double roll()
     {
-        double roll = ((r.nextInt(9999)+1.0)/100.0);
-        return roll;
+        return ((r.nextInt(9999)+1.0)/100.0);
     }
 
+    /**
+     * Confirms if head drops are enabled and this player has permission for heads to drop for them
+     * @param player the player to check permissions for. Null to ignore permissions check.
+     * @return boolean on whether heads can be dropped or not.
+     */
     private boolean canGetHeadDrop(Player player)
     {
         if (Settings.isEnabled() && Settings.isDropsEnabled())
@@ -609,6 +320,11 @@ public class HeadDropListener implements Listener
         return false;
     }
 
+    /**
+     * Confirms if head crafting is enabled and this player has permission to craft them them
+     * @param player the player to check permissions for. Null to ignore permissions check.
+     * @return boolean on whether heads can be crafted or not.
+     */
     private boolean canCraftHead(Player player)
     {
         if (Settings.isEnabled() && Settings.isCraftingEnabled())
@@ -625,6 +341,12 @@ public class HeadDropListener implements Listener
         return false;
     }
 
+    /**
+     * Checks if the player is in the specified biome.
+     * @param player The player
+     * @param biome The biome
+     * @return true/false on player in biome
+     */
     private boolean isPlayerInBiome(Player player, Biome biome)
     {
         World world = player.getWorld();
