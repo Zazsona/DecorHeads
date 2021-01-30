@@ -14,8 +14,17 @@ DropPercentages:
   Blueberry: 0.2
   Coconut: 3
   MiniOakLog: 0.05
+  MiniBirchLog: 0.05
+  MiniJungleLog: 0.05
+  MiniAcaciaLog: 0.05
+  MiniDarkOakLog: 0.05
+  MiniSpruceLog: 0.05
   MiniDirt: 0.01
   MiniLeaves: 1
+  MiniBirchLeaves: 1
+  MiniJungleLeaves: 1
+  MiniAcaciaLeaves: 1
+  MiniSpruceLeaves: 1
   MiniMelon: 0.01
   MiniPumpkin: 0.05
   MiniCactus: 1

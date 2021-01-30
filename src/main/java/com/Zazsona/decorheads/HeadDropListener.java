@@ -61,14 +61,36 @@ public class HeadDropListener implements Listener
             dropHead(HeadManager.HeadType.Blueberry, block.getWorld(), block.getLocation());
             dropHead(HeadManager.HeadType.FruitBasket, block.getWorld(), block.getLocation());
         }
-        if (block.getType() == Material.JUNGLE_LOG)
-            dropHead(HeadManager.HeadType.Coconut, block.getWorld(), block.getLocation());
         if (block.getType() == Material.OAK_LOG)
             dropHead(HeadManager.HeadType.MiniOakLog, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.BIRCH_LOG)
+            dropHead(HeadManager.HeadType.MiniBirchLog, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.JUNGLE_LOG)
+            dropHead(HeadManager.HeadType.MiniJungleLog, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.ACACIA_LOG)
+            dropHead(HeadManager.HeadType.MiniAcaciaLog, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.DARK_OAK_LOG)
+            dropHead(HeadManager.HeadType.MiniDarkOakLog, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.SPRUCE_LOG)
+            dropHead(HeadManager.HeadType.MiniSpruceLog, block.getWorld(), block.getLocation());
+        //if (block.getType() == Material.CRIMSON_STEM)
+        //    dropHead(HeadManager.HeadType.MiniCrimsonStem, block.getWorld(), block.getLocation());
+        //if (block.getType() == Material.WARPED_STEM)          //TODO: 1.16 update
+        //    dropHead(HeadManager.HeadType.MiniWarpedStem, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.JUNGLE_LOG)
+            dropHead(HeadManager.HeadType.Coconut, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.OAK_LEAVES || block.getType() == Material.DARK_OAK_LEAVES)
+            dropHead(HeadManager.HeadType.MiniLeaves, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.BIRCH_LEAVES)
+            dropHead(HeadManager.HeadType.MiniBirchLeaves, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.JUNGLE_LEAVES)
+            dropHead(HeadManager.HeadType.MiniJungleLeaves, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.ACACIA_LEAVES)
+            dropHead(HeadManager.HeadType.MiniAcaciaLeaves, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.SPRUCE_LEAVES)
+            dropHead(HeadManager.HeadType.MiniSpruceLeaves, block.getWorld(), block.getLocation());
         if (block.getType() == Material.DIRT || block.getType() == Material.GRASS_BLOCK)
             dropHead(HeadManager.HeadType.MiniDirt, block.getWorld(), block.getLocation());
-        if (block.getType() == Material.OAK_LEAVES)
-            dropHead(HeadManager.HeadType.MiniLeaves, block.getWorld(), block.getLocation());
         if (block.getType() == Material.MELON)
             dropHead(HeadManager.HeadType.MiniMelon, block.getWorld(), block.getLocation());
         if (block.getType() == Material.PUMPKIN)
