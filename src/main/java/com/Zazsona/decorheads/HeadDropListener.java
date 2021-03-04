@@ -73,10 +73,10 @@ public class HeadDropListener implements Listener
             dropHead(HeadManager.HeadType.MiniDarkOakLog, block.getWorld(), block.getLocation());
         if (block.getType() == Material.SPRUCE_LOG)
             dropHead(HeadManager.HeadType.MiniSpruceLog, block.getWorld(), block.getLocation());
-        //if (block.getType() == Material.CRIMSON_STEM)
-        //    dropHead(HeadManager.HeadType.MiniCrimsonStem, block.getWorld(), block.getLocation());
-        //if (block.getType() == Material.WARPED_STEM)          //TODO: 1.16 update
-        //    dropHead(HeadManager.HeadType.MiniWarpedStem, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.CRIMSON_STEM)
+            dropHead(HeadManager.HeadType.MiniCrimsonStem, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.WARPED_STEM)          //TODO: 1.16 update
+            dropHead(HeadManager.HeadType.MiniWarpedStem, block.getWorld(), block.getLocation());
         if (block.getType() == Material.JUNGLE_LOG)
             dropHead(HeadManager.HeadType.Coconut, block.getWorld(), block.getLocation());
         if (block.getType() == Material.OAK_LEAVES || block.getType() == Material.DARK_OAK_LEAVES)
@@ -192,7 +192,7 @@ public class HeadDropListener implements Listener
             dropHead(HeadManager.HeadType.CaveSpider, entity.getWorld(), entity.getLocation());
         if (entity.getType() == EntityType.ENDERMAN)
             dropHead(HeadManager.HeadType.Enderman, entity.getWorld(), entity.getLocation());
-        if (entity.getType() == EntityType.PIG_ZOMBIE)
+        if (entity.getType() == EntityType.ZOMBIFIED_PIGLIN)
             dropHead(HeadManager.HeadType.ZombiePigman, entity.getWorld(), entity.getLocation());
         if (entity.getType() == EntityType.IRON_GOLEM)
             dropHead(HeadManager.HeadType.IronGolem, entity.getWorld(), entity.getLocation());
