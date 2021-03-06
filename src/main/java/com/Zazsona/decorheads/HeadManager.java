@@ -392,6 +392,9 @@ public class HeadManager
             skullProfile.setAccessible(true);
             skullProfile.set(skullMeta, gameProfile);
             skullMeta.setDisplayName(skullName);
+            ArrayList<String> loreList = new ArrayList<>();
+            loreList.add(ChatColor.BLUE+"DecorHeads");
+            skullMeta.setLore(loreList);
             skull.setItemMeta(skullMeta);
             return skull;
         }
