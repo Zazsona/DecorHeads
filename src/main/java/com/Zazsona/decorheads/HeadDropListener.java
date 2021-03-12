@@ -1,12 +1,11 @@
 package com.zazsona.decorheads;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,27 +13,52 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.inventory.*;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.permissions.PermissibleBase;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class HeadDropListener implements Listener
 {
     private final Random r = new Random();
+    private final String PROCESSOR_HEADROP_PERMISSION_METADATA_KEY = "DecorHeadsDropHeadOnOperationComplete";
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onInventoryUsed(InventoryClickEvent e)
+    {
+        if (e == null || e.getInventory() == null)
+            return;
+        InventoryHolder inventoryHolder = e.getInventory().getHolder();
+        if (inventoryHolder instanceof BlockState)
+        {
+            BlockState blockState = (BlockState) inventoryHolder;
+            Block block = blockState.getBlock();
+            Player player = (Player) e.getWhoClicked();
+            boolean isPlayerPermittedToDropHead = canGetHeadDrop(player);
+            block.setMetadata(PROCESSOR_HEADROP_PERMISSION_METADATA_KEY, new FixedMetadataValue(Core.getPlugin(Core.class), isPlayerPermittedToDropHead));
+            //We store the permission rather than the player id as the player may leave while processing occurs, & we cannot get permission data from OfflinePlayer.
+        }
+
+    }
 
     @EventHandler (priority = EventPriority.LOWEST)
     public void onBrewComplete(BrewEvent e)
     {
-        if (canGetHeadDrop(null))
+        if (e.getBlock().hasMetadata(PROCESSOR_HEADROP_PERMISSION_METADATA_KEY))
         {
-            if (roll() <= Settings.getDropChance(HeadManager.HeadType.Beer)) //TODO: There is no way to tie this to a player's permissions
+            boolean blockOwnerPermittedHeadDrops = (e.getBlock().getMetadata(PROCESSOR_HEADROP_PERMISSION_METADATA_KEY).get(0).asBoolean());
+            if (blockOwnerPermittedHeadDrops && canGetHeadDrop(null))
             {
-                Location loc = e.getBlock().getLocation();
-                ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Beer);
-                e.getBlock().getWorld().dropItemNaturally(loc, item);
+                if (roll() <= Settings.getDropChance(HeadManager.HeadType.Beer))
+                {
+                    Location loc = e.getBlock().getLocation();
+                    ItemStack item = HeadManager.getSkull(HeadManager.HeadType.Beer);
+                    e.getBlock().getWorld().dropItemNaturally(loc, item);
+                }
             }
         }
     }
@@ -266,13 +290,17 @@ public class HeadDropListener implements Listener
     @EventHandler (priority = EventPriority.LOWEST)
     public void onItemSmelted(FurnaceSmeltEvent e)
     {
-        if (canGetHeadDrop(null)) //TODO: No way to detect player for permissions
+        if (e.getBlock().hasMetadata(PROCESSOR_HEADROP_PERMISSION_METADATA_KEY))
         {
-            ItemStack smeltResult = e.getResult();
-            if (smeltResult.getType() == Material.COOKED_BEEF)
-                dropHead(HeadManager.HeadType.Burger, e.getBlock().getWorld(), e.getBlock().getLocation());
-            if (smeltResult.getType() == Material.COOKED_CHICKEN)
-                dropHead(HeadManager.HeadType.ChickenDinner, e.getBlock().getWorld(), e.getBlock().getLocation());
+            boolean blockOwnerPermittedHeadDrops = (e.getBlock().getMetadata(PROCESSOR_HEADROP_PERMISSION_METADATA_KEY).get(0).asBoolean());
+            if (blockOwnerPermittedHeadDrops && canGetHeadDrop(null))
+            {
+                ItemStack smeltResult = e.getResult();
+                if (smeltResult.getType() == Material.COOKED_BEEF)
+                    dropHead(HeadManager.HeadType.Burger, e.getBlock().getWorld(), e.getBlock().getLocation());
+                if (smeltResult.getType() == Material.COOKED_CHICKEN)
+                    dropHead(HeadManager.HeadType.ChickenDinner, e.getBlock().getWorld(), e.getBlock().getLocation());
+            }
         }
     }
 
