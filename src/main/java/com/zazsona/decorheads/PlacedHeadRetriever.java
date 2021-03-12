@@ -28,6 +28,7 @@ public class PlacedHeadRetriever implements Listener
                 String headName = block.getMetadata("DecorHeadsID").get(0).asString();
                 ItemStack item = HeadManager.getSkull(HeadManager.getHeadByName(headName));
                 block.getWorld().dropItemNaturally(block.getLocation(), item);
+                block.removeMetadata("DecorHeadsID", Core.getPlugin(Core.class));
             }
         }
     }
