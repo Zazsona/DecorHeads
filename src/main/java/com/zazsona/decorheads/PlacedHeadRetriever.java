@@ -16,13 +16,13 @@ import org.bukkit.metadata.FixedMetadataValue;
  */
 public class PlacedHeadRetriever implements Listener
 {
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e)
     {
         if (e.getPlayer().getGameMode() != GameMode.CREATIVE)
         {
             Block block = e.getBlock();
-            if (block.getType() == Material.PLAYER_HEAD && block.hasMetadata("DecorHeadsID"))
+            if (block.getType() == Material.PLAYER_HEAD && block.hasMetadata("DecorHeadsID")) //While in theory only heads would have an ID, there may be some cases where this isn't the case due to legacy versions of DecorHeads ignoring cancelled events. Keep the check in.
             {
                 e.setDropItems(false);
                 String headName = block.getMetadata("DecorHeadsID").get(0).asString();
@@ -33,7 +33,7 @@ public class PlacedHeadRetriever implements Listener
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlaced(BlockPlaceEvent e)
     {
         Block block = e.getBlock();

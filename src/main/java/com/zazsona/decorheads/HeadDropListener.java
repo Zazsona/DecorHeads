@@ -5,7 +5,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,17 +16,15 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.permissions.PermissibleBase;
 
 import java.util.Random;
-import java.util.UUID;
 
 public class HeadDropListener implements Listener
 {
     private final Random r = new Random();
     private final String PROCESSOR_HEADROP_PERMISSION_METADATA_KEY = "DecorHeadsDropHeadOnOperationComplete";
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryUsed(InventoryClickEvent e)
     {
         if (e == null || e.getInventory() == null)
@@ -45,7 +42,7 @@ public class HeadDropListener implements Listener
 
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBrewComplete(BrewEvent e)
     {
         if (e.getBlock().hasMetadata(PROCESSOR_HEADROP_PERMISSION_METADATA_KEY))
@@ -63,7 +60,7 @@ public class HeadDropListener implements Listener
         }
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e)
     {
         if (canGetHeadDrop(e.getPlayer()))
@@ -73,6 +70,7 @@ public class HeadDropListener implements Listener
             checkBiomeBlockDrops(e, block);
         }
     }
+
     private void checkGlobalBlockDrops(Block block)
     {
         if (block.getType() == Material.BOOKSHELF)
@@ -152,7 +150,7 @@ public class HeadDropListener implements Listener
         }
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityKill(EntityDeathEvent e)
     {
         LivingEntity entity = e.getEntity();
@@ -258,7 +256,7 @@ public class HeadDropListener implements Listener
             dropHead(HeadManager.HeadType.ZombieVillager, entity.getWorld(), entity.getLocation());
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onItemCrafted(CraftItemEvent e)
     {
         if (e.getWhoClicked() instanceof Player)
@@ -287,7 +285,7 @@ public class HeadDropListener implements Listener
 
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onItemSmelted(FurnaceSmeltEvent e)
     {
         if (e.getBlock().hasMetadata(PROCESSOR_HEADROP_PERMISSION_METADATA_KEY))
