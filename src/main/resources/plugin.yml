@@ -14,11 +14,17 @@ permissions:
    DecorHeads.CraftHead:
       description: Allows heads to be crafted by this player
       default: true
+   DecorHeads.CheckHead:
+      description: Check head drop rates
+      default: true
    DecorHeads.SummonHead:
       description: Allows players to get a head via command
       default: op
+      children:
+         DecorHeads.CheckHead: true
    DecorHeads.Admin:
       description: Manage the plugin
       default: op
       children:
          DecorHeads.SummonHead: true
+         DecorHeads.CheckHead: true

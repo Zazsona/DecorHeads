@@ -1,10 +1,6 @@
 package com.zazsona.decorheads;
 
-import com.mojang.authlib.GameProfile;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,11 +19,11 @@ public class DecorHeadsCommand implements CommandExecutor
             sb.append(ChatColor.YELLOW + "---------" + ChatColor.WHITE + " DecorHeads ").append(ChatColor.YELLOW).append("--------------------").append(ChatColor.WHITE).append("\n");
             sb.append(ChatColor.GRAY+"Bringing custom heads into the natural Minecraft world!\n"+ChatColor.WHITE);
             sb.append(ChatColor.GOLD+"/DecorHeads Toggle - ").append(ChatColor.WHITE+"Disable/Enable DecorHeads\n");
-            sb.append(ChatColor.GOLD+"/DecorHeads DropRate [Head] [Rate] - ").append(ChatColor.WHITE+"Set drop percentage\n");
-            sb.append(ChatColor.GOLD+"/DecorHeads DropRate [Head] - ").append(ChatColor.WHITE+"Get drop rate of a head\n");
+            sb.append(ChatColor.GOLD+"/DecorHeads SetRate [Head] [Rate] - ").append(ChatColor.WHITE+"Set drop percentage\n");
+            sb.append(ChatColor.GOLD+"/DecorHeads GetRate [Head] - ").append(ChatColor.WHITE+"Get drop rate of a head\n");
+            sb.append(ChatColor.GOLD+"/DecorHeads List [Page] - ").append(ChatColor.WHITE+"List heads\n");
             sb.append(ChatColor.GOLD+"/DecorHeads Head [Head] - ").append(ChatColor.WHITE+"Get a head\n");
             sb.append(ChatColor.GOLD+"/DecorHeads AllHeads - ").append(ChatColor.WHITE+"Get all heads\n");
-            sb.append(ChatColor.GOLD+"/DecorHeads List [Page] - ").append(ChatColor.WHITE+"List heads\n");
             sb.append(ChatColor.GOLD+"/DecorHeads PlayerHead [UUID/Name] - ").append(ChatColor.WHITE+"Get a player's head\n");
             sender.sendMessage(sb.toString());
         }
@@ -38,33 +34,55 @@ public class DecorHeadsCommand implements CommandExecutor
                 if (sender.hasPermission("DecorHeads.Admin"))
                     toggleHeads(sender);
             }
-            else if (args[0].equalsIgnoreCase("DropRate"))
+            else if (args[0].equalsIgnoreCase("SetRate"))
             {
                 if (sender.hasPermission("DecorHeads.Admin"))
                     editDropRate(sender, args);
             }
+            else if (args[0].equalsIgnoreCase("GetRate"))
+            {
+                if (sender.hasPermission("DecorHeads.CheckHead"))
+                    sendDropRate(sender, args);
+            }
             else if (args[0].equalsIgnoreCase("Head"))
             {
-                if (sender.hasPermission("DecorHeads.Admin") || sender.hasPermission("DecorHeads.SummonHead"))
+                if (sender.hasPermission("DecorHeads.SummonHead"))
                     giveHead(sender, args);
             }
             else if (args[0].equalsIgnoreCase("PlayerHead"))
             {
-                if (sender.hasPermission("DecorHeads.Admin") || sender.hasPermission("DecorHeads.SummonHead"))
+                if (sender.hasPermission("DecorHeads.SummonHead"))
                     givePlayerHead(sender, args);
             }
             else if (args[0].equalsIgnoreCase("AllHeads"))
             {
-                if (sender.hasPermission("DecorHeads.Admin") || sender.hasPermission("DecorHeads.SummonHead"))
+                if (sender.hasPermission("DecorHeads.SummonHead"))
                     giveAllHeads(sender);
             }
             else if (args[0].equalsIgnoreCase("list"))
             {
-                if (sender.hasPermission("DecorHeads.Admin") || sender.hasPermission("DecorHeads.SummonHead"))
+                if (sender.hasPermission("DecorHeads.CheckHead"))
                     listHeads(sender, args);
             }
         }
         return true;
+    }
+
+    private void sendDropRate(CommandSender sender, String[] args)
+    {
+        if (args.length >= 2)
+        {
+            HeadManager.HeadType head = HeadManager.getHeadByName(args[1]);
+            if (head != null)
+            {
+                double dropChance = Settings.getDropChance(head);
+                sender.sendMessage(head.name()+" has a "+ChatColor.DARK_GREEN+dropChance+"%"+ChatColor.WHITE+" chance of dropping.");
+            }
+            else
+                sender.sendMessage(ChatColor.RED+"Unrecognised head. Use /DecorHeads list for a list of heads.");
+        }
+        else
+            sender.sendMessage(ChatColor.RED+"Invalid parameters. Use /DecorHeads for usage instructions.");
     }
 
     private void editDropRate(CommandSender sender, String[] args)
@@ -74,7 +92,7 @@ public class DecorHeadsCommand implements CommandExecutor
             HeadManager.HeadType head = HeadManager.getHeadByName(args[1]);
             if (head != null)
             {
-                if (args.length >= 3)
+                if (sender.hasPermission("DecorHeads.Admin") && args.length >= 3)
                 {
                     if (args[2].matches("[0-9]+") || args[2].matches("[0-9]+(\\.[0-9][0-9]?)?"))
                     {
@@ -82,34 +100,22 @@ public class DecorHeadsCommand implements CommandExecutor
                         if (dropRate >= 0.0 && dropRate <= 100.0)
                         {
                             Settings.setDropChance(head, dropRate);
-                            sender.sendMessage(ChatColor.GREEN+"Drop rate for "+head.name()+" has been set to "+dropRate+"%!");
+                            sender.sendMessage(ChatColor.GREEN+"Drop rate for "+head.name()+" has been set to "+ChatColor.DARK_GREEN+dropRate+"%"+ChatColor.WHITE+"!");
                         }
                         else
-                        {
                             sender.sendMessage(ChatColor.RED+"The drop rate must be between 0.00 and 100.00.");
-                        }
-
                     }
                     else
-                    {
                         sender.sendMessage(ChatColor.RED+"Invalid drop rate. It must be a value between 0.00 and 100.00.");
-                    }
                 }
                 else
-                {
-                    double dropChance = Settings.getDropChance(head);
-                    sender.sendMessage(head.name()+" has a "+dropChance+"% chance of dropping.");
-                }
+                    sendDropRate(sender, args);
             }
             else
-            {
                 sender.sendMessage(ChatColor.RED+"Unrecognised head. Use /DecorHeads list for a list of heads.");
-            }
         }
         else
-        {
             sender.sendMessage(ChatColor.RED+"Invalid parameters. Use /DecorHeads for usage instructions.");
-        }
     }
 
     private void toggleHeads(CommandSender sender)
@@ -182,14 +188,14 @@ public class DecorHeadsCommand implements CommandExecutor
                 Player player = (Player) sender;
                 String identifier = args[1];
                 if (identifier.length() == 32)
-                    identifier = identifier.replaceFirst( "([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5" );
+                    identifier = identifier.replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
 
                 if (identifier.length() == 36) //UUID
                 {
                     UUID uuid = UUID.fromString(identifier);
                     player.getInventory().addItem(HeadManager.getPlayerSkull(uuid));
                 }
-                else //PlayerName
+                else //Player Name
                 {
                     player.getInventory().addItem(HeadManager.getPlayerSkull(identifier));
                 }
