@@ -36,7 +36,7 @@ DropPercentages:
   Cupcake: 15
   Burger: 0.5
   ChickenDinner: 0.5
-  MiniRedstoneBlock: 0.05
+  MiniRedstoneBlock: 0.02
   MiniGravel: 0.01
   MiniCobblestone: 0.01
   OakCharacterExclamation: 0.16
@@ -85,3 +85,8 @@ DropPercentages:
   Player: 2
   MushroomRed: 1
   MushroomBrown: 1
+  MiniHayBale: 1
+  MiniCauldron: 5
+  MiniBricks: 1
+  MiniCoalBlock: 0.01
+  MiniLapisBlock: 0.03

@@ -97,7 +97,7 @@ public class HeadDropListener implements Listener
             dropHead(HeadManager.HeadType.MiniSpruceLog, block.getWorld(), block.getLocation());
         if (block.getType() == Material.CRIMSON_STEM)
             dropHead(HeadManager.HeadType.MiniCrimsonStem, block.getWorld(), block.getLocation());
-        if (block.getType() == Material.WARPED_STEM)          //TODO: 1.16 update
+        if (block.getType() == Material.WARPED_STEM)
             dropHead(HeadManager.HeadType.MiniWarpedStem, block.getWorld(), block.getLocation());
         if (block.getType() == Material.JUNGLE_LOG)
             dropHead(HeadManager.HeadType.Coconut, block.getWorld(), block.getLocation());
@@ -139,6 +139,14 @@ public class HeadDropListener implements Listener
             dropHead(HeadManager.HeadType.MushroomBrown, block.getWorld(), block.getLocation());
         if (block.getType() == Material.RED_MUSHROOM)
             dropHead(HeadManager.HeadType.MushroomRed, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.HAY_BLOCK)
+            dropHead(HeadManager.HeadType.MiniHayBale, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.BRICKS || block.getType() == Material.BRICK_SLAB || block.getType() == Material.BRICK_STAIRS)
+            dropHead(HeadManager.HeadType.MiniBricks, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.COAL_ORE)
+            dropHead(HeadManager.HeadType.MiniCoalBlock, block.getWorld(), block.getLocation());
+        if (block.getType() == Material.LAPIS_ORE)
+            dropHead(HeadManager.HeadType.MiniLapisBlock, block.getWorld(), block.getLocation());
     }
 
     private void checkBiomeBlockDrops(BlockBreakEvent e, Block block)
@@ -274,6 +282,8 @@ public class HeadDropListener implements Listener
                         dropHead(HeadManager.HeadType.Cookie, player.getWorld(), player.getLocation());
                     if (resultingItem == Material.CAKE)
                         dropHead(HeadManager.HeadType.Cupcake, player.getWorld(), player.getLocation());
+                    if (resultingItem == Material.CAULDRON)
+                        dropHead(HeadManager.HeadType.MiniCauldron, player.getWorld(), player.getLocation());
                 }
             }
             if (resultingItem == Material.PLAYER_HEAD && !canCraftHead(player))

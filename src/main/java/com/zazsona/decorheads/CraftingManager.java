@@ -40,6 +40,7 @@ public class CraftingManager
         addCarrotStack();
         addStool();
         addLogStool();
+        addCaveDiorama();
     }
 
     private static void addDiceRecipe()
@@ -380,6 +381,18 @@ public class CraftingManager
         recipe.shape("LLL", "PPP", "P P");
         recipe.setIngredient('L', Material.OAK_LOG);
         recipe.setIngredient('P', Material.OAK_PLANKS);
+        plugin.getServer().addRecipe(recipe);
+    }
+
+    private static void addCaveDiorama()
+    {
+        ItemStack item = HeadManager.getSkull(HeadManager.HeadType.CaveDiorama);
+        NamespacedKey nsk = new NamespacedKey(plugin, "CaveDiorama");
+        ShapedRecipe recipe = new ShapedRecipe(nsk, item);
+        recipe.shape("PSS", "SSS", "SSZ");
+        recipe.setIngredient('P', Material.LIGHT_BLUE_WOOL);
+        recipe.setIngredient('S', Material.STONE);
+        recipe.setIngredient('Z', Material.GREEN_WOOL);
         plugin.getServer().addRecipe(recipe);
     }
 }
