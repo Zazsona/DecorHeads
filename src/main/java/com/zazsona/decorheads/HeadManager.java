@@ -39,6 +39,7 @@ public class HeadManager
         Burger,
         CardboardBox,
         CaveSpider,
+        CaveDiorama,
         Chicken,
         ChickenDinner,
         Chimney,
@@ -65,11 +66,16 @@ public class HeadManager
         IronGolem,
         Lantern,
         MagmaCube,
+        MiniBricks,
         MiniCactus,
+        MiniCauldron,
+        MiniCoalBlock,
         MiniCobblestone,
         MiniDirt,
         MiniGravel,
+        MiniHayBale,
         MiniLeaves,
+        MiniLapisBlock,
         MiniBirchLeaves,
         MiniJungleLeaves,
         MiniAcaciaLeaves,
@@ -376,6 +382,19 @@ public class HeadManager
                 return createSkull("Stool", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0ODE5OTEzOWJmMmI2Y2Q0NGU3NGFhMjQ5OGJhY2M1MGQxZWRlYzgyMWVjOTM0NDlmMzlkNmMxYzZmOTkwZSJ9fX0=");
             case StoolLog:
                 return createSkull("Log Stool", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE1MGMzYTczMTJhYWJkMWFkNzA0N2MxOGY3ZGE1OGY0ZWQxOTllMTBjNTZkMDYwNGExMmRjYzg2Yjk0YTJiYiJ9fX0=");
+
+            case MiniHayBale:
+                return createSkull("Mini Hay Bale", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjY0NTliZTA5OTk4ZTUwYWJkMmNjZjRjZDM4M2U2YjM4YWI1YmM5MDVmYWNiNjZkY2UwZTE0ZTAzOGJhMTk2OCJ9fX0=");
+            case MiniCauldron:
+                return createSkull("Mini Cauldron", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY1ZDc0NjY4YmRiNTRkMzRjNDgyNThkYjU2YTIxOGFjZGIzYjBmODMwOTZkYTY5MjIzZTZhMGMzNmM1ODZkIn19fQ==");
+            case CaveDiorama:
+                return createSkull("Cave Diorama", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWEzYWJlZjNhYzlmYjA3Y2NiMTAzNWVmZmNkYWIxMjdmZjI3YmFlYmE2ZDllODc2OTJjZTMxOGI1NjY0MWIyIn19fQ==");
+            case MiniBricks:
+                return createSkull("Mini Bricks", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGU2NDQwYThkNTk5MmMyNjdkMmEzMzYzODgyOTY0YWMyYmE1MjJmMmY5MTE0YTZmN2QxN2IzNTcyMmQyZjVmOCJ9fX0=");
+            case MiniCoalBlock:
+                return createSkull("Mini Coal Block", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjAzYTUyNTE3YTgxNDMwMzViZTVjOGI4MWZkMjAxOTI4ZDY0MDc2Zjk2YjVkMjc2MDRjY2NjMzcwODVmMTdlNyJ9fX0=");
+            case MiniLapisBlock:
+                return createSkull("Mini Lapis Lazuli Block", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTUxODliMzc5YTc4ODBmZjlhNGJiZDU4OGFkYjRlMWI3YjljMzM0MWRlN2Q2ZDAwNmQzNjJhZTU0NTBkYTk4NiJ9fX0");
         }
         return null;
     }
