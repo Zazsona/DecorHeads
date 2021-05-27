@@ -77,7 +77,7 @@ DropPercentages:
   Stray: 0.5
   Vex: 1
   Witch: 1
-  WitherSkeleton: 0.02
+  WitherSkeleton: 0.01
   Zombie: 0.01
   ZombieVillager: 2
   Sandcastle: 0.5
