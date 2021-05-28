@@ -1,5 +1,6 @@
 package com.zazsona.decorheads;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -16,18 +17,34 @@ import org.bukkit.metadata.FixedMetadataValue;
  */
 public class PlacedHeadRetriever implements Listener
 {
+    public static String ID_KEY = "DecorHeadsID";
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e)
     {
         if (e.getPlayer().getGameMode() != GameMode.CREATIVE)
         {
             Block block = e.getBlock();
-            if (block.getType() == Material.PLAYER_HEAD && block.hasMetadata("DecorHeadsID")) //While in theory only heads would have an ID, there may be some cases where this isn't the case due to legacy versions of DecorHeads ignoring cancelled events. Keep the check in.
+            if (block.hasMetadata(ID_KEY))
             {
                 e.setDropItems(false);
-                String headName = block.getMetadata("DecorHeadsID").get(0).asString();
-                ItemStack item = HeadManager.getSkull(HeadManager.getHeadByName(headName));
-                block.getWorld().dropItemNaturally(block.getLocation(), item);
+                ItemStack headStack = null;
+                if (block.getType() == Material.PLAYER_HEAD)
+                {
+                    String headName = block.getMetadata("DecorHeadsID").get(0).asString();
+                    headStack = HeadManager.getSkull(HeadManager.getHeadByName(headName));
+                }
+                else if (block.getType() == Material.ZOMBIE_HEAD)
+                    headStack = HeadManager.getSkull(HeadManager.HeadType.Zombie);
+                else if (block.getType() == Material.SKELETON_SKULL)
+                    headStack = HeadManager.getSkull(HeadManager.HeadType.Skeleton);
+                else if (block.getType() == Material.CREEPER_HEAD)
+                    headStack = HeadManager.getSkull(HeadManager.HeadType.Creeper);
+                else if (block.getType() == Material.WITHER_SKELETON_SKULL)
+                    headStack = HeadManager.getSkull(HeadManager.HeadType.WitherSkeleton);
+
+                if (headStack != null)
+                    block.getWorld().dropItemNaturally(block.getLocation(), headStack);
                 block.removeMetadata("DecorHeadsID", Core.getPlugin(Core.class));
             }
         }
@@ -37,9 +54,9 @@ public class PlacedHeadRetriever implements Listener
     public void onBlockPlaced(BlockPlaceEvent e)
     {
         Block block = e.getBlock();
-        if (block.getType() == Material.PLAYER_HEAD && HeadManager.getHeadByName(e.getItemInHand().getItemMeta().getDisplayName()) != null)
+        if (e.getItemInHand().getItemMeta().getLore().contains(Core.PLUGIN_LORE))
         {
-            block.setMetadata("DecorHeadsID", new FixedMetadataValue(Core.getPlugin(Core.class), e.getItemInHand().getItemMeta().getDisplayName()));
+            block.setMetadata(ID_KEY, new FixedMetadataValue(Core.getPlugin(Core.class), e.getItemInHand().getItemMeta().getDisplayName()));
         }
     }
 }
