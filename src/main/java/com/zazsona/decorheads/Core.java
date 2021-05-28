@@ -1,10 +1,13 @@
 package com.zazsona.decorheads;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Core extends JavaPlugin
 {
+    public static String PLUGIN_LORE = ChatColor.BLUE+"DecorHeads";
+
     @Override
     public void onEnable()
     {
