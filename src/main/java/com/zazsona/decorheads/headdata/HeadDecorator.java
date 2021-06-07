@@ -1,8 +1,10 @@
 package com.zazsona.decorheads.headdata;
 
+import org.bukkit.inventory.ItemStack;
+
 public abstract class HeadDecorator implements IHead
 {
-    private IHead head;
+    protected IHead head;
 
     public HeadDecorator(IHead head)
     {
@@ -25,6 +27,12 @@ public abstract class HeadDecorator implements IHead
     public String getTextureEncoding()
     {
         return head.getTextureEncoding();
+    }
+
+    @Override
+    public ItemStack createItem()
+    {
+        return head.createItem();
     }
 
     @Override
