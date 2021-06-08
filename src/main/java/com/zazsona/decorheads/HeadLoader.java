@@ -25,6 +25,7 @@ public class HeadLoader
 
     private final String nameKey = "name";
     private final String textureKey = "texture";
+    private final String dropRateKey = "default-drop-rate";
     private final String dropBlocksKey = "drop-blocks";
     private final String dropBlocksToolsKey = "drop-blocks-tools";
 
@@ -57,6 +58,7 @@ public class HeadLoader
             String name = headYaml.getString(nameKey);
             String texture = headYaml.getString(textureKey);
             IHead head = new Head(key, name, texture);
+            head = loadDrop(key, headYaml, head);
             head = loadBlockDrops(key, headYaml, head, plugin);
             return head;
         }
@@ -66,6 +68,15 @@ public class HeadLoader
             return null;
         }
 
+    }
+
+    private IHead loadDrop(String key, ConfigurationSection headYaml, IHead head)
+    {
+        if (headYaml.getKeys(false).contains(dropRateKey) && !Settings.isHeadDropRateInConfig(key))
+        {
+            Settings.setDropChance(key, headYaml.getDouble(dropRateKey));
+        }
+        return head;
     }
 
     private BlockDropHead loadBlockDrops(String key, ConfigurationSection headYaml, IHead head, Plugin plugin)

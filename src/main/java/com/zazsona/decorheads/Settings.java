@@ -86,6 +86,17 @@ public class Settings
         save();
     }
 
+    public static boolean isHeadDropRateInConfig(String key)
+    {
+        return plugin.getConfig().contains("DropPercentages."+key);
+    }
+
+    public static void setDropChance(String key, double dropPercentage)
+    {
+        plugin.getConfig().set("DropPercentages."+key, dropPercentage);
+        save();
+    }
+
     public static double getDropChance(HeadManager.HeadType headType)
     {
         String value = String.valueOf(plugin.getConfig().get("DropPercentages."+headType.name()));
@@ -94,14 +105,7 @@ public class Settings
 
     public static double getDropChance(String key)
     {
-        try
-        {
-            return Double.parseDouble(key);
-        }
-        catch (NumberFormatException e)
-        {
-            Bukkit.getLogger().warning("Attempted to get drop rate for "+key+", but none was found. If it's craftable only, ignore this message!");
-            return 0;
-        }
+        double dropChance = plugin.getConfig().getDouble("DropPercentages."+key);
+        return dropChance;
     }
 }

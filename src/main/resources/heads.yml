@@ -10,7 +10,10 @@
 #  texture: e3RleHR1cmVzOntTS0lOOnt1cmw6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY5NTRlOTNmZTE2NDBmNDdlOTE2YzI2NjIyZWFjZjkyZmQ0NTg2MzcxZjVmMDdmZDlhN2RkZWRhZjQifX19
 
 #Further tags can be used to set how the head spawns:
-#------- Blocks -------
+#---------- Drops ----------
+# default-drop-rate (Sets the default % chance to drop, overridden by the config)
+#  Example: default-drop-rate: 50.00
+#------- Block Drops -------
 # drop-blocks (Sets blocks the head can drop from, recognised by their IDs used in /give - leave empty for all blocks)
 #  Example: drop-blocks: ['dirt', 'oak_log']
 # drop-blocks-tools (Sets tools that can be used to get a head from drop blocks, can be any item or block - leave empty for all tools)
