@@ -24,20 +24,23 @@ public class BlockDropHead extends DropHead implements Listener
     public BlockDropHead(IHead head, Collection<Material> blocks)
     {
         super(head);
-        this.blocks.addAll(blocks);
+        if (blocks != null)
+            this.blocks.addAll(blocks);
     }
 
     public BlockDropHead(IHead head, Collection<Material> blocks, Collection<Material> requiredTools)
     {
         super(head);
-        this.blocks.addAll(blocks);
-        this.tools.addAll(requiredTools);
+        if (blocks != null)
+            this.blocks.addAll(blocks);
+        if (requiredTools != null)
+            this.tools.addAll(requiredTools);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e)
     {
-        if (blocks.contains(e.getBlock().getType()) && rollDrop())
+        if ((blocks.size() == 0 || blocks.contains(e.getBlock().getType())) && rollDrop())
         {
             ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
             if (tools.size() == 0 || tools.contains(tool.getType()))
