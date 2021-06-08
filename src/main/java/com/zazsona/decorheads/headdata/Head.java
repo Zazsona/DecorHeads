@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.zazsona.decorheads.Core;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,6 +17,7 @@ import java.util.logging.Level;
 
 public class Head implements IHead
 {
+    private static final String PLUGIN_LORE = ChatColor.BLUE+"DecorHeads";
     private String key;
     private String name;
     private String texture;
@@ -73,7 +75,7 @@ public class Head implements IHead
     private static ItemMeta addLore(ItemMeta meta)
     {
         ArrayList<String> loreList = new ArrayList<>();
-        loreList.add(Core.PLUGIN_LORE);
+        loreList.add(PLUGIN_LORE);
         meta.setLore(loreList);
         return meta;
     }
