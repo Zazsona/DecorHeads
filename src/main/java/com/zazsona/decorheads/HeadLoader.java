@@ -10,6 +10,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -25,15 +30,23 @@ public class HeadLoader
 
     public void loadHeads()
     {
-        Plugin plugin = Core.getPlugin(Core.class);
-        File headsFile = new File(plugin.getDataFolder().getPath()+"/"+ headsFileName);
-        //if (!headsFile.exists())
-        //    createHeadsFile();
-        YamlConfiguration headsYaml = YamlConfiguration.loadConfiguration(headsFile);
-        Set<String> headKeys = headsYaml.getKeys(false);
-        for (String headKey : headKeys)
+        try
         {
-            IHead head = loadHead(plugin, headKey, headsYaml.getConfigurationSection(headKey));
+            Plugin plugin = Core.getPlugin(Core.class);
+            File headsFile = new File(plugin.getDataFolder().getPath()+"/"+ headsFileName);
+            if (!headsFile.exists())
+                createHeadsFile(headsFile);
+            YamlConfiguration headsYaml = YamlConfiguration.loadConfiguration(headsFile);
+            Set<String> headKeys = headsYaml.getKeys(false);
+            for (String headKey : headKeys)
+            {
+                IHead head = loadHead(plugin, headKey, headsYaml.getConfigurationSection(headKey));
+            }
+        }
+        catch (IOException e)
+        {
+            Bukkit.getLogger().severe("[DecorHeads] Unable to load heads: ");
+            e.printStackTrace();
         }
     }
 
@@ -100,5 +113,14 @@ public class HeadLoader
             return (tools.size() > 0) ? tools : null;
         }
         return null;
+    }
+
+    private void createHeadsFile(File headsFile) throws IOException
+    {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(headsFileName);
+        byte[] buffer = new byte[inputStream.available()];
+        inputStream.read(buffer);
+        headsFile.createNewFile();
+        Files.write(headsFile.toPath(), buffer, StandardOpenOption.WRITE);
     }
 }

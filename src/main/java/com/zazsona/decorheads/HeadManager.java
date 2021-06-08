@@ -399,7 +399,7 @@ public class HeadManager
     private static ItemMeta addLore(ItemMeta meta)
     {
         ArrayList<String> loreList = new ArrayList<>();
-        loreList.add(Core.PLUGIN_LORE);
+        loreList.add("DecorHeads");
         meta.setLore(loreList);
         return meta;
     }

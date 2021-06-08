@@ -54,7 +54,7 @@ public class PlacedHeadRetriever implements Listener
     public void onBlockPlaced(BlockPlaceEvent e)
     {
         Block block = e.getBlock();
-        if (e.getItemInHand().getItemMeta().getLore().contains(Core.PLUGIN_LORE))
+        if (e.getItemInHand().getItemMeta().getLore().contains("DecorHeads"))
         {
             block.setMetadata(ID_KEY, new FixedMetadataValue(Core.getPlugin(Core.class), e.getItemInHand().getItemMeta().getDisplayName()));
         }
