@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +30,13 @@ public class HeadLoader
     private final String dropBlocksKey = "drop-blocks";
     private final String dropBlocksToolsKey = "drop-blocks-tools";
 
+    private HashMap<String, IHead> loadedHeads = new HashMap<>();
+
+    public HashMap<String, IHead> getLoadedHeads()
+    {
+        return loadedHeads;
+    }
+
     public void loadHeads()
     {
         try
@@ -37,11 +45,14 @@ public class HeadLoader
             File headsFile = new File(plugin.getDataFolder().getPath()+"/"+ headsFileName);
             if (!headsFile.exists())
                 createHeadsFile(headsFile);
+            loadedHeads.clear();
             YamlConfiguration headsYaml = YamlConfiguration.loadConfiguration(headsFile);
             Set<String> headKeys = headsYaml.getKeys(false);
             for (String headKey : headKeys)
             {
                 IHead head = loadHead(plugin, headKey, headsYaml.getConfigurationSection(headKey));
+                if (head != null)
+                    loadedHeads.put(headKey, head);
             }
         }
         catch (IOException e)
