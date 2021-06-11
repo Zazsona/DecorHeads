@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class Core extends JavaPlugin
 {
+    public static final String PLUGIN_NAME = "DecorHeads";
     @Override
     public void onEnable()
     {
