@@ -18,3 +18,11 @@
 #  Example: drop-blocks: ['dirt', 'oak_log']
 # drop-blocks-tools (Sets tools that can be used to get a head from drop blocks, can be any item or block - leave empty for all tools)
 #  Example: drop-blocks-tools: ['diamond_axe', 'gravel']
+#------- Crafting -------
+# craft-ingredients (Sets items required to craft the head)
+#  Example: craft-ingredients: ['oak_log', 'redstone']
+# craft-grid (Sets the arrangement for a shaped crafting recipe on a 1x1 to 3x3 grid, set materials by their position in craft-ingredients, starting from 0, and use "-" for empty spaces)
+#  Example: craft-grid:
+#                       [[0, 0, 0],                [[1, 0],                                                    [[0],
+#     CRAFTING TABLE:    [-, 1, -],   INVENTORY:   [0, 1]]     SINGLE ROW:   [[0, 1, 0]]      SINGLE COLUMN:    [1],
+#                        [0, 0, 0]]                                                                             [0]]
