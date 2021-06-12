@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
@@ -27,6 +28,8 @@ public class HeadLoader
     private final String dropRateKey = "default-drop-rate";
     private final String dropBlocksKey = "drop-blocks";
     private final String dropBlocksToolsKey = "drop-blocks-tools";
+    private final String dropEntitiesKey = "drop-entities";
+    private final String dropEntitiesToolsKey = "drop-entities-tools";
 
     private final String craftIngredientsKey = "craft-ingredients";
     private final String craftGridKey = "craft-grid";
@@ -80,6 +83,7 @@ public class HeadLoader
             IHead head = new Head(key, name, texture);
             head = loadDrop(key, headYaml, head);
             head = loadBlockDrops(key, headYaml, head, plugin);
+            head = loadEntityDrops(key, headYaml, head, plugin);
             head = loadCraftHead(key, headYaml, head, plugin);
             return head;
         }
@@ -104,6 +108,15 @@ public class HeadLoader
         BlockDropHead blockDropHead = new BlockDropHead(head, blocks, tools);
         plugin.getServer().getPluginManager().registerEvents(blockDropHead, plugin);
         return blockDropHead;
+    }
+
+    private IHead loadEntityDrops(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
+    {
+        List<EntityType> entities = getEntities(dropEntitiesKey, key, headYaml);
+        List<Material> tools = getTools(dropEntitiesToolsKey, key, headYaml);
+        EntityDropHead entityDropHead = new EntityDropHead(head, entities, tools);
+        plugin.getServer().getPluginManager().registerEvents(entityDropHead, plugin);
+        return entityDropHead;
     }
 
     private IHead loadCraftHead(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
@@ -192,6 +205,29 @@ public class HeadLoader
                     blocks.add(block); //Uses a map, so should be plenty performant.
             }
             return (blocks.size() > 0) ? blocks : null;
+        }
+        return null;
+    }
+
+    private List<EntityType> getEntities(String entitiesKey, String headKey, ConfigurationSection headYaml) throws InvalidHeadException
+    {
+        if (headYaml.getKeys(false).contains(entitiesKey))
+        {
+            List<String> entityNames = headYaml.getStringList(entitiesKey);
+            List<EntityType> entities = new ArrayList<>();
+            for (String entityName : entityNames)
+            {
+                try
+                {
+                    EntityType entity = EntityType.valueOf(entityName.toUpperCase().trim());
+                    entities.add(entity);
+                }
+                catch (IllegalArgumentException e)
+                {
+                    throw new InvalidHeadException(String.format("Unrecognised entity \"%s\" for %s in %s.", entityName, headKey, entitiesKey), e);
+                }
+            }
+            return (entities.size() > 0) ? entities : null;
         }
         return null;
     }

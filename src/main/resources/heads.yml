@@ -18,6 +18,11 @@
 #  Example: drop-blocks: ['dirt', 'oak_log']
 # drop-blocks-tools (Sets tools that can be used to get a head from drop blocks, can be any item or block - leave empty for all tools)
 #  Example: drop-blocks-tools: ['diamond_axe', 'gravel']
+#------ Entity Drops ------
+# drop-entities (Sets entities the head can drop from - leave empty for all entities)
+#  Example: drop-entities: ['zombie', 'pig']
+# drop-entities-tools (Sets tools that can be used to get a head from entities, can be any item or block - leave empty for all tools)
+#  Example: drop-entities-tools: ['diamond_sword']
 #------- Crafting -------
 # craft-ingredients (Sets items required to craft the head)
 #  Example: craft-ingredients: ['oak_log', 'redstone']
