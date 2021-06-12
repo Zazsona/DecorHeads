@@ -8,6 +8,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -79,7 +80,7 @@ public class HeadLoader
             IHead head = new Head(key, name, texture);
             head = loadDrop(key, headYaml, head);
             head = loadBlockDrops(key, headYaml, head, plugin);
-            head = loadShapedCraftHead(key, headYaml, head, plugin);
+            head = loadCraftHead(key, headYaml, head, plugin);
             return head;
         }
         else
@@ -105,46 +106,72 @@ public class HeadLoader
         return blockDropHead;
     }
 
-    private IHead loadShapedCraftHead(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
+    private IHead loadCraftHead(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
+    {
+        List<Material> craftingIngredients = getCraftIngredients(key, headYaml);
+        if (craftingIngredients != null)
+        {
+            if (headYaml.getKeys(false).contains(craftGridKey))
+                return loadShapedCraftHead(key, headYaml, head, plugin, craftingIngredients);
+            else
+                return loadShapelessCraftHead(key, headYaml, head, plugin, craftingIngredients);
+        }
+        return head;
+    }
+
+    private IHead loadShapelessCraftHead(String key, ConfigurationSection headYaml, IHead head, Plugin plugin, List<Material> ingredients) throws InvalidHeadException
+    {
+        if (ingredients == null || ingredients.size() == 0)
+            throw new InvalidHeadException(String.format("%s has no ingredients specified for crafting.", key));
+
+        NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), key);
+        ShapelessRecipe shapelessRecipe = new ShapelessRecipe(nsk, head.createItem());
+        for (Material ingredient : ingredients)
+        {
+            shapelessRecipe.addIngredient(ingredient);
+        }
+        plugin.getServer().addRecipe(shapelessRecipe);
+        ShapelessCraftHead shapelessCraftHead = new ShapelessCraftHead(head, shapelessRecipe);
+        return shapelessCraftHead;
+    }
+
+    private IHead loadShapedCraftHead(String key, ConfigurationSection headYaml, IHead head, Plugin plugin, List<Material> ingredients) throws InvalidHeadException
     {
         if (headYaml.getKeys(false).contains(craftGridKey))
         {
-            List<Material> ingredients = getCraftIngredients(key, headYaml);
-            if (ingredients != null)
-            {
-                NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), key);
-                ShapedRecipe shapedRecipe = new ShapedRecipe(nsk, head.createItem());
-                List<List<String>> recipeGrid = (List<List<String>>) headYaml.getList(craftGridKey);
-                StringBuilder rowBuilder;
-                List<String> rows = new ArrayList<>();
-                for (int y = 0; y < recipeGrid.size(); y++)
-                {
-                    rowBuilder = new StringBuilder();
-                    for (int x = 0; x < recipeGrid.get(y).size(); x++)
-                    {
-                        if (y >= 3 || x >= 3)
-                            throw new InvalidHeadException(String.format("Shaped recipe for \"%s\" exceeds a 3x3 crafting grid.", key));
-                        else
-                        {
-                            String gridValue = String.valueOf(recipeGrid.get(y).get(x));
-                            if (gridValue.equals("-"))
-                                gridValue = " "; //YAML won't allow unquoted spaces in array
-                            rowBuilder.append(gridValue);
-                        }
-                    }
-                    rows.add(rowBuilder.toString());
-                }
-                shapedRecipe.shape(rows.toArray(new String[0]));
-                for (int i = 0; i < ingredients.size(); i++)
-                {
-                    shapedRecipe.setIngredient(String.valueOf(i).charAt(0), ingredients.get(i));
-                }
-                plugin.getServer().addRecipe(shapedRecipe);
-                ShapedCraftHead shapedCraftHead = new ShapedCraftHead(head, shapedRecipe);
-                return shapedCraftHead;
-            }
-            else
+            if (ingredients == null || ingredients.size() == 0)
                 throw new InvalidHeadException(String.format("%s has no ingredients specified for crafting.", key));
+
+            NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), key);
+            ShapedRecipe shapedRecipe = new ShapedRecipe(nsk, head.createItem());
+            List<List<String>> recipeGrid = (List<List<String>>) headYaml.getList(craftGridKey);
+            StringBuilder rowBuilder;
+            List<String> rows = new ArrayList<>();
+            for (int y = 0; y < recipeGrid.size(); y++)
+            {
+                rowBuilder = new StringBuilder();
+                for (int x = 0; x < recipeGrid.get(y).size(); x++)
+                {
+                    if (y >= 3 || x >= 3)
+                        throw new InvalidHeadException(String.format("Shaped recipe for \"%s\" exceeds a 3x3 crafting grid.", key));
+                    else
+                    {
+                        String gridValue = String.valueOf(recipeGrid.get(y).get(x));
+                        if (gridValue.equals("-"))
+                            gridValue = " "; //YAML won't allow unquoted spaces in array
+                        rowBuilder.append(gridValue);
+                    }
+                }
+                rows.add(rowBuilder.toString());
+            }
+            shapedRecipe.shape(rows.toArray(new String[0]));
+            for (int i = 0; i < ingredients.size(); i++)
+            {
+                shapedRecipe.setIngredient(String.valueOf(i).charAt(0), ingredients.get(i));
+            }
+            plugin.getServer().addRecipe(shapedRecipe);
+            ShapedCraftHead shapedCraftHead = new ShapedCraftHead(head, shapedRecipe);
+            return shapedCraftHead;
         }
         else
             return head;
