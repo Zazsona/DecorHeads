@@ -9,6 +9,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.BrewEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
@@ -37,8 +41,9 @@ public class BlockDropHead extends DropHead implements Listener
             this.tools.addAll(requiredTools);
     }
 
+    @Override
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent e)
+    public ItemStack onBlockBreak(BlockBreakEvent e)
     {
         if ((blocks.size() == 0 || blocks.contains(e.getBlock().getType())) && rollDrop())
         {
@@ -47,8 +52,11 @@ public class BlockDropHead extends DropHead implements Listener
             {
                 World world = e.getBlock().getWorld();
                 Location location = e.getBlock().getLocation();
-                world.dropItemNaturally(location, head.createItem());
+                ItemStack headStack = head.createItem();
+                world.dropItemNaturally(location, headStack);
+                return headStack;
             }
         }
+        return null;
     }
 }

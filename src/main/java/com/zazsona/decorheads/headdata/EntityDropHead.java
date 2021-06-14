@@ -1,7 +1,5 @@
-package com.zazsona.decorheads.headdata.dropheads;
+package com.zazsona.decorheads.headdata;
 
-import com.zazsona.decorheads.headdata.IHead;
-import com.zazsona.decorheads.headdata.dropheads.DropHead;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -10,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -38,8 +37,9 @@ public class EntityDropHead extends DropHead implements Listener
             this.tools.addAll(requiredTools);
     }
 
+    @Override
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onEntityDeath(EntityDeathEvent e)
+    public ItemStack onEntityDeath(EntityDeathEvent e)
     {
         if (entities.size() == 0 || entities.contains(e.getEntityType()) && rollDrop())
         {
@@ -49,8 +49,11 @@ public class EntityDropHead extends DropHead implements Listener
             {
                 World world = e.getEntity().getWorld();
                 Location location = e.getEntity().getLocation();
-                world.dropItemNaturally(location, head.createItem());
+                ItemStack headStack = head.createItem();
+                world.dropItemNaturally(location, headStack);
+                return headStack;
             }
         }
+        return null;
     }
 }
