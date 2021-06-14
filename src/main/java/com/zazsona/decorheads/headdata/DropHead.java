@@ -4,11 +4,18 @@ import com.zazsona.decorheads.HeadManager;
 import com.zazsona.decorheads.Settings;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.BrewEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
-public abstract class DropHead extends HeadDecorator
+abstract class DropHead extends HeadDecorator implements IDropHead
 {
     private static Random rand = new Random();
 
@@ -30,6 +37,36 @@ public abstract class DropHead extends HeadDecorator
     protected boolean rollDrop()
     {
         double roll = ((rand.nextInt(9999)+1.0)/100.0);
-        return (roll <= Settings.getDropChance(head.getKey()));
+        return (roll <= Settings.getDropChance(super.getKey()));
+    }
+
+    @Override
+    public ItemStack onBlockBreak(BlockBreakEvent e)
+    {
+        return null;
+    }
+
+    @Override
+    public ItemStack onEntityDeath(EntityDeathEvent e)
+    {
+        return null;
+    }
+
+    @Override
+    public ItemStack onCraftItem(CraftItemEvent e)
+    {
+        return null;
+    }
+
+    @Override
+    public ItemStack onBrew(BrewEvent e)
+    {
+        return null;
+    }
+
+    @Override
+    public ItemStack onSmelt(FurnaceSmeltEvent e)
+    {
+        return null;
     }
 }

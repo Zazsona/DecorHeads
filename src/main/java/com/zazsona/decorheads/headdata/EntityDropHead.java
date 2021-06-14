@@ -1,5 +1,7 @@
-package com.zazsona.decorheads.headdata;
+package com.zazsona.decorheads.headdata.dropheads;
 
+import com.zazsona.decorheads.headdata.IHead;
+import com.zazsona.decorheads.headdata.dropheads.DropHead;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -8,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
