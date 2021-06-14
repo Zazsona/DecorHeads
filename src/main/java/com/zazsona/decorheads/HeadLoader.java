@@ -5,6 +5,7 @@ import com.zazsona.decorheads.headdata.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
@@ -28,8 +29,10 @@ public class HeadLoader
     private final String dropRateKey = "default-drop-rate";
     private final String dropBlocksKey = "drop-blocks";
     private final String dropBlocksToolsKey = "drop-blocks-tools";
+    private final String dropBlocksBiomesKey = "drop-blocks-biomes";
     private final String dropEntitiesKey = "drop-entities";
     private final String dropEntitiesToolsKey = "drop-entities-tools";
+    private final String dropEntitiesBiomesKey = "drop-entities-biomes";
 
     private final String craftIngredientsKey = "craft-ingredients";
     private final String craftGridKey = "craft-grid";
@@ -105,16 +108,33 @@ public class HeadLoader
     {
         List<Material> blocks = getBlocks(dropBlocksKey, key, headYaml);
         List<Material> tools = getTools(dropBlocksToolsKey, key, headYaml);
-        BlockDropHead blockDropHead = new BlockDropHead(head, blocks, tools);
+        IDropHead blockDropHead = new BlockDropHead(head, blocks, tools);
+
+        blockDropHead = loadBiomeDrops(dropBlocksBiomesKey, key, headYaml, blockDropHead, plugin);
+
         plugin.getServer().getPluginManager().registerEvents(blockDropHead, plugin);
         return blockDropHead;
+    }
+
+    private IDropHead loadBiomeDrops(String biomesKey, String key, ConfigurationSection headYaml, IDropHead head, Plugin plugin) throws InvalidHeadException
+    {
+        List<Biome> biomes = getBiomes(biomesKey, key, headYaml);
+        if (biomes != null)
+        {
+            BiomeDropHead biomeDropHead = new BiomeDropHead(head, biomes);
+            return biomeDropHead;
+        }
+        return head;
     }
 
     private IHead loadEntityDrops(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
     {
         List<EntityType> entities = getEntities(dropEntitiesKey, key, headYaml);
         List<Material> tools = getTools(dropEntitiesToolsKey, key, headYaml);
-        EntityDropHead entityDropHead = new EntityDropHead(head, entities, tools);
+        IDropHead entityDropHead = new EntityDropHead(head, entities, tools);
+
+        entityDropHead = loadBiomeDrops(dropEntitiesBiomesKey, key, headYaml, entityDropHead, plugin);
+
         plugin.getServer().getPluginManager().registerEvents(entityDropHead, plugin);
         return entityDropHead;
     }
@@ -247,6 +267,29 @@ public class HeadLoader
                     tools.add(tool);
             }
             return (tools.size() > 0) ? tools : null;
+        }
+        return null;
+    }
+
+    private List<Biome> getBiomes(String biomesKey, String headKey, ConfigurationSection headYaml) throws InvalidHeadException
+    {
+        if (headYaml.getKeys(false).contains(biomesKey))
+        {
+            List<String> biomeNames = headYaml.getStringList(biomesKey);
+            List<Biome> biomes = new ArrayList<>();
+            for (String biomeName : biomeNames)
+            {
+                try
+                {
+                    Biome biome = Biome.valueOf(biomeName.toUpperCase().trim());
+                    biomes.add(biome);
+                }
+                catch (IllegalArgumentException e)
+                {
+                    throw new InvalidHeadException(String.format("Unrecognised biome \"%s\" for %s in %s.", biomeName, headKey, biomesKey), e);
+                }
+            }
+            return (biomes.size() > 0) ? biomes : null;
         }
         return null;
     }
