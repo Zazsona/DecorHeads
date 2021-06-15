@@ -1,5 +1,7 @@
-package com.zazsona.decorheads;
+package com.zazsona.decorheads.config;
 
+import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.Settings;
 import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.headdata.*;
 import org.bukkit.Bukkit;
@@ -20,23 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-public class HeadLoader
+public class HeadLoader extends HeadConfigAccessor
 {
-    private final String headsFileName = "heads.yml";
-
-    private final String nameKey = "name";
-    private final String textureKey = "texture";
-    private final String dropRateKey = "default-drop-rate";
-    private final String dropBlocksKey = "drop-blocks";
-    private final String dropBlocksToolsKey = "drop-blocks-tools";
-    private final String dropBlocksBiomesKey = "drop-blocks-biomes";
-    private final String dropEntitiesKey = "drop-entities";
-    private final String dropEntitiesToolsKey = "drop-entities-tools";
-    private final String dropEntitiesBiomesKey = "drop-entities-biomes";
-
-    private final String craftIngredientsKey = "craft-ingredients";
-    private final String craftGridKey = "craft-grid";
-
     private HashMap<String, IHead> loadedHeads = new HashMap<>();
 
     public HashMap<String, IHead> getLoadedHeads()
@@ -46,34 +33,24 @@ public class HeadLoader
 
     public void loadHeads()
     {
-        try
+        Plugin plugin = Core.getPlugin(Core.class);
+        loadedHeads.clear();
+        File headsFile = getHeadsFile();
+        YamlConfiguration headsYaml = YamlConfiguration.loadConfiguration(headsFile);
+        Set<String> headKeys = headsYaml.getKeys(false);
+        for (String headKey : headKeys)
         {
-            Plugin plugin = Core.getPlugin(Core.class);
-            File headsFile = new File(plugin.getDataFolder().getPath()+"/"+ headsFileName);
-            if (!headsFile.exists())
-                createHeadsFile(headsFile);
-            loadedHeads.clear();
-            YamlConfiguration headsYaml = YamlConfiguration.loadConfiguration(headsFile);
-            Set<String> headKeys = headsYaml.getKeys(false);
-            for (String headKey : headKeys)
+            try
             {
-                try
-                {
-                    IHead head = loadHead(plugin, headKey, headsYaml.getConfigurationSection(headKey));
-                    if (head != null)
-                        loadedHeads.put(headKey, head);
-                }
-                catch (InvalidHeadException e)
-                {
-                    Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
-                }
-
+                IHead head = loadHead(plugin, headKey, headsYaml.getConfigurationSection(headKey));
+                if (head != null)
+                    loadedHeads.put(headKey, head);
             }
-        }
-        catch (IOException e)
-        {
-            Bukkit.getLogger().severe(String.format("[%s] Unable to load heads: ", Core.PLUGIN_NAME));
-            e.printStackTrace();
+            catch (InvalidHeadException e)
+            {
+                Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+            }
+
         }
     }
 
@@ -312,14 +289,5 @@ public class HeadLoader
             return ingredients;
         }
         return null;
-    }
-
-    private void createHeadsFile(File headsFile) throws IOException
-    {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(headsFileName);
-        byte[] buffer = new byte[inputStream.available()];
-        inputStream.read(buffer);
-        headsFile.createNewFile();
-        Files.write(headsFile.toPath(), buffer, StandardOpenOption.WRITE);
     }
 }

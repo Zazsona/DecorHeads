@@ -1,13 +1,8 @@
 package com.zazsona.decorheads;
 
-import com.zazsona.decorheads.headdata.BlockDropHead;
-import com.zazsona.decorheads.headdata.Head;
+import com.zazsona.decorheads.config.HeadLoader;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.ArrayList;
 
 public class Core extends JavaPlugin
 {
