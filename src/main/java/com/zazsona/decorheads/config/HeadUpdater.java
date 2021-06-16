@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import javax.annotation.Nullable;
 import java.io.*;
 import java.net.URI;
 import java.nio.file.*;
@@ -28,15 +29,15 @@ public class HeadUpdater extends HeadConfigAccessor
             if (updates.length > 0)
             {
                 Bukkit.getLogger().info(String.format("[%s] Heads config for %s found. Updating to %s...", Core.PLUGIN_NAME, fileVersion, pluginVersion));
-                YamlConfiguration defaultConfig = buildDefaultHeadsConfig(pluginVersion);
+                YamlConfiguration defaultYaml = buildDefaultHeadsConfig(fileVersion);
                 for (int i = 0; i < updates.length; i++)
                 {
-                    System.out.println(updates[i]);
                     YamlConfiguration updateYaml = YamlConfiguration.loadConfiguration(new InputStreamReader(getChangelog(updates[i])));
                     for (String key : updateYaml.getKeys(false))
-                        updateKeyValue(key, updateYaml, headsYaml);
+                        updateKeyValue(key, updateYaml, headsYaml, defaultYaml);
+                    for (String key : updateYaml.getKeys(false))
+                        updateKeyValue(key, updateYaml, defaultYaml, null); //Set default to current update
                 }
-                System.out.println(headsYaml.saveToString());
                 headsYaml.save(headsFile);
                 Bukkit.getLogger().info(String.format("[%s] Heads config successfully updated to %s!", Core.PLUGIN_NAME, pluginVersion));
                 return true;
@@ -93,7 +94,7 @@ public class HeadUpdater extends HeadConfigAccessor
                                                                                   }
                                                                               });
             changelogsFileSys.close();
-            changelogs.sort((ver1, ver2) -> ver1.compareTo(ver2));
+            changelogs.sort(Comparator.naturalOrder());
             return changelogs.toArray(new String[0]);
         }
         catch (Exception e)
@@ -104,25 +105,34 @@ public class HeadUpdater extends HeadConfigAccessor
 
     private YamlConfiguration buildDefaultHeadsConfig(String targetVersion) throws IOException
     {
-
         String[] updates = getUpdates("0", targetVersion);
         YamlConfiguration headsYaml = YamlConfiguration.loadConfiguration(new InputStreamReader(getBaseHeadsStream()));
         for (int i = 0; i < updates.length; i++)
         {
             YamlConfiguration updateYaml = YamlConfiguration.loadConfiguration(new InputStreamReader(getChangelog(updates[i])));
-            updateKeyValue(updateYaml.getRoot().getCurrentPath(), updateYaml, headsYaml); //Recursively updates entries
+            updateKeyValue(updateYaml.getRoot().getCurrentPath(), updateYaml, headsYaml, null); //Recursively updates entries
         }
         return headsYaml;
     }
 
-    private void updateKeyValue(String path, YamlConfiguration sourceYaml, YamlConfiguration targetYaml)
+    private void updateKeyValue(String path, YamlConfiguration sourceYaml, YamlConfiguration targetYaml, @Nullable YamlConfiguration defaultYaml)
     {
-        if ((!targetYaml.contains(path) && sourceYaml.isConfigurationSection(path)) || !sourceYaml.isConfigurationSection(path))
+        if (!targetYaml.contains(path))
         {
             if (sourceYaml.isConfigurationSection(path))
                 targetYaml.createSection(path, sourceYaml.getValues(true));
             else
                 targetYaml.set(path, sourceYaml.get(path));
+        }
+        else if (targetYaml.contains(path) && !sourceYaml.isConfigurationSection(path)
+                && ((defaultYaml == null) || (defaultYaml != null && targetYaml.get(path).equals(defaultYaml.get(path)))))
+        {
+            /* TL;DR if this is a terminating value AND the config already has an entry:
+                1. If defaultYaml is null, adopt the update
+                2. If defaultYaml exists, only adopt the update if the targetYaml value matches, thus retaining any custom user values
+            */
+            targetYaml.set(path, sourceYaml.get(path));
+            //TODO: If multiple drop configs per-head are added, iterate through these to find default and custom list entries
         }
         else if (targetYaml.contains(path) && sourceYaml.isConfigurationSection(path))
         {
@@ -131,7 +141,7 @@ public class HeadUpdater extends HeadConfigAccessor
             for (String key : keys)
             {
                 String subPath = configurationSection.getCurrentPath()+"."+key;
-                updateKeyValue(subPath, sourceYaml, targetYaml);
+                updateKeyValue(subPath, sourceYaml, targetYaml, defaultYaml);
             }
         }
     }
