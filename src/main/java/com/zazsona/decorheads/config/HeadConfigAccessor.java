@@ -4,12 +4,18 @@ import com.zazsona.decorheads.Core;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class HeadConfigAccessor
 {
     protected final String headsFileName = "heads.yml";
+    protected final String baseHeadsFileName = "base-heads.yml";
+    protected final String headsChangelogDirName = "heads-changelog";
+    protected final String changelogFileFormat = ".yml";
 
     protected final String versionKey = "version";
+    protected final String headsKey = "heads";
     protected final String nameKey = "name";
     protected final String textureKey = "texture";
     protected final String dropRateKey = "default-drop-rate";
@@ -27,5 +33,17 @@ public class HeadConfigAccessor
         Plugin plugin = Core.getPlugin(Core.class);
         File headsFile = new File(plugin.getDataFolder().getPath()+"/"+ headsFileName);
         return headsFile;
+    }
+
+    public InputStream getBaseHeadsStream() throws IOException
+    {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(headsChangelogDirName+"/"+baseHeadsFileName);
+        return inputStream;
+    }
+
+    public InputStream getChangelog(String version) throws IOException
+    {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(headsChangelogDirName+"/"+version+changelogFileFormat);
+        return inputStream;
     }
 }
