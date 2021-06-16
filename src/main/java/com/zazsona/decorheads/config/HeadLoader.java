@@ -36,7 +36,9 @@ public class HeadLoader extends HeadConfigAccessor
         Plugin plugin = Core.getPlugin(Core.class);
         loadedHeads.clear();
         File headsFile = getHeadsFile();
-        YamlConfiguration headsYaml = YamlConfiguration.loadConfiguration(headsFile);
+
+        ConfigurationSection headsYaml = YamlConfiguration.loadConfiguration(headsFile);
+        headsYaml = headsYaml.getConfigurationSection(headsKey);
         Set<String> headKeys = headsYaml.getKeys(false);
         for (String headKey : headKeys)
         {
@@ -50,7 +52,6 @@ public class HeadLoader extends HeadConfigAccessor
             {
                 Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
             }
-
         }
     }
 

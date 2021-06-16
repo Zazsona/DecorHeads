@@ -1,8 +1,12 @@
 package com.zazsona.decorheads;
 
 import com.zazsona.decorheads.config.HeadLoader;
+import com.zazsona.decorheads.config.HeadUpdater;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 public class Core extends JavaPlugin
 {
@@ -10,17 +14,28 @@ public class Core extends JavaPlugin
     @Override
     public void onEnable()
     {
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-        int pluginId = 10174;
-        Metrics metrics = new Metrics(this, pluginId);
-        //getServer().getPluginManager().registerEvents(new HeadDropListener(), this);
-        //getServer().getPluginManager().registerEvents(new PlacedHeadRetriever(), this);
-        //this.getCommand("DecorHeads").setExecutor(new DecorHeadsCommand());
-        //CraftingManager.addRecipes();
+        try
+        {
+            getConfig().options().copyDefaults(true);
+            saveConfig();
+            int pluginId = 10174;
+            Metrics metrics = new Metrics(this, pluginId);
+            //getServer().getPluginManager().registerEvents(new HeadDropListener(), this);
+            //getServer().getPluginManager().registerEvents(new PlacedHeadRetriever(), this);
+            //this.getCommand("DecorHeads").setExecutor(new DecorHeadsCommand());
+            //CraftingManager.addRecipes();
 
-        HeadLoader headLoader = new HeadLoader();
-        headLoader.loadHeads();
+            HeadUpdater headUpdater = new HeadUpdater();
+            headUpdater.updateHeadsFile();
+            HeadLoader headLoader = new HeadLoader();
+            headLoader.loadHeads();
+        }
+        catch (Exception e)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+            e.printStackTrace();
+        }
+
     }
 
     @Override
