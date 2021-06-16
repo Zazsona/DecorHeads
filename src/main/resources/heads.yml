@@ -1,37 +1,43 @@
-#This is the heads file for defining heads used in the plugin, and where you can add your own!
-#All heads require a unique key, name, and texture:
-#  Key: Name to identify the head, must not match other heads and cannot contain spaces.
-#  Name: The name of the head seen in-game, can match other heads and contain spaces
-#  Texture: Base64 encoded skin URL (same as when using /give)
-#An example is available below:
+#  This is the heads file for defining heads used in the plugin, and where you can add your own!
+#  All heads require a unique key, name, and texture:
+#    Key: Name to identify the head, must not match other heads and cannot contain spaces.
+#    Name: The name of the head seen in-game, can match other heads and contain spaces
+#    Texture: Base64 encoded skin URL (same as when using /give)
+#  An example is available below:
 
-#steve:
-#  name: Steve's Head
-#  texture: e3RleHR1cmVzOntTS0lOOnt1cmw6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY5NTRlOTNmZTE2NDBmNDdlOTE2YzI2NjIyZWFjZjkyZmQ0NTg2MzcxZjVmMDdmZDlhN2RkZWRhZjQifX19
+#  steve:
+#    name: Steve's Head
+#    texture: e3RleHR1cmVzOntTS0lOOnt1cmw6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY5NTRlOTNmZTE2NDBmNDdlOTE2YzI2NjIyZWFjZjkyZmQ0NTg2MzcxZjVmMDdmZDlhN2RkZWRhZjQifX19
 
-#Further tags can be used to set how the head spawns:
-#---------- Drops ----------
-# default-drop-rate (Sets the default % chance to drop, overridden by the config)
-#  Example: default-drop-rate: 50.00
-#------- Block Drops -------
-# drop-blocks (Sets blocks the head can drop from, recognised by their IDs used in /give - leave empty for all blocks)
-#  Example: drop-blocks: ['dirt', 'oak_log']
-# drop-blocks-tools (Sets tools that can be used to get a head from drop blocks, can be any item or block - leave empty for all tools)
-#  Example: drop-blocks-tools: ['diamond_axe', 'gravel']
-# drop-blocks-biomes (Sets the biomes heads drop in - leave empty for all biomes)
-#  Example: drop-blocks-biomes: ['plains', 'taiga']
-#------ Entity Drops ------
-# drop-entities (Sets entities the head can drop from - leave empty for all entities)
-#  Example: drop-entities: ['zombie', 'pig']
-# drop-entities-tools (Sets tools that can be used to get a head from entities, can be any item or block - leave empty for all tools)
-#  Example: drop-entities-tools: ['diamond_sword']
-# drop-entities-biomes (Sets the biomes heads drop in - leave empty for all biomes)
-#  Example: drop-entities-biomes: ['plains', 'taiga']
-#------- Crafting -------
-# craft-ingredients (Sets items required to craft the head)
-#  Example: craft-ingredients: ['oak_log', 'redstone']
-# craft-grid (Sets the arrangement for a shaped crafting recipe on a 1x1 to 3x3 grid, set materials by their position in craft-ingredients, starting from 0, and use "-" for empty spaces)
-#  Example: craft-grid:
+#  Further tags can be used to set how the head spawns:
+#  ---------- Drops ----------
+#   default-drop-rate (Sets the default % chance to drop, overridden by the config)
+#    Example: default-drop-rate: 50.00
+#  ------- Block Drops -------
+#   drop-blocks (Sets blocks the head can drop from, recognised by their IDs used in /give - leave empty for all blocks)
+#    Example: drop-blocks: ['dirt', 'oak_log']
+#   drop-blocks-tools (Sets tools that can be used to get a head from drop blocks, can be any item or block - leave empty for all tools)
+#    Example: drop-blocks-tools: ['diamond_axe', 'gravel']
+#   drop-blocks-biomes (Sets the biomes heads drop in - leave empty for all biomes)
+#    Example: drop-blocks-biomes: ['plains', 'taiga']
+#  ------ Entity Drops ------
+#   drop-entities (Sets entities the head can drop from - leave empty for all entities)
+#    Example: drop-entities: ['zombie', 'pig']
+#   drop-entities-tools (Sets tools that can be used to get a head from entities, can be any item or block - leave empty for all tools)
+#    Example: drop-entities-tools: ['diamond_sword']
+#   drop-entities-biomes (Sets the biomes heads drop in - leave empty for all biomes)
+#    Example: drop-entities-biomes: ['plains', 'taiga']
+#  ------- Crafting -------
+#   craft-ingredients (Sets items required to craft the head)
+#    Example: craft-ingredients: ['oak_log', 'redstone']
+#   craft-grid (Sets the arrangement for a shaped crafting recipe on a 1x1 to 3x3 grid, set materials by their position in craft-ingredients, starting from 0, and use "-" for empty spaces)
+#    Example: craft-grid:
 #                       [[0, 0, 0],                [[1, 0],                                                    [[0],
 #     CRAFTING TABLE:    [-, 1, -],   INVENTORY:   [0, 1]]     SINGLE ROW:   [[0, 1, 0]]      SINGLE COLUMN:    [1],
 #                        [0, 0, 0]]                                                                             [0]]
+
+version: 1.5.0
+heads:
+  foo:
+    name: foobar
+    texture: e3RleHR1cmVzOntTS0lOOnt1cmw6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY5NTRlOTNmZTE2NDBmNDdlOTE2YzI2NjIyZWFjZjkyZmQ0NTg2MzcxZjVmMDdmZDlhN2RkZWRhZjQifX19

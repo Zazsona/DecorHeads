@@ -1,0 +1,8 @@
+version: 1.6.0
+heads:
+  foo:
+    drop-blocks: ['DIRT', 'sand']
+    craft-ingredients: ['oak_log', 'redstone']
+    craft-grid: [[0, 0, 0],
+                 [0, 0, 0],
+                 [-, -, -]]
