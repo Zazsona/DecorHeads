@@ -1,7 +1,8 @@
-package com.zazsona.decorheads.headdata;
+package com.zazsona.decorheads.headdata.dropheadfilters;
 
+import com.zazsona.decorheads.headdata.DropHeadDecorator;
+import com.zazsona.decorheads.headdata.IDropHead;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.event.EventHandler;
@@ -15,11 +16,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class BiomeDropHead extends DropHeadDecorator
+public class BiomeDropHeadFilter extends DropHeadDecorator
 {
     private Set<Biome> biomes = new HashSet<>();
 
-    public BiomeDropHead(IDropHead head, Collection<Biome> biomes)
+    public BiomeDropHeadFilter(IDropHead head, Collection<Biome> biomes)
     {
         super(head);
         if (biomes != null)

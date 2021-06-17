@@ -4,6 +4,8 @@ import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.Settings;
 import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.headdata.*;
+import com.zazsona.decorheads.headdata.dropheadfilters.BiomeDropHeadFilter;
+import com.zazsona.decorheads.headdata.dropheadfilters.ToolDropHeadFilter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -16,10 +18,6 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class HeadLoader extends HeadConfigAccessor
@@ -87,8 +85,8 @@ public class HeadLoader extends HeadConfigAccessor
         List<Material> blocks = getBlocks(dropBlocksKey, key, headYaml);
         IDropHead blockDropHead = new BlockDropHead(head, blocks);
 
-        blockDropHead = loadBiomeDrops(dropBlocksBiomesKey, key, headYaml, blockDropHead, plugin);
-        blockDropHead = loadToolDrops(dropBlocksToolsKey, key, headYaml, blockDropHead, plugin);
+        blockDropHead = loadBiomeDropFilter(dropBlocksBiomesKey, key, headYaml, blockDropHead, plugin);
+        blockDropHead = loadToolDropFilter(dropBlocksToolsKey, key, headYaml, blockDropHead, plugin);
 
         plugin.getServer().getPluginManager().registerEvents(blockDropHead, plugin);
         return blockDropHead;
@@ -99,31 +97,31 @@ public class HeadLoader extends HeadConfigAccessor
         List<EntityType> entities = getEntities(dropEntitiesKey, key, headYaml);
         IDropHead entityDropHead = new EntityDropHead(head, entities);
 
-        entityDropHead = loadBiomeDrops(dropEntitiesBiomesKey, key, headYaml, entityDropHead, plugin);
-        entityDropHead = loadToolDrops(dropEntitiesToolsKey, key, headYaml, entityDropHead, plugin);
+        entityDropHead = loadBiomeDropFilter(dropEntitiesBiomesKey, key, headYaml, entityDropHead, plugin);
+        entityDropHead = loadToolDropFilter(dropEntitiesToolsKey, key, headYaml, entityDropHead, plugin);
 
         plugin.getServer().getPluginManager().registerEvents(entityDropHead, plugin);
         return entityDropHead;
     }
 
-    private IDropHead loadBiomeDrops(String biomesKey, String key, ConfigurationSection headYaml, IDropHead head, Plugin plugin) throws InvalidHeadException
+    private IDropHead loadBiomeDropFilter(String biomesKey, String key, ConfigurationSection headYaml, IDropHead head, Plugin plugin) throws InvalidHeadException
     {
         List<Biome> biomes = getBiomes(biomesKey, key, headYaml);
         if (biomes != null)
         {
-            BiomeDropHead biomeDropHead = new BiomeDropHead(head, biomes);
-            return biomeDropHead;
+            BiomeDropHeadFilter biomeDropHeadFilter = new BiomeDropHeadFilter(head, biomes);
+            return biomeDropHeadFilter;
         }
         return head;
     }
 
-    private IDropHead loadToolDrops(String toolsKey, String key, ConfigurationSection headYaml, IDropHead head, Plugin plugin) throws InvalidHeadException
+    private IDropHead loadToolDropFilter(String toolsKey, String key, ConfigurationSection headYaml, IDropHead head, Plugin plugin) throws InvalidHeadException
     {
         List<Material> tools = getTools(toolsKey, key, headYaml);
         if (tools != null)
         {
-            ToolsDropHead toolsDropHead = new ToolsDropHead(head, tools);
-            return toolsDropHead;
+            ToolDropHeadFilter toolDropHeadFilter = new ToolDropHeadFilter(head, tools);
+            return toolDropHeadFilter;
         }
         return head;
     }

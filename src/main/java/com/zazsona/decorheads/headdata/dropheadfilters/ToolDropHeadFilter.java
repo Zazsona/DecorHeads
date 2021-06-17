@@ -1,28 +1,24 @@
-package com.zazsona.decorheads.headdata;
+package com.zazsona.decorheads.headdata.dropheadfilters;
 
-import org.bukkit.Location;
+import com.zazsona.decorheads.headdata.DropHeadDecorator;
+import com.zazsona.decorheads.headdata.IDropHead;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ToolsDropHead extends DropHeadDecorator
+public class ToolDropHeadFilter extends DropHeadDecorator
 {
     private Set<Material> tools = new HashSet<Material>();
 
-    public ToolsDropHead(IDropHead head, Collection<Material> tools)
+    public ToolDropHeadFilter(IDropHead head, Collection<Material> tools)
     {
         super(head);
         if (tools != null)
