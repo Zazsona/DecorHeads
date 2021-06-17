@@ -85,13 +85,25 @@ public class HeadLoader extends HeadConfigAccessor
     private IHead loadBlockDrops(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
     {
         List<Material> blocks = getBlocks(dropBlocksKey, key, headYaml);
-        List<Material> tools = getTools(dropBlocksToolsKey, key, headYaml);
-        IDropHead blockDropHead = new BlockDropHead(head, blocks, tools);
+        IDropHead blockDropHead = new BlockDropHead(head, blocks);
 
         blockDropHead = loadBiomeDrops(dropBlocksBiomesKey, key, headYaml, blockDropHead, plugin);
+        blockDropHead = loadToolDrops(dropBlocksToolsKey, key, headYaml, blockDropHead, plugin);
 
         plugin.getServer().getPluginManager().registerEvents(blockDropHead, plugin);
         return blockDropHead;
+    }
+
+    private IHead loadEntityDrops(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
+    {
+        List<EntityType> entities = getEntities(dropEntitiesKey, key, headYaml);
+        IDropHead entityDropHead = new EntityDropHead(head, entities);
+
+        entityDropHead = loadBiomeDrops(dropEntitiesBiomesKey, key, headYaml, entityDropHead, plugin);
+        entityDropHead = loadToolDrops(dropEntitiesToolsKey, key, headYaml, entityDropHead, plugin);
+
+        plugin.getServer().getPluginManager().registerEvents(entityDropHead, plugin);
+        return entityDropHead;
     }
 
     private IDropHead loadBiomeDrops(String biomesKey, String key, ConfigurationSection headYaml, IDropHead head, Plugin plugin) throws InvalidHeadException
@@ -105,16 +117,15 @@ public class HeadLoader extends HeadConfigAccessor
         return head;
     }
 
-    private IHead loadEntityDrops(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
+    private IDropHead loadToolDrops(String toolsKey, String key, ConfigurationSection headYaml, IDropHead head, Plugin plugin) throws InvalidHeadException
     {
-        List<EntityType> entities = getEntities(dropEntitiesKey, key, headYaml);
-        List<Material> tools = getTools(dropEntitiesToolsKey, key, headYaml);
-        IDropHead entityDropHead = new EntityDropHead(head, entities, tools);
-
-        entityDropHead = loadBiomeDrops(dropEntitiesBiomesKey, key, headYaml, entityDropHead, plugin);
-
-        plugin.getServer().getPluginManager().registerEvents(entityDropHead, plugin);
-        return entityDropHead;
+        List<Material> tools = getTools(toolsKey, key, headYaml);
+        if (tools != null)
+        {
+            ToolsDropHead toolsDropHead = new ToolsDropHead(head, tools);
+            return toolsDropHead;
+        }
+        return head;
     }
 
     private IHead loadCraftHead(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException

@@ -23,7 +23,6 @@ import java.util.Set;
 public class BlockDropHead extends DropHead implements Listener
 {
     private Set<Material> blocks = new HashSet<Material>();
-    private Set<Material> tools = new HashSet<Material>();
 
     public BlockDropHead(IHead head, Collection<Material> blocks)
     {
@@ -32,30 +31,17 @@ public class BlockDropHead extends DropHead implements Listener
             this.blocks.addAll(blocks);
     }
 
-    public BlockDropHead(IHead head, Collection<Material> blocks, Collection<Material> requiredTools)
-    {
-        super(head);
-        if (blocks != null)
-            this.blocks.addAll(blocks);
-        if (requiredTools != null)
-            this.tools.addAll(requiredTools);
-    }
-
     @Override
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onBlockBreak(BlockBreakEvent e)
     {
         if ((blocks.size() == 0 || blocks.contains(e.getBlock().getType())) && rollDrop())
         {
-            ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
-            if (tools.size() == 0 || tools.contains(tool.getType()))
-            {
-                World world = e.getBlock().getWorld();
-                Location location = e.getBlock().getLocation();
-                ItemStack headStack = head.createItem();
-                world.dropItemNaturally(location, headStack);
-                return headStack;
-            }
+            World world = e.getBlock().getWorld();
+            Location location = e.getBlock().getLocation();
+            ItemStack headStack = head.createItem();
+            world.dropItemNaturally(location, headStack);
+            return headStack;
         }
         return null;
     }
