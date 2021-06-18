@@ -60,10 +60,14 @@ public class HeadLoader extends HeadConfigAccessor
             String name = headYaml.getString(nameKey);
             String texture = headYaml.getString(textureKey);
             IHead head = new Head(key, name, texture);
-            head = loadDrop(key, headYaml, head);
-            head = loadBlockDrops(key, headYaml, head, plugin);
-            head = loadEntityDrops(key, headYaml, head, plugin);
-            head = loadCraftHead(key, headYaml, head, plugin);
+            if (Settings.isDropsEnabled())
+            {
+                head = loadDrop(key, headYaml, head);
+                head = loadBlockDrops(key, headYaml, head, plugin);
+                head = loadEntityDrops(key, headYaml, head, plugin);
+            }
+            if (Settings.isCraftingEnabled())
+                head = loadCraftHead(key, headYaml, head, plugin);
             return head;
         }
         else
@@ -159,35 +163,34 @@ public class HeadLoader extends HeadConfigAccessor
     {
         if (headYaml.getKeys(false).contains(craftGridKey))
         {
+            String gridOutOfBoundsMessage = String.format("Shaped recipe for \"%s\" exceeds a 3x3 crafting grid.", key);
             if (ingredients == null || ingredients.size() == 0)
                 throw new InvalidHeadException(String.format("%s has no ingredients specified for crafting.", key));
 
             NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), key);
             ShapedRecipe shapedRecipe = new ShapedRecipe(nsk, head.createItem());
-            List<List<String>> recipeGrid = (List<List<String>>) headYaml.getList(craftGridKey);
-            StringBuilder rowBuilder;
+            List<String> recipeGrid = headYaml.getStringList(craftGridKey);
             List<String> rows = new ArrayList<>();
-            for (int y = 0; y < recipeGrid.size(); y++)
+            for (int i = 0; i < recipeGrid.size(); i++)
             {
-                rowBuilder = new StringBuilder();
-                for (int x = 0; x < recipeGrid.get(y).size(); x++)
-                {
-                    if (y >= 3 || x >= 3)
-                        throw new InvalidHeadException(String.format("Shaped recipe for \"%s\" exceeds a 3x3 crafting grid.", key));
-                    else
-                    {
-                        String gridValue = String.valueOf(recipeGrid.get(y).get(x));
-                        if (gridValue.equals("-"))
-                            gridValue = " "; //YAML won't allow unquoted spaces in array
-                        rowBuilder.append(gridValue);
-                    }
-                }
-                rows.add(rowBuilder.toString());
+                String row = recipeGrid.get(i).replace(" ", "").replace("-", " ");  //Remove formatting spaces, and convert "-" to " " for compatibility with Recipe.
+                if (row.length() > 3)
+                    throw new InvalidHeadException(gridOutOfBoundsMessage);
+                rows.add(row);
             }
+            if (rows.size() > 3)
+                throw new InvalidHeadException(gridOutOfBoundsMessage);
             shapedRecipe.shape(rows.toArray(new String[0]));
             for (int i = 0; i < ingredients.size(); i++)
             {
-                shapedRecipe.setIngredient(String.valueOf(i).charAt(0), ingredients.get(i));
+                try
+                {
+                    shapedRecipe.setIngredient(String.valueOf(i).charAt(0), ingredients.get(i));
+                }
+                catch (IllegalArgumentException e)
+                {
+                    Bukkit.getLogger().info(String.format("[%s] Ignoring %s for crafting %s as it's not on the grid...", Core.PLUGIN_NAME, ingredients.get(i).name(), key));
+                }
             }
             plugin.getServer().addRecipe(shapedRecipe);
             ShapedCraftHead shapedCraftHead = new ShapedCraftHead(head, shapedRecipe);
