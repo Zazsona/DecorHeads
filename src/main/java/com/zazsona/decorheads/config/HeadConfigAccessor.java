@@ -9,24 +9,24 @@ import java.io.InputStream;
 
 public class HeadConfigAccessor
 {
-    protected final String headsFileName = "heads.yml";
-    protected final String baseHeadsFileName = "base-heads.yml";
-    protected final String headsChangelogDirName = "heads-changelog";
-    protected final String changelogFileFormat = ".yml";
+    public static final String headsFileName = "heads.yml";
+    public static final String baseHeadsFileName = "base-heads.yml";
+    public static final String headsChangelogDirName = "heads-changelog";
+    public static final String changelogFileFormat = ".yml";
 
-    protected final String versionKey = "version";
-    protected final String headsKey = "heads";
-    protected final String nameKey = "name";
-    protected final String textureKey = "texture";
-    protected final String dropRateKey = "default-drop-rate";
-    protected final String dropBlocksKey = "drop-blocks";
-    protected final String dropBlocksToolsKey = "drop-blocks-tools";
-    protected final String dropBlocksBiomesKey = "drop-blocks-biomes";
-    protected final String dropEntitiesKey = "drop-entities";
-    protected final String dropEntitiesToolsKey = "drop-entities-tools";
-    protected final String dropEntitiesBiomesKey = "drop-entities-biomes";
-    protected final String craftIngredientsKey = "craft-ingredients";
-    protected final String craftGridKey = "craft-grid";
+    public static final String versionKey = "version";
+    public static final String headsKey = "heads";
+    public static final String nameKey = "name";
+    public static final String textureKey = "texture";
+    public static final String dropRateKey = "default-drop-rate";
+    public static final String dropBlocksKey = "drop-blocks";
+    public static final String dropBlocksToolsKey = "drop-blocks-tools";
+    public static final String dropBlocksBiomesKey = "drop-blocks-biomes";
+    public static final String dropEntitiesKey = "drop-entities";
+    public static final String dropEntitiesToolsKey = "drop-entities-tools";
+    public static final String dropEntitiesBiomesKey = "drop-entities-biomes";
+    public static final String craftIngredientsKey = "craft-ingredients";
+    public static final String craftGridKey = "craft-grid";
 
     public File getHeadsFile()
     {
