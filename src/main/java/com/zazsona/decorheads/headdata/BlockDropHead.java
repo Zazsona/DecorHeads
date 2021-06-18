@@ -5,6 +5,7 @@ import com.zazsona.decorheads.HeadDropListener;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -35,13 +36,11 @@ public class BlockDropHead extends DropHead implements Listener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onBlockBreak(BlockBreakEvent e)
     {
-        if ((blocks.size() == 0 || blocks.contains(e.getBlock().getType())) && rollDrop())
+        if ((blocks.size() == 0 || blocks.contains(e.getBlock().getType())))
         {
             World world = e.getBlock().getWorld();
             Location location = e.getBlock().getLocation();
-            ItemStack headStack = head.createItem();
-            world.dropItemNaturally(location, headStack);
-            return headStack;
+            return super.dropHead(world, location);
         }
         return null;
     }

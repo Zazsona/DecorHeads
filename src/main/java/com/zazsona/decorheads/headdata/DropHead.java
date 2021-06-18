@@ -1,9 +1,12 @@
 package com.zazsona.decorheads.headdata;
 
+import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.HeadManager;
+import com.zazsona.decorheads.Permissions;
 import com.zazsona.decorheads.Settings;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -13,6 +16,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 abstract class DropHead extends HeadDecorator implements IDropHead
@@ -34,10 +38,21 @@ abstract class DropHead extends HeadDecorator implements IDropHead
      * Performs a roll check against the chance to drop
      * @return true/false on head roll passed.
      */
-    protected boolean rollDrop()
+    public boolean rollDrop()
     {
         double roll = ((rand.nextInt(9999)+1.0)/100.0);
         return (roll <= Settings.getDropChance(super.getKey()));
+    }
+
+    public ItemStack dropHead(World world, Location location)
+    {
+        if (rollDrop())
+        {
+            ItemStack headStack = head.createItem();
+            world.dropItemNaturally(location, headStack);
+            return headStack;
+        }
+        return null;
     }
 
     @Override

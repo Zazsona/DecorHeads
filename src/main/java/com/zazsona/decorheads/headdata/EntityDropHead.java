@@ -31,13 +31,11 @@ public class EntityDropHead extends DropHead implements Listener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {
-        if (entities.size() == 0 || entities.contains(e.getEntityType()) && rollDrop())
+        if (entities.size() == 0 || entities.contains(e.getEntityType()))
         {
             World world = e.getEntity().getWorld();
             Location location = e.getEntity().getLocation();
-            ItemStack headStack = head.createItem();
-            world.dropItemNaturally(location, headStack);
-            return headStack;
+            return super.dropHead(world, location);
         }
         return null;
     }
