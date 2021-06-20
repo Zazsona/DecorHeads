@@ -24,14 +24,6 @@ public abstract class DropHeadSource extends HeadSource implements IDropHeadSour
         super(head);
     }
 
-    @Override
-    public Set<HeadSourceType> getSourceTypes()
-    {
-        Set<HeadSourceType> sourceTypes = super.getSourceTypes();
-        sourceTypes.add(HeadSourceType.DROP);
-        return sourceTypes;
-    }
-
     /**
      * Performs a roll check against the chance to drop
      * @return true/false on head roll passed.

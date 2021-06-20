@@ -1,4 +1,0 @@
-version: 1.5.1
-heads:
-  foo:
-    default-drop-rate: 100

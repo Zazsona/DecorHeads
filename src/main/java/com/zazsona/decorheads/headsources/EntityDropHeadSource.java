@@ -27,6 +27,14 @@ public class EntityDropHeadSource extends DropHeadSource
     }
 
     @Override
+    public Set<HeadSourceType> getSourceTypes()
+    {
+        Set<HeadSourceType> sourceTypes = super.getSourceTypes();
+        sourceTypes.add(HeadSourceType.ENTITY_KILL_DROP);
+        return sourceTypes;
+    }
+
+    @Override
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {

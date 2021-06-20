@@ -2,6 +2,9 @@ package com.zazsona.decorheads.headsources;
 
 public enum HeadSourceType
 {
-    DROP,
+    MINE_DROP,
+    ENTITY_KILL_DROP,
+    SMELT_DROP,
+    CRAFT_DROP,
     CRAFT
 }
