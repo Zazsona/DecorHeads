@@ -79,16 +79,4 @@ public class Head implements IHead
         meta.setLore(loreList);
         return meta;
     }
-
-    @Override
-    public boolean isObtainedThroughDrops()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isObtainedThroughCreation()
-    {
-        return false;
-    }
 }
