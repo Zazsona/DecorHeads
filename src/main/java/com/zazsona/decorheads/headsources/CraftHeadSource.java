@@ -12,14 +12,7 @@ public abstract class CraftHeadSource extends HeadSource implements ICraftHeadSo
     public CraftHeadSource(IHead head, Recipe recipe)
     {
         super(head);
-    }
-
-    @Override
-    public Set<HeadSourceType> getSourceTypes()
-    {
-        Set<HeadSourceType> sourceTypes = super.getSourceTypes();
-        sourceTypes.add(HeadSourceType.CRAFT);
-        return sourceTypes;
+        this.recipe = recipe;
     }
 
     @Override

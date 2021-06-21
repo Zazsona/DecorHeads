@@ -6,5 +6,6 @@ public enum HeadSourceType
     ENTITY_KILL_DROP,
     SMELT_DROP,
     CRAFT_DROP,
-    CRAFT
+    SHAPELESS_CRAFT,
+    SHAPED_CRAFT
 }
