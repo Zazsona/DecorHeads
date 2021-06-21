@@ -1,9 +1,21 @@
 version: 1.6.0
 heads:
   foo:
-    drop-blocks: ['DIRT', 'sand']
-    craft-ingredients: ['oak_log', 'redstone']
-    craft-grid:
-      - '0 0 0'
-      - '0 - 0'
-      - '0 0 0'
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks: [ 'DIRT', 'sand' ]
+        tools: ['diamond_axe']
+        default-drop-rate: 100
+      default-drop-1:
+        source-type: MINE_DROP
+        blocks: [ 'oak_log', 'gravel' ]
+        tools: [ 'diamond_pickaxe', 'redstone' ]
+        default-drop-rate: 100
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients: [ 'oak_log', 'redstone' ]
+        grid:
+          - '0 0 0'
+          - '0 - 0'
+          - '0 0 0'

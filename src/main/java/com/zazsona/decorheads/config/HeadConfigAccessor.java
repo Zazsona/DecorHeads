@@ -18,15 +18,15 @@ public class HeadConfigAccessor
     public static final String headsKey = "heads";
     public static final String nameKey = "name";
     public static final String textureKey = "texture";
+    public static final String sourcesKey = "sources";
+    public static final String sourceTypeKey = "source-type";
     public static final String dropRateKey = "default-drop-rate";
-    public static final String dropBlocksKey = "drop-blocks";
-    public static final String dropBlocksToolsKey = "drop-blocks-tools";
-    public static final String dropBlocksBiomesKey = "drop-blocks-biomes";
-    public static final String dropEntitiesKey = "drop-entities";
-    public static final String dropEntitiesToolsKey = "drop-entities-tools";
-    public static final String dropEntitiesBiomesKey = "drop-entities-biomes";
-    public static final String craftIngredientsKey = "craft-ingredients";
-    public static final String craftGridKey = "craft-grid";
+    public static final String dropBlocksKey = "blocks";
+    public static final String dropToolsKey = "tools";
+    public static final String dropBiomesKey = "biomes";
+    public static final String dropEntitiesKey = "entities";
+    public static final String craftIngredientsKey = "ingredients";
+    public static final String craftGridKey = "grid";
 
     public File getHeadsFile()
     {
