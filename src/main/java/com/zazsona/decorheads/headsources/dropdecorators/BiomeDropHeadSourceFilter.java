@@ -2,6 +2,7 @@ package com.zazsona.decorheads.headsources.dropdecorators;
 
 import com.zazsona.decorheads.headsources.DropHeadSource;
 import com.zazsona.decorheads.headsources.DropHeadSourceDecorator;
+import com.zazsona.decorheads.headsources.IDropHeadSource;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -22,7 +23,7 @@ public class BiomeDropHeadSourceFilter extends DropHeadSourceDecorator
 {
     private Set<Biome> biomes = new HashSet<>();
 
-    public BiomeDropHeadSourceFilter(DropHeadSource dropHeadSource, Collection<Biome> biomes)
+    public BiomeDropHeadSourceFilter(IDropHeadSource dropHeadSource, Collection<Biome> biomes)
     {
         super(dropHeadSource);
         if (biomes != null)

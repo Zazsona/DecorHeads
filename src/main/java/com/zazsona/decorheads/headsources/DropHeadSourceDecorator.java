@@ -12,9 +12,9 @@ import java.util.Set;
 
 public class DropHeadSourceDecorator implements IDropHeadSource
 {
-    protected DropHeadSource dropHeadSource;
+    protected IDropHeadSource dropHeadSource;
 
-    public DropHeadSourceDecorator(DropHeadSource dropHeadSource)
+    public DropHeadSourceDecorator(IDropHeadSource dropHeadSource)
     {
         this.dropHeadSource = dropHeadSource;
     }

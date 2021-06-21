@@ -2,6 +2,7 @@ package com.zazsona.decorheads.headsources.dropdecorators;
 
 import com.zazsona.decorheads.headsources.DropHeadSource;
 import com.zazsona.decorheads.headsources.DropHeadSourceDecorator;
+import com.zazsona.decorheads.headsources.IDropHeadSource;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +19,7 @@ public class ToolDropHeadSourceFilter extends DropHeadSourceDecorator
 {
     private Set<Material> tools = new HashSet<Material>();
 
-    public ToolDropHeadSourceFilter(DropHeadSource dropHeadSource, Collection<Material> tools)
+    public ToolDropHeadSourceFilter(IDropHeadSource dropHeadSource, Collection<Material> tools)
     {
         super(dropHeadSource);
         if (tools != null)
