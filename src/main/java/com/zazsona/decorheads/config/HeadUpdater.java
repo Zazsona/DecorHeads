@@ -120,7 +120,7 @@ public class HeadUpdater extends HeadConfigAccessor
         if (!targetYaml.contains(path))
         {
             if (sourceYaml.isConfigurationSection(path))
-                targetYaml.createSection(path, sourceYaml.getValues(true));
+                targetYaml.createSection(path, sourceYaml.getConfigurationSection(path).getValues(true));
             else
                 targetYaml.set(path, sourceYaml.get(path));
         }

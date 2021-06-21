@@ -3,9 +3,11 @@ package com.zazsona.decorheads.config;
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.Settings;
 import com.zazsona.decorheads.exceptions.InvalidHeadException;
+import com.zazsona.decorheads.exceptions.InvalidHeadSourceException;
 import com.zazsona.decorheads.headdata.*;
-import com.zazsona.decorheads.headdata.dropheadfilters.BiomeDropHeadFilter;
-import com.zazsona.decorheads.headdata.dropheadfilters.ToolDropHeadFilter;
+import com.zazsona.decorheads.headsources.*;
+import com.zazsona.decorheads.headsources.dropdecorators.BiomeDropHeadSourceFilter;
+import com.zazsona.decorheads.headsources.dropdecorators.ToolDropHeadSourceFilter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -42,37 +44,89 @@ public class HeadLoader extends HeadConfigAccessor
         {
             try
             {
-                IHead head = loadHead(plugin, headKey, headsYaml.getConfigurationSection(headKey));
+                ConfigurationSection headYaml = headsYaml.getConfigurationSection(headKey);
+                IHead head = loadHead(headKey, headYaml);
+                List<IHeadSource> headSources = loadHeadSources(plugin, head, headYaml);
                 if (head != null)
                     loadedHeads.put(headKey, head);
             }
             catch (InvalidHeadException e)
             {
-                Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+                Bukkit.getLogger().severe(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
             }
         }
     }
 
-    private IHead loadHead(Plugin plugin, String key, ConfigurationSection headYaml) throws InvalidHeadException
+    private IHead loadHead(String key, ConfigurationSection headYaml) throws InvalidHeadException
     {
         if (headYaml.contains(nameKey) && headYaml.contains(textureKey))
         {
             String name = headYaml.getString(nameKey);
             String texture = headYaml.getString(textureKey);
             IHead head = new Head(key, name, texture);
-            if (Settings.isDropsEnabled())
-            {
-                head = loadDrop(key, headYaml, head);
-                head = loadBlockDrops(key, headYaml, head, plugin);
-                head = loadEntityDrops(key, headYaml, head, plugin);
-            }
-            if (Settings.isCraftingEnabled())
-                head = loadCraftHead(key, headYaml, head, plugin);
             return head;
         }
         else
             throw new InvalidHeadException(String.format("Head %s is missing the required name &/or texture fields. It will not be loaded.", key));
+    }
 
+    private List<IHeadSource> loadHeadSources(Plugin plugin, IHead head, ConfigurationSection headYaml)
+    {
+        ArrayList<IHeadSource> headSources = new ArrayList<>();
+        ConfigurationSection sourcesYaml = headYaml.getConfigurationSection(sourcesKey);
+        for (String sourceKey : sourcesYaml.getKeys(false))
+        {
+            try
+            {
+                ConfigurationSection sourceConfiguration = sourcesYaml.getConfigurationSection(sourceKey);
+                if (sourceConfiguration.contains(sourceTypeKey))
+                {
+                    String sourceTypeText = sourceConfiguration.getString(sourceTypeKey);
+                    HeadSourceType sourceType = HeadSourceType.valueOf(sourceTypeText.toUpperCase());
+                    IHeadSource headSource = buildBaseHeadSource(sourceType, head, sourceConfiguration);
+                    if (headSource instanceof IDropHeadSource && Settings.isDropsEnabled())
+                    {
+                        IDropHeadSource dropHeadSource = (IDropHeadSource) headSource;
+                        dropHeadSource = applyToolDropFilter(dropToolsKey, dropHeadSource, sourceConfiguration);
+                        dropHeadSource = applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceConfiguration);
+                        plugin.getServer().getPluginManager().registerEvents(dropHeadSource, plugin);
+                        headSources.add(dropHeadSource);
+                    }
+                    else if (headSource instanceof ICraftHeadSource && Settings.isCraftingEnabled())
+                    {
+                        ICraftHeadSource craftHeadSource = (ICraftHeadSource) headSource;
+                        plugin.getServer().addRecipe(craftHeadSource.getRecipe());
+                        headSources.add(craftHeadSource);
+                    }
+                }
+                else
+                    throw new InvalidHeadSourceException(String.format("Source \"%s\" for %s has no source type!", sourceKey, head.getKey()));
+            }
+            catch (Exception e)
+            {
+                Bukkit.getLogger().severe(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+            }
+        }
+        return headSources;
+    }
+
+    private IHeadSource buildBaseHeadSource(HeadSourceType sourceType, IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        switch (sourceType)
+        {
+            case MINE_DROP:
+                List<Material> blocks = getBlocks(dropBlocksKey, head.getKey(), sourceYaml);
+                return new BlockDropHeadSource(head, blocks);
+            case ENTITY_KILL_DROP:
+                List<EntityType> entities = getEntities(dropEntitiesKey, head.getKey(), sourceYaml);
+                return new EntityDropHeadSource(head, entities);
+            case SHAPELESS_CRAFT:
+                return buildShapelessCraftSource(head, sourceYaml);
+            case SHAPED_CRAFT:
+                return buildShapedCraftSource(head, sourceYaml);
+            default:
+                throw new InvalidHeadSourceException(String.format("%s sources have not been implemented.", sourceType.name()));
+        }
     }
 
     private IHead loadDrop(String key, ConfigurationSection headYaml, IHead head)
@@ -84,102 +138,43 @@ public class HeadLoader extends HeadConfigAccessor
         return head;
     }
 
-    private IHead loadBlockDrops(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
+    private ShapelessCraftHeadSource buildShapelessCraftSource(IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
-        List<Material> blocks = getBlocks(dropBlocksKey, key, headYaml);
-        IDropHead blockDropHead = new BlockDropHead(head, blocks);
-
-        blockDropHead = loadBiomeDropFilter(dropBlocksBiomesKey, key, headYaml, blockDropHead, plugin);
-        blockDropHead = loadToolDropFilter(dropBlocksToolsKey, key, headYaml, blockDropHead, plugin);
-
-        plugin.getServer().getPluginManager().registerEvents(blockDropHead, plugin);
-        return blockDropHead;
-    }
-
-    private IHead loadEntityDrops(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
-    {
-        List<EntityType> entities = getEntities(dropEntitiesKey, key, headYaml);
-        IDropHead entityDropHead = new EntityDropHead(head, entities);
-
-        entityDropHead = loadBiomeDropFilter(dropEntitiesBiomesKey, key, headYaml, entityDropHead, plugin);
-        entityDropHead = loadToolDropFilter(dropEntitiesToolsKey, key, headYaml, entityDropHead, plugin);
-
-        plugin.getServer().getPluginManager().registerEvents(entityDropHead, plugin);
-        return entityDropHead;
-    }
-
-    private IDropHead loadBiomeDropFilter(String biomesKey, String key, ConfigurationSection headYaml, IDropHead head, Plugin plugin) throws InvalidHeadException
-    {
-        List<Biome> biomes = getBiomes(biomesKey, key, headYaml);
-        if (biomes != null)
-        {
-            BiomeDropHeadFilter biomeDropHeadFilter = new BiomeDropHeadFilter(head, biomes);
-            return biomeDropHeadFilter;
-        }
-        return head;
-    }
-
-    private IDropHead loadToolDropFilter(String toolsKey, String key, ConfigurationSection headYaml, IDropHead head, Plugin plugin) throws InvalidHeadException
-    {
-        List<Material> tools = getTools(toolsKey, key, headYaml);
-        if (tools != null)
-        {
-            ToolDropHeadFilter toolDropHeadFilter = new ToolDropHeadFilter(head, tools);
-            return toolDropHeadFilter;
-        }
-        return head;
-    }
-
-    private IHead loadCraftHead(String key, ConfigurationSection headYaml, IHead head, Plugin plugin) throws InvalidHeadException
-    {
-        List<Material> craftingIngredients = getCraftIngredients(key, headYaml);
-        if (craftingIngredients != null)
-        {
-            if (headYaml.getKeys(false).contains(craftGridKey))
-                return loadShapedCraftHead(key, headYaml, head, plugin, craftingIngredients);
-            else
-                return loadShapelessCraftHead(key, headYaml, head, plugin, craftingIngredients);
-        }
-        return head;
-    }
-
-    private IHead loadShapelessCraftHead(String key, ConfigurationSection headYaml, IHead head, Plugin plugin, List<Material> ingredients) throws InvalidHeadException
-    {
+        List<Material> ingredients = getCraftIngredients(craftIngredientsKey, sourceYaml);
         if (ingredients == null || ingredients.size() == 0)
-            throw new InvalidHeadException(String.format("%s has no ingredients specified for crafting.", key));
+            throw new InvalidHeadSourceException(String.format("%s for %s has no ingredients specified for crafting.", sourceYaml.getCurrentPath(), head.getKey()));
 
-        NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), key);
+        NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), sourceYaml.getCurrentPath());
         ShapelessRecipe shapelessRecipe = new ShapelessRecipe(nsk, head.createItem());
         for (Material ingredient : ingredients)
         {
             shapelessRecipe.addIngredient(ingredient);
         }
-        plugin.getServer().addRecipe(shapelessRecipe);
-        ShapelessCraftHead shapelessCraftHead = new ShapelessCraftHead(head, shapelessRecipe);
-        return shapelessCraftHead;
+        return new ShapelessCraftHeadSource(head, shapelessRecipe);
     }
 
-    private IHead loadShapedCraftHead(String key, ConfigurationSection headYaml, IHead head, Plugin plugin, List<Material> ingredients) throws InvalidHeadException
+    private ShapedCraftHeadSource buildShapedCraftSource(IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
-        if (headYaml.getKeys(false).contains(craftGridKey))
+        List<Material> ingredients = getCraftIngredients(craftIngredientsKey, sourceYaml);
+        if (sourceYaml.getKeys(false).contains(craftGridKey))
         {
-            String gridOutOfBoundsMessage = String.format("Shaped recipe for \"%s\" exceeds a 3x3 crafting grid.", key);
+            String gridOutOfBoundsMessage = String.format("Shaped recipe %s for \"%s\" exceeds a 3x3 crafting grid.", sourceYaml.getCurrentPath(), head.getKey());
             if (ingredients == null || ingredients.size() == 0)
-                throw new InvalidHeadException(String.format("%s has no ingredients specified for crafting.", key));
+                throw new InvalidHeadSourceException(String.format("%s for %s has no ingredients specified for crafting.", sourceYaml.getCurrentPath(), head.getKey()));
 
-            NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), key);
+            NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), sourceYaml.getCurrentPath());
             ShapedRecipe shapedRecipe = new ShapedRecipe(nsk, head.createItem());
-            List<String> recipeGrid = headYaml.getStringList(craftGridKey);
+            List<String> recipeGrid = sourceYaml.getStringList(craftGridKey);
             List<String> rows = new ArrayList<>();
             for (int i = 0; i < recipeGrid.size(); i++)
             {
                 String row = recipeGrid.get(i).replace(" ", "").replace("-", " ");  //Remove formatting spaces, and convert "-" to " " for compatibility with Recipe.
                 if (row.length() > 3)
-                    throw new InvalidHeadException(gridOutOfBoundsMessage);
+                    throw new InvalidHeadSourceException(gridOutOfBoundsMessage);
                 rows.add(row);
             }
             if (rows.size() > 3)
-                throw new InvalidHeadException(gridOutOfBoundsMessage);
+                throw new InvalidHeadSourceException(gridOutOfBoundsMessage);
             shapedRecipe.shape(rows.toArray(new String[0]));
             for (int i = 0; i < ingredients.size(); i++)
             {
@@ -189,28 +184,48 @@ public class HeadLoader extends HeadConfigAccessor
                 }
                 catch (IllegalArgumentException e)
                 {
-                    Bukkit.getLogger().info(String.format("[%s] Ignoring %s for crafting %s as it's not on the grid...", Core.PLUGIN_NAME, ingredients.get(i).name(), key));
+                    Bukkit.getLogger().info(String.format("[%s] Ignoring %s for crafting %s via %s as it's not on the grid...", Core.PLUGIN_NAME, ingredients.get(i).name(), head.getKey(), sourceYaml.getCurrentPath()));
                 }
             }
-            plugin.getServer().addRecipe(shapedRecipe);
-            ShapedCraftHead shapedCraftHead = new ShapedCraftHead(head, shapedRecipe);
-            return shapedCraftHead;
+            return new ShapedCraftHeadSource(head, shapedRecipe);
         }
         else
-            return head;
+            throw new InvalidHeadSourceException(String.format("%s in %s is a shaped craft, but has no grid!", sourceYaml.getCurrentPath(), head.getKey()));
     }
 
-    private List<Material> getBlocks(String blocksKey, String headKey, ConfigurationSection headYaml) throws InvalidHeadException
+    private IDropHeadSource applyBiomeDropFilter(String biomesKey, IDropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
-        if (headYaml.getKeys(false).contains(blocksKey))
+        List<Biome> biomes = getBiomes(biomesKey, headSource.getHead().getKey(), sourceYaml);
+        if (biomes != null)
         {
-            List<String> blockNames = headYaml.getStringList(blocksKey);
+            BiomeDropHeadSourceFilter biomeDropSourceFilter = new BiomeDropHeadSourceFilter(headSource, biomes);
+            return biomeDropSourceFilter;
+        }
+        return headSource;
+    }
+
+    private IDropHeadSource applyToolDropFilter(String toolsKey, IDropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        List<Material> tools = getTools(toolsKey, headSource.getHead().getKey(), sourceYaml);
+        if (tools != null)
+        {
+            ToolDropHeadSourceFilter toolDropHeadFilter = new ToolDropHeadSourceFilter(headSource, tools);
+            return toolDropHeadFilter;
+        }
+        return headSource;
+    }
+
+    private List<Material> getBlocks(String blocksKey, String headKey, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        if (sourceYaml.getKeys(false).contains(blocksKey))
+        {
+            List<String> blockNames = sourceYaml.getStringList(blocksKey);
             List<Material> blocks = new ArrayList<>();
             for (String blockName : blockNames)
             {
                 Material block = Material.matchMaterial(blockName);
                 if (block == null || !block.isBlock())
-                    throw new InvalidHeadException(String.format("Unrecognised block \"%s\" for %s in %s.", blockName, headKey, blocksKey));
+                    throw new InvalidHeadSourceException(String.format("Unrecognised block \"%s\" for %s in %s.", blockName, headKey, blocksKey));
                 else
                     blocks.add(block); //Uses a map, so should be plenty performant.
             }
@@ -219,11 +234,11 @@ public class HeadLoader extends HeadConfigAccessor
         return null;
     }
 
-    private List<EntityType> getEntities(String entitiesKey, String headKey, ConfigurationSection headYaml) throws InvalidHeadException
+    private List<EntityType> getEntities(String entitiesKey, String headKey, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
-        if (headYaml.getKeys(false).contains(entitiesKey))
+        if (sourceYaml.getKeys(false).contains(entitiesKey))
         {
-            List<String> entityNames = headYaml.getStringList(entitiesKey);
+            List<String> entityNames = sourceYaml.getStringList(entitiesKey);
             List<EntityType> entities = new ArrayList<>();
             for (String entityName : entityNames)
             {
@@ -234,7 +249,7 @@ public class HeadLoader extends HeadConfigAccessor
                 }
                 catch (IllegalArgumentException e)
                 {
-                    throw new InvalidHeadException(String.format("Unrecognised entity \"%s\" for %s in %s.", entityName, headKey, entitiesKey), e);
+                    throw new InvalidHeadSourceException(String.format("Unrecognised entity \"%s\" for %s in %s.", entityName, headKey, entitiesKey), e);
                 }
             }
             return (entities.size() > 0) ? entities : null;
@@ -242,17 +257,17 @@ public class HeadLoader extends HeadConfigAccessor
         return null;
     }
 
-    private List<Material> getTools(String toolsKey, String headKey, ConfigurationSection headYaml) throws InvalidHeadException
+    private List<Material> getTools(String toolsKey, String headKey, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
-        if (headYaml.getKeys(false).contains(toolsKey))
+        if (sourceYaml.getKeys(false).contains(toolsKey))
         {
-            List<String> toolNames = headYaml.getStringList(toolsKey);
+            List<String> toolNames = sourceYaml.getStringList(toolsKey);
             List<Material> tools = new ArrayList<>();
             for (String toolName : toolNames)
             {
                 Material tool = Material.matchMaterial(toolName);
                 if (tool == null)
-                    throw new InvalidHeadException(String.format("Unrecognised tool \"%s\" for %s in %s.", toolName, headKey, toolsKey));
+                    throw new InvalidHeadSourceException(String.format("Unrecognised tool \"%s\" for %s in %s.", toolName, headKey, toolsKey));
                 else
                     tools.add(tool);
             }
@@ -261,11 +276,11 @@ public class HeadLoader extends HeadConfigAccessor
         return null;
     }
 
-    private List<Biome> getBiomes(String biomesKey, String headKey, ConfigurationSection headYaml) throws InvalidHeadException
+    private List<Biome> getBiomes(String biomesKey, String headKey, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
-        if (headYaml.getKeys(false).contains(biomesKey))
+        if (sourceYaml.getKeys(false).contains(biomesKey))
         {
-            List<String> biomeNames = headYaml.getStringList(biomesKey);
+            List<String> biomeNames = sourceYaml.getStringList(biomesKey);
             List<Biome> biomes = new ArrayList<>();
             for (String biomeName : biomeNames)
             {
@@ -276,7 +291,7 @@ public class HeadLoader extends HeadConfigAccessor
                 }
                 catch (IllegalArgumentException e)
                 {
-                    throw new InvalidHeadException(String.format("Unrecognised biome \"%s\" for %s in %s.", biomeName, headKey, biomesKey), e);
+                    throw new InvalidHeadSourceException(String.format("Unrecognised biome \"%s\" for %s in %s.", biomeName, headKey, biomesKey), e);
                 }
             }
             return (biomes.size() > 0) ? biomes : null;
@@ -284,11 +299,11 @@ public class HeadLoader extends HeadConfigAccessor
         return null;
     }
 
-    private List<Material> getCraftIngredients(String key, ConfigurationSection headYaml) throws InvalidHeadException
+    private List<Material> getCraftIngredients(String key, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
-        if (headYaml.getKeys(false).contains(craftIngredientsKey))
+        if (sourceYaml.getKeys(false).contains(craftIngredientsKey))
         {
-            List<String> ingredientsList = (List<String>) headYaml.getList(craftIngredientsKey);
+            List<String> ingredientsList = (List<String>) sourceYaml.getList(craftIngredientsKey);
             List<Material> ingredients = new ArrayList<>();
             for (int i = 0; i < ingredientsList.size(); i++)
             {
@@ -297,7 +312,7 @@ public class HeadLoader extends HeadConfigAccessor
                 if (ingredient != null)
                     ingredients.add(ingredient);
                 else
-                    throw new InvalidHeadException(String.format("Unrecognised crafting ingredient \"%s\" for %s.", ingredientName, key));
+                    throw new InvalidHeadSourceException(String.format("Unrecognised crafting ingredient \"%s\" for %s.", ingredientName, key));
             }
             return ingredients;
         }
