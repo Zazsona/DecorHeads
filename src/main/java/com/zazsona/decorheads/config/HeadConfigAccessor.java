@@ -20,7 +20,7 @@ public class HeadConfigAccessor
     public static final String textureKey = "texture";
     public static final String sourcesKey = "sources";
     public static final String sourceTypeKey = "source-type";
-    public static final String dropRateKey = "default-drop-rate";
+    public static final String dropRateKey = "drop-rate";
     public static final String dropBlocksKey = "blocks";
     public static final String dropToolsKey = "tools";
     public static final String dropBiomesKey = "biomes";

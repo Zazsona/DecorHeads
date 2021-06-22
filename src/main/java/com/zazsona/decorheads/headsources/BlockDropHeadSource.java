@@ -17,9 +17,9 @@ public class BlockDropHeadSource extends DropHeadSource
 {
     private Set<Material> blocks = new HashSet<Material>();
 
-    public BlockDropHeadSource(IHead head, Collection<Material> blocks)
+    public BlockDropHeadSource(IHead head, double dropRate, Collection<Material> blocks)
     {
-        super(head);
+        super(head, dropRate);
         if (blocks != null)
             this.blocks.addAll(blocks);
     }

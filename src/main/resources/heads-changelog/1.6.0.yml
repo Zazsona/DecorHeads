@@ -6,12 +6,12 @@ heads:
         source-type: MINE_DROP
         blocks: [ 'DIRT', 'sand' ]
         tools: ['diamond_axe']
-        default-drop-rate: 100
+        drop-rate: 100
       default-drop-1:
         source-type: MINE_DROP
         blocks: [ 'oak_log', 'gravel' ]
         tools: [ 'diamond_pickaxe', 'redstone' ]
-        default-drop-rate: 100
+        drop-rate: 50
       default-craft-0:
         source-type: SHAPED_CRAFT
         ingredients: [ 'oak_log', 'redstone' ]

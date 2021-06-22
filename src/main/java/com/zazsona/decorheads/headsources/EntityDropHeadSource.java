@@ -19,9 +19,9 @@ public class EntityDropHeadSource extends DropHeadSource
 {
     private Set<EntityType> entities = new HashSet<EntityType>();
 
-    public EntityDropHeadSource(IHead head, Collection<EntityType> entities)
+    public EntityDropHeadSource(IHead head, double dropRate, Collection<EntityType> entities)
     {
-        super(head);
+        super(head, dropRate);
         if (entities != null)
             this.entities.addAll(entities);
     }

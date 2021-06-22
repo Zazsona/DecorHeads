@@ -18,10 +18,12 @@ import java.util.Set;
 public abstract class DropHeadSource extends HeadSource implements IDropHeadSource
 {
     private static Random rand = new Random();
+    private double dropRate;
 
-    public DropHeadSource(IHead head)
+    public DropHeadSource(IHead head, double dropRate)
     {
         super(head);
+        this.dropRate = dropRate;
     }
 
     /**
@@ -31,7 +33,7 @@ public abstract class DropHeadSource extends HeadSource implements IDropHeadSour
     public boolean rollDrop()
     {
         double roll = ((rand.nextInt(9999)+1.0)/100.0);
-        return (roll <= Settings.getDropChance(getHead().getKey()));
+        return (roll <= dropRate);
     }
 
     public ItemStack dropHead(World world, Location location)

@@ -237,6 +237,7 @@ public class HeadLoader extends HeadConfigAccessor
     {
         if (headYaml == null)
             throw new InvalidHeadException("Head Yaml is null.");
+        Bukkit.getLogger().info(String.format("[%s] Validating head: %s...", Core.PLUGIN_NAME, headYaml.getName()));
         IHead head = parseHead(headYaml);
         ConfigurationSection sourcesYaml = headYaml.getConfigurationSection(sourcesKey);
         for (String sourceKey : sourcesYaml.getKeys(false))
@@ -284,14 +285,15 @@ public class HeadLoader extends HeadConfigAccessor
 
     private IHeadSource buildBaseHeadSource(HeadSourceType sourceType, IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
+        double dropRate = getDropRate(dropRateKey, sourceYaml);
         switch (sourceType)
         {
             case MINE_DROP:
                 List<Material> blocks = getBlocks(dropBlocksKey, head.getKey(), sourceYaml);
-                return new BlockDropHeadSource(head, blocks);
+                return new BlockDropHeadSource(head, dropRate, blocks);
             case ENTITY_KILL_DROP:
                 List<EntityType> entities = getEntities(dropEntitiesKey, head.getKey(), sourceYaml);
-                return new EntityDropHeadSource(head, entities);
+                return new EntityDropHeadSource(head, dropRate, entities);
             case SHAPELESS_CRAFT:
                 return buildShapelessCraftSource(head, sourceYaml);
             case SHAPED_CRAFT:
@@ -299,15 +301,6 @@ public class HeadLoader extends HeadConfigAccessor
             default:
                 throw new InvalidHeadSourceException(String.format("%s sources have not been implemented.", sourceType.name()));
         }
-    }
-
-    private IHead loadDrop(String key, ConfigurationSection headYaml, IHead head)
-    {
-        if (headYaml.getKeys(false).contains(dropRateKey) && !Settings.isHeadDropRateInConfig(key))
-        {
-            Settings.setDropChance(key, headYaml.getDouble(dropRateKey));
-        }
-        return head;
     }
 
     private ShapelessCraftHeadSource buildShapelessCraftSource(IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
@@ -387,6 +380,14 @@ public class HeadLoader extends HeadConfigAccessor
             return toolDropHeadFilter;
         }
         return headSource;
+    }
+
+    private double getDropRate(String dropRateKey, ConfigurationSection sourceYaml)
+    {
+        if (sourceYaml.getKeys(false).contains(dropRateKey))
+            return sourceYaml.getDouble(dropRateKey);
+        else
+            return 100;
     }
 
     private List<Material> getBlocks(String blocksKey, String headKey, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
