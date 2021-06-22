@@ -309,7 +309,7 @@ public class HeadLoader extends HeadConfigAccessor
         if (ingredients == null || ingredients.size() == 0)
             throw new InvalidHeadSourceException(String.format("%s for %s has no ingredients specified for crafting.", sourceYaml.getCurrentPath(), head.getKey()));
 
-        NamespacedKey nsk = new NamespacedKey(plugin, sourceYaml.getCurrentPath());
+        NamespacedKey nsk = new NamespacedKey(plugin, head.getKey()+"/"+sourceYaml.getName());
         ShapelessRecipe shapelessRecipe = new ShapelessRecipe(nsk, head.createItem());
         shapelessRecipe.setGroup(head.getKey());
         for (Material ingredient : ingredients)
@@ -328,7 +328,7 @@ public class HeadLoader extends HeadConfigAccessor
             if (ingredients == null || ingredients.size() == 0)
                 throw new InvalidHeadSourceException(String.format("%s for %s has no ingredients specified for crafting.", sourceYaml.getCurrentPath(), head.getKey()));
 
-            NamespacedKey nsk = new NamespacedKey(plugin, sourceYaml.getCurrentPath());
+            NamespacedKey nsk = new NamespacedKey(plugin, head.getKey()+"/"+sourceYaml.getName());
             ShapedRecipe shapedRecipe = new ShapedRecipe(nsk, head.createItem());
             shapedRecipe.setGroup(head.getKey());
             List<String> recipeGrid = sourceYaml.getStringList(craftGridKey);
