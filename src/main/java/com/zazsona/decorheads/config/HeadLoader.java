@@ -9,12 +9,16 @@ import com.zazsona.decorheads.headsources.*;
 import com.zazsona.decorheads.headsources.dropdecorators.BiomeDropHeadSourceFilter;
 import com.zazsona.decorheads.headsources.dropdecorators.ToolDropHeadSourceFilter;
 import org.bukkit.Bukkit;
+import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
@@ -24,7 +28,9 @@ import java.util.*;
 
 public class HeadLoader extends HeadConfigAccessor
 {
+    private Plugin plugin = Core.getSelfPlugin();
     private HashMap<String, IHead> loadedHeads = new HashMap<>();
+    private HashMap<String, HashMap<String, IHeadSource>> loadedHeadSources = new HashMap<>();
 
     public HashMap<String, IHead> getLoadedHeads()
     {
@@ -33,22 +39,21 @@ public class HeadLoader extends HeadConfigAccessor
 
     public void loadHeads()
     {
-        Plugin plugin = Core.getPlugin(Core.class);
-        loadedHeads.clear();
         File headsFile = getHeadsFile();
+        ConfigurationSection headsFileYaml = YamlConfiguration.loadConfiguration(headsFile);
+        ConfigurationSection headsYaml = headsFileYaml.getConfigurationSection(headsKey);
+        loadHeads(headsYaml);
+    }
 
-        ConfigurationSection headsYaml = YamlConfiguration.loadConfiguration(headsFile);
-        headsYaml = headsYaml.getConfigurationSection(headsKey);
+    public void loadHeads(ConfigurationSection headsYaml)
+    {
         Set<String> headKeys = headsYaml.getKeys(false);
         for (String headKey : headKeys)
         {
             try
             {
                 ConfigurationSection headYaml = headsYaml.getConfigurationSection(headKey);
-                IHead head = loadHead(headKey, headYaml);
-                List<IHeadSource> headSources = loadHeadSources(plugin, head, headYaml);
-                if (head != null)
-                    loadedHeads.put(headKey, head);
+                loadHead(headYaml);
             }
             catch (InvalidHeadException e)
             {
@@ -57,57 +62,224 @@ public class HeadLoader extends HeadConfigAccessor
         }
     }
 
-    private IHead loadHead(String key, ConfigurationSection headYaml) throws InvalidHeadException
+    public IHead loadHead(String key) throws InvalidHeadException
     {
-        if (headYaml.contains(nameKey) && headYaml.contains(textureKey))
-        {
-            String name = headYaml.getString(nameKey);
-            String texture = headYaml.getString(textureKey);
-            IHead head = new Head(key, name, texture);
-            return head;
-        }
-        else
-            throw new InvalidHeadException(String.format("Head %s is missing the required name &/or texture fields. It will not be loaded.", key));
+        File headsFile = getHeadsFile();
+        ConfigurationSection headsFileYaml = YamlConfiguration.loadConfiguration(headsFile);
+        ConfigurationSection headsYaml = headsFileYaml.getConfigurationSection(headsKey);
+        ConfigurationSection headYaml = headsYaml.getConfigurationSection(key);
+        return loadHead(headYaml);
     }
 
-    private List<IHeadSource> loadHeadSources(Plugin plugin, IHead head, ConfigurationSection headYaml)
+    public IHead loadHead(ConfigurationSection headYaml) throws InvalidHeadException
     {
-        ArrayList<IHeadSource> headSources = new ArrayList<>();
+        IHead head = parseHead(headYaml);
+        if (loadedHeads.containsKey(head.getKey()))
+            throw new InvalidHeadException(String.format("A head already exists with key \"%s\"!", head.getKey()));
+        else
+            loadedHeads.put(head.getKey(), head);
+
         ConfigurationSection sourcesYaml = headYaml.getConfigurationSection(sourcesKey);
         for (String sourceKey : sourcesYaml.getKeys(false))
         {
             try
             {
-                ConfigurationSection sourceConfiguration = sourcesYaml.getConfigurationSection(sourceKey);
-                if (sourceConfiguration.contains(sourceTypeKey))
-                {
-                    String sourceTypeText = sourceConfiguration.getString(sourceTypeKey);
-                    HeadSourceType sourceType = HeadSourceType.valueOf(sourceTypeText.toUpperCase());
-                    IHeadSource headSource = buildBaseHeadSource(sourceType, head, sourceConfiguration);
-                    if (headSource instanceof IDropHeadSource && Settings.isDropsEnabled())
-                    {
-                        IDropHeadSource dropHeadSource = (IDropHeadSource) headSource;
-                        dropHeadSource = applyToolDropFilter(dropToolsKey, dropHeadSource, sourceConfiguration);
-                        dropHeadSource = applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceConfiguration);
-                        plugin.getServer().getPluginManager().registerEvents(dropHeadSource, plugin);
-                        headSources.add(dropHeadSource);
-                    }
-                    else if (headSource instanceof ICraftHeadSource && Settings.isCraftingEnabled())
-                    {
-                        ICraftHeadSource craftHeadSource = (ICraftHeadSource) headSource;
-                        plugin.getServer().addRecipe(craftHeadSource.getRecipe());
-                        headSources.add(craftHeadSource);
-                    }
-                }
-                else
-                    throw new InvalidHeadSourceException(String.format("Source \"%s\" for %s has no source type!", sourceKey, head.getKey()));
+                ConfigurationSection sourceYaml = sourcesYaml.getConfigurationSection(sourceKey);
+                loadHeadSource(head, sourceYaml);
             }
             catch (Exception e)
             {
                 Bukkit.getLogger().severe(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
             }
         }
-        return headSources;
+        return head;
+    }
+
+    public IHeadSource loadHeadSource(IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        if (!loadedHeads.containsKey(head.getKey()))
+            throw new InvalidHeadSourceException(String.format("Attempted to load head source prior to loading head: %s", head.getKey()));
+
+        IHeadSource headSource = parseHeadSource(head, sourceYaml);
+        if (headSource instanceof IDropHeadSource && Settings.isDropsEnabled())
+        {
+            IDropHeadSource dropHeadSource = (IDropHeadSource) headSource;
+            plugin.getServer().getPluginManager().registerEvents(dropHeadSource, plugin);
+        }
+        else if (headSource instanceof ICraftHeadSource && Settings.isCraftingEnabled())
+        {
+            ICraftHeadSource craftHeadSource = (ICraftHeadSource) headSource;
+            plugin.getServer().addRecipe(craftHeadSource.getRecipe());
+        }
+        if (!loadedHeadSources.containsKey(head.getKey()))
+            loadedHeadSources.put(head.getKey(), new HashMap<>());
+        loadedHeadSources.get(head.getKey()).put(sourceYaml.getName(), headSource);
+        return headSource;
+    }
+
+    public void unloadHeads()
+    {
+        HashSet<String> headKeys = new HashSet<>(loadedHeads.keySet());
+        for (String headKey : headKeys)
+            unloadHead(headKey);
+    }
+
+    public boolean unloadHead(String key)
+    {
+        IHead head = loadedHeads.get(key);
+        if (head != null)
+        {
+            HashMap<String, IHeadSource> headSources = loadedHeadSources.get(key);
+            if (headSources != null)
+            {
+                HashSet<String> sourceKeys = new HashSet<>(headSources.keySet());
+                for (String sourceKey : sourceKeys)
+                    unloadHeadSource(key, sourceKey);
+            }
+            loadedHeadSources.remove(key);
+            loadedHeads.remove(key);
+            return true;
+        }
+        return false;
+    }
+
+    public void unloadHeadSource(String headKey, String sourceKey)
+    {
+        if (loadedHeadSources.get(headKey) != null && loadedHeadSources.get(headKey).get(sourceKey) != null)
+        {
+            Map<String, IHeadSource> headSourceMap = loadedHeadSources.get(headKey);
+            IHeadSource headSource = headSourceMap.get(sourceKey);
+
+            if (headSource instanceof Listener)
+                HandlerList.unregisterAll((Listener) headSource);
+            if (headSource instanceof ICraftHeadSource)
+            {
+                Recipe recipe = ((ICraftHeadSource) headSource).getRecipe();
+                if (recipe instanceof Keyed)
+                {
+                    NamespacedKey nsk = ((Keyed) recipe).getKey();
+                    plugin.getServer().removeRecipe(nsk);
+                }
+            }
+            loadedHeadSources.get(headKey).remove(sourceKey);
+        }
+    }
+
+    /**
+     * Safely reloads all heads using the user's heads config. Unloading will not occur until ALL heads have been validated.
+     * @throws InvalidHeadException head config is invalid
+     * @throws InvalidHeadSourceException head source config is invalid
+     */
+    public void reloadHeads() throws InvalidHeadException, InvalidHeadSourceException
+    {
+        File headsFile = getHeadsFile();
+        ConfigurationSection headsFileYaml = YamlConfiguration.loadConfiguration(headsFile);
+        ConfigurationSection headsYaml = headsFileYaml.getConfigurationSection(headsKey);
+        reloadHeads(headsYaml);
+    }
+
+    /**
+     * Safely reloads all heads. Unloading will not occur until ALL heads have been validated.
+     * @param headsYaml the new heads yaml to load
+     * @throws InvalidHeadException head config is invalid
+     * @throws InvalidHeadSourceException head source config is invalid
+     */
+    public void reloadHeads(ConfigurationSection headsYaml) throws InvalidHeadException, InvalidHeadSourceException
+    {
+        Set<String> oldHeadKeys = new HashSet<>(loadedHeads.keySet());
+        Set<String> newHeadKeys = headsYaml.getKeys(false);
+        for (String headKey : newHeadKeys)
+            validateHeadConfig(headsYaml.getConfigurationSection(headKey));
+        for (String headKey : oldHeadKeys)
+            unloadHead(headKey);
+        for (String headKey : newHeadKeys)
+            loadHead(headsYaml.getConfigurationSection(headKey));
+    }
+
+    /**
+     * Safely reloads the head. Unloading will not occur until the headYaml in the user's heads config has been validated to ensure it can be successfully loaded.<br>
+     * This ensures any progression data, such as that associated with crafting, is not lost.
+     * @param key
+     * @throws InvalidHeadException head config is invalid
+     * @throws InvalidHeadSourceException head source config is invalid
+     */
+    public void reloadHead(String key) throws InvalidHeadException, InvalidHeadSourceException
+    {
+        File headsFile = getHeadsFile();
+        ConfigurationSection headsFileYaml = YamlConfiguration.loadConfiguration(headsFile);
+        ConfigurationSection headsYaml = headsFileYaml.getConfigurationSection(headsKey);
+        ConfigurationSection headYaml = headsYaml.getConfigurationSection(key);
+        reloadHead(key, headYaml);
+    }
+
+    /**
+     * Safely reloads the head. Unloading will not occur until the headYaml has been validated to ensure it can be successfully loaded.<br>
+     * This ensures any progression data, such as that associated with crafting, is not lost.
+     * @param existingKey the key to unload
+     * @param headYaml the data to load
+     * @throws InvalidHeadException head config is invalid
+     * @throws InvalidHeadSourceException head source config is invalid
+     */
+    public void reloadHead(String existingKey, ConfigurationSection headYaml) throws InvalidHeadException, InvalidHeadSourceException
+    {
+        validateHeadConfig(headYaml);
+        unloadHead(existingKey);
+        loadHead(headYaml);
+    }
+
+    /**
+     * Parses the provided yaml to build a representation of the head without registering it to the game logic
+     * @param headYaml the head to validate
+     * @throws InvalidHeadException invalid head
+     * @throws InvalidHeadSourceException invalid head source
+     */
+    public void validateHeadConfig(ConfigurationSection headYaml) throws InvalidHeadException, InvalidHeadSourceException
+    {
+        if (headYaml == null)
+            throw new InvalidHeadException("Head Yaml is null.");
+        IHead head = parseHead(headYaml);
+        ConfigurationSection sourcesYaml = headYaml.getConfigurationSection(sourcesKey);
+        for (String sourceKey : sourcesYaml.getKeys(false))
+            parseHeadSource(head, sourcesYaml.getConfigurationSection(sourceKey));
+    }
+
+    private IHead parseHead(ConfigurationSection headYaml) throws InvalidHeadException
+    {
+        if (headYaml.contains(nameKey) && headYaml.contains(textureKey))
+        {
+            String name = headYaml.getString(nameKey);
+            String texture = headYaml.getString(textureKey);
+            IHead head = new Head(headYaml.getName(), name, texture);
+            return head;
+        }
+        else
+            throw new InvalidHeadException(String.format("Head %s is missing the required name &/or texture fields. It will not be loaded.", headYaml.getName()));
+    }
+
+    private IHeadSource parseHeadSource(IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        if (sourceYaml.contains(sourceTypeKey))
+        {
+            String sourceTypeText = sourceYaml.getString(sourceTypeKey);
+            HeadSourceType sourceType = HeadSourceType.valueOf(sourceTypeText.toUpperCase());
+            IHeadSource headSource = buildBaseHeadSource(sourceType, head, sourceYaml);
+            if (headSource instanceof IDropHeadSource)
+            {
+                IDropHeadSource dropHeadSource = (IDropHeadSource) headSource;
+                dropHeadSource = applyToolDropFilter(dropToolsKey, dropHeadSource, sourceYaml);
+                dropHeadSource = applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceYaml);
+                return dropHeadSource;
+            }
+            else if (headSource instanceof ICraftHeadSource)
+            {
+                ICraftHeadSource craftHeadSource = (ICraftHeadSource) headSource;
+                return craftHeadSource;
+            }
+            else
+                return headSource;
+        }
+        else
+            throw new InvalidHeadSourceException(String.format("Source \"%s\" for %s has no source type!", sourceYaml.getCurrentPath(), head.getKey()));
     }
 
     private IHeadSource buildBaseHeadSource(HeadSourceType sourceType, IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
@@ -144,8 +316,9 @@ public class HeadLoader extends HeadConfigAccessor
         if (ingredients == null || ingredients.size() == 0)
             throw new InvalidHeadSourceException(String.format("%s for %s has no ingredients specified for crafting.", sourceYaml.getCurrentPath(), head.getKey()));
 
-        NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), sourceYaml.getCurrentPath());
+        NamespacedKey nsk = new NamespacedKey(plugin, sourceYaml.getCurrentPath());
         ShapelessRecipe shapelessRecipe = new ShapelessRecipe(nsk, head.createItem());
+        shapelessRecipe.setGroup(head.getKey());
         for (Material ingredient : ingredients)
         {
             shapelessRecipe.addIngredient(ingredient);
@@ -162,8 +335,9 @@ public class HeadLoader extends HeadConfigAccessor
             if (ingredients == null || ingredients.size() == 0)
                 throw new InvalidHeadSourceException(String.format("%s for %s has no ingredients specified for crafting.", sourceYaml.getCurrentPath(), head.getKey()));
 
-            NamespacedKey nsk = new NamespacedKey(Core.getPlugin(Core.class), sourceYaml.getCurrentPath());
+            NamespacedKey nsk = new NamespacedKey(plugin, sourceYaml.getCurrentPath());
             ShapedRecipe shapedRecipe = new ShapedRecipe(nsk, head.createItem());
+            shapedRecipe.setGroup(head.getKey());
             List<String> recipeGrid = sourceYaml.getStringList(craftGridKey);
             List<String> rows = new ArrayList<>();
             for (int i = 0; i < recipeGrid.size(); i++)
