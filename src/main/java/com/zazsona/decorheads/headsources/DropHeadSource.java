@@ -2,8 +2,10 @@ package com.zazsona.decorheads.headsources;
 
 import com.zazsona.decorheads.Settings;
 import com.zazsona.decorheads.headdata.IHead;
+import com.zazsona.decorheads.headdata.PlayerHead;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -38,9 +40,22 @@ public abstract class DropHeadSource extends HeadSource implements IDropHeadSour
 
     public ItemStack dropHead(World world, Location location)
     {
+        return dropHead(world, location, null);
+    }
+
+    public ItemStack dropHead(World world, Location location, Player player)
+    {
         if (rollDrop())
         {
-            ItemStack headStack = getHead().createItem();
+            ItemStack headStack;
+            IHead head = getHead();
+            if (player != null && head instanceof PlayerHead)
+            {
+                PlayerHead playerHead = (PlayerHead) head;
+                headStack = playerHead.createItem(player.getUniqueId());
+            }
+            else
+                headStack = head.createItem();
             world.dropItemNaturally(location, headStack);
             return headStack;
         }

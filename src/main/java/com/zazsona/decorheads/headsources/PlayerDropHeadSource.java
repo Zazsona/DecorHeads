@@ -2,12 +2,11 @@ package com.zazsona.decorheads.headsources;
 
 import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,22 +14,22 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EntityDropHeadSource extends DropHeadSource
+public class PlayerDropHeadSource extends DropHeadSource
 {
-    private Set<EntityType> entities = new HashSet<EntityType>();
+    private Set<String> uuids = new HashSet<String>();
 
-    public EntityDropHeadSource(IHead head, double dropRate, Collection<EntityType> entities)
+    public PlayerDropHeadSource(IHead head, double dropRate, Collection<String> uuids)
     {
         super(head, dropRate);
-        if (entities != null)
-            this.entities.addAll(entities);
+        if (uuids != null)
+            this.uuids.addAll(uuids);
     }
 
     @Override
     public Set<HeadSourceType> getSourceTypes()
     {
         Set<HeadSourceType> sourceTypes = super.getSourceTypes();
-        sourceTypes.add(HeadSourceType.ENTITY_DEATH_DROP);
+        sourceTypes.add(HeadSourceType.PLAYER_DEATH_DROP);
         return sourceTypes;
     }
 
@@ -38,11 +37,15 @@ public class EntityDropHeadSource extends DropHeadSource
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {
-        if (entities.size() == 0 || entities.contains(e.getEntityType()))
+        if (e.getEntityType() == EntityType.PLAYER)
         {
-            World world = e.getEntity().getWorld();
-            Location location = e.getEntity().getLocation();
-            return super.dropHead(world, location);
+            Player player = (Player) e.getEntity();
+            if (uuids.size() == 0 || uuids.contains(player.getUniqueId()))
+            {
+                World world = e.getEntity().getWorld();
+                Location location = e.getEntity().getLocation();
+                return super.dropHead(world, location, player);
+            }
         }
         return null;
     }
