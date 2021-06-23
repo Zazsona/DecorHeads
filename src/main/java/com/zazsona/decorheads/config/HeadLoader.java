@@ -246,11 +246,16 @@ public class HeadLoader extends HeadConfigAccessor
 
     private IHead parseHead(ConfigurationSection headYaml) throws InvalidHeadException
     {
-        if (headYaml.contains(nameKey) && headYaml.contains(textureKey))
+        if (headYaml.getName().equals(playerHeadKey))
+        {
+            IHead head = new PlayerHead(headYaml.getName());
+            return head;
+        }
+        else if (headYaml.contains(nameKey) && headYaml.contains(textureKey))
         {
             String name = headYaml.getString(nameKey);
             String texture = headYaml.getString(textureKey);
-            IHead head = new Head(headYaml.getName(), name, texture);
+            IHead head = new TextureHead(headYaml.getName(), name, texture);
             return head;
         }
         else
@@ -285,15 +290,20 @@ public class HeadLoader extends HeadConfigAccessor
 
     private IHeadSource buildBaseHeadSource(HeadSourceType sourceType, IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
+        if (head instanceof PlayerHead && sourceType != HeadSourceType.PLAYER_DEATH_DROP)
+            throw new InvalidHeadSourceException(String.format("Player heads only support %s source types. %s is %s.", HeadSourceType.PLAYER_DEATH_DROP.name(), sourceYaml.getName(), sourceType.name()));
         double dropRate = getDropRate(dropRateKey, sourceYaml);
         switch (sourceType)
         {
             case MINE_DROP:
                 List<Material> blocks = getBlocks(dropBlocksKey, head.getKey(), sourceYaml);
                 return new BlockDropHeadSource(head, dropRate, blocks);
-            case ENTITY_KILL_DROP:
+            case ENTITY_DEATH_DROP:
                 List<EntityType> entities = getEntities(dropEntitiesKey, head.getKey(), sourceYaml);
                 return new EntityDropHeadSource(head, dropRate, entities);
+            case PLAYER_DEATH_DROP:
+                List<String> uuids = getUUIDs(uuidsKey, sourceYaml);
+                return new PlayerDropHeadSource(head, dropRate, uuids);
             case SHAPELESS_CRAFT:
                 return buildShapelessCraftSource(head, sourceYaml);
             case SHAPED_CRAFT:
@@ -470,6 +480,16 @@ public class HeadLoader extends HeadConfigAccessor
                 }
             }
             return (biomes.size() > 0) ? biomes : null;
+        }
+        return null;
+    }
+
+    private List<String> getUUIDs(String uuidsKey, ConfigurationSection sourceYaml)
+    {
+        if (sourceYaml.getKeys(false).contains(uuidsKey))
+        {
+            List<String> uuids = sourceYaml.getStringList(uuidsKey);
+            return (uuids.size() > 0) ? uuids : null;
         }
         return null;
     }

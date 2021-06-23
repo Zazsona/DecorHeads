@@ -1,5 +1,10 @@
 version: 1.6.0
 heads:
+  player:
+    sources:
+      default-drop-0:
+        source-type: PLAYER_DEATH_DROP
+        drop-rate: 100
   foo:
     sources:
       default-drop-0:
