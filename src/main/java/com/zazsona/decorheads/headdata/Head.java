@@ -13,66 +13,39 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.logging.Level;
 
-public class Head implements IHead
+public abstract class Head implements IHead
 {
-    private static final String PLUGIN_LORE = ChatColor.BLUE+"DecorHeads";
-    private String key;
-    private String name;
-    private String texture;
+    protected static final String PLUGIN_LORE = ChatColor.BLUE+"DecorHeads";
+    protected static final String DEFAULT_UUID = "8a2de1bb-a9b2-4f00-b0e3-d360ad407928"; //Random UUID unassigned to any Minecraft account.
+    protected static final String TEXTURES_KEY = "textures";
+    protected static final String PROFILE_KEY = "profile";
 
-    public Head(String key, String name, String texture)
-    {
-        this.key = key;
-        this.name = name;
-        this.texture = texture;
-    }
-
-    @Override
-    public String getKey()
-    {
-        return key;
-    }
-
-    @Override
-    public String getName()
-    {
-        return name;
-    }
-
-    @Override
-    public String getTextureEncoding()
-    {
-        return texture;
-    }
-
-    @Override
-    public ItemStack createItem()
+    protected ItemStack createSkull(String name, String texture)
     {
         try
         {
             ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-            UUID uuid = UUID.fromString("8a2de1bb-a9b2-4f00-b0e3-d360ad407928"); //Random UUID unassigned to any Minecraft account.
-            GameProfile gameProfile = new GameProfile(uuid, getName());
-            gameProfile.getProperties().put("textures", new Property("textures", texture));
-            Field skullProfile = skullMeta.getClass().getDeclaredField("profile");
+            UUID uuid = UUID.fromString(DEFAULT_UUID);
+            GameProfile gameProfile = new GameProfile(uuid, name);
+            gameProfile.getProperties().put(TEXTURES_KEY, new Property(TEXTURES_KEY, texture));
+            Field skullProfile = skullMeta.getClass().getDeclaredField(PROFILE_KEY);
             skullProfile.setAccessible(true);
             skullProfile.set(skullMeta, gameProfile);
-            skullMeta.setDisplayName(getName());
+            skullMeta.setDisplayName(name);
             addLore(skullMeta);
             skull.setItemMeta(skullMeta);
             return skull;
         }
         catch (NoSuchFieldException | IllegalAccessException e)
         {
-            Bukkit.getLogger().log(Level.SEVERE, "INVALID HEAD ITEM \""+getName()+"\" - NO PROFILE FIELD!");
+            Bukkit.getLogger().severe(String.format("[%s] Could not create head %s", Core.PLUGIN_NAME, getKey()));
             return new ItemStack(Material.PLAYER_HEAD);
         }
     }
 
-    private static ItemMeta addLore(ItemMeta meta)
+    protected static ItemMeta addLore(ItemMeta meta)
     {
         ArrayList<String> loreList = new ArrayList<>();
         loreList.add(PLUGIN_LORE);
