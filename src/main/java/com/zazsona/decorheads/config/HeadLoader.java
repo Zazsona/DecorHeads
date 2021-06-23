@@ -28,9 +28,22 @@ import java.util.*;
 
 public class HeadLoader extends HeadConfigAccessor
 {
+    private static HeadLoader instance;
     private Plugin plugin = Core.getSelfPlugin();
     private HashMap<String, IHead> loadedHeads = new HashMap<>();
     private HashMap<String, HashMap<String, IHeadSource>> loadedHeadSources = new HashMap<>();
+
+    public static HeadLoader getInstance()
+    {
+        if (instance == null)
+            instance = new HeadLoader();
+        return instance;
+    }
+
+    private HeadLoader()
+    {
+        //private constructor
+    }
 
     public HashMap<String, IHead> getLoadedHeads()
     {

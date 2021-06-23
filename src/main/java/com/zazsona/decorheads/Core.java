@@ -26,9 +26,9 @@ public class Core extends JavaPlugin
             //this.getCommand("DecorHeads").setExecutor(new DecorHeadsCommand());
             //CraftingManager.addRecipes();
 
-            HeadUpdater headUpdater = new HeadUpdater();
+            HeadUpdater headUpdater = HeadUpdater.getInstance();
             headUpdater.updateHeadsFile();
-            HeadLoader headLoader = new HeadLoader();
+            HeadLoader headLoader = HeadLoader.getInstance();
             headLoader.loadHeads();
         }
         catch (Exception e)

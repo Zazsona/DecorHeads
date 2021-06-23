@@ -1,9 +1,12 @@
 package com.zazsona.decorheads.config;
 
 import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.headdata.IHead;
+import com.zazsona.decorheads.headsources.IHeadSource;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nullable;
 import java.io.*;
@@ -13,6 +16,20 @@ import java.util.*;
 
 public class HeadUpdater extends HeadConfigAccessor
 {
+    private static HeadUpdater instance;
+
+    public static HeadUpdater getInstance()
+    {
+        if (instance == null)
+            instance = new HeadUpdater();
+        return instance;
+    }
+
+    private HeadUpdater()
+    {
+        //private constructor
+    }
+
     public boolean updateHeadsFile() throws IOException
     {
         try
