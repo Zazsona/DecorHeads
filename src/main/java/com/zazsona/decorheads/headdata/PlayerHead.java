@@ -18,6 +18,7 @@ import java.util.UUID;
 
 public class PlayerHead extends Head
 {
+    private static final String HEAD_NAME_FORMAT = "%s's Head";
     private String key;
 
     public PlayerHead(String key)
@@ -55,28 +56,38 @@ public class PlayerHead extends Head
         catch (IOException | NullPointerException e)
         {
             Bukkit.getLogger().warning(String.format("[%s] Unable to get UUID for player: %s", Core.PLUGIN_NAME, playerName));
-            e.printStackTrace();
         }
         return new ItemStack(Material.PLAYER_HEAD);
     }
 
     public ItemStack createItem(UUID uuid)
     {
-        try
-        {
-            String response = getApiResponse("https://sessionserver.mojang.com/session/minecraft/profile/"+uuid);
-            Gson gson = new Gson();
-            ProfileResponse pr = gson.fromJson(response, ProfileResponse.class);
-            if (pr.isSuccess())
-                return createSkull(String.format("%s's Head", pr.getName()), pr.getPropertyByName(TEXTURES_KEY).getValue());
-            else
-                throw new IOException();
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+        if (player.hasPlayedBefore())
+            return createItem(player);     //Create a Player Head (dynamically changes skin)
+        else
+        {           //Unfortunately, I'm yet to find a way to do dynamically changing heads for players that have never joined before, if it's even possible! As such, we have to generate a custom one.
+            try
+            {
+                String response = getApiResponse("https://sessionserver.mojang.com/session/minecraft/profile/"+uuid);
+                Gson gson = new Gson();
+                ProfileResponse pr = gson.fromJson(response, ProfileResponse.class);
+                if (pr.isSuccess())
+                    return createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), pr.getPropertyByName(TEXTURES_KEY).getValue());
+                else
+                    throw new IOException();
+            }
+            catch (IOException e)
+            {
+                Bukkit.getLogger().warning(String.format("[%s] Unable to resolve player head for UUID: %s", Core.PLUGIN_NAME, uuid));
+                return new ItemStack(Material.PLAYER_HEAD);
+            }
         }
-        catch (IOException e)
-        {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to resolve player head for UUID: %s", Core.PLUGIN_NAME, uuid));
-            return new ItemStack(Material.PLAYER_HEAD);
-        }
+    }
+
+    public ItemStack createItem(OfflinePlayer player)
+    {
+        return createSkull(String.format(HEAD_NAME_FORMAT, player.getName()), player);
     }
 
     private String getApiResponse(String query) throws IOException

@@ -6,6 +6,7 @@ import com.zazsona.decorheads.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -25,11 +26,11 @@ public abstract class Head implements IHead
     {
         try
         {
-            ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
-            SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             UUID uuid = UUID.fromString(DEFAULT_UUID);
             GameProfile gameProfile = new GameProfile(uuid, name);
             gameProfile.getProperties().put(TEXTURES_KEY, new Property(TEXTURES_KEY, texture));
+            ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
             Field skullProfile = skullMeta.getClass().getDeclaredField(PROFILE_KEY);
             skullProfile.setAccessible(true);
             skullProfile.set(skullMeta, gameProfile);
@@ -43,6 +44,17 @@ public abstract class Head implements IHead
             Bukkit.getLogger().severe(String.format("[%s] Could not create head %s", Core.PLUGIN_NAME, getKey()));
             return new ItemStack(Material.PLAYER_HEAD);
         }
+    }
+
+    protected ItemStack createSkull(String name, OfflinePlayer offlinePlayer)
+    {
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+        skullMeta.setOwningPlayer(offlinePlayer);
+        skullMeta.setDisplayName(name);
+        addLore(skullMeta);
+        skull.setItemMeta(skullMeta);
+        return skull;
     }
 
     protected static ItemMeta addLore(ItemMeta meta)
