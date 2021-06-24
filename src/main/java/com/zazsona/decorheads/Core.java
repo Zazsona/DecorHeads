@@ -1,5 +1,6 @@
 package com.zazsona.decorheads;
 
+import com.zazsona.decorheads.command.SpawnHeadCommand;
 import com.zazsona.decorheads.config.HeadLoader;
 import com.zazsona.decorheads.config.HeadUpdater;
 import org.bstats.bukkit.Metrics;
@@ -26,10 +27,13 @@ public class Core extends JavaPlugin
             //this.getCommand("DecorHeads").setExecutor(new DecorHeadsCommand());
             //CraftingManager.addRecipes();
 
+
             HeadUpdater headUpdater = HeadUpdater.getInstance();
             headUpdater.updateHeadsFile();
             HeadLoader headLoader = HeadLoader.getInstance();
             headLoader.loadHeads();
+
+            getCommand(SpawnHeadCommand.COMMAND_KEY).setExecutor(new SpawnHeadCommand());
         }
         catch (Exception e)
         {
