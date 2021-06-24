@@ -22,5 +22,5 @@ heads:
         ingredients: [ 'oak_log', 'redstone' ]
         grid:
           - '0 0 0'
-          - '0 - 0'
+          - '0 / 0'
           - '0 0 0'
