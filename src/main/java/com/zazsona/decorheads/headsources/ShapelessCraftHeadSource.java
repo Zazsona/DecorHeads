@@ -13,10 +13,8 @@ public class ShapelessCraftHeadSource extends CraftHeadSource
     }
 
     @Override
-    public Set<HeadSourceType> getSourceTypes()
+    public HeadSourceType getSourceType()
     {
-        Set<HeadSourceType> sourceTypes = super.getSourceTypes();
-        sourceTypes.add(HeadSourceType.SHAPELESS_CRAFT);
-        return sourceTypes;
+        return HeadSourceType.SHAPELESS_CRAFT;
     }
 }

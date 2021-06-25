@@ -25,11 +25,9 @@ public class BlockDropHeadSource extends DropHeadSource
     }
 
     @Override
-    public Set<HeadSourceType> getSourceTypes()
+    public HeadSourceType getSourceType()
     {
-        Set<HeadSourceType> sourceTypes = super.getSourceTypes();
-        sourceTypes.add(HeadSourceType.MINE_DROP);
-        return sourceTypes;
+        return HeadSourceType.MINE_DROP;
     }
 
     @Override

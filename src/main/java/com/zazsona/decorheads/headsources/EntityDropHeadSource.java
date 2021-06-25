@@ -27,11 +27,9 @@ public class EntityDropHeadSource extends DropHeadSource
     }
 
     @Override
-    public Set<HeadSourceType> getSourceTypes()
+    public HeadSourceType getSourceType()
     {
-        Set<HeadSourceType> sourceTypes = super.getSourceTypes();
-        sourceTypes.add(HeadSourceType.ENTITY_DEATH_DROP);
-        return sourceTypes;
+        return HeadSourceType.ENTITY_DEATH_DROP;
     }
 
     @Override

@@ -8,5 +8,5 @@ public interface IHeadSource
 {
     public IHead getHead();
 
-    public Set<HeadSourceType> getSourceTypes();
+    public HeadSourceType getSourceType();
 }

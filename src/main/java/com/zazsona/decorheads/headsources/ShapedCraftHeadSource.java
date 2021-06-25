@@ -13,10 +13,8 @@ public class ShapedCraftHeadSource extends CraftHeadSource
     }
 
     @Override
-    public Set<HeadSourceType> getSourceTypes()
+    public HeadSourceType getSourceType()
     {
-        Set<HeadSourceType> sourceTypes = super.getSourceTypes();
-        sourceTypes.add(HeadSourceType.SHAPED_CRAFT);
-        return sourceTypes;
+        return HeadSourceType.SHAPED_CRAFT;
     }
 }

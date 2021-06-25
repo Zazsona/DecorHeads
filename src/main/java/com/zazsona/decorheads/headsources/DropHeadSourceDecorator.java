@@ -26,9 +26,9 @@ public class DropHeadSourceDecorator implements IDropHeadSource
     }
 
     @Override
-    public Set<HeadSourceType> getSourceTypes()
+    public HeadSourceType getSourceType()
     {
-        return dropHeadSource.getSourceTypes();
+        return dropHeadSource.getSourceType();
     }
 
     @Override

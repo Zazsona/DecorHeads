@@ -19,10 +19,4 @@ public abstract class HeadSource implements IHeadSource
     {
         return head;
     }
-
-    @Override
-    public Set<HeadSourceType> getSourceTypes()
-    {
-        return new HashSet<>();
-    }
 }

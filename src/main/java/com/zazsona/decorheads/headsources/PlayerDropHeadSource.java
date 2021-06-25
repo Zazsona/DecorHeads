@@ -26,11 +26,9 @@ public class PlayerDropHeadSource extends DropHeadSource
     }
 
     @Override
-    public Set<HeadSourceType> getSourceTypes()
+    public HeadSourceType getSourceType()
     {
-        Set<HeadSourceType> sourceTypes = super.getSourceTypes();
-        sourceTypes.add(HeadSourceType.PLAYER_DEATH_DROP);
-        return sourceTypes;
+        return HeadSourceType.PLAYER_DEATH_DROP;
     }
 
     @Override
