@@ -33,6 +33,11 @@ public abstract class DropHeadSource extends HeadSource implements Listener
         this.dropFilters = new ArrayList<>();
     }
 
+    public double getDropRate()
+    {
+        return dropRate;
+    }
+
     public List<DropSourceFilter> getDropFilters()
     {
         return dropFilters;

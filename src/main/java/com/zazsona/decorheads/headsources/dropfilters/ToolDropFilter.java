@@ -1,6 +1,7 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -19,6 +20,11 @@ public class ToolDropFilter extends DropSourceFilter
     {
         if (tools != null)
             this.tools.addAll(tools);
+    }
+
+    public Set<Material> getTools()
+    {
+        return tools;
     }
 
     private boolean checkPass(Material tool)

@@ -24,6 +24,11 @@ public class BiomeDropFilter extends DropSourceFilter
             this.biomes.addAll(biomes);
     }
 
+    public Set<Biome> getBiomes()
+    {
+        return biomes;
+    }
+
     private boolean checkPass(Biome biome)
     {
         return (biomes.size() == 0 || biomes.contains(biome));
