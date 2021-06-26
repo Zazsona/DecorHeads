@@ -10,7 +10,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class WikiCraftRecipePage
+public class WikiCraftRecipePage implements IWikiPage
 {
     private final String borderChar = "\u2B1B";
     private final String shapedSlotChar = "\u2B1B";
