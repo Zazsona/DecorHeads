@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.command;
 
+import com.zazsona.decorheads.DecorHeadsUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -156,7 +157,7 @@ public class WikiCraftRecipePage implements IWikiPage
                 .append(borderChar)
                 .append(neutralColour)
                 .append(" ")
-                .append(ingredient.name().replace("_", " "));
+                .append(DecorHeadsUtil.capitaliseName(ingredient.name()));
         return entryBuilder.toString();
     }
 

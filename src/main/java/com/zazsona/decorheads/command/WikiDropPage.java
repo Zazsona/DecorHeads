@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.command;
 
+import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.headsources.DropHeadSource;
 import com.zazsona.decorheads.headsources.HeadSource;
 import com.zazsona.decorheads.headsources.dropfilters.BiomeDropFilter;
@@ -47,7 +48,7 @@ public class WikiDropPage implements IWikiPage
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(ChatColor.ITALIC);
-        stringBuilder.append(value);
+        stringBuilder.append(DecorHeadsUtil.capitaliseName(value.toString()));
         stringBuilder.append(ChatColor.RESET);
         return stringBuilder.toString();
     }
@@ -57,7 +58,7 @@ public class WikiDropPage implements IWikiPage
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(ChatColor.ITALIC);
         for (Enum enumEntry : enums)
-            stringBuilder.append(enumEntry.name()).append(", ");
+            stringBuilder.append(DecorHeadsUtil.capitaliseName(enumEntry.name())).append(", ");
         stringBuilder.setLength(stringBuilder.length()-2); //Remove final ", "
         stringBuilder.append(ChatColor.RESET);
         return stringBuilder.toString();
