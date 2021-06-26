@@ -6,8 +6,8 @@ import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.exceptions.InvalidHeadSourceException;
 import com.zazsona.decorheads.headdata.*;
 import com.zazsona.decorheads.headsources.*;
-import com.zazsona.decorheads.headsources.dropdecorators.BiomeDropHeadSourceFilter;
-import com.zazsona.decorheads.headsources.dropdecorators.ToolDropHeadSourceFilter;
+import com.zazsona.decorheads.headsources.dropfilters.BiomeDropFilter;
+import com.zazsona.decorheads.headsources.dropfilters.ToolDropFilter;
 import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
@@ -31,7 +31,7 @@ public class HeadLoader extends HeadConfigAccessor
     private static HeadLoader instance;
     private Plugin plugin = Core.getSelfPlugin();
     private HashMap<String, IHead> loadedHeads = new HashMap<>();
-    private HashMap<String, HashMap<String, IHeadSource>> loadedHeadSources = new HashMap<>();
+    private HashMap<String, HashMap<String, HeadSource>> loadedHeadSources = new HashMap<>();
 
     public static HeadLoader getInstance()
     {
@@ -50,7 +50,7 @@ public class HeadLoader extends HeadConfigAccessor
         return loadedHeads;
     }
 
-    public HashMap<String, HashMap<String, IHeadSource>> getLoadedHeadSources()
+    public HashMap<String, HashMap<String, HeadSource>> getLoadedHeadSources()
     {
         return loadedHeadSources;
     }
@@ -114,20 +114,20 @@ public class HeadLoader extends HeadConfigAccessor
         return head;
     }
 
-    public IHeadSource loadHeadSource(IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    public HeadSource loadHeadSource(IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
         if (!loadedHeads.containsKey(head.getKey()))
             throw new InvalidHeadSourceException(String.format("Attempted to load head source prior to loading head: %s", head.getKey()));
 
-        IHeadSource headSource = parseHeadSource(head, sourceYaml);
-        if (headSource instanceof IDropHeadSource && Settings.isDropsEnabled())
+        HeadSource headSource = parseHeadSource(head, sourceYaml);
+        if (headSource instanceof DropHeadSource && Settings.isDropsEnabled())
         {
-            IDropHeadSource dropHeadSource = (IDropHeadSource) headSource;
+            DropHeadSource dropHeadSource = (DropHeadSource) headSource;
             plugin.getServer().getPluginManager().registerEvents(dropHeadSource, plugin);
         }
-        else if (headSource instanceof ICraftHeadSource && Settings.isCraftingEnabled())
+        else if (headSource instanceof CraftHeadSource && Settings.isCraftingEnabled())
         {
-            ICraftHeadSource craftHeadSource = (ICraftHeadSource) headSource;
+            CraftHeadSource craftHeadSource = (CraftHeadSource) headSource;
             plugin.getServer().addRecipe(craftHeadSource.getRecipe());
         }
         if (!loadedHeadSources.containsKey(head.getKey()))
@@ -148,7 +148,7 @@ public class HeadLoader extends HeadConfigAccessor
         IHead head = loadedHeads.get(key);
         if (head != null)
         {
-            HashMap<String, IHeadSource> headSources = loadedHeadSources.get(key);
+            HashMap<String, HeadSource> headSources = loadedHeadSources.get(key);
             if (headSources != null)
             {
                 HashSet<String> sourceKeys = new HashSet<>(headSources.keySet());
@@ -166,14 +166,14 @@ public class HeadLoader extends HeadConfigAccessor
     {
         if (loadedHeadSources.get(headKey) != null && loadedHeadSources.get(headKey).get(sourceKey) != null)
         {
-            Map<String, IHeadSource> headSourceMap = loadedHeadSources.get(headKey);
-            IHeadSource headSource = headSourceMap.get(sourceKey);
+            Map<String, HeadSource> headSourceMap = loadedHeadSources.get(headKey);
+            HeadSource headSource = headSourceMap.get(sourceKey);
 
             if (headSource instanceof Listener)
                 HandlerList.unregisterAll((Listener) headSource);
-            if (headSource instanceof ICraftHeadSource)
+            if (headSource instanceof CraftHeadSource)
             {
-                Recipe recipe = ((ICraftHeadSource) headSource).getRecipe();
+                Recipe recipe = ((CraftHeadSource) headSource).getRecipe();
                 if (recipe instanceof Keyed)
                 {
                     NamespacedKey nsk = ((Keyed) recipe).getKey();
@@ -281,23 +281,23 @@ public class HeadLoader extends HeadConfigAccessor
             throw new InvalidHeadException(String.format("Head %s is missing the required name &/or texture fields. It will not be loaded.", headYaml.getName()));
     }
 
-    private IHeadSource parseHeadSource(IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    private HeadSource parseHeadSource(IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
         if (sourceYaml.contains(sourceTypeKey))
         {
             String sourceTypeText = sourceYaml.getString(sourceTypeKey);
             HeadSourceType sourceType = HeadSourceType.valueOf(sourceTypeText.toUpperCase());
-            IHeadSource headSource = buildBaseHeadSource(sourceType, head, sourceYaml);
-            if (headSource instanceof IDropHeadSource)
+            HeadSource headSource = buildBaseHeadSource(sourceType, head, sourceYaml);
+            if (headSource instanceof DropHeadSource)
             {
-                IDropHeadSource dropHeadSource = (IDropHeadSource) headSource;
-                dropHeadSource = applyToolDropFilter(dropToolsKey, dropHeadSource, sourceYaml);
-                dropHeadSource = applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceYaml);
+                DropHeadSource dropHeadSource = (DropHeadSource) headSource;
+                applyToolDropFilter(dropToolsKey, dropHeadSource, sourceYaml);
+                applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceYaml);
                 return dropHeadSource;
             }
-            else if (headSource instanceof ICraftHeadSource)
+            else if (headSource instanceof CraftHeadSource)
             {
-                ICraftHeadSource craftHeadSource = (ICraftHeadSource) headSource;
+                CraftHeadSource craftHeadSource = (CraftHeadSource) headSource;
                 return craftHeadSource;
             }
             else
@@ -307,7 +307,7 @@ public class HeadLoader extends HeadConfigAccessor
             throw new InvalidHeadSourceException(String.format("Source \"%s\" for %s has no source type!", sourceYaml.getCurrentPath(), head.getKey()));
     }
 
-    private IHeadSource buildBaseHeadSource(HeadSourceType sourceType, IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    private HeadSource buildBaseHeadSource(HeadSourceType sourceType, IHead head, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
         if (head instanceof PlayerHead && sourceType != HeadSourceType.PLAYER_DEATH_DROP)
             throw new InvalidHeadSourceException(String.format("Player heads only support %s source types. %s is %s.", HeadSourceType.PLAYER_DEATH_DROP.name(), sourceYaml.getName(), sourceType.name()));
@@ -389,26 +389,28 @@ public class HeadLoader extends HeadConfigAccessor
             throw new InvalidHeadSourceException(String.format("%s in %s is a shaped craft, but has no grid!", sourceYaml.getCurrentPath(), head.getKey()));
     }
 
-    private IDropHeadSource applyBiomeDropFilter(String biomesKey, IDropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    private boolean applyBiomeDropFilter(String biomesKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
         List<Biome> biomes = getBiomes(biomesKey, headSource.getHead().getKey(), sourceYaml);
         if (biomes != null)
         {
-            BiomeDropHeadSourceFilter biomeDropSourceFilter = new BiomeDropHeadSourceFilter(headSource, biomes);
-            return biomeDropSourceFilter;
+            BiomeDropFilter biomeDropFilter = new BiomeDropFilter(biomes);
+            headSource.getDropFilters().add(biomeDropFilter);
+            return true;
         }
-        return headSource;
+        return false;
     }
 
-    private IDropHeadSource applyToolDropFilter(String toolsKey, IDropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    private boolean applyToolDropFilter(String toolsKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
         List<Material> tools = getTools(toolsKey, headSource.getHead().getKey(), sourceYaml);
         if (tools != null)
         {
-            ToolDropHeadSourceFilter toolDropHeadFilter = new ToolDropHeadSourceFilter(headSource, tools);
-            return toolDropHeadFilter;
+            ToolDropFilter toolDropFilter = new ToolDropFilter(tools);
+            headSource.getDropFilters().add(toolDropFilter);
+            return true;
         }
-        return headSource;
+        return false;
     }
 
     private double getDropRate(String dropRateKey, ConfigurationSection sourceYaml)

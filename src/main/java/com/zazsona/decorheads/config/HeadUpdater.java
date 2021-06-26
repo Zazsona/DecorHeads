@@ -2,7 +2,6 @@ package com.zazsona.decorheads.config;
 
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.headdata.IHead;
-import com.zazsona.decorheads.headsources.IHeadSource;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

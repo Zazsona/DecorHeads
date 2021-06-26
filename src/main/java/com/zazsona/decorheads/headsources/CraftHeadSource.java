@@ -5,17 +5,16 @@ import org.bukkit.inventory.Recipe;
 
 import java.util.Set;
 
-public abstract class CraftHeadSource extends HeadSource implements ICraftHeadSource
+public abstract class CraftHeadSource extends HeadSource
 {
     private Recipe recipe;
 
-    public CraftHeadSource(IHead head, Recipe recipe)
+    public CraftHeadSource(IHead head, HeadSourceType headSourceType, Recipe recipe)
     {
-        super(head);
+        super(head, headSourceType);
         this.recipe = recipe;
     }
 
-    @Override
     public Recipe getRecipe()
     {
         return recipe;

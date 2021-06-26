@@ -19,22 +19,15 @@ public class BlockDropHeadSource extends DropHeadSource
 
     public BlockDropHeadSource(IHead head, double dropRate, Collection<Material> blocks)
     {
-        super(head, dropRate);
+        super(head, HeadSourceType.MINE_DROP, dropRate);
         if (blocks != null)
             this.blocks.addAll(blocks);
     }
 
-    @Override
-    public HeadSourceType getSourceType()
-    {
-        return HeadSourceType.MINE_DROP;
-    }
-
-    @Override
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onBlockBreak(BlockBreakEvent e)
     {
-        if ((blocks.size() == 0 || blocks.contains(e.getBlock().getType())))
+        if (passFilters(e) && (blocks.size() == 0 || blocks.contains(e.getBlock().getType())))
         {
             World world = e.getBlock().getWorld();
             Location location = e.getBlock().getLocation();

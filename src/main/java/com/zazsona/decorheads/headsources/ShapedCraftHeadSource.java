@@ -9,12 +9,6 @@ public class ShapedCraftHeadSource extends CraftHeadSource
 {
     public ShapedCraftHeadSource(IHead head, Recipe recipe)
     {
-        super(head, recipe);
-    }
-
-    @Override
-    public HeadSourceType getSourceType()
-    {
-        return HeadSourceType.SHAPED_CRAFT;
+        super(head, HeadSourceType.SHAPED_CRAFT, recipe);
     }
 }

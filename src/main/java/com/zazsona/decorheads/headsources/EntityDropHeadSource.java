@@ -21,22 +21,15 @@ public class EntityDropHeadSource extends DropHeadSource
 
     public EntityDropHeadSource(IHead head, double dropRate, Collection<EntityType> entities)
     {
-        super(head, dropRate);
+        super(head, HeadSourceType.ENTITY_DEATH_DROP, dropRate);
         if (entities != null)
             this.entities.addAll(entities);
     }
 
-    @Override
-    public HeadSourceType getSourceType()
-    {
-        return HeadSourceType.ENTITY_DEATH_DROP;
-    }
-
-    @Override
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {
-        if (entities.size() == 0 || entities.contains(e.getEntityType()))
+        if (passFilters(e) && (entities.size() == 0 || entities.contains(e.getEntityType())))
         {
             World world = e.getEntity().getWorld();
             Location location = e.getEntity().getLocation();

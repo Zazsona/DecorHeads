@@ -9,12 +9,6 @@ public class ShapelessCraftHeadSource extends CraftHeadSource
 {
     public ShapelessCraftHeadSource(IHead head, Recipe recipe)
     {
-        super(head, recipe);
-    }
-
-    @Override
-    public HeadSourceType getSourceType()
-    {
-        return HeadSourceType.SHAPELESS_CRAFT;
+        super(head, HeadSourceType.SHAPELESS_CRAFT, recipe);
     }
 }
