@@ -1,9 +1,9 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.HeadLoader;
 import com.zazsona.decorheads.headdata.IHead;
-import com.zazsona.decorheads.headdata.PlayerHead;
 import com.zazsona.decorheads.headdata.TextureHead;
 import com.zazsona.decorheads.headsources.*;
 import org.bukkit.ChatColor;
@@ -26,8 +26,10 @@ public class WikiCommand implements CommandExecutor
 {
     public static final String COMMAND_KEY = "decorheads";
     public static final String SOURCES_KEY = "sources";
+    public static final String LIST_KEY = "list";
 
     private static final String SOURCES_USAGE = "sources [Head Name] (Page #)";
+    private static final String LIST_USAGE = "list";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -35,10 +37,10 @@ public class WikiCommand implements CommandExecutor
         try
         {
             String wikiCategoryKey = args[0];
-            if (wikiCategoryKey.equalsIgnoreCase(SOURCES_KEY))
-            {
+            if (wikiCategoryKey.equalsIgnoreCase(LIST_KEY))
+                sendHeadsList(sender, args);
+            else if (wikiCategoryKey.equalsIgnoreCase(SOURCES_KEY))
                 sendHeadSource(sender, args);
-            }
             else
             {
 
@@ -72,8 +74,7 @@ public class WikiCommand implements CommandExecutor
             sourceKeys.addAll(headLoader.getLoadedHeadSources().get(head.getKey()).keySet());
             sourceKeys.sort(Comparator.naturalOrder());
 
-            int pageNo = (pageSpecified) ? Integer.parseInt(args[args.length-1]) : 1;
-            pageNo = (pageNo > sourceKeys.size()) ? sourceKeys.size() : pageNo;
+            int pageNo = getPageNo(args[args.length-1], 1, sourceKeys.size());
             String sourceKey = sourceKeys.get((pageNo - 1));
             HeadSource headSource = headLoader.getLoadedHeadSources().get(head.getKey()).get(sourceKey);
             if (headSource != null)
@@ -98,7 +99,34 @@ public class WikiCommand implements CommandExecutor
         else if (head == null)
             sender.sendMessage(ChatColor.RED+String.format("Unrecognised head: \"%s\"", headName));
         else if (headLoader.getLoadedHeadSources().get(head.getKey()) == null)
-            sender.sendMessage(ChatColor.RED+String.format("Head \"%s\"has no sources.", headName));
+            sender.sendMessage(ChatColor.RED+String.format("Head \"%s\" has no sources.", headName));
+    }
+
+    private void sendHeadsList(CommandSender sender, String[] args)
+    {
+        HeadLoader headLoader = HeadLoader.getInstance();
+        ArrayList<IHead> heads = new ArrayList<>(headLoader.getLoadedHeads().values());
+        heads.sort((o1, o2) ->
+                   {
+                       String head1Name = (o1 instanceof TextureHead) ? ((TextureHead) o1).getName() : DecorHeadsUtil.capitaliseName(o1.getKey());
+                       String head2Name = (o2 instanceof TextureHead) ? ((TextureHead) o2).getName() : DecorHeadsUtil.capitaliseName(o2.getKey());
+                       return head1Name.compareTo(head2Name);
+                   });
+        int headsPerPage = 8;
+        int pages = (int) (Math.ceil(heads.size() / headsPerPage) + 1);
+        int pageNo = getPageNo(args[args.length-1], 1, pages);
+        StringBuilder sb = new StringBuilder();
+        int startingHeadIndex = headsPerPage*(pageNo - 1);
+        int endingHeadIndex = Math.min(startingHeadIndex+headsPerPage, heads.size());
+        for (int i = startingHeadIndex; i<endingHeadIndex; i++)
+        {
+            IHead head = heads.get(i);
+            String headName = (head instanceof TextureHead) ? ((TextureHead) head).getName() : DecorHeadsUtil.capitaliseName(head.getKey());
+            sb.append(headName).append("\n");
+        }
+        String headerText = String.format("Heads (%d/%d)", pageNo, pages);
+        String page = addHeader(headerText, sb.toString().trim());
+        sender.sendMessage(page);
     }
 
     private String addHeader(String headerText, String content)
@@ -110,6 +138,21 @@ public class WikiCommand implements CommandExecutor
         sb.append(ChatColor.WHITE).append("\n");
         sb.append(content);
         return sb.toString();
+    }
+
+    private int getPageNo(String pageParam, int minPage, int maxPage)
+    {
+        int page = minPage;
+        if (pageParam.matches("[0-9]+"))
+        {
+
+            page = Integer.parseInt(pageParam);
+            if (page < minPage)
+                page = minPage;
+            if (page > maxPage)
+                page = maxPage;
+        }
+        return page;
     }
 
     private IWikiPage getHeadSourcePage(HeadSource headSource)
