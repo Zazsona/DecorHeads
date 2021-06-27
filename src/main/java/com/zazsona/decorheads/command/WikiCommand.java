@@ -30,7 +30,7 @@ public class WikiCommand implements CommandExecutor
     public static final String PREVIEW_KEY = "preview";
 
     private static final String SOURCES_USAGE = "sources [Head Name] (Page #)";
-    private static final String LIST_USAGE = "list";
+    private static final String LIST_USAGE = "list (Page #)";
     private static final String PREVIEW_USAGE = "preview [Head Name]";
 
     private HashMap<String, PreviewInventory> previewInventories = new HashMap<>();
@@ -48,14 +48,16 @@ public class WikiCommand implements CommandExecutor
             else if (wikiCategoryKey.equalsIgnoreCase(PREVIEW_KEY))
                 sendHeadPreview(sender, args);
             else
-            {
-
-            }
+                throw new IllegalArgumentException(String.format("Unknown submenu: %s", wikiCategoryKey));
         }
         catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e)
         {
-            String usage = (String) Core.getSelfPlugin().getDescription().getCommands().get(COMMAND_KEY).get("usage");
-            sender.sendMessage(ChatColor.RED+String.format("Invalid command arguments. Usage:\n%s", usage));
+            StringBuilder helpBuilder = new StringBuilder();
+            helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(LIST_USAGE).append(ChatColor.WHITE).append(" - List all heads").append("\n");
+            helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(PREVIEW_USAGE).append(ChatColor.WHITE).append(" - Preview head appearance").append("\n");
+            helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(SOURCES_USAGE).append(ChatColor.WHITE).append(" - Craft/Drop Info").append("\n");
+            String page = addHeader("DecorHeads Wiki", helpBuilder.toString().trim());
+            sender.sendMessage(page);
         }
         finally
         {
@@ -155,7 +157,7 @@ public class WikiCommand implements CommandExecutor
             previewInventory.showInventory(player);
         }
         else if (headName == null || headName.equals(""))
-            sender.sendMessage(ChatColor.RED+String.format("Usage: /%s %s", COMMAND_KEY, SOURCES_USAGE));
+            sender.sendMessage(ChatColor.RED+String.format("Usage: /%s %s", COMMAND_KEY, PREVIEW_USAGE));
         else if (head == null)
             sender.sendMessage(ChatColor.RED+String.format("Unrecognised head: \"%s\"", headName));
         else if (!(head instanceof TextureHead))
