@@ -1,6 +1,7 @@
 package com.zazsona.decorheads;
 
 import com.zazsona.decorheads.command.SpawnHeadCommand;
+import com.zazsona.decorheads.command.WikiCommand;
 import com.zazsona.decorheads.config.HeadLoader;
 import com.zazsona.decorheads.config.HeadUpdater;
 import org.bstats.bukkit.Metrics;
@@ -34,6 +35,7 @@ public class Core extends JavaPlugin
             headLoader.loadHeads();
 
             getCommand(SpawnHeadCommand.COMMAND_KEY).setExecutor(new SpawnHeadCommand());
+            getCommand(WikiCommand.COMMAND_KEY).setExecutor(new WikiCommand());
         }
         catch (Exception e)
         {
