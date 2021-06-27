@@ -30,7 +30,10 @@ public class SpawnHeadCommand implements CommandExecutor
         try
         {
             if (!(sender instanceof Player))
+            {
                 sender.sendMessage(ChatColor.RED+"This command is not available on the console.");
+                return true;
+            }
 
             String typeKey = args[0];
             if (typeKey.equalsIgnoreCase(DECOR_TYPE_KEY))

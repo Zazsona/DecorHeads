@@ -6,6 +6,7 @@ import com.zazsona.decorheads.config.HeadLoader;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.TextureHead;
 import com.zazsona.decorheads.headsources.*;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
@@ -13,23 +14,26 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.*;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class WikiCommand implements CommandExecutor
 {
     public static final String COMMAND_KEY = "decorheads";
     public static final String SOURCES_KEY = "sources";
     public static final String LIST_KEY = "list";
+    public static final String PREVIEW_KEY = "preview";
 
     private static final String SOURCES_USAGE = "sources [Head Name] (Page #)";
     private static final String LIST_USAGE = "list";
+    private static final String PREVIEW_USAGE = "preview [Head Name]";
+
+    private HashMap<String, PreviewInventory> previewInventories = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
@@ -41,6 +45,8 @@ public class WikiCommand implements CommandExecutor
                 sendHeadsList(sender, args);
             else if (wikiCategoryKey.equalsIgnoreCase(SOURCES_KEY))
                 sendHeadSource(sender, args);
+            else if (wikiCategoryKey.equalsIgnoreCase(PREVIEW_KEY))
+                sendHeadPreview(sender, args);
             else
             {
 
@@ -129,6 +135,33 @@ public class WikiCommand implements CommandExecutor
         sender.sendMessage(page);
     }
 
+    private void sendHeadPreview(CommandSender sender, String[] args)
+    {
+        if (!(sender instanceof Player))
+        {
+            sender.sendMessage(ChatColor.RED+"This command is not available on the console.");
+            return;
+        }
+
+        StringBuilder headNameBuilder = new StringBuilder();
+        for (int i = 1; i < args.length; i++)
+            headNameBuilder.append(args[i]).append(" ");
+        String headName = headNameBuilder.toString().trim();
+        IHead head = getHead(headName);
+        if (head != null && head instanceof TextureHead && sender instanceof Player)
+        {
+            PreviewInventory previewInventory = getPreviewInventory((TextureHead) head);
+            Player player = (Player) sender;
+            previewInventory.showInventory(player);
+        }
+        else if (headName == null || headName.equals(""))
+            sender.sendMessage(ChatColor.RED+String.format("Usage: /%s %s", COMMAND_KEY, SOURCES_USAGE));
+        else if (head == null)
+            sender.sendMessage(ChatColor.RED+String.format("Unrecognised head: \"%s\"", headName));
+        else if (!(head instanceof TextureHead))
+            sender.sendMessage(ChatColor.RED+String.format("Sorry, player head previews are not supported."));
+    }
+
     private String addHeader(String headerText, String content)
     {
         StringBuilder sb = new StringBuilder();
@@ -170,6 +203,18 @@ public class WikiCommand implements CommandExecutor
                 wikiPage = new WikiCraftRecipePage((ShapelessRecipe) recipe);
         }
         return wikiPage;
+    }
+
+    private PreviewInventory getPreviewInventory(TextureHead head)
+    {
+        if (!previewInventories.containsKey(head.getKey()))
+        {
+            ItemStack headStack = head.createItem();
+            PreviewInventory previewInventory = new PreviewInventory(headStack);
+            Core.getSelfPlugin().getServer().getPluginManager().registerEvents(previewInventory, Core.getSelfPlugin());
+            previewInventories.put(head.getKey(), previewInventory);    //Cache preview heads for re-use so there's no memory leak, as the listener retains a reference stopping GC.
+        }
+        return previewInventories.get(head.getKey());
     }
 
     private IHead getHead(String identifier)
