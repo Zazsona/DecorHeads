@@ -68,8 +68,8 @@ public abstract class DropHeadSource extends HeadSource implements Listener
      */
     protected boolean rollDrop()
     {
-        double roll = ((rand.nextInt(9999)+1.0)/100.0);
-        return (roll <= dropRate);
+        double roll = rand.nextDouble() * 100.0f;
+        return (roll < dropRate);
     }
 
     /**
