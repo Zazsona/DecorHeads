@@ -2,6 +2,7 @@ package com.zazsona.decorheads.headdata;
 
 import com.google.gson.Gson;
 import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.apiresponse.NameUUIDResponse;
 import com.zazsona.decorheads.apiresponse.ProfileResponse;
 import org.bukkit.Bukkit;
@@ -42,16 +43,8 @@ public class PlayerHead extends Head
     {
         try
         {
-            String response = getApiResponse("https://api.mojang.com/users/profiles/minecraft/"+playerName);
-            Gson gson = new Gson();
-            NameUUIDResponse uuidResponse = gson.fromJson(response, NameUUIDResponse.class);
-            if (uuidResponse.isSuccess())
-            {
-                String uuid = uuidResponse.getId().replaceFirst( "([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5" );
-                return createItem(UUID.fromString(uuid));
-            }
-            else
-                throw new IOException();
+            String uuid = DecorHeadsUtil.fetchPlayerUUID(playerName);
+            return createItem(UUID.fromString(uuid));
         }
         catch (IOException | NullPointerException e)
         {
@@ -69,13 +62,8 @@ public class PlayerHead extends Head
         {           //Unfortunately, I'm yet to find a way to do dynamically changing heads for players that have never joined before, if it's even possible! As such, we have to generate a custom one.
             try
             {
-                String response = getApiResponse("https://sessionserver.mojang.com/session/minecraft/profile/"+uuid);
-                Gson gson = new Gson();
-                ProfileResponse pr = gson.fromJson(response, ProfileResponse.class);
-                if (pr.isSuccess())
-                    return createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), pr.getPropertyByName(TEXTURES_KEY).getValue());
-                else
-                    throw new IOException();
+                ProfileResponse pr = DecorHeadsUtil.fetchPlayerProfile(uuid);
+                return createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), pr.getPropertyByName(TEXTURES_KEY).getValue());
             }
             catch (IOException e)
             {
