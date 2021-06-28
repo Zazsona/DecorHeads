@@ -17,19 +17,15 @@ import java.util.Set;
 
 public class EntityDropHeadSource extends DropHeadSource
 {
-    private Set<EntityType> entities = new HashSet<EntityType>();
-
-    public EntityDropHeadSource(IHead head, double dropRate, Collection<EntityType> entities)
+    public EntityDropHeadSource(IHead head, double dropRate)
     {
         super(head, HeadSourceType.ENTITY_DEATH_DROP, dropRate);
-        if (entities != null)
-            this.entities.addAll(entities);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {
-        if (passFilters(e) && (entities.size() == 0 || entities.contains(e.getEntityType())))
+        if (passFilters(e))
         {
             World world = e.getEntity().getWorld();
             Location location = e.getEntity().getLocation();

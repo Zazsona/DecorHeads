@@ -26,7 +26,7 @@ public class HeadConfigAccessor
     public static final String dropToolsKey = "tools";
     public static final String dropBiomesKey = "biomes";
     public static final String dropEntitiesKey = "entities";
-    public static final String uuidsKey = "uuids";
+    public static final String dropKilledPlayerIdsKey = "killed-player-ids";
     public static final String craftIngredientsKey = "ingredients";
     public static final String craftGridKey = "grid";
 

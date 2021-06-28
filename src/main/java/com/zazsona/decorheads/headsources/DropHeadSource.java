@@ -9,11 +9,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -57,7 +52,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
             if (player != null && head instanceof PlayerHead)
             {
                 PlayerHead playerHead = (PlayerHead) head;
-                headStack = playerHead.createItem(player.getUniqueId());
+                headStack = playerHead.createItem(player);
             }
             else
                 headStack = head.createItem();

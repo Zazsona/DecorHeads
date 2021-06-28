@@ -16,27 +16,20 @@ import java.util.Set;
 
 public class PlayerDropHeadSource extends DropHeadSource
 {
-    private Set<String> uuids = new HashSet<String>();
-
-    public PlayerDropHeadSource(IHead head, double dropRate, Collection<String> uuids)
+    public PlayerDropHeadSource(IHead head, double dropRate)
     {
         super(head, HeadSourceType.PLAYER_DEATH_DROP, dropRate);
-        if (uuids != null)
-            this.uuids.addAll(uuids);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {
-        if (e.getEntityType() == EntityType.PLAYER)
+        if (e.getEntityType() == EntityType.PLAYER && passFilters(e))
         {
             Player player = (Player) e.getEntity();
-            if (passFilters(e) && (uuids.size() == 0 || uuids.contains(player.getUniqueId())))
-            {
-                World world = e.getEntity().getWorld();
-                Location location = e.getEntity().getLocation();
-                return super.dropHead(world, location, player);
-            }
+            World world = e.getEntity().getWorld();
+            Location location = e.getEntity().getLocation();
+            return super.dropHead(world, location, player);
         }
         return null;
     }

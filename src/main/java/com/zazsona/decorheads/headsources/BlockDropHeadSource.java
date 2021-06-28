@@ -15,19 +15,15 @@ import java.util.Set;
 
 public class BlockDropHeadSource extends DropHeadSource
 {
-    private Set<Material> blocks = new HashSet<Material>();
-
-    public BlockDropHeadSource(IHead head, double dropRate, Collection<Material> blocks)
+    public BlockDropHeadSource(IHead head, double dropRate)
     {
         super(head, HeadSourceType.MINE_DROP, dropRate);
-        if (blocks != null)
-            this.blocks.addAll(blocks);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onBlockBreak(BlockBreakEvent e)
     {
-        if (passFilters(e) && (blocks.size() == 0 || blocks.contains(e.getBlock().getType())))
+        if (passFilters(e))
         {
             World world = e.getBlock().getWorld();
             Location location = e.getBlock().getLocation();

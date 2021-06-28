@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class ToolDropFilter extends DropSourceFilter
 {
-    private Set<Material> tools = new HashSet<Material>();
+    private Set<Material> tools = new HashSet<>();
 
     public ToolDropFilter(Collection<Material> tools)
     {

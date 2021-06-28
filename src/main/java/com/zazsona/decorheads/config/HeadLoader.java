@@ -6,8 +6,7 @@ import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.exceptions.InvalidHeadSourceException;
 import com.zazsona.decorheads.headdata.*;
 import com.zazsona.decorheads.headsources.*;
-import com.zazsona.decorheads.headsources.dropfilters.BiomeDropFilter;
-import com.zazsona.decorheads.headsources.dropfilters.ToolDropFilter;
+import com.zazsona.decorheads.headsources.dropfilters.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Keyed;
 import org.bukkit.Material;
@@ -98,17 +97,20 @@ public class HeadLoader extends HeadConfigAccessor
         else
             loadedHeads.put(head.getKey(), head);
 
-        ConfigurationSection sourcesYaml = headYaml.getConfigurationSection(sourcesKey);
-        for (String sourceKey : sourcesYaml.getKeys(false))
+        if (headYaml.contains(sourcesKey))
         {
-            try
+            ConfigurationSection sourcesYaml = headYaml.getConfigurationSection(sourcesKey);
+            for (String sourceKey : sourcesYaml.getKeys(false))
             {
-                ConfigurationSection sourceYaml = sourcesYaml.getConfigurationSection(sourceKey);
-                loadHeadSource(head, sourceYaml);
-            }
-            catch (Exception e)
-            {
-                Bukkit.getLogger().severe(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+                try
+                {
+                    ConfigurationSection sourceYaml = sourcesYaml.getConfigurationSection(sourceKey);
+                    loadHeadSource(head, sourceYaml);
+                }
+                catch (Exception e)
+                {
+                    Bukkit.getLogger().severe(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+                }
             }
         }
         return head;
@@ -291,6 +293,9 @@ public class HeadLoader extends HeadConfigAccessor
             if (headSource instanceof DropHeadSource)
             {
                 DropHeadSource dropHeadSource = (DropHeadSource) headSource;
+                applyBlockDropFilter(dropBlocksKey, dropHeadSource, sourceYaml);
+                applyEntityDropFilter(dropEntitiesKey, dropHeadSource, sourceYaml);
+                applyPlayerDeathIdDropFilter(dropKilledPlayerIdsKey, dropHeadSource, sourceYaml);
                 applyToolDropFilter(dropToolsKey, dropHeadSource, sourceYaml);
                 applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceYaml);
                 return dropHeadSource;
@@ -315,14 +320,11 @@ public class HeadLoader extends HeadConfigAccessor
         switch (sourceType)
         {
             case MINE_DROP:
-                List<Material> blocks = getBlocks(dropBlocksKey, head.getKey(), sourceYaml);
-                return new BlockDropHeadSource(head, dropRate, blocks);
+                return new BlockDropHeadSource(head, dropRate);
             case ENTITY_DEATH_DROP:
-                List<EntityType> entities = getEntities(dropEntitiesKey, head.getKey(), sourceYaml);
-                return new EntityDropHeadSource(head, dropRate, entities);
+                return new EntityDropHeadSource(head, dropRate);
             case PLAYER_DEATH_DROP:
-                List<String> uuids = getUUIDs(uuidsKey, sourceYaml);
-                return new PlayerDropHeadSource(head, dropRate, uuids);
+                return new PlayerDropHeadSource(head, dropRate);
             case SHAPELESS_CRAFT:
                 return buildShapelessCraftSource(head, sourceYaml);
             case SHAPED_CRAFT:
@@ -387,6 +389,42 @@ public class HeadLoader extends HeadConfigAccessor
         }
         else
             throw new InvalidHeadSourceException(String.format("%s in %s is a shaped craft, but has no grid!", sourceYaml.getCurrentPath(), head.getKey()));
+    }
+
+    private boolean applyBlockDropFilter(String blocksKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        List<Material> blocks = getBlocks(blocksKey, headSource.getHead().getKey(), sourceYaml);
+        if (blocks != null)
+        {
+            BlockDropFilter blockDropFilter = new BlockDropFilter(blocks);
+            headSource.getDropFilters().add(blockDropFilter);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean applyEntityDropFilter(String entitiesKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        List<EntityType> entities = getEntities(entitiesKey, headSource.getHead().getKey(), sourceYaml);
+        if (entities != null)
+        {
+            EntityDropFilter entityDropFilter = new EntityDropFilter(entities);
+            headSource.getDropFilters().add(entityDropFilter);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean applyPlayerDeathIdDropFilter(String uuidsKey, DropHeadSource headSource, ConfigurationSection sourceYaml)
+    {
+        List<String> uuids = getPlayerIds(uuidsKey, sourceYaml);
+        if (uuids != null)
+        {
+            PlayerDeathIdDropFilter uuidDropFilter = new PlayerDeathIdDropFilter(uuids);
+            headSource.getDropFilters().add(uuidDropFilter);
+            return true;
+        }
+        return false;
     }
 
     private boolean applyBiomeDropFilter(String biomesKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
@@ -505,7 +543,7 @@ public class HeadLoader extends HeadConfigAccessor
         return null;
     }
 
-    private List<String> getUUIDs(String uuidsKey, ConfigurationSection sourceYaml)
+    private List<String> getPlayerIds(String uuidsKey, ConfigurationSection sourceYaml)
     {
         if (sourceYaml.getKeys(false).contains(uuidsKey))
         {
