@@ -19,7 +19,7 @@ import java.util.Collection;
 
 public class SpawnHeadCommand implements CommandExecutor
 {
-    public static final String COMMAND_KEY = "spawnhead";
+    public static final String COMMAND_KEY = "dhspawn";
     private static final String DECOR_TYPE_KEY = "decor";
     private static final String PLAYER_TYPE_KEY = "player";
     private static final String ALL_KEY = "all";

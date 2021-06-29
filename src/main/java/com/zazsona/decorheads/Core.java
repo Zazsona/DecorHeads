@@ -1,5 +1,6 @@
 package com.zazsona.decorheads;
 
+import com.zazsona.decorheads.command.MasterCommand;
 import com.zazsona.decorheads.command.SpawnHeadCommand;
 import com.zazsona.decorheads.command.WikiCommand;
 import com.zazsona.decorheads.config.HeadLoader;
@@ -34,6 +35,7 @@ public class Core extends JavaPlugin
             HeadLoader headLoader = HeadLoader.getInstance();
             headLoader.loadHeads();
 
+            getCommand(PLUGIN_NAME).setExecutor(new MasterCommand());
             getCommand(SpawnHeadCommand.COMMAND_KEY).setExecutor(new SpawnHeadCommand());
             getCommand(WikiCommand.COMMAND_KEY).setExecutor(new WikiCommand());
         }

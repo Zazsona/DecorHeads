@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 public class WikiCommand implements CommandExecutor
 {
-    public static final String COMMAND_KEY = "decorheads";
+    public static final String COMMAND_KEY = "dhwiki";
     public static final String SOURCES_KEY = "sources";
     public static final String LIST_KEY = "list";
     public static final String PREVIEW_KEY = "preview";
@@ -53,9 +53,9 @@ public class WikiCommand implements CommandExecutor
         catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e)
         {
             StringBuilder helpBuilder = new StringBuilder();
-            helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(LIST_USAGE).append(ChatColor.WHITE).append(" - List all heads").append("\n");
-            helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(PREVIEW_USAGE).append(ChatColor.WHITE).append(" - Preview head appearance").append("\n");
-            helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(SOURCES_USAGE).append(ChatColor.WHITE).append(" - Craft/Drop Info").append("\n");
+            helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(LIST_USAGE).append(ChatColor.WHITE).append(": List all heads").append("\n");
+            helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(PREVIEW_USAGE).append(ChatColor.WHITE).append(": Preview head appearance").append("\n");
+            helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(SOURCES_USAGE).append(ChatColor.WHITE).append(": Craft/Drop Info").append("\n");
             String page = addHeader("DecorHeads Wiki", helpBuilder.toString().trim());
             sender.sendMessage(page);
         }

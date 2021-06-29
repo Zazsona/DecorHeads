@@ -6,54 +6,56 @@ api-version: 1.16
 commands:
    decorheads:
       aliases:
-         - dh
          - decorhead
+      description: Help page
+      usage: /DecorHeads
+   dhwiki:
+      aliases:
          - decorheadwiki
          - decorheadswiki
-         - dhw
-         - heads
          - headswiki
          - headwiki
       description: Info & head details
-      usage: /DecorHeads [Function] [Args]
+      usage: /DHWiki [Function] [Args]
       permission: decorheads.wiki
-   headeditor:
+   dheditor:
       aliases:
-         - he
+         - headeditor
          - decorheadseditor
-         - dhe
          - decorheadeditor
          - dheditor
       description: Edit heads and config
-      usage: /HeadEditor [Function] [Args]
-      permission: decorheads.admin
-   spawnhead:
+      usage: /DHEditor [Function] [Args]
+      permission: decorheads.config
+   dhspawn:
       aliases:
-         - sh
+         - spawnhead
          - headspawn
          - headspawner
          - summonhead
          - headsummon
          - headsummoner
       description: Spawn a decor or player head
-      usage: /SpawnHead [Decor|Player] [Name] ||| /SpawnHead All
-      permission: decorheads.summonhead
+      usage: /DHSpawn [Decor|Player] [Name] ||| /SpawnHead All
+      permission: decorheads.spawnhead
 permissions:
    decorheads.wiki:
       description: Check head wiki
       default: true
-   decorheads.summonhead:
+   decorheads.spawnhead:
       description: Spawn heads via command
       default: op
       children:
          decorheads.wiki: true
-   decorheads.admin:
+   decorheads.config:
       description: Manage the plugin
       default: op
       children:
-         decorheads.summonhead: true
+         decorheads.wiki: true
    decorheads.*:
       description: All DecorHeads permissions
       default: op
       children:
-         decorheads.admin: true
+         decorheads.wiki: true
+         decorheads.spawnhead: true
+         decorheads.config: true
