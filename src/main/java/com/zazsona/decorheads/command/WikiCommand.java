@@ -56,7 +56,7 @@ public class WikiCommand implements CommandExecutor
             helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(LIST_USAGE).append(ChatColor.WHITE).append(": List all heads").append("\n");
             helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(PREVIEW_USAGE).append(ChatColor.WHITE).append(": Preview head appearance").append("\n");
             helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(SOURCES_USAGE).append(ChatColor.WHITE).append(": Craft/Drop Info").append("\n");
-            String page = addHeader("DecorHeads Wiki", helpBuilder.toString().trim());
+            String page = CommandUtil.addHeader("DecorHeads Wiki", helpBuilder.toString().trim());
             sender.sendMessage(page);
         }
         finally
@@ -89,7 +89,7 @@ public class WikiCommand implements CommandExecutor
             {
                 IWikiPage page = getHeadSourcePage(headSource);
                 String headerText = String.format("Head Sources (%d/%d)", pageNo, sourceKeys.size());
-                sender.sendMessage(addHeader(headerText, page.getPage()));
+                sender.sendMessage(CommandUtil.addHeader(headerText, page.getPage()));
 
                 if (headSource instanceof CraftHeadSource && sender instanceof Player) //TODO: Make configurable?
                 {
@@ -133,7 +133,7 @@ public class WikiCommand implements CommandExecutor
             sb.append(headName).append("\n");
         }
         String headerText = String.format("Heads (%d/%d)", pageNo, pages);
-        String page = addHeader(headerText, sb.toString().trim());
+        String page = CommandUtil.addHeader(headerText, sb.toString().trim());
         sender.sendMessage(page);
     }
 
@@ -162,17 +162,6 @@ public class WikiCommand implements CommandExecutor
             sender.sendMessage(ChatColor.RED+String.format("Unrecognised head: \"%s\"", headName));
         else if (!(head instanceof TextureHead))
             sender.sendMessage(ChatColor.RED+String.format("Sorry, player head previews are not supported."));
-    }
-
-    private String addHeader(String headerText, String content)
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ChatColor.YELLOW).append("---------");
-        sb.append(ChatColor.WHITE).append(" ").append(headerText).append(" ");
-        sb.append(ChatColor.YELLOW).append("--------------------");
-        sb.append(ChatColor.WHITE).append("\n");
-        sb.append(content);
-        return sb.toString();
     }
 
     private int getPageNo(String pageParam, int minPage, int maxPage)

@@ -18,12 +18,9 @@ commands:
       description: Info & head details
       usage: /DHWiki [Function] [Args]
       permission: decorheads.wiki
-   dheditor:
+   dhconfig:
       aliases:
-         - headeditor
-         - decorheadseditor
-         - decorheadeditor
-         - dheditor
+         - decorheadsconfig
       description: Edit heads and config
       usage: /DHEditor [Function] [Args]
       permission: decorheads.config

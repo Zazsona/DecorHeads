@@ -39,6 +39,7 @@ public class Core extends JavaPlugin
             getCommand(PLUGIN_NAME).setExecutor(new MasterCommand());
             getCommand(SpawnHeadCommand.COMMAND_KEY).setExecutor(new SpawnHeadCommand());
             getCommand(WikiCommand.COMMAND_KEY).setExecutor(new WikiCommand());
+            getCommand(ConfigCommand.COMMAND_KEY).setExecutor(new ConfigCommand());
         }
         catch (Exception e)
         {
