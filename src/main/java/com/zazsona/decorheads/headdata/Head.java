@@ -3,13 +3,12 @@ package com.zazsona.decorheads.headdata;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.zazsona.decorheads.Core;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -21,6 +20,24 @@ public abstract class Head implements IHead
     protected static final String DEFAULT_UUID = "8a2de1bb-a9b2-4f00-b0e3-d360ad407928"; //Random UUID unassigned to any Minecraft account.
     protected static final String TEXTURES_KEY = "textures";
     protected static final String PROFILE_KEY = "profile";
+
+    private String key;
+
+    public Head(String key)
+    {
+        this.key = key;
+    }
+
+    @Override
+    public String getKey()
+    {
+        return key;
+    }
+
+    public static NamespacedKey getSkullHeadKeyKey()
+    {
+        return new NamespacedKey(Core.getSelfPlugin(), "HeadKey");
+    }
 
     protected ItemStack createSkull(String name, String texture)
     {
@@ -35,6 +52,7 @@ public abstract class Head implements IHead
             skullProfile.setAccessible(true);
             skullProfile.set(skullMeta, gameProfile);
             skullMeta.setDisplayName(name);
+            assignHeadKeyToItem(skullMeta);
             addLore(skullMeta);
             skull.setItemMeta(skullMeta);
             return skull;
@@ -52,9 +70,18 @@ public abstract class Head implements IHead
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         skullMeta.setOwningPlayer(offlinePlayer);
         skullMeta.setDisplayName(name);
+        assignHeadKeyToItem(skullMeta);
         addLore(skullMeta);
         skull.setItemMeta(skullMeta);
         return skull;
+    }
+
+    protected ItemMeta assignHeadKeyToItem(ItemMeta meta)
+    {
+        PersistentDataContainer dataHolder = meta.getPersistentDataContainer();
+        NamespacedKey headKeyKey = getSkullHeadKeyKey();
+        dataHolder.set(headKeyKey, PersistentDataType.STRING, key);
+        return meta;
     }
 
     protected static ItemMeta addLore(ItemMeta meta)

@@ -7,9 +7,13 @@ import com.zazsona.decorheads.apiresponse.NameUUIDResponse;
 import com.zazsona.decorheads.apiresponse.ProfileResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,17 +24,15 @@ import java.util.UUID;
 public class PlayerHead extends Head
 {
     private static final String HEAD_NAME_FORMAT = "%s's Head";
-    private String key;
 
     public PlayerHead(String key)
     {
-        this.key = key;
+        super(key);
     }
 
-    @Override
-    public String getKey()
+    public static NamespacedKey getSkullUUIDKey()
     {
-        return key;
+        return new NamespacedKey(Core.getSelfPlugin(), "OwnerUUID");
     }
 
     @Override
@@ -63,7 +65,10 @@ public class PlayerHead extends Head
             try
             {
                 ProfileResponse pr = DecorHeadsUtil.fetchPlayerProfile(uuid);
-                return createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), pr.getPropertyByName(TEXTURES_KEY).getValue());
+                ItemStack skull = createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), pr.getPropertyByName(TEXTURES_KEY).getValue());
+                ItemMeta meta = assignHeadUUIDToItem(skull.getItemMeta(), uuid.toString());
+                skull.setItemMeta(meta);
+                return skull;
             }
             catch (IOException e)
             {
@@ -75,7 +80,10 @@ public class PlayerHead extends Head
 
     public ItemStack createItem(OfflinePlayer player)
     {
-        return createSkull(String.format(HEAD_NAME_FORMAT, player.getName()), player);
+        ItemStack skull = createSkull(String.format(HEAD_NAME_FORMAT, player.getName()), player);
+        ItemMeta meta = assignHeadUUIDToItem(skull.getItemMeta(), player.getUniqueId().toString());
+        skull.setItemMeta(meta);
+        return skull;
     }
 
     private String getApiResponse(String query) throws IOException
@@ -90,5 +98,13 @@ public class PlayerHead extends Head
             responseBuilder.append(line);
         }
         return responseBuilder.toString();
+    }
+
+    protected ItemMeta assignHeadUUIDToItem(ItemMeta meta, String uuid)
+    {
+        PersistentDataContainer dataHolder = meta.getPersistentDataContainer();
+        NamespacedKey uuidKey = getSkullUUIDKey();
+        dataHolder.set(uuidKey, PersistentDataType.STRING, uuid);
+        return meta;
     }
 }

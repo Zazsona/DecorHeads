@@ -16,21 +16,14 @@ import java.util.UUID;
 
 public class TextureHead extends Head
 {
-    private String key;
     private String name;
     private String texture;
 
     public TextureHead(String key, String name, String texture)
     {
-        this.key = key;
+        super(key);
         this.name = name;
         this.texture = texture;
-    }
-
-    @Override
-    public String getKey()
-    {
-        return key;
     }
 
     public String getName()
