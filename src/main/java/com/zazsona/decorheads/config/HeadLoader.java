@@ -1,7 +1,6 @@
 package com.zazsona.decorheads.config;
 
 import com.zazsona.decorheads.Core;
-import com.zazsona.decorheads.Settings;
 import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.exceptions.InvalidHeadSourceException;
 import com.zazsona.decorheads.headdata.*;
@@ -122,12 +121,12 @@ public class HeadLoader extends HeadConfigAccessor
             throw new InvalidHeadSourceException(String.format("Attempted to load head source prior to loading head: %s", head.getKey()));
 
         HeadSource headSource = parseHeadSource(head, sourceYaml);
-        if (headSource instanceof DropHeadSource && Settings.isDropsEnabled())
+        if (headSource instanceof DropHeadSource && PluginConfig.isDropsEnabled())
         {
             DropHeadSource dropHeadSource = (DropHeadSource) headSource;
             plugin.getServer().getPluginManager().registerEvents(dropHeadSource, plugin);
         }
-        else if (headSource instanceof CraftHeadSource && Settings.isCraftingEnabled())
+        else if (headSource instanceof CraftHeadSource && PluginConfig.isCraftingEnabled())
         {
             CraftHeadSource craftHeadSource = (CraftHeadSource) headSource;
             plugin.getServer().addRecipe(craftHeadSource.getRecipe());

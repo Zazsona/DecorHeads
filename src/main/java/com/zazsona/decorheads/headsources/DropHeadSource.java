@@ -1,6 +1,5 @@
 package com.zazsona.decorheads.headsources;
 
-import com.zazsona.decorheads.Settings;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
 import com.zazsona.decorheads.headsources.dropfilters.DropSourceFilter;

@@ -1,7 +1,6 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.Core;
-import com.zazsona.decorheads.HeadManager;
 import com.zazsona.decorheads.config.HeadConfigAccessor;
 import com.zazsona.decorheads.config.HeadLoader;
 import com.zazsona.decorheads.headdata.IHead;
