@@ -1,5 +1,6 @@
 package com.zazsona.decorheads;
 
+import com.zazsona.decorheads.command.ConfigCommand;
 import com.zazsona.decorheads.command.MasterCommand;
 import com.zazsona.decorheads.command.SpawnHeadCommand;
 import com.zazsona.decorheads.command.WikiCommand;
@@ -25,7 +26,7 @@ public class Core extends JavaPlugin
             int pluginId = 10174;
             Metrics metrics = new Metrics(this, pluginId);
             //getServer().getPluginManager().registerEvents(new HeadDropListener(), this);
-            //getServer().getPluginManager().registerEvents(new PlacedHeadRetriever(), this);
+            getServer().getPluginManager().registerEvents(new PlacedHeadRetriever(), this);
             //this.getCommand("DecorHeads").setExecutor(new DecorHeadsCommand());
             //CraftingManager.addRecipes();
 
