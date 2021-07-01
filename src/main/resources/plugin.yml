@@ -36,10 +36,16 @@ commands:
       usage: /DHSpawn [Decor|Player] [Name] ||| /SpawnHead All
       permission: decorheads.spawnhead
 permissions:
+   decorheads.dropheads:
+      description: Have player's actions drop heads
+      default: true
+   decorheads.craftheads:
+      description: Allow player to craft/make heads
+      default: true
    decorheads.wiki:
       description: Check head wiki
       default: true
-   decorheads.spawnhead:
+   decorheads.spawnheads:
       description: Spawn heads via command
       default: op
       children:
@@ -47,12 +53,12 @@ permissions:
    decorheads.config:
       description: Manage the plugin
       default: op
-      children:
-         decorheads.wiki: true
    decorheads.*:
       description: All DecorHeads permissions
       default: op
       children:
+         decorheads.dropheads: true
+         decorheads.craftheads: true
          decorheads.wiki: true
          decorheads.spawnhead: true
          decorheads.config: true

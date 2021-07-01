@@ -25,16 +25,14 @@ public class Core extends JavaPlugin
             saveConfig();
             int pluginId = 10174;
             Metrics metrics = new Metrics(this, pluginId);
-            //getServer().getPluginManager().registerEvents(new HeadDropListener(), this);
-            getServer().getPluginManager().registerEvents(new PlacedHeadRetriever(), this);
-            //this.getCommand("DecorHeads").setExecutor(new DecorHeadsCommand());
-            //CraftingManager.addRecipes();
-
 
             HeadUpdater headUpdater = HeadUpdater.getInstance();
             headUpdater.updateHeadsFile();
             HeadLoader headLoader = HeadLoader.getInstance();
             headLoader.loadHeads();
+
+            getServer().getPluginManager().registerEvents(new PlacedHeadRetriever(), this);
+            getServer().getPluginManager().registerEvents(new HeadCraftingEnforcer(), this);
 
             getCommand(PLUGIN_NAME).setExecutor(new MasterCommand());
             getCommand(SpawnHeadCommand.COMMAND_KEY).setExecutor(new SpawnHeadCommand());

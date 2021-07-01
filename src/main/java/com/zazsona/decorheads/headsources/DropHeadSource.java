@@ -1,11 +1,14 @@
 package com.zazsona.decorheads.headsources;
 
+import com.zazsona.decorheads.Permissions;
+import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
 import com.zazsona.decorheads.headsources.dropfilters.DropSourceFilter;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
@@ -42,7 +45,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
 
     public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget)
     {
-        if (rollDrop())
+        if (PluginConfig.isDropsEnabled() && rollDrop() && (player == null || player.hasPermission(Permissions.DROP_HEADS)))
         {
             ItemStack headStack;
             IHead head = getHead();
