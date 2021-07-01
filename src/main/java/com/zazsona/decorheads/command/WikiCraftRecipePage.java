@@ -108,7 +108,7 @@ public class WikiCraftRecipePage implements IWikiPage
                 for (int x = 0; x < 3; x++)
                 {
                     Character ingredientChar = (x < row.length) ? row[x].charAt(0) : ' ';
-                    ItemStack ingredient = ingredientMap.get(ingredientChar);
+                    ItemStack ingredient = (ingredientChar != ' ') ? ingredientMap.get(ingredientChar) : new ItemStack(Material.AIR);
                     int index = orderedIngredients.indexOf(ingredient.getType());
                     ChatColor colour = (index > -1 && ingredientChar != ' ') ? ingredientColours[index] : neutralColour;
                     for (int slotX = 0; slotX < slotSize; slotX++)
