@@ -14,24 +14,25 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PlayerDropHeadSource extends DropHeadSource
+public class PlayerEntityDropHeadSource extends EntityDropHeadSource
 {
-    public PlayerDropHeadSource(IHead head, double dropRate)
+    public PlayerEntityDropHeadSource(IHead head, double dropRate)
     {
         super(head, HeadSourceType.PLAYER_DEATH_DROP, dropRate);
     }
 
+    protected PlayerEntityDropHeadSource(IHead head, HeadSourceType sourceType, double dropRate)
+    {
+        super(head, sourceType, dropRate);
+    }
+
+    @Override
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {
-        if (e.getEntityType() == EntityType.PLAYER && passFilters(e))
-        {
-            Player killerPlayer = e.getEntity().getKiller();
-            Player killedPlayer = (Player) e.getEntity();
-            World world = e.getEntity().getWorld();
-            Location location = e.getEntity().getLocation();
-            return super.dropHead(world, location, killerPlayer, killedPlayer.getUniqueId());
-        }
-        return null;
+        if (e.getEntityType() == EntityType.PLAYER)
+            return super.onEntityDeath(e);
+        else
+            return null;
     }
 }

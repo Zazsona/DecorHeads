@@ -21,6 +21,11 @@ public class BlockDropHeadSource extends DropHeadSource
         super(head, HeadSourceType.MINE_DROP, dropRate);
     }
 
+    protected BlockDropHeadSource(IHead head, HeadSourceType sourceType, double dropRate)
+    {
+        super(head, sourceType, dropRate);
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onBlockBreak(BlockBreakEvent e)
     {

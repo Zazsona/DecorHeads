@@ -24,6 +24,11 @@ public class EntityDropHeadSource extends DropHeadSource
         super(head, HeadSourceType.ENTITY_DEATH_DROP, dropRate);
     }
 
+    protected EntityDropHeadSource(IHead head, HeadSourceType sourceType, double dropRate)
+    {
+        super(head, sourceType, dropRate);
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {

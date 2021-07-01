@@ -323,7 +323,7 @@ public class HeadLoader extends HeadConfigAccessor
             case ENTITY_DEATH_DROP:
                 return new EntityDropHeadSource(head, dropRate);
             case PLAYER_DEATH_DROP:
-                return new PlayerDropHeadSource(head, dropRate);
+                return new PlayerEntityDropHeadSource(head, dropRate);
             case SHAPELESS_CRAFT:
                 return buildShapelessCraftSource(head, sourceYaml);
             case SHAPED_CRAFT:
