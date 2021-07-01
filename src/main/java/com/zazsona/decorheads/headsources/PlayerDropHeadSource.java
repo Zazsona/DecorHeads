@@ -26,10 +26,11 @@ public class PlayerDropHeadSource extends DropHeadSource
     {
         if (e.getEntityType() == EntityType.PLAYER && passFilters(e))
         {
-            Player player = (Player) e.getEntity();
+            Player killerPlayer = e.getEntity().getKiller();
+            Player killedPlayer = (Player) e.getEntity();
             World world = e.getEntity().getWorld();
             Location location = e.getEntity().getLocation();
-            return super.dropHead(world, location, player);
+            return super.dropHead(world, location, killerPlayer, killedPlayer.getUniqueId());
         }
         return null;
     }

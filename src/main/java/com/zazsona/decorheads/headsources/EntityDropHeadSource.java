@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class EntityDropHeadSource extends DropHeadSource
 {
@@ -27,9 +29,11 @@ public class EntityDropHeadSource extends DropHeadSource
     {
         if (passFilters(e))
         {
+            UUID killedPlayerId = (e.getEntity() instanceof Player) ? e.getEntity().getUniqueId() : null;
+            Player killer = e.getEntity().getKiller();
             World world = e.getEntity().getWorld();
             Location location = e.getEntity().getLocation();
-            return super.dropHead(world, location);
+            return super.dropHead(world, location, killer, killedPlayerId);
         }
         return null;
     }

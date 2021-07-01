@@ -4,15 +4,18 @@ import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
 import com.zazsona.decorheads.headsources.dropfilters.DropSourceFilter;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public abstract class DropHeadSource extends HeadSource implements Listener
 {
@@ -37,21 +40,16 @@ public abstract class DropHeadSource extends HeadSource implements Listener
         return dropFilters;
     }
 
-    public ItemStack dropHead(World world, Location location)
-    {
-        return dropHead(world, location, null);
-    }
-
-    public ItemStack dropHead(World world, Location location, Player player)
+    public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget)
     {
         if (rollDrop())
         {
             ItemStack headStack;
             IHead head = getHead();
-            if (player != null && head instanceof PlayerHead)
+            if (headSkinTarget != null && head instanceof PlayerHead)
             {
                 PlayerHead playerHead = (PlayerHead) head;
-                headStack = playerHead.createItem(player);
+                headStack = playerHead.createItem(headSkinTarget);
             }
             else
                 headStack = head.createItem();

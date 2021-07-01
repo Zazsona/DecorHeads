@@ -4,6 +4,7 @@ import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -25,9 +26,10 @@ public class BlockDropHeadSource extends DropHeadSource
     {
         if (passFilters(e))
         {
+            Player blockBreaker = e.getPlayer();
             World world = e.getBlock().getWorld();
             Location location = e.getBlock().getLocation();
-            return super.dropHead(world, location);
+            return super.dropHead(world, location, blockBreaker, null);
         }
         return null;
     }
