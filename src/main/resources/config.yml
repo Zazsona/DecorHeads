@@ -1,5 +1,17 @@
+# Global plugin toggle
 enabled: true
-drops: true
+# Allow crafting of supported heads
 crafting: true
-mob-drops: true
+# Allow heads to drop
+drops: true
+# Allow heads to drop from blocks
+block-drops: true
+# Allow heads to drop from entities
+entity-drops: true
+# Allow heads to drop from players
 player-drops: true
+# Allow heads to drop without any involvement from players (e.g, drops from mobs burning to death).
+# If you're disabling DropHeads for some roles, I recommend disabling this otherwise they will be able to exploit these methods to get heads.
+playerless-drop-events: true
+# Add recipes to the player's crafting book when viewed in the wiki command for easier reference when crafting
+learn-recipes-from-wiki: true
