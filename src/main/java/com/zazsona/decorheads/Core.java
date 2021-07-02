@@ -16,6 +16,7 @@ import java.io.IOException;
 public class Core extends JavaPlugin
 {
     public static final String PLUGIN_NAME = "DecorHeads";
+
     @Override
     public void onEnable()
     {
@@ -23,8 +24,6 @@ public class Core extends JavaPlugin
         {
             getConfig().options().copyDefaults(true);
             saveConfig();
-            int pluginId = 10174;
-            Metrics metrics = new Metrics(this, pluginId);
 
             HeadUpdater headUpdater = HeadUpdater.getInstance();
             headUpdater.updateHeadsFile();
@@ -38,6 +37,8 @@ public class Core extends JavaPlugin
             getCommand(SpawnHeadCommand.COMMAND_KEY).setExecutor(new SpawnHeadCommand());
             getCommand(WikiCommand.COMMAND_KEY).setExecutor(new WikiCommand());
             getCommand(ConfigCommand.COMMAND_KEY).setExecutor(new ConfigCommand());
+
+            MetricsManager.getInstance().enable();
         }
         catch (Exception e)
         {
