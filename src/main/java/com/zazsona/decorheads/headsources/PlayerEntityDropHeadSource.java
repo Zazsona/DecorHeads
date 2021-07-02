@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources;
 
+import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -30,7 +31,7 @@ public class PlayerEntityDropHeadSource extends EntityDropHeadSource
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {
-        if (e.getEntityType() == EntityType.PLAYER)
+        if (PluginConfig.isDropSourceEnabled(getSourceType()) && e.getEntityType() == EntityType.PLAYER)
             return super.onEntityDeath(e);
         else
             return null;

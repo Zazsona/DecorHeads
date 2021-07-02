@@ -45,7 +45,8 @@ public abstract class DropHeadSource extends HeadSource implements Listener
 
     public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget)
     {
-        if (PluginConfig.isDropsEnabled() && rollDrop() && (player == null || player.hasPermission(Permissions.DROP_HEADS)))
+        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && rollDrop()
+                && ((player == null && PluginConfig.isPlayerlessDropEventsEnabled()) || (player != null && player.hasPermission(Permissions.DROP_HEADS))))
         {
             ItemStack headStack;
             IHead head = getHead();

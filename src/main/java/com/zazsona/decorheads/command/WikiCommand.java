@@ -50,6 +50,7 @@ public class WikiCommand implements CommandExecutor
         }
         catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e)
         {
+            e.printStackTrace();
             StringBuilder helpBuilder = new StringBuilder();
             helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(LIST_USAGE).append(ChatColor.WHITE).append(": List all heads").append("\n");
             helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(PREVIEW_USAGE).append(ChatColor.WHITE).append(": Preview head appearance").append("\n");
@@ -91,10 +92,10 @@ public class WikiCommand implements CommandExecutor
                 String pageContent = (disabledNotice == null) ? page.getPage() : disabledNotice + "\n" + page.getPage();
                 sender.sendMessage(CommandUtil.addHeader(headerText, pageContent));
 
-                if (headSource instanceof CraftHeadSource && sender instanceof Player) //TODO: Make configurable?
+                if (PluginConfig.isLearnRecipesFromWikiEnabled() && headSource instanceof CraftHeadSource && sender instanceof Player)
                 {
                     CraftHeadSource craftHeadSource = (CraftHeadSource) headSource;
-                    Player player = (Player) sender;                                        //They've got Wiki page access, may as well give the recipe in the prettier UI.
+                    Player player = (Player) sender;                                        //They've got Wiki page access, may as well give the recipe in the prettier UI
                     NamespacedKey recipeKey = ((Keyed) craftHeadSource.getRecipe()).getKey();
                     player.discoverRecipe(recipeKey);
                 }
@@ -113,11 +114,12 @@ public class WikiCommand implements CommandExecutor
     private String getSourceTypeDisabledNotice(HeadSourceType sourceType)
     {
         String lineTemplate = ChatColor.GRAY+"Note: %s is currently disabled."+ChatColor.RESET;
+        boolean isCraftSource = (sourceType == HeadSourceType.SHAPED_CRAFT || sourceType == HeadSourceType.SHAPELESS_CRAFT);
         if (!PluginConfig.isPluginEnabled())
             return String.format(lineTemplate, Core.PLUGIN_NAME);
-        else if ((sourceType == HeadSourceType.SHAPED_CRAFT || sourceType == HeadSourceType.SHAPELESS_CRAFT) && !PluginConfig.isCraftingEnabled())
+        else if (isCraftSource && !PluginConfig.isCraftingEnabled())
             return String.format(lineTemplate, "Head crafting");
-        else if (!PluginConfig.isDropSourceEnabled(sourceType) || !PluginConfig.isDropsEnabled())
+        else if (!isCraftSource && (!PluginConfig.isDropSourceEnabled(sourceType) || !PluginConfig.isDropsEnabled()))
             return String.format(lineTemplate, DecorHeadsUtil.capitaliseName(sourceType.name()));
         else
             return null;

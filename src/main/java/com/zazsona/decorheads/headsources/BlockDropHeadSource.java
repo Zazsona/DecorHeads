@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources;
 
+import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,7 +30,7 @@ public class BlockDropHeadSource extends DropHeadSource
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onBlockBreak(BlockBreakEvent e)
     {
-        if (passFilters(e))
+        if (PluginConfig.isDropSourceEnabled(getSourceType()) && passFilters(e))
         {
             Player blockBreaker = e.getPlayer();
             World world = e.getBlock().getWorld();

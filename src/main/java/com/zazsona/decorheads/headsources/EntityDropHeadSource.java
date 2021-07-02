@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources;
 
+import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,7 +33,7 @@ public class EntityDropHeadSource extends DropHeadSource
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public ItemStack onEntityDeath(EntityDeathEvent e)
     {
-        if (passFilters(e))
+        if (PluginConfig.isDropSourceEnabled(getSourceType()) && passFilters(e))
         {
             UUID killedPlayerId = (e.getEntity() instanceof Player) ? e.getEntity().getUniqueId() : null;
             Player killer = e.getEntity().getKiller();
