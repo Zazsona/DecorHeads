@@ -3,6 +3,7 @@ package com.zazsona.decorheads.command;
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.HeadLoader;
+import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.TextureHead;
 import com.zazsona.decorheads.headsources.*;
@@ -89,7 +90,9 @@ public class WikiCommand implements CommandExecutor
             {
                 IWikiPage page = getHeadSourcePage(headSource);
                 String headerText = String.format("Head Sources (%d/%d)", pageNo, sourceKeys.size());
-                sender.sendMessage(CommandUtil.addHeader(headerText, page.getPage()));
+                String disabledNotice = getSourceTypeDisabledNotice(headSource.getSourceType());
+                String pageContent = (disabledNotice == null) ? page.getPage() : disabledNotice + "\n" + page.getPage();
+                sender.sendMessage(CommandUtil.addHeader(headerText, pageContent));
 
                 if (headSource instanceof CraftHeadSource && sender instanceof Player) //TODO: Make configurable?
                 {
@@ -108,6 +111,23 @@ public class WikiCommand implements CommandExecutor
             sender.sendMessage(ChatColor.RED+String.format("Unrecognised head: \"%s\"", headName));
         else if (headLoader.getLoadedHeadSources().get(head.getKey()) == null)
             sender.sendMessage(ChatColor.RED+String.format("Head \"%s\" has no sources.", headName));
+    }
+
+    private String getSourceTypeDisabledNotice(HeadSourceType sourceType)
+    {
+        String lineTemplate = ChatColor.GRAY+"Note: %s is currently disabled."+ChatColor.RESET;
+        if (!PluginConfig.isEnabled())
+            return String.format(lineTemplate, Core.PLUGIN_NAME);
+        else if ((sourceType == HeadSourceType.SHAPED_CRAFT || sourceType == HeadSourceType.SHAPELESS_CRAFT) && !PluginConfig.isCraftingEnabled())
+            return String.format(lineTemplate, "Head crafting");
+        else if (sourceType == HeadSourceType.MINE_DROP && (!PluginConfig.isBlockDropsEnabled() || !PluginConfig.isDropsEnabled()))
+            return String.format(lineTemplate, DecorHeadsUtil.capitaliseName(HeadSourceType.MINE_DROP.name()));
+        else if (sourceType == HeadSourceType.ENTITY_DEATH_DROP && (!PluginConfig.isEntityDropsEnabled() || !PluginConfig.isDropsEnabled()))
+            return String.format(lineTemplate, DecorHeadsUtil.capitaliseName(HeadSourceType.ENTITY_DEATH_DROP.name()));
+        else if (sourceType == HeadSourceType.PLAYER_DEATH_DROP && (!PluginConfig.isEntityDropsEnabled() || !PluginConfig.isPlayerDropsEnabled() || !PluginConfig.isDropsEnabled()))
+            return String.format(lineTemplate, DecorHeadsUtil.capitaliseName(HeadSourceType.PLAYER_DEATH_DROP.name()));
+        else
+            return null;
     }
 
     private void sendHeadsList(CommandSender sender, String[] args)
