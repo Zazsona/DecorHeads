@@ -1,16 +1,15 @@
 package com.zazsona.decorheads.config;
 
 import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.plugin.Plugin;
 
 public class PluginConfig
 {
-    public static final String ENABLED_KEY = "enabled";
+    public static final String PLUGIN_ENABLED_KEY = "plugin-enabled";
     public static final String CRAFTING_KEY = "crafting";
     public static final String DROPS_KEY = "drops";
-    public static final String BLOCK_DROPS_KEY = "block-drops";
-    public static final String ENTITY_DROPS_KEY = "entity-drops";
-    public static final String PLAYER_DROPS_KEY = "player-drops";
+    public static final String DROP_SOURCES_KEY = "drop-sources";
     public static final String PLAYERLESS_DROP_EVENTS_KEY = "playerless-drop-events";
     public static final String WIKI_RECIPE_LEARN_KEY = "learn-recipes-from-wiki";
     private static Plugin plugin = Core.getPlugin(Core.class);
@@ -20,15 +19,15 @@ public class PluginConfig
         plugin.saveConfig();
     }
 
-    public static void setEnabled(boolean newEnabled)
+    public static void setPluginEnabled(boolean newEnabled)
     {
-        plugin.getConfig().set(ENABLED_KEY, newEnabled);
+        plugin.getConfig().set(PLUGIN_ENABLED_KEY, newEnabled);
         save();
     }
 
-    public static boolean isEnabled()
+    public static boolean isPluginEnabled()
     {
-        return plugin.getConfig().getBoolean(ENABLED_KEY);
+        return plugin.getConfig().getBoolean(PLUGIN_ENABLED_KEY);
     }
 
     public static void setCraftingEnabled(boolean newEnabled)
@@ -53,39 +52,6 @@ public class PluginConfig
         return plugin.getConfig().getBoolean(DROPS_KEY);
     }
 
-    public static void setBlockDropsEnabled(boolean newEnabled)
-    {
-        plugin.getConfig().set(BLOCK_DROPS_KEY, newEnabled);
-        save();
-    }
-
-    public static boolean isBlockDropsEnabled()
-    {
-        return plugin.getConfig().getBoolean(BLOCK_DROPS_KEY);
-    }
-
-    public static void setEntityDropsEnabled(boolean newEnabled)
-    {
-        plugin.getConfig().set(ENTITY_DROPS_KEY, newEnabled);
-        save();
-    }
-
-    public static boolean isEntityDropsEnabled()
-    {
-        return plugin.getConfig().getBoolean(ENTITY_DROPS_KEY);
-    }
-
-    public static void setPlayerDropsEnabled(boolean newEnabled)
-    {
-        plugin.getConfig().set(PLAYER_DROPS_KEY, newEnabled);
-        save();
-    }
-
-    public static boolean isPlayerDropsEnabled()
-    {
-        return plugin.getConfig().getBoolean(PLAYER_DROPS_KEY);
-    }
-
     public static void setPlayerlessDropEventsEnabled(boolean newEnabled)
     {
         plugin.getConfig().set(PLAYERLESS_DROP_EVENTS_KEY, newEnabled);
@@ -107,4 +73,40 @@ public class PluginConfig
     {
         return plugin.getConfig().getBoolean(WIKI_RECIPE_LEARN_KEY);
     }
+
+    public static void setDropSourceEnabled(HeadSourceType sourceType, boolean newEnabled)
+    {
+        String configKey = convertSourceTypeToConfigKey(sourceType);
+        plugin.getConfig().set(configKey, newEnabled);
+        save();
+    }
+
+    public static boolean isDropSourceEnabled(HeadSourceType sourceType)
+    {
+        String configKey = convertSourceTypeToConfigKey(sourceType);
+        return plugin.getConfig().getBoolean(configKey);
+    }
+
+    public static String convertSourceTypeToConfigKey(HeadSourceType sourceType)
+    {
+        if (sourceType != HeadSourceType.SHAPELESS_CRAFT && sourceType != HeadSourceType.SHAPED_CRAFT)
+        {
+            String sourceKey = sourceType.name().toLowerCase().replace("_", "-");
+            String configKey = String.format("%s.%s", DROP_SOURCES_KEY, sourceKey);
+            return configKey;
+        }
+        else
+            throw new IllegalArgumentException(String.format("%s is not a valid drop head source.", sourceType.name()));
+
+    }
+
+    public static HeadSourceType convertConfigKeyToSourceType(String configKey) throws IllegalArgumentException
+    {
+        String[] configTree = configKey.split("[.]");
+        String headTypeName = configTree[configTree.length-1];
+        String enumFormatHeadTypeName = headTypeName.toUpperCase().replace("-", "_");
+        HeadSourceType headSourceType = HeadSourceType.valueOf(enumFormatHeadTypeName);
+        return headSourceType;
+    }
+
 }

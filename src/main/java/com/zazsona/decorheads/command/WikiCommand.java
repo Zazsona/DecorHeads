@@ -7,7 +7,6 @@ import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.TextureHead;
 import com.zazsona.decorheads.headsources.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
@@ -16,10 +15,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 
@@ -116,16 +113,12 @@ public class WikiCommand implements CommandExecutor
     private String getSourceTypeDisabledNotice(HeadSourceType sourceType)
     {
         String lineTemplate = ChatColor.GRAY+"Note: %s is currently disabled."+ChatColor.RESET;
-        if (!PluginConfig.isEnabled())
+        if (!PluginConfig.isPluginEnabled())
             return String.format(lineTemplate, Core.PLUGIN_NAME);
         else if ((sourceType == HeadSourceType.SHAPED_CRAFT || sourceType == HeadSourceType.SHAPELESS_CRAFT) && !PluginConfig.isCraftingEnabled())
             return String.format(lineTemplate, "Head crafting");
-        else if (sourceType == HeadSourceType.MINE_DROP && (!PluginConfig.isBlockDropsEnabled() || !PluginConfig.isDropsEnabled()))
-            return String.format(lineTemplate, DecorHeadsUtil.capitaliseName(HeadSourceType.MINE_DROP.name()));
-        else if (sourceType == HeadSourceType.ENTITY_DEATH_DROP && (!PluginConfig.isEntityDropsEnabled() || !PluginConfig.isDropsEnabled()))
-            return String.format(lineTemplate, DecorHeadsUtil.capitaliseName(HeadSourceType.ENTITY_DEATH_DROP.name()));
-        else if (sourceType == HeadSourceType.PLAYER_DEATH_DROP && (!PluginConfig.isEntityDropsEnabled() || !PluginConfig.isPlayerDropsEnabled() || !PluginConfig.isDropsEnabled()))
-            return String.format(lineTemplate, DecorHeadsUtil.capitaliseName(HeadSourceType.PLAYER_DEATH_DROP.name()));
+        else if (!PluginConfig.isDropSourceEnabled(sourceType) || !PluginConfig.isDropsEnabled())
+            return String.format(lineTemplate, DecorHeadsUtil.capitaliseName(sourceType.name()));
         else
             return null;
     }

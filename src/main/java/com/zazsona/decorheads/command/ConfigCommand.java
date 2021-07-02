@@ -1,7 +1,7 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.config.PluginConfig;
-import jdk.tools.jlink.plugin.Plugin;
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,20 +10,36 @@ import org.bukkit.command.CommandSender;
 public class ConfigCommand implements CommandExecutor
 {
     public static final String COMMAND_KEY = "dhconfig";
+    private static final String dropSourcesKey = "drop-sources";
     private static final ChatColor onColour = ChatColor.GREEN;
     private static final ChatColor offColour = ChatColor.RED;
+    private static final String onText = "On";
+    private static final String offText = "Off";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        if (args.length >= 2 && (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("off")))
+        if (args.length >= 1 && args[0].equalsIgnoreCase(dropSourcesKey))
+            manageDropSourcesConfig(sender, args);
+        else
+            manageRootConfig(sender, args);
+        return true;
+
+    }
+
+    private void manageRootConfig(CommandSender sender, String[] args)
+    {
+        if (args.length >= 2 && (args[1].equalsIgnoreCase(onText) || args[1].equalsIgnoreCase(offText)))
         {
             String settingName = args[0];
-            boolean enable = args[1].equalsIgnoreCase("on");
+            boolean enable = args[1].equalsIgnoreCase(onText);
             String updatedSetting = setState(settingName, enable);
             sender.sendMessage(getCurrentStates());
-
-            if (!enable && (updatedSetting.equalsIgnoreCase(PluginConfig.ENABLED_KEY) || updatedSetting.equalsIgnoreCase(PluginConfig.CRAFTING_KEY)))
+            if (updatedSetting == null)
+            {
+                sender.sendMessage(String.format(ChatColor.RED+"Unknown setting: %s", settingName));
+            }
+            else if (!enable && (updatedSetting.equalsIgnoreCase(PluginConfig.PLUGIN_ENABLED_KEY) || updatedSetting.equalsIgnoreCase(PluginConfig.CRAFTING_KEY)))
             {
                 String craftDisabledWarning = ("" + ChatColor.RED + ChatColor.BOLD + "WARNING: " + ChatColor.RESET + ChatColor.RED + "If you reboot the server with crafting disabled, players' head crafting progression data may be lost.");
                 sender.sendMessage(craftDisabledWarning);
@@ -31,31 +47,37 @@ public class ConfigCommand implements CommandExecutor
         }
         else
             sender.sendMessage(getCurrentStates());
-        return true;
+    }
 
+    private void manageDropSourcesConfig(CommandSender sender, String[] args)
+    {
+        if (args.length >= 3 && (args[2].equalsIgnoreCase(onText) || args[2].equalsIgnoreCase(offText)))
+        {
+            String sourceName = args[1];
+            boolean enable = args[2].equalsIgnoreCase(onText);
+            String updatedSource = setDropSourceState(sourceName, enable);
+            sender.sendMessage(getCurrentDropSourcesStates());
+            if (updatedSource == null)
+            {
+                sender.sendMessage(String.format(ChatColor.RED+"Unknown drop source: %s", sourceName));
+            }
+        }
+        else
+            sender.sendMessage(getCurrentDropSourcesStates());
     }
 
     private String setState(String setting, boolean value)
     {
         switch (setting.toLowerCase())
         {
-            case PluginConfig.ENABLED_KEY:
-                PluginConfig.setEnabled(value);
+            case PluginConfig.PLUGIN_ENABLED_KEY:
+                PluginConfig.setPluginEnabled(value);
                 break;
             case PluginConfig.CRAFTING_KEY:
                 PluginConfig.setCraftingEnabled(value);
                 break;
             case PluginConfig.DROPS_KEY:
                 PluginConfig.setDropsEnabled(value);
-                break;
-            case PluginConfig.BLOCK_DROPS_KEY:
-                PluginConfig.setBlockDropsEnabled(value);
-                break;
-            case PluginConfig.ENTITY_DROPS_KEY:
-                PluginConfig.setEntityDropsEnabled(value);
-                break;
-            case PluginConfig.PLAYER_DROPS_KEY:
-                PluginConfig.setPlayerDropsEnabled(value);
                 break;
             case PluginConfig.PLAYERLESS_DROP_EVENTS_KEY:
                 PluginConfig.setPlayerlessDropEventsEnabled(value);
@@ -69,19 +91,49 @@ public class ConfigCommand implements CommandExecutor
         return setting; //If it passes the switch, setting must be equal to a constant in PluginConfig, so works for displaying the updated setting.
     }
 
+    private String setDropSourceState(String sourceName, boolean value)
+    {
+        try
+        {
+            HeadSourceType headSourceType = PluginConfig.convertConfigKeyToSourceType(sourceName);
+            PluginConfig.setDropSourceEnabled(headSourceType, value);
+            return sourceName;
+        }
+        catch (IllegalArgumentException e)
+        {
+            return null;
+        }
+    }
+
     private String getCurrentStates()
     {
         StringBuilder contentBuilder = new StringBuilder();
-        contentBuilder.append(ChatColor.GRAY).append(String.format("Use /%s [Name] [On|Off] to change config.", COMMAND_KEY)).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.ENABLED_KEY)).append((PluginConfig.isEnabled()) ? onColour : offColour).append((PluginConfig.isEnabled()) ? "On" : "Off").append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.CRAFTING_KEY)).append((PluginConfig.isCraftingEnabled()) ? onColour : offColour).append((PluginConfig.isCraftingEnabled()) ? "On" : "Off").append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.DROPS_KEY)).append((PluginConfig.isDropsEnabled()) ? onColour : offColour).append((PluginConfig.isDropsEnabled()) ? "On" : "Off").append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.BLOCK_DROPS_KEY)).append((PluginConfig.isBlockDropsEnabled()) ? onColour : offColour).append((PluginConfig.isBlockDropsEnabled()) ? "On" : "Off").append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.ENTITY_DROPS_KEY)).append((PluginConfig.isEntityDropsEnabled()) ? onColour : offColour).append((PluginConfig.isEntityDropsEnabled()) ? "On" : "Off").append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.PLAYER_DROPS_KEY)).append((PluginConfig.isPlayerDropsEnabled()) ? onColour : offColour).append((PluginConfig.isPlayerDropsEnabled()) ? "On" : "Off").append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.PLAYERLESS_DROP_EVENTS_KEY)).append((PluginConfig.isPlayerlessDropEventsEnabled()) ? onColour : offColour).append((PluginConfig.isPlayerlessDropEventsEnabled()) ? "On" : "Off").append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.WIKI_RECIPE_LEARN_KEY)).append((PluginConfig.isLearnRecipesFromWikiEnabled()) ? onColour : offColour).append((PluginConfig.isLearnRecipesFromWikiEnabled()) ? "On" : "Off");
+        contentBuilder.append(ChatColor.DARK_GRAY).append(String.format("Use /%s %s to get drop sources config.", COMMAND_KEY, dropSourcesKey)).append("\n");
+        contentBuilder.append(ChatColor.GRAY).append(String.format("Use /%s [Name] [%s|%s] to change setting.", COMMAND_KEY, onText, offText)).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.PLUGIN_ENABLED_KEY)).append((PluginConfig.isPluginEnabled()) ? onColour : offColour).append((PluginConfig.isPluginEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.CRAFTING_KEY)).append((PluginConfig.isCraftingEnabled()) ? onColour : offColour).append((PluginConfig.isCraftingEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.DROPS_KEY)).append((PluginConfig.isDropsEnabled()) ? onColour : offColour).append((PluginConfig.isDropsEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.PLAYERLESS_DROP_EVENTS_KEY)).append((PluginConfig.isPlayerlessDropEventsEnabled()) ? onColour : offColour).append((PluginConfig.isPlayerlessDropEventsEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.WIKI_RECIPE_LEARN_KEY)).append((PluginConfig.isLearnRecipesFromWikiEnabled()) ? onColour : offColour).append((PluginConfig.isLearnRecipesFromWikiEnabled()) ? onText : offText).append("\n");
         String contentWithHeader = CommandUtil.addHeader("DecorHeads Config", contentBuilder.toString());
+        return contentWithHeader;
+    }
+
+    private String getCurrentDropSourcesStates()
+    {
+        StringBuilder contentBuilder = new StringBuilder();
+        contentBuilder.append(ChatColor.DARK_GRAY).append(String.format("Use /%s to get standard config.", COMMAND_KEY)).append("\n");
+        contentBuilder.append(ChatColor.GRAY).append(String.format("Use /%s %s [Name] [%s|%s] to change setting.", COMMAND_KEY, dropSourcesKey, onText, offText)).append("\n");
+        for (HeadSourceType sourceType : HeadSourceType.values())
+        {
+            if (sourceType != HeadSourceType.SHAPELESS_CRAFT && sourceType != HeadSourceType.SHAPED_CRAFT)
+            {
+                String[] configTree = PluginConfig.convertSourceTypeToConfigKey(sourceType).split("[.]");
+                String configKey = configTree[configTree.length-1];
+                contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", configKey)).append((PluginConfig.isDropSourceEnabled(sourceType)) ? onColour : offColour).append((PluginConfig.isDropSourceEnabled(sourceType)) ? onText : offText).append("\n");
+            }
+        }
+        String contentWithHeader = CommandUtil.addHeader("DecorHeads Config", contentBuilder.toString().trim());
         return contentWithHeader;
     }
 }
