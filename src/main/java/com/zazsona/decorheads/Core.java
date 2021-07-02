@@ -39,6 +39,9 @@ public class Core extends JavaPlugin
             getCommand(ConfigCommand.COMMAND_KEY).setExecutor(new ConfigCommand());
 
             MetricsManager.getInstance().enable();
+
+            UpdateNotifier updateNotifier = new UpdateNotifier();
+            getServer().getPluginManager().registerEvents(updateNotifier, this);
         }
         catch (Exception e)
         {
