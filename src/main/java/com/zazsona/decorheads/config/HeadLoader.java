@@ -121,12 +121,12 @@ public class HeadLoader extends HeadConfigAccessor
             throw new InvalidHeadSourceException(String.format("Attempted to load head source prior to loading head: %s", head.getKey()));
 
         HeadSource headSource = parseHeadSource(head, sourceYaml);
-        if (headSource instanceof DropHeadSource && PluginConfig.isDropsEnabled())
+        if (headSource instanceof DropHeadSource)
         {
             DropHeadSource dropHeadSource = (DropHeadSource) headSource;
             plugin.getServer().getPluginManager().registerEvents(dropHeadSource, plugin);
         }
-        else if (headSource instanceof CraftHeadSource && PluginConfig.isCraftingEnabled())
+        else if (headSource instanceof CraftHeadSource)
         {
             CraftHeadSource craftHeadSource = (CraftHeadSource) headSource;
             plugin.getServer().addRecipe(craftHeadSource.getRecipe());

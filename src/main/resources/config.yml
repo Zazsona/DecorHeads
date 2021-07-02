@@ -1,8 +1,8 @@
 # Global plugin toggle
-# Note: Disabling this may remove head crafting progression data for players
+# Note: To prevent progression data loss, crafting recipes will still be loaded and visible. If you wish to remove crafting permanently, remove all craft sources from heads.yml.
 plugin-enabled: true
 # Allow crafting of supported heads
-# Note: Disabling this may remove head crafting progression data for players
+# Note: To prevent progression data loss, crafting recipes will still be loaded and visible. If you wish to remove crafting permanently, remove all craft sources from heads.yml.
 crafting: true
 # Allow heads to drop
 drops: true

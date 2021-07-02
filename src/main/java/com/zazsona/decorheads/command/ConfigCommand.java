@@ -41,7 +41,7 @@ public class ConfigCommand implements CommandExecutor
             }
             else if (!enable && (updatedSetting.equalsIgnoreCase(PluginConfig.PLUGIN_ENABLED_KEY) || updatedSetting.equalsIgnoreCase(PluginConfig.CRAFTING_KEY)))
             {
-                String craftDisabledWarning = ("" + ChatColor.RED + ChatColor.BOLD + "WARNING: " + ChatColor.RESET + ChatColor.RED + "If you reboot the server with crafting disabled, players' head crafting progression data may be lost.");
+                String craftDisabledWarning = ("" + ChatColor.RED + ChatColor.BOLD + "NOTE: " + ChatColor.RESET + ChatColor.RED + "To prevent progression data loss, crafting recipes will still be loaded and visible. If you wish to remove crafting permanently, remove all craft sources from heads.yml.");
                 sender.sendMessage(craftDisabledWarning);
             }
         }
