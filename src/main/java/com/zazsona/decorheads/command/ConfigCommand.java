@@ -17,10 +17,22 @@ public class ConfigCommand implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
         if (args.length >= 2 && (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("off")))
-            setState(args[0], args[1].equalsIgnoreCase("on"));
+        {
+            String settingName = args[0];
+            boolean enable = args[1].equalsIgnoreCase("on");
+            String updatedSetting = setState(settingName, enable);
+            sender.sendMessage(getCurrentStates());
 
-        sender.sendMessage(getCurrentStates());
+            if (!enable && (updatedSetting.equalsIgnoreCase(PluginConfig.ENABLED_KEY) || updatedSetting.equalsIgnoreCase(PluginConfig.CRAFTING_KEY)))
+            {
+                String craftDisabledWarning = ("" + ChatColor.RED + ChatColor.BOLD + "WARNING: " + ChatColor.RESET + ChatColor.RED + "If you reboot the server with crafting disabled, players' head crafting progression data may be lost.");
+                sender.sendMessage(craftDisabledWarning);
+            }
+        }
+        else
+            sender.sendMessage(getCurrentStates());
         return true;
+
     }
 
     private String setState(String setting, boolean value)

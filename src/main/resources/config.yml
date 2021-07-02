@@ -1,6 +1,8 @@
 # Global plugin toggle
+# Note: Disabling this may remove head crafting progression data for players
 enabled: true
 # Allow crafting of supported heads
+# Note: Disabling this may remove head crafting progression data for players
 crafting: true
 # Allow heads to drop
 drops: true

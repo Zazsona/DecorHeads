@@ -21,9 +21,10 @@ public class HeadCraftingEnforcer implements Listener
         if (resultingItem.getType() == Material.PLAYER_HEAD && resultingItem.getItemMeta().getPersistentDataContainer().has(Head.getSkullHeadKeyKey(), PersistentDataType.STRING))
         {
             HumanEntity craftingEntity = e.getWhoClicked();
-            if (!craftingEntity.hasPermission(Permissions.CRAFT_HEADS) || !PluginConfig.isCraftingEnabled())
+            boolean craftingEnabled = PluginConfig.isEnabled() && PluginConfig.isCraftingEnabled();
+            if (!craftingEntity.hasPermission(Permissions.CRAFT_HEADS) || (!craftingEnabled))
             {
-                String message = (PluginConfig.isCraftingEnabled()) ? String.format("You do not have permission to craft heads from %s.", Core.PLUGIN_NAME) : String.format("%s head crafting is disabled.", Core.PLUGIN_NAME);
+                String message = (craftingEnabled) ? String.format("You do not have permission to craft heads from %s.", Core.PLUGIN_NAME) : String.format("%s head crafting is disabled.", Core.PLUGIN_NAME);
                 craftingEntity.sendMessage(ChatColor.RED+message);
                 e.setCancelled(true);
             }
