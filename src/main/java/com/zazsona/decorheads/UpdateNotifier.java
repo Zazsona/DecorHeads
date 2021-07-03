@@ -1,5 +1,6 @@
 package com.zazsona.decorheads;
 
+import com.zazsona.decorheads.config.PluginConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -55,7 +56,7 @@ public class UpdateNotifier implements Listener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e)
     {
-        if (latestVersion != null && e.getPlayer().isOp())
+        if (latestVersion != null && e.getPlayer().isOp() && PluginConfig.isUpdateNotificationsEnabled())
         {
             String currentVersion = plugin.getDescription().getVersion();
             if (!currentVersion.equalsIgnoreCase(latestVersion))

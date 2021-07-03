@@ -12,6 +12,8 @@ public class PluginConfig
     public static final String DROP_SOURCES_KEY = "drop-sources";
     public static final String PLAYERLESS_DROP_EVENTS_KEY = "playerless-drop-events";
     public static final String WIKI_RECIPE_LEARN_KEY = "learn-recipes-from-wiki";
+    public static final String UPDATE_NOTIFICATIONS_KEY = "update-notifications";
+
     private static Plugin plugin = Core.getPlugin(Core.class);
 
     public static void save()
@@ -72,6 +74,17 @@ public class PluginConfig
     public static boolean isLearnRecipesFromWikiEnabled()
     {
         return plugin.getConfig().getBoolean(WIKI_RECIPE_LEARN_KEY);
+    }
+
+    public static void setUpdateNotificationsEnabled(boolean newEnabled)
+    {
+        plugin.getConfig().set(UPDATE_NOTIFICATIONS_KEY, newEnabled);
+        save();
+    }
+
+    public static boolean isUpdateNotificationsEnabled()
+    {
+        return plugin.getConfig().getBoolean(UPDATE_NOTIFICATIONS_KEY);
     }
 
     public static void setDropSourceEnabled(HeadSourceType sourceType, boolean newEnabled)

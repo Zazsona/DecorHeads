@@ -85,6 +85,9 @@ public class ConfigCommand implements CommandExecutor
             case PluginConfig.WIKI_RECIPE_LEARN_KEY:
                 PluginConfig.setLearnRecipesFromWikiEnabled(value);
                 break;
+            case PluginConfig.UPDATE_NOTIFICATIONS_KEY:
+                PluginConfig.setUpdateNotificationsEnabled(value);
+                break;
             default:
                 return null;
         }
@@ -115,6 +118,7 @@ public class ConfigCommand implements CommandExecutor
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.DROPS_KEY)).append((PluginConfig.isDropsEnabled()) ? onColour : offColour).append((PluginConfig.isDropsEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.PLAYERLESS_DROP_EVENTS_KEY)).append((PluginConfig.isPlayerlessDropEventsEnabled()) ? onColour : offColour).append((PluginConfig.isPlayerlessDropEventsEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.WIKI_RECIPE_LEARN_KEY)).append((PluginConfig.isLearnRecipesFromWikiEnabled()) ? onColour : offColour).append((PluginConfig.isLearnRecipesFromWikiEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.UPDATE_NOTIFICATIONS_KEY)).append((PluginConfig.isUpdateNotificationsEnabled()) ? onColour : offColour).append((PluginConfig.isUpdateNotificationsEnabled()) ? onText : offText);
         String contentWithHeader = CommandUtil.addHeader("DecorHeads Config", contentBuilder.toString());
         return contentWithHeader;
     }

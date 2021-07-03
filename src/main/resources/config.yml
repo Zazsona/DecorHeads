@@ -11,6 +11,8 @@ drops: true
 playerless-drop-events: true
 # Add recipes to the player's crafting book when viewed in the wiki command for easier reference when crafting
 learn-recipes-from-wiki: true
+# Notifies joining admins when a plugin update is available
+update-notifications: true
 # Allows heads to drop from the specified source types
 drop-sources:
   mine-drop: true
