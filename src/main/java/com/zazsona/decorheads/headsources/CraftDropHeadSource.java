@@ -24,7 +24,7 @@ public class CraftDropHeadSource extends DropHeadSource
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public ItemStack onItemCrafted(CraftItemEvent e)
+    public ItemStack onItemCrafted(CraftItemEvent e)    //TODO: Consider multiple rolls if multiple items are crafted
     {
         if (PluginConfig.isDropSourceEnabled(getSourceType()) && passFilters(e))
         {

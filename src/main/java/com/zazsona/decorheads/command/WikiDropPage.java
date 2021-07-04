@@ -41,6 +41,8 @@ public class WikiDropPage implements IWikiPage
                 pageBuilder.append(borderChar).append(" Biomes: ").append(getEnumList(((BiomeDropFilter) filter).getBiomes()));
             else if (filter instanceof ToolDropFilter)
                 pageBuilder.append(borderChar).append(" Tools: ").append(getEnumList(((ToolDropFilter) filter).getTools()));
+            else if (filter instanceof RecipeResultDropFilter)
+                pageBuilder.append(borderChar).append(" Recipe Results: ").append(getEnumList(((RecipeResultDropFilter) filter).getResults()));
             pageBuilder.append("\n");
         }
         return pageBuilder.toString().trim();

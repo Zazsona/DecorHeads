@@ -297,6 +297,7 @@ public class HeadLoader extends HeadConfigAccessor
                 applyPlayerDeathIdDropFilter(dropKilledPlayerIdsKey, dropHeadSource, sourceYaml);
                 applyToolDropFilter(dropToolsKey, dropHeadSource, sourceYaml);
                 applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceYaml);
+                applyRecipeResultDropFilter(dropRecipeResultsKey, dropHeadSource, sourceYaml);
                 return dropHeadSource;
             }
             else if (headSource instanceof CraftHeadSource)
@@ -444,11 +445,23 @@ public class HeadLoader extends HeadConfigAccessor
 
     private boolean applyToolDropFilter(String toolsKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
-        List<Material> tools = getTools(toolsKey, headSource.getHead().getKey(), sourceYaml);
+        List<Material> tools = getMaterials(toolsKey, headSource.getHead().getKey(), sourceYaml);
         if (tools != null)
         {
             ToolDropFilter toolDropFilter = new ToolDropFilter(tools);
             headSource.getDropFilters().add(toolDropFilter);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean applyRecipeResultDropFilter(String recipeResultKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        List<Material> resultTypes = getMaterials(recipeResultKey, headSource.getHead().getKey(), sourceYaml);
+        if (resultTypes != null)
+        {
+            RecipeResultDropFilter recipeResultDropFilter = new RecipeResultDropFilter(resultTypes);
+            headSource.getDropFilters().add(recipeResultDropFilter);
             return true;
         }
         return false;
@@ -504,21 +517,21 @@ public class HeadLoader extends HeadConfigAccessor
         return null;
     }
 
-    private List<Material> getTools(String toolsKey, String headKey, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    private List<Material> getMaterials(String materialsKey, String headKey, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
-        if (sourceYaml.getKeys(false).contains(toolsKey))
+        if (sourceYaml.getKeys(false).contains(materialsKey))
         {
-            List<String> toolNames = sourceYaml.getStringList(toolsKey);
-            List<Material> tools = new ArrayList<>();
-            for (String toolName : toolNames)
+            List<String> materialNames = sourceYaml.getStringList(materialsKey);
+            List<Material> materials = new ArrayList<>();
+            for (String materialName : materialNames)
             {
-                Material tool = Material.matchMaterial(toolName);
-                if (tool == null)
-                    throw new InvalidHeadSourceException(String.format("Unrecognised tool \"%s\" for %s in %s.", toolName, headKey, toolsKey));
+                Material material = Material.matchMaterial(materialName);
+                if (material == null)
+                    throw new InvalidHeadSourceException(String.format("Unrecognised material \"%s\" for %s in %s.", materialName, headKey, materialsKey));
                 else
-                    tools.add(tool);
+                    materials.add(material);
             }
-            return (tools.size() > 0) ? tools : null;
+            return (materials.size() > 0) ? materials : null;
         }
         return null;
     }
