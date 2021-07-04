@@ -32,6 +32,7 @@ public class Core extends JavaPlugin
 
             getServer().getPluginManager().registerEvents(new PlacedHeadRetriever(), this);
             getServer().getPluginManager().registerEvents(new HeadCraftingEnforcer(), this);
+            getServer().getPluginManager().registerEvents(BlockInventoryOwnerListener.getInstance(), this);
 
             getCommand(PLUGIN_NAME).setExecutor(new MasterCommand());
             getCommand(SpawnHeadCommand.COMMAND_KEY).setExecutor(new SpawnHeadCommand());
