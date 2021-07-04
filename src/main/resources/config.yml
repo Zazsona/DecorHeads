@@ -16,5 +16,6 @@ update-notifications: true
 # Allows heads to drop from the specified source types
 drop-sources:
   mine-drop: true
+  brew-drop: true
   entity-death-drop: true
   player-death-drop: true

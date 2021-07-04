@@ -320,6 +320,8 @@ public class HeadLoader extends HeadConfigAccessor
         {
             case MINE_DROP:
                 return new BlockDropHeadSource(head, dropRate);
+            case BREW_DROP:
+                return new BrewDropHeadSource(head, dropRate);
             case ENTITY_DEATH_DROP:
                 return new EntityDropHeadSource(head, dropRate);
             case PLAYER_DEATH_DROP:
