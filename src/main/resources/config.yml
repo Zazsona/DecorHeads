@@ -17,5 +17,6 @@ update-notifications: true
 drop-sources:
   mine-drop: true
   brew-drop: true
+  craft-drop: true
   entity-death-drop: true
   player-death-drop: true
