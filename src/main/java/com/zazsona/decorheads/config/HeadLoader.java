@@ -325,6 +325,8 @@ public class HeadLoader extends HeadConfigAccessor
                 return new BrewDropHeadSource(head, dropRate);
             case CRAFT_DROP:
                 return new CraftDropHeadSource(head, dropRate);
+            case SMELT_DROP:
+                return new SmeltDropHeadSource(head, dropRate);
             case ENTITY_DEATH_DROP:
                 return new EntityDropHeadSource(head, dropRate);
             case PLAYER_DEATH_DROP:

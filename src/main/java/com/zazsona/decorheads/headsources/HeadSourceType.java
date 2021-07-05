@@ -4,6 +4,7 @@ public enum HeadSourceType
 {
     MINE_DROP,
     BREW_DROP,
+    SMELT_DROP,
     CRAFT_DROP,
     ENTITY_DEATH_DROP,
     PLAYER_DEATH_DROP,
