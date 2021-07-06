@@ -37,18 +37,19 @@ public class SpawnHeadCommand implements CommandExecutor
             String typeKey = args[0];
             if (typeKey.equalsIgnoreCase(DECOR_TYPE_KEY))
             {
-                String headKey = args[1];
-                ItemStack headStack = getDecorHead(headKey);
+                String headIdentifier = args[1];
+                ItemStack headStack = getDecorHead(headIdentifier);
                 if (headStack == null)
                 {
                     StringBuilder headNameBuilder = new StringBuilder();
                     for (int i = 1; i < args.length; i++)
                         headNameBuilder.append(args[i]).append(" ");
-                    String key = getDecorKey(headNameBuilder.toString().trim());
-                    headStack = getDecorHead(key);
+                    headIdentifier = headNameBuilder.toString().trim();
+                    String headKey = getDecorKey(headIdentifier);
+                    headStack = getDecorHead(headKey);
                 }
                 if (headStack == null)
-                    sender.sendMessage(ChatColor.RED+String.format("Head \"%s\" not found.", headKey));
+                    sender.sendMessage(ChatColor.RED+String.format("Head \"%s\" not found.", headIdentifier));
                 else
                     spawnHead((Player) sender, headStack);
             }
