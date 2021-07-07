@@ -58,7 +58,7 @@ public class PlayerHead extends Head
     public ItemStack createItem(UUID uuid)
     {
         OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-        if (player.hasPlayedBefore())
+        if (player.isOnline() || player.hasPlayedBefore())
             return createItem(player);     //Create a Player Head (dynamically changes skin)
         else
         {           //Unfortunately, I'm yet to find a way to do dynamically changing heads for players that have never joined before, if it's even possible! As such, we have to generate a custom one.
