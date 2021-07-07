@@ -298,6 +298,7 @@ public class HeadLoader extends HeadConfigAccessor
                 applyToolDropFilter(dropToolsKey, dropHeadSource, sourceYaml);
                 applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceYaml);
                 applyRecipeResultDropFilter(dropRecipeResultsKey, dropHeadSource, sourceYaml);
+                applyEventInvokerFilter(dropEventInvoker, dropHeadSource, sourceYaml);
                 return dropHeadSource;
             }
             else if (headSource instanceof CraftHeadSource)
@@ -466,6 +467,21 @@ public class HeadLoader extends HeadConfigAccessor
             headSource.getDropFilters().add(recipeResultDropFilter);
             return true;
         }
+        return false;
+    }
+
+    private boolean applyEventInvokerFilter(String eventInvokerKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        String invokerName = sourceYaml.getString(eventInvokerKey);
+        EventInvokerFilter.EventInvoker eventInvoker = EventInvokerFilter.matchInvoker(invokerName);
+        if (eventInvoker != null)
+        {
+            EventInvokerFilter invokerDropFilter = new EventInvokerFilter(eventInvoker);
+            headSource.getDropFilters().add(invokerDropFilter);
+            return true;
+        }
+        else if (eventInvoker == null && sourceYaml.contains(eventInvokerKey))
+            throw new InvalidHeadSourceException(String.format("Unrecognised event invoker: %s.", invokerName));
         return false;
     }
 
