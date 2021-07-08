@@ -1,19 +1,12 @@
-# Global plugin toggle
-# Note: To prevent progression data loss, crafting recipes will still be loaded and visible. If you wish to remove crafting permanently, remove all craft sources from heads.yml.
+# Explanations & Usage: https://github.com/Zazsona/DecorHeads/wiki/Plugin-Config
+
+version: 2.0.0
 plugin-enabled: true
-# Allow crafting of supported heads
-# Note: To prevent progression data loss, crafting recipes will still be loaded and visible. If you wish to remove crafting permanently, remove all craft sources from heads.yml.
 crafting: true
-# Allow heads to drop
 drops: true
-# Allow heads to drop without any involvement from players (e.g, drops from mobs burning to death).
-# If you're disabling DropHeads for some roles, I recommend disabling this otherwise they will be able to exploit these methods to get heads.
 playerless-drop-events: true
-# Add recipes to the player's crafting book when viewed in the wiki command for easier reference when crafting
 learn-recipes-from-wiki: true
-# Notifies joining admins when a plugin update is available
 update-notifications: true
-# Allows heads to drop from the specified source types
 drop-sources:
   mine-drop: true
   brew-drop: true

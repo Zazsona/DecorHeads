@@ -4,6 +4,7 @@ import com.zazsona.decorheads.command.ConfigCommand;
 import com.zazsona.decorheads.command.MasterCommand;
 import com.zazsona.decorheads.command.SpawnHeadCommand;
 import com.zazsona.decorheads.command.WikiCommand;
+import com.zazsona.decorheads.config.ConfigUpdater;
 import com.zazsona.decorheads.config.HeadLoader;
 import com.zazsona.decorheads.config.HeadUpdater;
 import org.bstats.bukkit.Metrics;
@@ -22,9 +23,8 @@ public class Core extends JavaPlugin
     {
         try
         {
-            getConfig().options().copyDefaults(true);
-            saveConfig();
-
+            ConfigUpdater configUpdater = ConfigUpdater.getInstance();
+            configUpdater.updateConfig();
             HeadUpdater headUpdater = HeadUpdater.getInstance();
             headUpdater.updateHeadsFile();
             HeadLoader headLoader = HeadLoader.getInstance();
@@ -49,7 +49,6 @@ public class Core extends JavaPlugin
             Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
             e.printStackTrace();
         }
-
     }
 
     public static Plugin getSelfPlugin()
