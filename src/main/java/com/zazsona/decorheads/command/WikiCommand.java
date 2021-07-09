@@ -226,9 +226,9 @@ public class WikiCommand implements CommandExecutor
     private IHead getHead(String identifier)
     {
         HeadLoader headLoader = HeadLoader.getInstance();
-        String key = identifier.replace("-", ""); // When loading YAML keys, "-" chars are removed.
+        String key = identifier.trim();
         if (!headLoader.getLoadedHeads().containsKey(key))
-            key = getHeadKey(identifier);                              // Pass in identifier without "-" removal, as the name can still contain these.
+            key = getHeadKey(identifier);
         return headLoader.getLoadedHeads().get(key);
     }
 

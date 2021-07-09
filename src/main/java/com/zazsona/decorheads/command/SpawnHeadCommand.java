@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Locale;
 
 public class SpawnHeadCommand implements CommandExecutor
 {
@@ -82,9 +83,9 @@ public class SpawnHeadCommand implements CommandExecutor
     private ItemStack getDecorHead(String identifier)
     {
         HeadLoader headLoader = HeadLoader.getInstance();
-        String key = identifier.replace("-", ""); // When loading YAML keys, "-" chars are removed.
+        String key = identifier.trim();
         if (!headLoader.getLoadedHeads().containsKey(key))
-            key = getDecorHeadKey(identifier);                          // Pass in identifier without "-" removal, as the name can still contain these.
+            key = getDecorHeadKey(identifier);
         IHead head = headLoader.getLoadedHeads().get(key);
         if (head != null)
             return head.createItem();
