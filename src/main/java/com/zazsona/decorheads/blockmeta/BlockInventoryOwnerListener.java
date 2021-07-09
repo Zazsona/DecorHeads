@@ -2,17 +2,21 @@ package com.zazsona.decorheads.blockmeta;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
 
+import java.util.Iterator;
 import java.util.UUID;
 
 public class BlockInventoryOwnerListener implements Listener
@@ -67,4 +71,50 @@ public class BlockInventoryOwnerListener implements Listener
     {
         BlockMetaLogger.getInstance().removeMetadata(e.getBlock().getLocation(), OWNER_ID_KEY);
     }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockExplode(BlockExplodeEvent e)
+    {
+        Iterator blockIterator = e.blockList().iterator();
+        while (blockIterator.hasNext())
+        {
+            Block block = (Block) blockIterator.next();
+            BlockMetaLogger.getInstance().removeMetadata(block.getLocation(), OWNER_ID_KEY);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityExplode(EntityExplodeEvent e)
+    {
+        Iterator blockIterator = e.blockList().iterator();
+        while (blockIterator.hasNext())
+        {
+            Block block = (Block) blockIterator.next();
+            BlockMetaLogger.getInstance().removeMetadata(block.getLocation(), OWNER_ID_KEY);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPistonExtend(BlockPistonExtendEvent e)
+    {
+        for (Block movingBlock : e.getBlocks())
+        {
+            if ((movingBlock.getPistonMoveReaction() != PistonMoveReaction.BLOCK || movingBlock.getPistonMoveReaction() != PistonMoveReaction.IGNORE) && BlockMetaLogger.getInstance().isMetadataSet(movingBlock.getLocation(), OWNER_ID_KEY))
+            {
+                BlockMetaLogger.getInstance().removeMetadata(movingBlock.getLocation(), OWNER_ID_KEY);
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockBurn(BlockBurnEvent e)
+    {
+        BlockMetaLogger.getInstance().removeMetadata(e.getBlock().getLocation(), OWNER_ID_KEY);
+    }
+
+    //@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    //public void onFromTo(BlockFromToEvent e)
+    //{
+    //             Unimplemented. No inventory-holding block is destroyed by liquids.
+    //}
 }
