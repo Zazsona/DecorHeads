@@ -226,9 +226,10 @@ public class WikiCommand implements CommandExecutor
     private IHead getHead(String identifier)
     {
         HeadLoader headLoader = HeadLoader.getInstance();
-        if (!headLoader.getLoadedHeads().containsKey(identifier))
-            identifier = getHeadKey(identifier);
-        return headLoader.getLoadedHeads().get(identifier);
+        String key = identifier.replace("-", ""); // When loading YAML keys, "-" chars are removed.
+        if (!headLoader.getLoadedHeads().containsKey(key))
+            key = getHeadKey(identifier);                              // Pass in identifier without "-" removal, as the name can still contain these.
+        return headLoader.getLoadedHeads().get(key);
     }
 
     private String getHeadKey(String headName)

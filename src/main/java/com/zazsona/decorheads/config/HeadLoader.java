@@ -373,7 +373,7 @@ public class HeadLoader extends HeadConfigAccessor
             List<String> rows = new ArrayList<>();
             for (int i = 0; i < recipeGrid.size(); i++)
             {
-                String row = recipeGrid.get(i).replace(" ", "").replace("/", " ");  //Remove formatting spaces, and convert "-" to " " for compatibility with Recipe.
+                String row = recipeGrid.get(i).replace(" ", "").replace("/", " ");  //Remove formatting spaces, and convert "/" to " " for compatibility with Recipe.
                 if (row.length() > 3)
                     throw new InvalidHeadSourceException(gridOutOfBoundsMessage);
                 rows.add(row);

@@ -45,8 +45,7 @@ public class SpawnHeadCommand implements CommandExecutor
                     for (int i = 1; i < args.length; i++)
                         headNameBuilder.append(args[i]).append(" ");
                     headIdentifier = headNameBuilder.toString().trim();
-                    String headKey = getDecorKey(headIdentifier);
-                    headStack = getDecorHead(headKey);
+                    headStack = getDecorHead(headIdentifier);
                 }
                 if (headStack == null)
                     sender.sendMessage(ChatColor.RED+String.format("Head \"%s\" not found.", headIdentifier));
@@ -80,7 +79,20 @@ public class SpawnHeadCommand implements CommandExecutor
         }
     }
 
-    private String getDecorKey(String headName)
+    private ItemStack getDecorHead(String identifier)
+    {
+        HeadLoader headLoader = HeadLoader.getInstance();
+        String key = identifier.replace("-", ""); // When loading YAML keys, "-" chars are removed.
+        if (!headLoader.getLoadedHeads().containsKey(key))
+            key = getDecorHeadKey(identifier);                          // Pass in identifier without "-" removal, as the name can still contain these.
+        IHead head = headLoader.getLoadedHeads().get(key);
+        if (head != null)
+            return head.createItem();
+        else
+            return null;
+    }
+
+    private String getDecorHeadKey(String headName)
     {
         HeadLoader headLoader = HeadLoader.getInstance();
         for (String loadedHeadKey : headLoader.getLoadedHeads().keySet())
@@ -94,16 +106,6 @@ public class SpawnHeadCommand implements CommandExecutor
             }
         }
         return null;
-    }
-
-    private ItemStack getDecorHead(String key)
-    {
-        HeadLoader headLoader = HeadLoader.getInstance();
-        IHead head = headLoader.getLoadedHeads().get(key);
-        if (head != null)
-            return head.createItem();
-        else
-            return null;
     }
 
     private ItemStack getPlayerHead(String username)
