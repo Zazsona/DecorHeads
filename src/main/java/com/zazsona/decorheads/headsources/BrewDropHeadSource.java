@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.headsources;
 
-import com.zazsona.decorheads.BlockInventoryOwnerListener;
+import com.zazsona.decorheads.blockmeta.BlockInventoryOwnerListener;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.Location;
@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.inventory.ItemStack;
 

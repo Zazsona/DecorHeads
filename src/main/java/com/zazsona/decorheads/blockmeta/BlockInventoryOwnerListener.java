@@ -1,6 +1,7 @@
-package com.zazsona.decorheads;
+package com.zazsona.decorheads.blockmeta;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -11,13 +12,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.UUID;
 
 public class BlockInventoryOwnerListener implements Listener
 {
-    private final String OWNER_ID_KEY = "DecorHeadsBlockInventoryOwnerId";
+    private final String OWNER_ID_KEY = "BlockInventoryOwnerId";
     private static BlockInventoryOwnerListener instance;
 
     private BlockInventoryOwnerListener()
@@ -34,9 +34,11 @@ public class BlockInventoryOwnerListener implements Listener
 
     public OfflinePlayer getOwningPlayer(Block block)
     {
-        if (block.hasMetadata(OWNER_ID_KEY))
+        BlockMetaLogger metaLogger = BlockMetaLogger.getInstance();
+        Location location = block.getLocation();
+        if (metaLogger.isMetadataSet(location, OWNER_ID_KEY))
         {
-            String uuidValue = block.getMetadata(OWNER_ID_KEY).get(0).asString();
+            String uuidValue = metaLogger.getMetadata(location, OWNER_ID_KEY);
             UUID uuid = UUID.fromString(uuidValue);
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
             return offlinePlayer;
@@ -54,14 +56,15 @@ public class BlockInventoryOwnerListener implements Listener
         {
             BlockState blockState = (BlockState) inventoryHolder;
             Block block = blockState.getBlock();
+            Location location = block.getLocation();
             Player player = (Player) e.getWhoClicked();
-            block.setMetadata(OWNER_ID_KEY, new FixedMetadataValue(Core.getSelfPlugin(), player.getUniqueId()));
+            BlockMetaLogger.getInstance().setMetadata(location, OWNER_ID_KEY, player.getUniqueId().toString());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e)
     {
-        e.getBlock().removeMetadata(OWNER_ID_KEY, Core.getSelfPlugin());
+        BlockMetaLogger.getInstance().removeMetadata(e.getBlock().getLocation(), OWNER_ID_KEY);
     }
 }
