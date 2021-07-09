@@ -14,7 +14,7 @@ heads:
         source-type: PLAYER_DEATH_DROP
         event-invoker: Environment
         drop-rate: 2
-  alexplush:
+  alex-plush:
     name: Alex Plush
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjA3MzY1YmU1MDE5ZmZhZDg4NmM4OTVjOWE3MmYzOGNlZjZmYmZkOGMyMTVhNDg1MTUyMWY3MjFjMjUyZmIwNyJ9fX0=
     sources:
@@ -82,7 +82,7 @@ heads:
           - '0 0 0'
           - '0 1 0'
           - '0 0 0'
-  bagofbones:
+  bag-of-bones:
     name: Bag of Bones
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjQ1MTg0NTk0M2ZkMGMwN2Y2Mjk3MTFlMzQwMWE3MWEzMWNkMzcxY2MzY2IzNmYzZjk2MzdiMGU3NTljYzQ4YSJ9fX0=
     sources:
@@ -164,7 +164,7 @@ heads:
         recipe-results:
           - COOKED_BEEF
         drop-rate: 0.3
-  cardboardbox:
+  cardboard-box:
     name: Cardboard Box
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWYyNTg0OWU4Y2Q1ZTUzMmMzMGNiYThkZThiZWQwNjQwY2ZiMmVlYzUwOTI5OTk4YjEwNzgzOWJmYjBmMjRkNyJ9fX0
     sources:
@@ -176,7 +176,7 @@ heads:
           - '0 0 0'
           - '0 / 0'
           - '0 0 0'
-  cavespider:
+  cave-spider:
     name: Cave Spider
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDE2NDVkZmQ3N2QwOTkyMzEwN2IzNDk2ZTk0ZWViNWMzMDMyOWY5N2VmYzk2ZWQ3NmUyMjZlOTgyMjQifX19
     sources:
@@ -185,7 +185,7 @@ heads:
         entities:
           - CAVE_SPIDER
         drop-rate: 1
-  cavediorama:
+  cave-diorama:
     name: Cave Diorama
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWEzYWJlZjNhYzlmYjA3Y2NiMTAzNWVmZmNkYWIxMjdmZjI3YmFlYmE2ZDllODc2OTJjZTMxOGI1NjY0MWIyIn19fQ
     sources:
@@ -238,7 +238,7 @@ heads:
         entities:
           - CHICKEN
         drop-rate: 0.5
-  chickendinner:
+  chicken-dinner:
     name: Chicken Dinner
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjA2NTU1NzA2YjY0MWZkYWY0MzZjMDc2NjNmOTIzYWZjNWVlNzIxNDZmOTAxOTVmYjMzN2I5ZGU3NjY1ODhkIn19fQ
     sources:
@@ -260,7 +260,7 @@ heads:
           - '1 1 1'
           - '/ 0 /'
           - '/ 0 /'
-  cyan:
+  cyan-clock:
     name: Cyan Clock
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmRlNGUyNzgzZjg1YTM5MTIyMWRkOTE2NTZiYTY4OGU3ZTQyZDE2ZjZhYmJmYmNmYWQ5Y2E1MzYxN2ZjYTYifX19
     sources:
@@ -291,7 +291,7 @@ heads:
         recipe-results:
           - COOKIE
         drop-rate: 1
-  cookiejar:
+  cookie-jar:
     name: Cookie Jar
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTQ3NjY5NWRmY2MxNzBiZDc0ZWFkNGNiYWYxNzVlMTM3ODdjYmRmN2YzMmYwOGZmY2FhZmY2Mzg1OGUzYzEyMCJ9fX0
     sources:
@@ -371,7 +371,7 @@ heads:
         entities:
           - DROWNED
         drop-rate: 0.5
-  elderguardian:
+  elder-guardian:
     name: Elder Guardian
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWM3OTc0ODJhMTRiZmNiODc3MjU3Y2IyY2ZmMWI2ZTZhOGI4NDEzMzM2ZmZiNGMyOWE2MTM5Mjc4YjQzNmIifX19
     sources:
@@ -434,7 +434,7 @@ heads:
         entities:
           - FOX
         drop-rate: 5
-  fruitbasket:
+  fruit-basket:
     name: Fruit Basket
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjU3ZTJjNTc1NmQ0ZjQ0ZDM4MzQ1ODI2NjNlNmQ4NDhlMTE2NDE2MzRjYjIwNWI3Y2EzZWE0YWQyODU3MzQxIn19fQ
     sources:
@@ -457,7 +457,7 @@ heads:
         entities:
           - GHAST
         drop-rate: 5
-  goldmedal:
+  gold-medal:
     name: Gold Medal
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzMxNzhkMDFhYWYxMWU1Y2NmYTM4YjE5MGQ3MDg1ZmYzN2RkMDQ4ZDA5YjY2NGYwMjU3MDc3NmY5Yjk4MTQ2NiJ9fX0
     sources:
@@ -489,7 +489,7 @@ heads:
         entities:
           - HUSK
         drop-rate: 0.5
-  inkjar:
+  ink-jar:
     name: Ink Jar
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTAyOGQ0NzRjNGEzMzJkY2Y4ZTM0Mzk1N2NlMGNhNGVlYmFjZTI1OGMzN2Y2ZDkwNGNmMjI4ZDM0NTY3ZjU1MSJ9fX0
     sources:
@@ -498,7 +498,7 @@ heads:
         ingredients:
           - GLASS_BOTTLE
           - INK_SAC
-  irongolem:
+  iron-golem:
     name: Iron Golem
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODkwOTFkNzllYTBmNTllZjdlZjk0ZDdiYmE2ZTVmMTdmMmY3ZDQ1NzJjNDRmOTBmNzZjNDgxOWE3MTQifX19
     sources:
@@ -507,7 +507,7 @@ heads:
         entities:
           - IRON_GOLEM
         drop-rate: 1
-  magmacube:
+  magma-cube:
     name: Magma Cube
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzg5NTdkNTAyM2M5MzdjNGM0MWFhMjQxMmQ0MzQxMGJkYTIzY2Y3OWE5ZjZhYjM2Yjc2ZmVmMmQ3YzQyOSJ9fX0
     sources:
@@ -516,7 +516,7 @@ heads:
         entities:
           - MAGMA_CUBE
         drop-rate: 1
-  minibricks:
+  mini-bricks:
     name: Mini Bricks
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGU2NDQwYThkNTk5MmMyNjdkMmEzMzYzODgyOTY0YWMyYmE1MjJmMmY5MTE0YTZmN2QxN2IzNTcyMmQyZjVmOCJ9fX0
     sources:
@@ -527,7 +527,7 @@ heads:
           - BRICK_SLAB
           - BRICK_STAIRS
         drop-rate: 1
-  minicactus:
+  mini-cactus:
     name: Mini Cactus
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjc0ZjU4YjAwMWJlZWJmNGVlMTU4MGQxN2UwZWMyOTdjNzY0OGIxNDhiNmVhOWMwNTc0ZTQ3ZjAwOGU1Y2QifX19
     sources:
@@ -536,7 +536,7 @@ heads:
         blocks:
           - CACTUS
         drop-rate: 1
-  minicauldron:
+  mini-cauldron:
     name: Mini Cauldron
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY1ZDc0NjY4YmRiNTRkMzRjNDgyNThkYjU2YTIxOGFjZGIzYjBmODMwOTZkYTY5MjIzZTZhMGMzNmM1ODZkIn19fQ
     sources:
@@ -545,7 +545,7 @@ heads:
         blocks:
           - CAULDRON
         drop-rate: 5
-  minicoalblock:
+  mini-coal-block:
     name: Mini Coal Block
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjAzYTUyNTE3YTgxNDMwMzViZTVjOGI4MWZkMjAxOTI4ZDY0MDc2Zjk2YjVkMjc2MDRjY2NjMzcwODVmMTdlNyJ9fX0
     sources:
@@ -555,7 +555,7 @@ heads:
           - COAL_ORE
           - COAL_BLOCK
         drop-rate: 0.1
-  minicobblestone:
+  mini-cobblestone:
     name: Mini Cobblestone
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk1NTM0ZTAyYzU5YjMzZWNlNTYxOTI4MDMzMTk3OTc3N2UwMjVmYTVmYTgxYWU3NWU5OWZkOGVmZGViYjgifX19
     sources:
@@ -569,7 +569,7 @@ heads:
         blocks:
           - STONE
         drop-rate: 0.05
-  minidirt:
+  mini-dirt:
     name: Mini Dirt
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWFiNDNiOGMzZDM0ZjEyNWU1YTNmOGI5MmNkNDNkZmQxNGM2MjQwMmMzMzI5ODQ2MWQ0ZDRkN2NlMmQzYWVhIn19fQ
     sources:
@@ -579,7 +579,7 @@ heads:
           - DIRT
           - GRASS_BLOCK
         drop-rate: 0.05
-  minigravel:
+  mini-gravel:
     name: Mini Gravel
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzc4OGI2MWZjZDQ2Y2FkOTIzNWNjMzJhYzU3YTU0ZjcwODExMDMyOTQ0N2JiMjRjMDg3Nzg4NmUzZjQ5MDdmMSJ9fX0
     sources:
@@ -588,7 +588,7 @@ heads:
         blocks:
           - GRAVEL
         drop-rate: 0.2
-  minihaybale:
+  mini-hay-bale:
     name: Mini Hay Bale
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjY0NTliZTA5OTk4ZTUwYWJkMmNjZjRjZDM4M2U2YjM4YWI1YmM5MDVmYWNiNjZkY2UwZTE0ZTAzOGJhMTk2OCJ9fX0
     sources:
@@ -597,7 +597,7 @@ heads:
         blocks:
           - HAY_BLOCK
         drop-rate: 0.5
-  minileaves:
+  mini-oak-leaves:
     name: Mini Oak Leaves
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTRjNjI4NDhhZTE0YmE2ZDczNjkyMWRhOWFjMWY1ZDQ2MDZjMWM0ZmUxM2RjODQzOTYxZDZiZmJiMzMwYmMifX19
     sources:
@@ -607,7 +607,7 @@ heads:
           - OAK_LEAVES
           - DARK_OAK_LEAVES
         drop-rate: 0.1
-  minibirchleaves:
+  mini-birch-leaves:
     name: Mini Birch Leaves
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjVmYjQyM2EwZjg5Nzc3YTVhNTNjYTJkZDJhOTZmYzMwMjMxMzgwNzA0M2ZkMjliMGUwODQ1YTM3NzA1Yzg5OCJ9fX0
     sources:
@@ -616,7 +616,7 @@ heads:
         blocks:
           - BIRCH_LEAVES
         drop-rate: 0.1
-  minijungleleaves:
+  mini-jungle-leaves:
     name: Mini Jungle Leaves
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjgzYWRmNDU2MGRlNDc0MTQwNDA5M2FjNjFjMzNmYjU1NmIzZDllZTUxNDBmNjIwMzYyNTg5ZmRkZWRlZmEyZCJ9fX0
     sources:
@@ -625,7 +625,7 @@ heads:
         blocks:
           - JUNGLE_LEAVES
         drop-rate: 0.1
-  miniacacialeaves:
+  mini-acacia-leaves:
     name: Mini Acacia Leaves
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjM2MTI3MjE0YWI0YTJlYjg1NTlmY2NmNGRlODZjODFkM2IyYjU5MjI0YzQyYzYyYzc3NDJhYzEyZGQ5NzBkNyJ9fX0
     sources:
@@ -634,7 +634,7 @@ heads:
         blocks:
           - ACACIA_LEAVES
         drop-rate: 0.1
-  minispruceleaves:
+  mini-spruce-leaves:
     name: Mini Spruce Leaves
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGFhOTFhODdiZGFlMjRmYzRmYTk1NjAxMjJjNWFlMWY3MmZlZjRkNDY5MDA1YjRiN2JhMTMwMWQ1ZjI2OTM1MCJ9fX0
     sources:
@@ -643,7 +643,7 @@ heads:
         blocks:
           - SPRUCE_LEAVES
         drop-rate: 0.1
-  minimelon:
+  mini-melon:
     name: Mini Melon
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjQxNDEyYjhjNmZkNTdlNGUxNjIxNjZkZGZkNzRiMTQ4YTU5NmY5ZWIxZDE1OTNjMDQ2OTYzOGM4ZDcxNCJ9fX0
     sources:
@@ -652,7 +652,7 @@ heads:
         blocks:
           - MELON
         drop-rate: 0.1
-  minioaklog:
+  mini-oak-log:
     name: Mini Oak Log
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQyZTMxMDg3OWE2NDUwYWY1NjI1YmNkNDUwOTNkZDdlNWQ4ZjgyN2NjYmZlYWM2OWM4MTUzNzc2ODQwNmIifX19
     sources:
@@ -661,7 +661,7 @@ heads:
         blocks:
           - OAK_LOG
         drop-rate: 0.075
-  minibirchlog:
+  mini-birch-log:
     name: Mini Birch Log
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTk5MWYzYjczZWJiOWRlYzkxZWRkYzgzNjFjYTJmZWNmNTI4MGQyYzczM2VkYTllY2I2OTVmODNkMTU4MCJ9fX0
     sources:
@@ -670,7 +670,7 @@ heads:
         blocks:
           - BIRCH_LOG
         drop-rate: 0.075
-  minijunglelog:
+  mini-jungle-log:
     name: Mini Jungle Log
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODVlMWQzMDhkYzNkNzI1M2YzMmUzMDBlZGE0ZDAwMDNmZTY0YTU2YmYzYTU0NjZmZDIwMTFiMzVmNDAzZGEzYiJ9fX0
     sources:
@@ -679,7 +679,7 @@ heads:
         blocks:
           - JUNGLE_LOG
         drop-rate: 0.075
-  miniacacialog:
+  mini-acacia-log:
     name: Mini Acacia Log
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWMxMDBkZDJlMWUyZGMyOTM4NjVmODc0N2M5MDRjNzM3YmFhYjIzNmU2ZTU0Y2NjMmQzYmVkNmQxZmE0MmQzYSJ9fX0
     sources:
@@ -688,7 +688,7 @@ heads:
         blocks:
           - ACACIA_LOG
         drop-rate: 0.075
-  minidarkoaklog:
+  mini-dark-oak-log:
     name: Mini Dark Oak Log
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjllOGE3YjM3ZjM0MmU4ZmI0NThhOWM5ODlmNTE5NmMyNjUxYjg3ODExZGU1NGZlMDVlNjFiZjRkMjg3Yjk5YiJ9fX0
     sources:
@@ -697,7 +697,7 @@ heads:
         blocks:
           - DARK_OAK_LOG
         drop-rate: 0.075
-  minisprucelog:
+  mini-spruce-log:
     name: Mini Spruce Log
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY0YWYyODk4MjVlMTI3ZGFjMzIyMDhiMWUwMzg5YTkyN2VmNDA1NTk3YjZjOWE2NGNlZjAzZjIxZDkyNzNiNSJ9fX0
     sources:
@@ -706,7 +706,7 @@ heads:
         blocks:
           - SPRUCE_LOG
         drop-rate: 0.075
-  minicrimsonstem:
+  mini-crimson-stem:
     name: Mini Crimson Stem
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQzYjRjODdmOTc4MThkNzFmMTNhZmE2ZGI5NDZmYjBhMjM1Y2Q3NzFhZTg2OTkyNGM5OGIzZDE3ZDc2NDk5YiJ9fX0
     sources:
@@ -715,7 +715,7 @@ heads:
         blocks:
           - CRIMSON_STEM
         drop-rate: 0.075
-  miniwarpedstem:
+  mini-warped-stem:
     name: Mini Warped Stem
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGFhNGJiNGE3ODJhNjM2NzJhMzM5YTc0Y2QxNzMxMTlkYjA5YTA0NTY4NTA0MDVhMzRjN2MwZjRiZmRiOWQxNSJ9fX0
     sources:
@@ -724,7 +724,7 @@ heads:
         blocks:
           - WARPED_STEM
         drop-rate: 0.075
-  minipumpkin:
+  mini-pumpkin:
     name: Mini Pumpkin
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDdkN2FkMmRjYjU3ZGZhOWYwMjNkYmI5OWI2OThmYzUzMDc1YzNlOWQ2NTQ1MDYxMzlhNjQ3YWM5MDdmZGRjNSJ9fX0
     sources:
@@ -733,7 +733,7 @@ heads:
         blocks:
           - PUMPKIN
         drop-rate: 0.5
-  miniredstoneblock:
+  mini-redstone-block:
     name: Mini Redstone Block
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDA4ZWU2ZWRmYTk4ZGI1ZWFlOWI5Yzk5MzZlOTQ0ODliMmQ0YmJiZDNkMmI0YjZiNDg4NWEzMjI0MDYxM2MifX19
     sources:
@@ -743,7 +743,7 @@ heads:
           - REDSTONE_BLOCK
           - REDSTONE_ORE
         drop-rate: 0.25
-  minisand:
+  mini-sand:
     name: Mini Sand
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTMzOThhYjNjYjY5NmIzNDQzMGJlOTQ0YjE0YWZiZDIyN2ZkODdlOTkwMjZiY2ZjOGI3Mzg3YTg2MWJkZSJ9fX0=
     sources:
@@ -752,7 +752,7 @@ heads:
         blocks:
           - SAND
         drop-rate: 0.05
-  minisnow:
+  mini-snow:
     name: Mini Snow
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q4YzgxZTdkMzgyNDNjMWE1YzBjZDc4YzcyYTA4MjQ3NjRiY2IxZWVjYjZkMmQ4OTA0MmQ3NzFkMjNmMjZiYiJ9fX0=
     sources:
@@ -771,7 +771,7 @@ heads:
         entities:
           - MUSHROOM_COW
         drop-rate: 5
-  mushroombrown:
+  mushroom-brown:
     name: Brown Mushroom
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzZlMTJjZmYxMzhmZDJmZGMzMWM2OTU1NmNjYWFlYzdhZWQxNmY1ZDMxOGQ3YmMwOGU1MTRhZDY2MTg2MWJiMSJ9fX0
     sources:
@@ -780,7 +780,7 @@ heads:
         blocks:
           - BROWN_MUSHROOM
         drop-rate: 1
-  mushroomred:
+  mushroom-red:
     name: Red Mushroom
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDAyNDdkMjNhZDg3Nzg2YTI3NTNiM2Q4ZGY1ZGRkMzIzZDMyMjdkNTQ4NzE5YzZlZDQ0NmRhNzMwOTczNyJ9fX0
     sources:
@@ -802,7 +802,7 @@ heads:
           - '/ 1 /'
           - '0 0 0'
           - '/ 1 /'
-  oakcharacterdownarrow:
+  oak-character-down-arrow:
     name: Down Arrow
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmRhZGQ3NTVkMDg1MzczNTJiZjdhOTNlM2JiN2RkNGQ3MzMxMjFkMzlmMmZiNjcwNzNjZDQ3MWY1NjExOTRkZCJ9fX0
     sources:
@@ -818,7 +818,7 @@ heads:
           - CRIMSON_PLANKS
           - WARPED_PLANKS
         drop-rate: 0.16
-  oakcharacterexclamation:
+  oak-character-exclamation:
     name: Exclamation Mark
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmE1M2JkZDE1NDU1MzFjOWViYjljNmY4OTViYzU3NjAxMmY2MTgyMGU2ZjQ4OTg4NTk4OGE3ZTg3MDlhM2Y0OCJ9fX0
     sources:
@@ -834,7 +834,7 @@ heads:
           - CRIMSON_PLANKS
           - WARPED_PLANKS
         drop-rate: 0.16
-  oakcharacterleftarrow:
+  oak-character-left-arrow:
     name: Left Arrow
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ViZjkwNzQ5NGE5MzVlOTU1YmZjYWRhYjgxYmVhZmI5MGZiOWJlNDljNzAyNmJhOTdkNzk4ZDVmMWEyMyJ9fX0
     sources:
@@ -850,7 +850,7 @@ heads:
           - CRIMSON_PLANKS
           - WARPED_PLANKS
         drop-rate: 0.16
-  oakcharacterquestion:
+  oak-character-question:
     name: Question Mark
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTE2M2RhZmFjMWQ5MWE4YzkxZGI1NzZjYWFjNzg0MzM2NzkxYTZlMThkOGY3ZjYyNzc4ZmM0N2JmMTQ2YjYifX19
     sources:
@@ -866,7 +866,7 @@ heads:
           - CRIMSON_PLANKS
           - WARPED_PLANKS
         drop-rate: 0.16
-  oakcharacterrightarrow:
+  oak-character-right-arrow:
     name: Right Arrow
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWI2ZjFhMjViNmJjMTk5OTQ2NDcyYWVkYjM3MDUyMjU4NGZmNmY0ZTgzMjIxZTU5NDZiZDJlNDFiNWNhMTNiIn19fQ
     sources:
@@ -882,7 +882,7 @@ heads:
           - CRIMSON_PLANKS
           - WARPED_PLANKS
         drop-rate: 0.16
-  oakcharacteruparrow:
+  oak-character-up-arrow:
     name: Up Arrow
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDQ4Yjc2OGM2MjM0MzJkZmIyNTlmYjNjMzk3OGU5OGRlYzExMWY3OWRiZDZjZDg4ZjIxMTU1Mzc0YjcwYjNjIn19fQ
     sources:
@@ -907,7 +907,7 @@ heads:
         entities:
           - OCELOT
         drop-rate: 7.5
-  picnicbasket:
+  picnic-basket:
     name: Picnic Basket
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTEwMDMzMTg5MzQyMDUwNTZjNWRhYWEzOGI3YjY2ZDgxZmI0NTAwYWZlMGJkYzQ0NzNhNGY4NmQ1MDI1Y2UzIn19fQ
     sources:
@@ -951,7 +951,7 @@ heads:
         entities:
           - PILLAGER
         drop-rate: 2
-  porcelainvase:
+  porcelain-vase:
     name: Porcelain Vase
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0NTA1NWZhNjQ4Y2RiYjJjNjIwYmE1NjUwYjI5ZWMwM2MwMzAyNmJhNGZhODhhZmYwNTUyOTc0NzM3YjJiNyJ9fX0
     sources:
@@ -977,7 +977,7 @@ heads:
         entities:
           - WITCH
         drop-rate: 4
-  pottedpoppy:
+  potted-poppy:
     name: Potted Poppy
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRiYTM4ZTlmYzY3ZjcyYzQ1OGZkYWM4ZWNkN2NhYmFlZDNlYjgzNzM3MTQzYTAxMjgzNTBhMWFiMzgxZTNlIn19fQ
     sources:
@@ -990,7 +990,7 @@ heads:
         grid:
           - '2 1 2'
           - '0 0 0'
-  potteddandelion:
+  potted-dandelion:
     name: Potted Dandelion
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjNmZmZjODk1NWIwZTgzMDI4OThmN2YwMTVkODQ5ZjBhMDFkYmJiMDQyNzQxNzUwNmZiODllYWQ1NGQ0NWY2In19fQ
     sources:
@@ -1003,7 +1003,7 @@ heads:
         grid:
           - '2 1 2'
           - '0 0 0'
-  potteddaisy:
+  potted-daisy:
     name: Potted Daisy
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRjNGMxMmJmMjYxOWNiZmM4ZjIyZGM2MmMwMjJjZTE1MTI2Y2VhM2UyMTJjMjhkOWY5NmVhMzEwYWM0YzQyIn19fQ
     sources:
@@ -1029,7 +1029,7 @@ heads:
           - '0 1 0'
           - '1 1 1'
           - '0 1 0'
-  sandbucket:
+  sand-bucket:
     name: Sand Bucket
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ0MzdkMTY4ODU5MjBjZTU1NzczM2Y0YzcxMGJiNTAwN2YwYTRmMWEwZGRkMzJkNTk0NjlhYmM0ZjdlN2JlMCJ9fX0
     sources:
@@ -1078,7 +1078,7 @@ heads:
         entities:
           - SLIME
         drop-rate: 1
-  slimeball:
+  slime-ball:
     name: Slime Ball
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkzNGE5ZjVhYjE3ODlhN2Q4ZGQ5NmQzMjQ5M2NkYWNmZjU3N2Q4YzgxZTdiMjM5MTdkZmYyZTMyYmQwYmMxMCJ9fX0
     sources:
@@ -1087,7 +1087,7 @@ heads:
         entities:
           - SLIME
         drop-rate: 0.4
-  snowmanhead:
+  snowman-head:
     name: Snowman Head
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU4ZDIwNmY2MWU2ZGU4YTc5ZDBjYjBiY2Q5OGFjZWQ0NjRjYmZlZmM5MjFiNDE2MGEyNTI4MjE2MzExMmEifX19
     sources:
@@ -1119,7 +1119,7 @@ heads:
         entities:
           - SQUID
         drop-rate: 1.3
-  stackofcarrots:
+  stack-of-carrots:
     name: Stack of Carrots
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmVkMGI3NTZmYzYyMzg1NTEzYjU3MDE1OTY3NDZiZDdiMWRhYTE1ZDdhZGFiZjQ1ZWYxNWJkMzQzNzNkOWY1YyJ9fX0
     sources:
@@ -1130,7 +1130,7 @@ heads:
         grid:
           - '0 0'
           - '0 0'
-  steveplush:
+  steve-plush:
     name: Steve Plush
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjYyMjE3ZDkwMmVkYzkyOWRlNGY1MWI5MDcxZjU2YmFhYWMwNDVkMDRlYzA0Yjg0MGNjYzhlYzk5NjJmNjJlMyJ9fX0
     sources:
@@ -1165,7 +1165,7 @@ heads:
           - '0 0 0'
           - '0 0 0'
           - '0 / 0'
-  stoollog:
+  stool-log:
     name: Log Stool
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE1MGMzYTczMTJhYWJkMWFkNzA0N2MxOGY3ZGE1OGY0ZWQxOTllMTBjNTZkMDYwNGExMmRjYzg2Yjk0YTJiYiJ9fX0
     sources:
@@ -1215,7 +1215,7 @@ heads:
         grid:
           - '0 1 0'
           - '0 0 0'
-  toiletpaper:
+  toilet-paper:
     name: Toilet Paper
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmM4YzIyOTg1YjAzMzZmODE3ZmMzMDdjYmE2YzE1ZGE0ODRiZjIzNjFjNjBmNWEzM2U2YTk1NTdlZTJkIn19fQ
     sources:
@@ -1246,7 +1246,7 @@ heads:
         entities:
           - VILLAGER
         drop-rate: 5
-  wanderingtrader:
+  wandering-trader:
     name: Wandering Trader
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWYxMzc5YTgyMjkwZDdhYmUxZWZhYWJiYzcwNzEwZmYyZWMwMmRkMzRhZGUzODZiYzAwYzkzMGM0NjFjZjkzMiJ9fX0
     sources:
@@ -1264,7 +1264,7 @@ heads:
         entities:
           - WITCH
         drop-rate: 4
-  witherskeleton:
+  wither-skeleton:
     name: Wither Skeleton
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzk1M2I2YzY4NDQ4ZTdlNmI2YmY4ZmIyNzNkNzIwM2FjZDhlMWJlMTllODE0ODFlYWQ1MWY0NWRlNTlhOCJ9fX0
     sources:
@@ -1273,7 +1273,7 @@ heads:
         entities:
           - WITHER_SKELETON
         drop-rate: 0 #Wither Skeletons drop heads through standard death, so I don't see a reason to have this on. To keep with the "decor" theme, heads dropped by this plugin cannot be used to summon the Wither. i.e, they are decorative only.
-  woodenclock:
+  wooden-clock:
     name: Wooden Clock
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQ3N2RhZmM4YzllYTA3OTk2MzMzODE3OTM4NjZkMTQ2YzlhMzlmYWQ0YzY2ODRlNzExN2Q5N2U5YjZjMyJ9fX0
     sources:
@@ -1286,7 +1286,7 @@ heads:
           - '0 0 0'
           - '0 1 0'
           - '0 0 0'
-  woodencrate:
+  wooden-crate:
     name: Wooden Crate
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ3NjFjYzE2NTYyYzg4ZDJmYmU0MGFkMzg1MDJiYzNiNGE4Nzg1OTg4N2RiYzM1ZjI3MmUzMGQ4MDcwZWVlYyJ9fX0
     sources:
@@ -1298,7 +1298,7 @@ heads:
           - '0 0 0'
           - '0 0 0'
           - '0 0 0'
-  developerplush:
+  developer-plush:
     name: Zazsona Plush
     texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjE5NzU3OWVjY2Y5OWJiMjQ5ODVjM2U2ZmE3ZjRiOGEzNWM2NzE4YmIwNTI0MTExNDVhODRkMWZkMTBjZWYzYSIKICAgIH0KICB9Cn0=
   zombie:
@@ -1310,7 +1310,7 @@ heads:
         entities:
           - ZOMBIE
         drop-rate: 0.5
-  zombievillager:
+  zombie-villager:
     name: Zombie Villager
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTVlMDhhODc3NmMxNzY0YzNmZTZhNmRkZDQxMmRmY2I4N2Y0MTMzMWRhZDQ3OWFjOTZjMjFkZjRiZjNhYzg5YyJ9fX0
     sources:

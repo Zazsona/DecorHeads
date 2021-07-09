@@ -1,5 +1,1321 @@
-version: 1.5.0
+# Feeling a little lost?
+# All the details on how to add your own heads, or modify the default ones, are on the Wiki!
+# https://github.com/Zazsona/DecorHeads/wiki
+
+version: 2.0.0
 heads:
-  foo:
-    name: foobar
-    texture: e3RleHR1cmVzOntTS0lOOnt1cmw6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY5NTRlOTNmZTE2NDBmNDdlOTE2YzI2NjIyZWFjZjkyZmQ0NTg2MzcxZjVmMDdmZDlhN2RkZWRhZjQifX19
+  player:
+    sources:
+      default-pvp-drop:
+        source-type: PLAYER_DEATH_DROP
+        event-invoker: Player
+        drop-rate: 7.5
+      default-pve-drop:
+        source-type: PLAYER_DEATH_DROP
+        event-invoker: Environment
+        drop-rate: 2
+  alex-plush:
+    name: Alex Plush
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjA3MzY1YmU1MDE5ZmZhZDg4NmM4OTVjOWE3MmYzOGNlZjZmYmZkOGMyMTVhNDg1MTUyMWY3MjFjMjUyZmIwNyJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - ORANGE_WOOL
+          - LIME_WOOL
+          - BROWN_WOOL
+        grid:
+          - '0'
+          - '1'
+          - '2'
+  apple:
+    name: Apple
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjdiMTVmYzBmODk0NTNiYjljODY5ZGJjNDdhNjZjZjJlNzVlOGQzNzEzYjVmYmY3Yzg0Y2JmMmM2MzIxOTYifX19
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - ACACIA_LEAVES
+          - BIRCH_LEAVES
+          - DARK_OAK_LEAVES
+          - JUNGLE_LEAVES
+          - OAK_LEAVES
+          - SPRUCE_LEAVES
+        drop-rate: 0.2
+  aquarium:
+    name: Aquarium
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzI4NDdjZDU3MTdlNWY1YTY0ZTFiYTljYjQ4MWRjOWUyMmM3OGNhMjNmODUxNmQ1NTNmNTU0MTJmYTExM2UwIn19fQ
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - GLASS_PANE
+          - SALMON
+        grid:
+          - '0 0 0'
+          - '0 1 0'
+          - '0 0 0'
+      default-craft-1:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - GLASS_PANE
+          - COD
+        grid:
+          - '0 0 0'
+          - '0 1 0'
+          - '0 0 0'
+      default-craft-2:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - GLASS_PANE
+          - TROPICAL_FISH
+        grid:
+          - '0 0 0'
+          - '0 1 0'
+          - '0 0 0'
+      default-craft-3:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - GLASS_PANE
+          - PUFFERFISH
+        grid:
+          - '0 0 0'
+          - '0 1 0'
+          - '0 0 0'
+  bag-of-bones:
+    name: Bag of Bones
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjQ1MTg0NTk0M2ZkMGMwN2Y2Mjk3MTFlMzQwMWE3MWEzMWNkMzcxY2MzY2IzNmYzZjk2MzdiMGU3NTljYzQ4YSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - SKELETON
+        drop-rate: 0.25
+  beachball:
+    name: Beach Ball
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWIyNTEzYzhkMDhjNjBhZDM3ODVkM2E5YTY1MWI3MzI5YzVmMjY5MzdhY2EyZmM4ZGZhZjM0NDFjOWJkOWRhMiJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPELESS_CRAFT
+        ingredients:
+          - BLUE_DYE
+          - GREEN_DYE
+          - LIME_DYE
+          - YELLOW_DYE
+          - ORANGE_DYE
+          - RED_DYE
+          - PURPLE_DYE
+          - WHITE_DYE
+          - LEATHER
+  beer:
+    name: Beer
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA1M2UyNjg2N2JiNTc1MzhlOTc4OTEzN2RiYmI1Mzc3NGUxOGVkYTZmZWY1MWNiMmVkZjQyNmIzNzI2NCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: BREW_DROP
+        drop-rate: 1
+  blaze:
+    name: Blaze
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjc4ZWYyZTRjZjJjNDFhMmQxNGJmZGU5Y2FmZjEwMjE5ZjViMWJmNWIzNWE0OWViNTFjNjQ2Nzg4MmNiNWYwIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - BLAZE
+        drop-rate: 1.5
+  blueberry:
+    name: Blueberry
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDFlOGUzNTJiM2ZiYWRjZTk5OGYxNTM1OTVkODM0MGRlZDI4NWMwNWFmNGFmNTdjNDQ1MWU4MjE0ZTFhZmIyIn19fQ
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - ACACIA_LEAVES
+          - BIRCH_LEAVES
+          - DARK_OAK_LEAVES
+          - JUNGLE_LEAVES
+          - OAK_LEAVES
+          - SPRUCE_LEAVES
+        drop-rate: 0.2
+  books:
+    name: Books
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjFjNjNkOWI5ZmQ4NzQyZWFlYjA0YzY5MjE3MmNiOWRhNDM3ODE2OThhNTc1Y2RhYmUxYzA0ZGYxMmMzZiJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - BOOKSHELF
+        drop-rate: 5
+  bread:
+    name: Bread
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjM0ODdkNDU3ZjkwNjJkNzg3YTNlNmNlMWM0NjY0YmY3NDAyZWM2N2RkMTExMjU2ZjE5YjM4Y2U0ZjY3MCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - BREAD
+        drop-rate: 2
+  burger:
+    name: Burger
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RhZGYxNzQ0NDMzZTFjNzlkMWQ1OWQyNzc3ZDkzOWRlMTU5YTI0Y2Y1N2U4YTYxYzgyYmM0ZmUzNzc3NTUzYyJ9fX0
+    sources:
+      default-drop-0:
+        source-type: SMELT_DROP
+        recipe-results:
+          - COOKED_BEEF
+        drop-rate: 0.3
+  cardboard-box:
+    name: Cardboard Box
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWYyNTg0OWU4Y2Q1ZTUzMmMzMGNiYThkZThiZWQwNjQwY2ZiMmVlYzUwOTI5OTk4YjEwNzgzOWJmYjBmMjRkNyJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - PAPER
+        grid:
+          - '0 0 0'
+          - '0 / 0'
+          - '0 0 0'
+  cave-spider:
+    name: Cave Spider
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDE2NDVkZmQ3N2QwOTkyMzEwN2IzNDk2ZTk0ZWViNWMzMDMyOWY5N2VmYzk2ZWQ3NmUyMjZlOTgyMjQifX19
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - CAVE_SPIDER
+        drop-rate: 1
+  cave-diorama:
+    name: Cave Diorama
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWEzYWJlZjNhYzlmYjA3Y2NiMTAzNWVmZmNkYWIxMjdmZjI3YmFlYmE2ZDllODc2OTJjZTMxOGI1NjY0MWIyIn19fQ
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - LIGHT_BLUE_WOOL
+          - STONE
+          - GREEN_WOOL
+        grid:
+          - '0 1 1'
+          - '1 1 1'
+          - '1 1 2'
+      default-craft-1:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - LIGHT_BLUE_WOOL
+          - STONE
+          - GREEN_WOOL
+        grid:
+          - '2 1 1'
+          - '1 1 1'
+          - '1 1 0'
+      default-craft-2:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - LIGHT_BLUE_WOOL
+          - STONE
+          - GREEN_WOOL
+        grid:
+          - '1 1 0'
+          - '1 1 1'
+          - '2 1 1'
+      default-craft-3:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - LIGHT_BLUE_WOOL
+          - STONE
+          - GREEN_WOOL
+        grid:
+          - '1 1 2'
+          - '1 1 1'
+          - '0 1 1'
+  chicken:
+    name: Chicken
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTYzODQ2OWE1OTljZWVmNzIwNzUzNzYwMzI0OGE5YWIxMWZmNTkxZmQzNzhiZWE0NzM1YjM0NmE3ZmFlODkzIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - CHICKEN
+        drop-rate: 0.5
+  chicken-dinner:
+    name: Chicken Dinner
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjA2NTU1NzA2YjY0MWZkYWY0MzZjMDc2NjNmOTIzYWZjNWVlNzIxNDZmOTAxOTVmYjMzN2I5ZGU3NjY1ODhkIn19fQ
+    sources:
+      default-drop-0:
+        source-type: SMELT_DROP
+        recipe-results:
+          - COOKED_CHICKEN
+        drop-rate: 0.3
+  chimney:
+    name: Chimney
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGEyOWVlZjljYTM2OWVhZGQ5ODlhNjgzMmY1MDk3MGY4YjA3NGY5ZDcwNjU5NGUzNzhhOGI4ODRhZjRiZDllIn19fQ
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - COBBLESTONE
+          - SMOOTH_STONE_SLAB
+        grid:
+          - '1 1 1'
+          - '/ 0 /'
+          - '/ 0 /'
+  cyan-clock:
+    name: Cyan Clock
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmRlNGUyNzgzZjg1YTM5MTIyMWRkOTE2NTZiYTY4OGU3ZTQyZDE2ZjZhYmJmYmNmYWQ5Y2E1MzYxN2ZjYTYifX19
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - CYAN_CONCRETE
+          - CLOCK
+        grid:
+          - '0 0 0'
+          - '0 1 0'
+          - '0 0 0'
+  coconut:
+    name: Coconut
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzJjNjJmZDhlNDc0ZDA5OTQwNjA0ZjgyNzEyYTQ0YWJiMjQ5ZDYzYWZmODdmOTk4Mzc0Y2E4NDlhYjE3NDEyIn19fQ
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - JUNGLE_LOG
+        drop-rate: 0.5
+  cookie:
+    name: Cookie
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjU5MmNmOWY0MmE1YThjOTk1OTY4NDkzZmRkMWIxMWUwYjY5YWFkNjQ3M2ZmNDUzODRhYmU1OGI3ZmM3YzcifX19
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - COOKIE
+        drop-rate: 1
+  cookie-jar:
+    name: Cookie Jar
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTQ3NjY5NWRmY2MxNzBiZDc0ZWFkNGNiYWYxNzVlMTM3ODdjYmRmN2YzMmYwOGZmY2FhZmY2Mzg1OGUzYzEyMCJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - GLASS_PANE
+          - COOKIE
+        grid:
+          - '0 0 0'
+          - '0 1 0'
+          - '0 0 0'
+  cow:
+    name: Cow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWQ2YzZlZGE5NDJmN2Y1ZjcxYzMxNjFjNzMwNmY0YWVkMzA3ZDgyODk1ZjlkMmIwN2FiNDUyNTcxOGVkYzUifX19
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - COW
+        drop-rate: 1
+  creeper:
+    name: Creeper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjQyNTQ4MzhjMzNlYTIyN2ZmY2EyMjNkZGRhYWJmZTBiMDIxNWY3MGRhNjQ5ZTk0NDQ3N2Y0NDM3MGNhNjk1MiJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - CREEPER
+        drop-rate: 1
+  cupcake:
+    name: Cupcake
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjkxMzY1MTRmMzQyZTdjNTIwOGExNDIyNTA2YTg2NjE1OGVmODRkMmIyNDkyMjAxMzllOGJmNjAzMmUxOTMifX19
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - CAKE
+        drop-rate: 15
+  dice:
+    name: Dice
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzgzMTEzOGMyMDYxMWQzMDJjNDIzZmEzMjM3MWE3NDNkMTc0MzdhMTg5NzNjMzUxOTczNDQ3MGE3YWJiNCJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - BLACK_CONCRETE
+          - WHITE_CONCRETE
+        grid:
+          - '0 1 1'
+          - '1 0 1'
+          - '1 1 0'
+      default-craft-1:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - BLACK_CONCRETE
+          - WHITE_CONCRETE
+        grid:
+          - '1 1 0'
+          - '1 0 1'
+          - '0 1 1'
+  dolphin:
+    name: Dolphin
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU5Njg4Yjk1MGQ4ODBiNTViN2FhMmNmY2Q3NmU1YTBmYTk0YWFjNmQxNmY3OGU4MzNmNzQ0M2VhMjlmZWQzIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - DOLPHIN
+        drop-rate: 5
+  drowned:
+    name: Drowned
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzg0ZGY3OWM0OTEwNGIxOThjZGFkNmQ5OWZkMGQwYmNmMTUzMWM5MmQ0YWI2MjY5ZTQwYjdkM2NiYmI4ZTk4YyJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - DROWNED
+        drop-rate: 0.5
+  elder-guardian:
+    name: Elder Guardian
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWM3OTc0ODJhMTRiZmNiODc3MjU3Y2IyY2ZmMWI2ZTZhOGI4NDEzMzM2ZmZiNGMyOWE2MTM5Mjc4YjQzNmIifX19
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - ELDER_GUARDIAN
+        drop-rate: 10
+  enderman:
+    name: Enderman
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2E1OWJiMGE3YTMyOTY1YjNkOTBkOGVhZmE4OTlkMTgzNWY0MjQ1MDllYWRkNGU2YjcwOWFkYTUwYjljZiJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - ENDERMAN
+        drop-rate: 1
+  evoker:
+    name: Evoker
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDk1NDEzNWRjODIyMTM5NzhkYjQ3ODc3OGFlMTIxMzU5MWI5M2QyMjhkMzZkZDU0ZjFlYTFkYTQ4ZTdjYmE2In19fQ==
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - EVOKER
+        drop-rate: 33
+  football:
+    name: Football
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU0YTcwYjdiYmNkN2E4YzMyMmQ1MjI1MjA0OTFhMjdlYTZiODNkNjBlY2Y5NjFkMmI0ZWZiYmY5ZjYwNWQifX19
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - LEATHER
+          - WHITE_DYE
+          - BLACK_DYE
+        grid:
+          - '2 1 2'
+          - '1 0 1'
+          - '2 1 2'
+  footstool:
+    name: Footstool
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjgyNjYyY2FkMTVmYjdiZmQwOTllNjIyMDVjNjZiNmM3Y2JhOWFjMjAxMmUzYWE3MjI2ZmVhOTM5MTJiNjk5MyJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+          - ORANGE_WOOL
+        grid:
+          - '/ 1 /'
+          - '1 1 1'
+          - '0 / 0'
+  fox:
+    name: Fox
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDg5NTRhNDJlNjllMDg4MWFlNmQyNGQ0MjgxNDU5YzE0NGEwZDVhOTY4YWVkMzVkNmQzZDczYTNjNjVkMjZhIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - FOX
+        drop-rate: 5
+  fruit-basket:
+    name: Fruit Basket
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjU3ZTJjNTc1NmQ0ZjQ0ZDM4MzQ1ODI2NjNlNmQ4NDhlMTE2NDE2MzRjYjIwNWI3Y2EzZWE0YWQyODU3MzQxIn19fQ
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - ACACIA_LEAVES
+          - BIRCH_LEAVES
+          - DARK_OAK_LEAVES
+          - JUNGLE_LEAVES
+          - OAK_LEAVES
+          - SPRUCE_LEAVES
+        drop-rate: 0.12
+  ghast:
+    name: Ghast
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGI2YTcyMTM4ZDY5ZmJiZDJmZWEzZmEyNTFjYWJkODcxNTJlNGYxYzk3ZTVmOTg2YmY2ODU1NzFkYjNjYzAifX19
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - GHAST
+        drop-rate: 5
+  gold-medal:
+    name: Gold Medal
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzMxNzhkMDFhYWYxMWU1Y2NmYTM4YjE5MGQ3MDg1ZmYzN2RkMDQ4ZDA5YjY2NGYwMjU3MDc3NmY5Yjk4MTQ2NiJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - STRING
+          - GOLD_INGOT
+          - IRON_BLOCK
+        grid:
+          - '0'
+          - '1'
+          - '2'
+  guardian:
+    name: Guardian
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTBiZjM0YTcxZTc3MTViNmJhNTJkNWRkMWJhZTVjYjg1Zjc3M2RjOWIwZDQ1N2I0YmZjNWY5ZGQzY2M3Yzk0In19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - GUARDIAN
+        drop-rate: 2
+  husk:
+    name: Husk
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDY3NGM2M2M4ZGI1ZjRjYTYyOGQ2OWEzYjFmOGEzNmUyOWQ4ZmQ3NzVlMWE2YmRiNmNhYmI0YmU0ZGIxMjEifX19
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - HUSK
+        drop-rate: 0.5
+  ink-jar:
+    name: Ink Jar
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTAyOGQ0NzRjNGEzMzJkY2Y4ZTM0Mzk1N2NlMGNhNGVlYmFjZTI1OGMzN2Y2ZDkwNGNmMjI4ZDM0NTY3ZjU1MSJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPELESS_CRAFT
+        ingredients:
+          - GLASS_BOTTLE
+          - INK_SAC
+  iron-golem:
+    name: Iron Golem
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODkwOTFkNzllYTBmNTllZjdlZjk0ZDdiYmE2ZTVmMTdmMmY3ZDQ1NzJjNDRmOTBmNzZjNDgxOWE3MTQifX19
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - IRON_GOLEM
+        drop-rate: 1
+  magma-cube:
+    name: Magma Cube
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzg5NTdkNTAyM2M5MzdjNGM0MWFhMjQxMmQ0MzQxMGJkYTIzY2Y3OWE5ZjZhYjM2Yjc2ZmVmMmQ3YzQyOSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - MAGMA_CUBE
+        drop-rate: 1
+  mini-bricks:
+    name: Mini Bricks
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGU2NDQwYThkNTk5MmMyNjdkMmEzMzYzODgyOTY0YWMyYmE1MjJmMmY5MTE0YTZmN2QxN2IzNTcyMmQyZjVmOCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - BRICKS
+          - BRICK_SLAB
+          - BRICK_STAIRS
+        drop-rate: 1
+  mini-cactus:
+    name: Mini Cactus
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjc0ZjU4YjAwMWJlZWJmNGVlMTU4MGQxN2UwZWMyOTdjNzY0OGIxNDhiNmVhOWMwNTc0ZTQ3ZjAwOGU1Y2QifX19
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - CACTUS
+        drop-rate: 1
+  mini-cauldron:
+    name: Mini Cauldron
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY1ZDc0NjY4YmRiNTRkMzRjNDgyNThkYjU2YTIxOGFjZGIzYjBmODMwOTZkYTY5MjIzZTZhMGMzNmM1ODZkIn19fQ
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - CAULDRON
+        drop-rate: 5
+  mini-coal-block:
+    name: Mini Coal Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjAzYTUyNTE3YTgxNDMwMzViZTVjOGI4MWZkMjAxOTI4ZDY0MDc2Zjk2YjVkMjc2MDRjY2NjMzcwODVmMTdlNyJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - COAL_ORE
+          - COAL_BLOCK
+        drop-rate: 0.1
+  mini-cobblestone:
+    name: Mini Cobblestone
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk1NTM0ZTAyYzU5YjMzZWNlNTYxOTI4MDMzMTk3OTc3N2UwMjVmYTVmYTgxYWU3NWU5OWZkOGVmZGViYjgifX19
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - COBBLESTONE
+        drop-rate: 0.1
+      default-drop-1:
+        source-type: MINE_DROP
+        blocks:
+          - STONE
+        drop-rate: 0.05
+  mini-dirt:
+    name: Mini Dirt
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWFiNDNiOGMzZDM0ZjEyNWU1YTNmOGI5MmNkNDNkZmQxNGM2MjQwMmMzMzI5ODQ2MWQ0ZDRkN2NlMmQzYWVhIn19fQ
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - DIRT
+          - GRASS_BLOCK
+        drop-rate: 0.05
+  mini-gravel:
+    name: Mini Gravel
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzc4OGI2MWZjZDQ2Y2FkOTIzNWNjMzJhYzU3YTU0ZjcwODExMDMyOTQ0N2JiMjRjMDg3Nzg4NmUzZjQ5MDdmMSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - GRAVEL
+        drop-rate: 0.2
+  mini-hay-bale:
+    name: Mini Hay Bale
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjY0NTliZTA5OTk4ZTUwYWJkMmNjZjRjZDM4M2U2YjM4YWI1YmM5MDVmYWNiNjZkY2UwZTE0ZTAzOGJhMTk2OCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - HAY_BLOCK
+        drop-rate: 0.5
+  mini-oak-leaves:
+    name: Mini Oak Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTRjNjI4NDhhZTE0YmE2ZDczNjkyMWRhOWFjMWY1ZDQ2MDZjMWM0ZmUxM2RjODQzOTYxZDZiZmJiMzMwYmMifX19
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OAK_LEAVES
+          - DARK_OAK_LEAVES
+        drop-rate: 0.1
+  mini-birch-leaves:
+    name: Mini Birch Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjVmYjQyM2EwZjg5Nzc3YTVhNTNjYTJkZDJhOTZmYzMwMjMxMzgwNzA0M2ZkMjliMGUwODQ1YTM3NzA1Yzg5OCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - BIRCH_LEAVES
+        drop-rate: 0.1
+  mini-jungle-leaves:
+    name: Mini Jungle Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjgzYWRmNDU2MGRlNDc0MTQwNDA5M2FjNjFjMzNmYjU1NmIzZDllZTUxNDBmNjIwMzYyNTg5ZmRkZWRlZmEyZCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - JUNGLE_LEAVES
+        drop-rate: 0.1
+  mini-acacia-leaves:
+    name: Mini Acacia Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjM2MTI3MjE0YWI0YTJlYjg1NTlmY2NmNGRlODZjODFkM2IyYjU5MjI0YzQyYzYyYzc3NDJhYzEyZGQ5NzBkNyJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - ACACIA_LEAVES
+        drop-rate: 0.1
+  mini-spruce-leaves:
+    name: Mini Spruce Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGFhOTFhODdiZGFlMjRmYzRmYTk1NjAxMjJjNWFlMWY3MmZlZjRkNDY5MDA1YjRiN2JhMTMwMWQ1ZjI2OTM1MCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - SPRUCE_LEAVES
+        drop-rate: 0.1
+  mini-melon:
+    name: Mini Melon
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjQxNDEyYjhjNmZkNTdlNGUxNjIxNjZkZGZkNzRiMTQ4YTU5NmY5ZWIxZDE1OTNjMDQ2OTYzOGM4ZDcxNCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - MELON
+        drop-rate: 0.1
+  mini-oak-log:
+    name: Mini Oak Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQyZTMxMDg3OWE2NDUwYWY1NjI1YmNkNDUwOTNkZDdlNWQ4ZjgyN2NjYmZlYWM2OWM4MTUzNzc2ODQwNmIifX19
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OAK_LOG
+        drop-rate: 0.075
+  mini-birch-log:
+    name: Mini Birch Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTk5MWYzYjczZWJiOWRlYzkxZWRkYzgzNjFjYTJmZWNmNTI4MGQyYzczM2VkYTllY2I2OTVmODNkMTU4MCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - BIRCH_LOG
+        drop-rate: 0.075
+  mini-jungle-log:
+    name: Mini Jungle Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODVlMWQzMDhkYzNkNzI1M2YzMmUzMDBlZGE0ZDAwMDNmZTY0YTU2YmYzYTU0NjZmZDIwMTFiMzVmNDAzZGEzYiJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - JUNGLE_LOG
+        drop-rate: 0.075
+  mini-acacia-log:
+    name: Mini Acacia Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWMxMDBkZDJlMWUyZGMyOTM4NjVmODc0N2M5MDRjNzM3YmFhYjIzNmU2ZTU0Y2NjMmQzYmVkNmQxZmE0MmQzYSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - ACACIA_LOG
+        drop-rate: 0.075
+  mini-dark-oak-log:
+    name: Mini Dark Oak Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjllOGE3YjM3ZjM0MmU4ZmI0NThhOWM5ODlmNTE5NmMyNjUxYjg3ODExZGU1NGZlMDVlNjFiZjRkMjg3Yjk5YiJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - DARK_OAK_LOG
+        drop-rate: 0.075
+  mini-spruce-log:
+    name: Mini Spruce Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY0YWYyODk4MjVlMTI3ZGFjMzIyMDhiMWUwMzg5YTkyN2VmNDA1NTk3YjZjOWE2NGNlZjAzZjIxZDkyNzNiNSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - SPRUCE_LOG
+        drop-rate: 0.075
+  mini-crimson-stem:
+    name: Mini Crimson Stem
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQzYjRjODdmOTc4MThkNzFmMTNhZmE2ZGI5NDZmYjBhMjM1Y2Q3NzFhZTg2OTkyNGM5OGIzZDE3ZDc2NDk5YiJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - CRIMSON_STEM
+        drop-rate: 0.075
+  mini-warped-stem:
+    name: Mini Warped Stem
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGFhNGJiNGE3ODJhNjM2NzJhMzM5YTc0Y2QxNzMxMTlkYjA5YTA0NTY4NTA0MDVhMzRjN2MwZjRiZmRiOWQxNSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - WARPED_STEM
+        drop-rate: 0.075
+  mini-pumpkin:
+    name: Mini Pumpkin
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDdkN2FkMmRjYjU3ZGZhOWYwMjNkYmI5OWI2OThmYzUzMDc1YzNlOWQ2NTQ1MDYxMzlhNjQ3YWM5MDdmZGRjNSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - PUMPKIN
+        drop-rate: 0.5
+  mini-redstone-block:
+    name: Mini Redstone Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDA4ZWU2ZWRmYTk4ZGI1ZWFlOWI5Yzk5MzZlOTQ0ODliMmQ0YmJiZDNkMmI0YjZiNDg4NWEzMjI0MDYxM2MifX19
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - REDSTONE_BLOCK
+          - REDSTONE_ORE
+        drop-rate: 0.25
+  mini-sand:
+    name: Mini Sand
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTMzOThhYjNjYjY5NmIzNDQzMGJlOTQ0YjE0YWZiZDIyN2ZkODdlOTkwMjZiY2ZjOGI3Mzg3YTg2MWJkZSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - SAND
+        drop-rate: 0.05
+  mini-snow:
+    name: Mini Snow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q4YzgxZTdkMzgyNDNjMWE1YzBjZDc4YzcyYTA4MjQ3NjRiY2IxZWVjYjZkMmQ4OTA0MmQ3NzFkMjNmMjZiYiJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - SNOW
+          - SNOW_BLOCK
+        drop-rate: 0.05
+  mooshroom:
+    name: Mooshroom
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDBiYzYxYjk3NTdhN2I4M2UwM2NkMjUwN2EyMTU3OTEzYzJjZjAxNmU3YzA5NmE0ZDZjZjFmZTFiOGRiIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - MUSHROOM_COW
+        drop-rate: 5
+  mushroom-brown:
+    name: Brown Mushroom
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzZlMTJjZmYxMzhmZDJmZGMzMWM2OTU1NmNjYWFlYzdhZWQxNmY1ZDMxOGQ3YmMwOGU1MTRhZDY2MTg2MWJiMSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - BROWN_MUSHROOM
+        drop-rate: 1
+  mushroom-red:
+    name: Red Mushroom
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDAyNDdkMjNhZDg3Nzg2YTI3NTNiM2Q4ZGY1ZGRkMzIzZDMyMjdkNTQ4NzE5YzZlZDQ0NmRhNzMwOTczNyJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - RED_MUSHROOM
+        drop-rate: 1
+  newspapers:
+    name: Newspapers
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODNkODc0ZWI4YzRjNjk3YjNmODMyYmQ4NzQ0MjZmZGY2ZDIxYmFlMzM5ZjMxNzExMDgxZmRlNTk4MzgzODZlMSJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - PAPER
+          - STRING
+        grid:
+          - '/ 1 /'
+          - '0 0 0'
+          - '/ 1 /'
+  oak-character-down-arrow:
+    name: Down Arrow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmRhZGQ3NTVkMDg1MzczNTJiZjdhOTNlM2JiN2RkNGQ3MzMxMjFkMzlmMmZiNjcwNzNjZDQ3MWY1NjExOTRkZCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OAK_PLANKS
+          - SPRUCE_PLANKS
+          - BIRCH_PLANKS
+          - JUNGLE_PLANKS
+          - ACACIA_PLANKS
+          - DARK_OAK_PLANKS
+          - CRIMSON_PLANKS
+          - WARPED_PLANKS
+        drop-rate: 0.16
+  oak-character-exclamation:
+    name: Exclamation Mark
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmE1M2JkZDE1NDU1MzFjOWViYjljNmY4OTViYzU3NjAxMmY2MTgyMGU2ZjQ4OTg4NTk4OGE3ZTg3MDlhM2Y0OCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OAK_PLANKS
+          - SPRUCE_PLANKS
+          - BIRCH_PLANKS
+          - JUNGLE_PLANKS
+          - ACACIA_PLANKS
+          - DARK_OAK_PLANKS
+          - CRIMSON_PLANKS
+          - WARPED_PLANKS
+        drop-rate: 0.16
+  oak-character-left-arrow:
+    name: Left Arrow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ViZjkwNzQ5NGE5MzVlOTU1YmZjYWRhYjgxYmVhZmI5MGZiOWJlNDljNzAyNmJhOTdkNzk4ZDVmMWEyMyJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OAK_PLANKS
+          - SPRUCE_PLANKS
+          - BIRCH_PLANKS
+          - JUNGLE_PLANKS
+          - ACACIA_PLANKS
+          - DARK_OAK_PLANKS
+          - CRIMSON_PLANKS
+          - WARPED_PLANKS
+        drop-rate: 0.16
+  oak-character-question:
+    name: Question Mark
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTE2M2RhZmFjMWQ5MWE4YzkxZGI1NzZjYWFjNzg0MzM2NzkxYTZlMThkOGY3ZjYyNzc4ZmM0N2JmMTQ2YjYifX19
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OAK_PLANKS
+          - SPRUCE_PLANKS
+          - BIRCH_PLANKS
+          - JUNGLE_PLANKS
+          - ACACIA_PLANKS
+          - DARK_OAK_PLANKS
+          - CRIMSON_PLANKS
+          - WARPED_PLANKS
+        drop-rate: 0.16
+  oak-character-right-arrow:
+    name: Right Arrow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWI2ZjFhMjViNmJjMTk5OTQ2NDcyYWVkYjM3MDUyMjU4NGZmNmY0ZTgzMjIxZTU5NDZiZDJlNDFiNWNhMTNiIn19fQ
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OAK_PLANKS
+          - SPRUCE_PLANKS
+          - BIRCH_PLANKS
+          - JUNGLE_PLANKS
+          - ACACIA_PLANKS
+          - DARK_OAK_PLANKS
+          - CRIMSON_PLANKS
+          - WARPED_PLANKS
+        drop-rate: 0.16
+  oak-character-up-arrow:
+    name: Up Arrow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDQ4Yjc2OGM2MjM0MzJkZmIyNTlmYjNjMzk3OGU5OGRlYzExMWY3OWRiZDZjZDg4ZjIxMTU1Mzc0YjcwYjNjIn19fQ
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OAK_PLANKS
+          - SPRUCE_PLANKS
+          - BIRCH_PLANKS
+          - JUNGLE_PLANKS
+          - ACACIA_PLANKS
+          - DARK_OAK_PLANKS
+          - CRIMSON_PLANKS
+          - WARPED_PLANKS
+        drop-rate: 0.16
+  ocelot:
+    name: Ocelot
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTY1N2NkNWMyOTg5ZmY5NzU3MGZlYzRkZGNkYzY5MjZhNjhhMzM5MzI1MGMxYmUxZjBiMTE0YTFkYjEifX19
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - OCELOT
+        drop-rate: 7.5
+  picnic-basket:
+    name: Picnic Basket
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTEwMDMzMTg5MzQyMDUwNTZjNWRhYWEzOGI3YjY2ZDgxZmI0NTAwYWZlMGJkYzQ0NzNhNGY4NmQ1MDI1Y2UzIn19fQ
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+          - STICK
+          - RED_CARPET
+          - WHITE_CARPET
+        grid:
+          - '/ 1 /'
+          - '2 3 2'
+          - '0 0 0'
+      default-craft-1:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+          - STICK
+          - RED_CARPET
+          - WHITE_CARPET
+        grid:
+          - '/ 1 /'
+          - '3 2 3'
+          - '0 0 0'
+  pig:
+    name: Pig
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjIxNjY4ZWY3Y2I3OWRkOWMyMmNlM2QxZjNmNGNiNmUyNTU5ODkzYjZkZjRhNDY5NTE0ZTY2N2MxNmFhNCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - PIG
+        drop-rate: 1
+  pillager:
+    name: Pillager
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDk1NDEzNWRjODIyMTM5NzhkYjQ3ODc3OGFlMTIxMzU5MWI5M2QyMjhkMzZkZDU0ZjFlYTFkYTQ4ZTdjYmE2In19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - PILLAGER
+        drop-rate: 2
+  porcelain-vase:
+    name: Porcelain Vase
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0NTA1NWZhNjQ4Y2RiYjJjNjIwYmE1NjUwYjI5ZWMwM2MwMzAyNmJhNGZhODhhZmYwNTUyOTc0NzM3YjJiNyJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - CLAY_BALL
+          - BLUE_DYE
+        grid:
+          - '1 / 1'
+          - '0 / 0'
+          - '1 0 1'
+  potion:
+    name: Potion
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWFmODE1MWRlYjM5NTUzMjkyYjlhNjk2NzQ4MzJkZGE4MDAxNzgwY2E5ODE4MGEwNmVhZjliMzY4OTMwYjViYiJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPELESS_CRAFT
+        ingredients:
+          - POTION
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - WITCH
+        drop-rate: 4
+  potted-poppy:
+    name: Potted Poppy
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRiYTM4ZTlmYzY3ZjcyYzQ1OGZkYWM4ZWNkN2NhYmFlZDNlYjgzNzM3MTQzYTAxMjgzNTBhMWFiMzgxZTNlIn19fQ
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+          - POPPY
+          - OAK_LEAVES
+        grid:
+          - '2 1 2'
+          - '0 0 0'
+  potted-dandelion:
+    name: Potted Dandelion
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjNmZmZjODk1NWIwZTgzMDI4OThmN2YwMTVkODQ5ZjBhMDFkYmJiMDQyNzQxNzUwNmZiODllYWQ1NGQ0NWY2In19fQ
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+          - DANDELION
+          - OAK_LEAVES
+        grid:
+          - '2 1 2'
+          - '0 0 0'
+  potted-daisy:
+    name: Potted Daisy
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRjNGMxMmJmMjYxOWNiZmM4ZjIyZGM2MmMwMjJjZTE1MTI2Y2VhM2UyMTJjMjhkOWY5NmVhMzEwYWM0YzQyIn19fQ
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+          - OXEYE_DAISY
+          - OAK_LEAVES
+        grid:
+          - '2 1 2'
+          - '0 0 0'
+  present:
+    name: Present
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNlZjlhYTE0ZTg4NDc3M2VhYzEzNGE0ZWU4OTcyMDYzZjQ2NmRlNjc4MzYzY2Y3YjFhMjFhODViNyJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - RED_WOOL
+          - YELLOW_WOOL
+        grid:
+          - '0 1 0'
+          - '1 1 1'
+          - '0 1 0'
+  sand-bucket:
+    name: Sand Bucket
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ0MzdkMTY4ODU5MjBjZTU1NzczM2Y0YzcxMGJiNTAwN2YwYTRmMWEwZGRkMzJkNTk0NjlhYmM0ZjdlN2JlMCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - SAND
+        biomes:
+          - BEACH
+        drop-rate: 0.2
+  sandcastle:
+    name: Sandcastle
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWE0YjdlODc4MjFkYjRlNmU0MmU3OGQ3ZjI2MGI2Mzc5OTNkNmJlOGRlOTRmNDNlNDMxNzViYWZmOTFmNSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - SAND
+        biomes:
+          - BEACH
+        drop-rate: 0.1
+  sheep:
+    name: Sheep
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjMxZjljY2M2YjNlMzJlY2YxM2I4YTExYWMyOWNkMzNkMThjOTVmYzczZGI4YTY2YzVkNjU3Y2NiOGJlNzAifX19
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - SHEEP
+        drop-rate: 1
+  skeleton:
+    name: Skeleton
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzAxMjY4ZTljNDkyZGExZjBkODgyNzFjYjQ5MmE0YjMwMjM5NWY1MTVhN2JiZjc3ZjRhMjBiOTVmYzAyZWIyIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - SKELETON
+        drop-rate: 0.5
+  slime:
+    name: Slime
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODk1YWVlYzZiODQyYWRhODY2OWY4NDZkNjViYzQ5NzYyNTk3ODI0YWI5NDRmMjJmNDViZjNiYmI5NDFhYmU2YyJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - SLIME
+        drop-rate: 1
+  slime-ball:
+    name: Slime Ball
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkzNGE5ZjVhYjE3ODlhN2Q4ZGQ5NmQzMjQ5M2NkYWNmZjU3N2Q4YzgxZTdiMjM5MTdkZmYyZTMyYmQwYmMxMCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - SLIME
+        drop-rate: 0.4
+  snowman-head:
+    name: Snowman Head
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU4ZDIwNmY2MWU2ZGU4YTc5ZDBjYjBiY2Q5OGFjZWQ0NjRjYmZlZmM5MjFiNDE2MGEyNTI4MjE2MzExMmEifX19
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - SNOW_BLOCK
+        drop-rate: 1
+      default-drop-1:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - SNOWMAN
+        drop-rate: 10
+  spider:
+    name: Spider
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q1NDE1NDFkYWFmZjUwODk2Y2QyNThiZGJkZDRjZjgwYzNiYTgxNjczNTcyNjA3OGJmZTM5MzkyN2U1N2YxIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - SPIDER
+        drop-rate: 0.75
+  squid:
+    name: Squid
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMDE0MzNiZTI0MjM2NmFmMTI2ZGE0MzRiODczNWRmMWViNWIzY2IyY2VkZTM5MTQ1OTc0ZTljNDgzNjA3YmFjIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - SQUID
+        drop-rate: 1.3
+  stack-of-carrots:
+    name: Stack of Carrots
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmVkMGI3NTZmYzYyMzg1NTEzYjU3MDE1OTY3NDZiZDdiMWRhYTE1ZDdhZGFiZjQ1ZWYxNWJkMzQzNzNkOWY1YyJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - CARROT
+        grid:
+          - '0 0'
+          - '0 0'
+  steve-plush:
+    name: Steve Plush
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjYyMjE3ZDkwMmVkYzkyOWRlNGY1MWI5MDcxZjU2YmFhYWMwNDVkMDRlYzA0Yjg0MGNjYzhlYzk5NjJmNjJlMyJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - BROWN_WOOL
+          - LIGHT_BLUE_WOOL
+          - BLUE_WOOL
+        grid:
+          - '0'
+          - '1'
+          - '2'
+  stray:
+    name: Stray
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzhkZGY3NmU1NTVkZDVjNGFhOGEwYTVmYzU4NDUyMGNkNjNkNDg5YzI1M2RlOTY5ZjdmMjJmODVhOWEyZDU2In19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - STRAY
+        drop-rate: 1.5
+  stool:
+    name: Stool
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0ODE5OTEzOWJmMmI2Y2Q0NGU3NGFhMjQ5OGJhY2M1MGQxZWRlYzgyMWVjOTM0NDlmMzlkNmMxYzZmOTkwZSJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+        grid:
+          - '0 0 0'
+          - '0 0 0'
+          - '0 / 0'
+  stool-log:
+    name: Log Stool
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE1MGMzYTczMTJhYWJkMWFkNzA0N2MxOGY3ZGE1OGY0ZWQxOTllMTBjNTZkMDYwNGExMmRjYzg2Yjk0YTJiYiJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+          - OAK_LOG
+        grid:
+          - '1 1 1'
+          - '0 0 0'
+          - '0 / 0'
+  sushi:
+    name: Sushi
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmUxMmYyNjc5NTNlNzZhZTY2YThkZDAyNWEzMjg2YWVjYmM2NGI0YWQ5OGVlYjEwYjNjNjdhNjlhYWUxNSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - PUFFERFISH
+          - SALMON
+          - COD
+          - TROPICAL_FISH
+        drop-rate: 1.5
+  television:
+    name: Television
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQxZTk5NzkyODlmMDMwOTlhN2M1ODdkNTJkNDg4ZTI2ZTdiYjE3YWI1OTRiNjlmOTI0MzhkNzdlYWJjIn19fQ
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - BLACK_CONCRETE
+          - GLASS_PANE
+        grid:
+          - '0 0 0'
+          - '0 1 0'
+          - '0 0 0'
+  toaster:
+    name: Toaster
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmI1M2U4ZDM3NGI0ZjZmNTczZDEyODY2ODFiZjg0MTA1NWI4OWE0NjJmN2NkZDk5ZThlNjNkMmY1MTRlNDUifX19
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - IRON_INGOT
+          - BREAD
+        grid:
+          - '0 1 0'
+          - '0 0 0'
+  toilet-paper:
+    name: Toilet Paper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmM4YzIyOTg1YjAzMzZmODE3ZmMzMDdjYmE2YzE1ZGE0ODRiZjIzNjFjNjBmNWEzM2U2YTk1NTdlZTJkIn19fQ
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+          - PAPER
+        grid:
+          - '1 1 1'
+          - '1 0 1'
+          - '1 1 1'
+  vex:
+    name: Vex
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzJlYzVhNTE2NjE3ZmYxNTczY2QyZjlkNWYzOTY5ZjU2ZDU1NzVjNGZmNGVmZWZhYmQyYTE4ZGM3YWI5OGNkIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - VEX
+        drop-rate: 15
+  villager:
+    name: Villager
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIyZDhlNzUxYzhmMmZkNGM4OTQyYzQ0YmRiMmY1Y2E0ZDhhZThlNTc1ZWQzZWIzNGMxOGE4NmU5M2IifX19
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - VILLAGER
+        drop-rate: 5
+  wandering-trader:
+    name: Wandering Trader
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWYxMzc5YTgyMjkwZDdhYmUxZWZhYWJiYzcwNzEwZmYyZWMwMmRkMzRhZGUzODZiYzAwYzkzMGM0NjFjZjkzMiJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - WANDERING_TRADER
+        drop-rate: 33
+  witch:
+    name: Witch
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjBlMTNkMTg0NzRmYzk0ZWQ1NWFlYjcwNjk1NjZlNDY4N2Q3NzNkYWMxNmY0YzNmODcyMmZjOTViZjlmMmRmYSJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - WITCH
+        drop-rate: 4
+  wither-skeleton:
+    name: Wither Skeleton
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzk1M2I2YzY4NDQ4ZTdlNmI2YmY4ZmIyNzNkNzIwM2FjZDhlMWJlMTllODE0ODFlYWQ1MWY0NWRlNTlhOCJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - WITHER_SKELETON
+        drop-rate: 0 #Wither Skeletons drop heads through standard death, so I don't see a reason to have this on. To keep with the "decor" theme, heads dropped by this plugin cannot be used to summon the Wither. i.e, they are decorative only.
+  wooden-clock:
+    name: Wooden Clock
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQ3N2RhZmM4YzllYTA3OTk2MzMzODE3OTM4NjZkMTQ2YzlhMzlmYWQ0YzY2ODRlNzExN2Q5N2U5YjZjMyJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - SPRUCE_PLANKS
+          - CLOCK
+        grid:
+          - '0 0 0'
+          - '0 1 0'
+          - '0 0 0'
+  wooden-crate:
+    name: Wooden Crate
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ3NjFjYzE2NTYyYzg4ZDJmYmU0MGFkMzg1MDJiYzNiNGE4Nzg1OTg4N2RiYzM1ZjI3MmUzMGQ4MDcwZWVlYyJ9fX0
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+        grid:
+          - '0 0 0'
+          - '0 0 0'
+          - '0 0 0'
+  developer-plush:
+    name: Zazsona Plush
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjE5NzU3OWVjY2Y5OWJiMjQ5ODVjM2U2ZmE3ZjRiOGEzNWM2NzE4YmIwNTI0MTExNDVhODRkMWZkMTBjZWYzYSIKICAgIH0KICB9Cn0=
+  zombie:
+    name: Zombie
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTZmYzg1NGJiODRjZjRiNzY5NzI5Nzk3M2UwMmI3OWJjMTA2OTg0NjBiNTFhNjM5YzYwZTVlNDE3NzM0ZTExIn19fQ
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - ZOMBIE
+        drop-rate: 0.5
+  zombie-villager:
+    name: Zombie Villager
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTVlMDhhODc3NmMxNzY0YzNmZTZhNmRkZDQxMmRmY2I4N2Y0MTMzMWRhZDQ3OWFjOTZjMjFkZjRiZjNhYzg5YyJ9fX0
+    sources:
+      default-drop-0:
+        source-type: ENTITY_DEATH_DROP
+        entities:
+          - ZOMBIE_VILLAGER
+        drop-rate: 1.5
