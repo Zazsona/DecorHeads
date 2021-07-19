@@ -50,7 +50,6 @@ public class WikiCommand implements CommandExecutor
         }
         catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e)
         {
-            e.printStackTrace();
             StringBuilder helpBuilder = new StringBuilder();
             helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(LIST_USAGE).append(ChatColor.WHITE).append(": List all heads").append("\n");
             helpBuilder.append(ChatColor.GOLD).append("/").append(COMMAND_KEY).append(" ").append(PREVIEW_USAGE).append(ChatColor.WHITE).append(": Preview head appearance").append("\n");
