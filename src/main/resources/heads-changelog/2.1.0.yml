@@ -1,0 +1,110 @@
+version: 2.1.0
+heads:
+  coffee:
+    name: Coffee
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGYxMzIzYzlmZWYyMDY5Y2I0NWE0OTE0M2IzZjI1ZDg4NjRhYTY0YTQ5OTgxOWIxZjQyZDkzMzY3YTU5MzNlIn19fQ==
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - COCOA_BEANS
+          - CLAY_BALL
+        grid:
+          - '1 0 1'
+          - '1 1 1'
+  tea:
+    name: Tea
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDhlOTRkZGQ3NjlhNWJlYTc0ODM3NmI0ZWM3MzgzZmQzNmQyNjc4OTRkN2MzYmVlMDExZThlNGY1ZmNkNyJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_LEAVES
+          - CLAY_BALL
+        grid:
+          - '1 0 1'
+          - '1 1 1'
+  birch-crate:
+    name: Birch Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDBiNDlhOTg1Zjc2ZWQ3Njk3MTFmYmQ4MGZiYWVmZjFlZWU3ZDY1YWNiZDE5OTViYzQ3YzZjZmU5MmIzYzkyYiIKICAgIH0KICB9Cn0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - BIRCH_PLANKS
+        grid:
+          - '0 0 0'
+          - '0 0 0'
+          - '0 0 0'
+  spruce-crate:
+    name: Spruce Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWMxOGRhOGRjYjNjMjFlZTk5NjFlMzViMjlhZTk0MzczYjNiOTUyZDQyMTIzZmFhMDQ5YTFiNTA4OTkyMDczMCIKICAgIH0KICB9Cn0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - SPRUCE_PLANKS
+        grid:
+          - '0 0 0'
+          - '0 0 0'
+          - '0 0 0'
+  jungle-crate:
+    name: Jungle Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzcwNDNkZGNlYzkyYTAwNTkxYzZhNDI4MzM4Y2NhN2MxMWJkMDA2NjQ2ZGIyM2ZkOGJlMzhkMWI1MTZkMWFlYSIKICAgIH0KICB9Cn0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - JUNGLE_PLANKS
+        grid:
+          - '0 0 0'
+          - '0 0 0'
+          - '0 0 0'
+  acacia-crate:
+    name: Acacia Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODVjNzQyZGEzMzc2MWI1NzVmMmY5MDNiYTdlMGMyZDUwZmM2ODkyZTBmOGIxNDNkNjUxNmI4NGMzMzQzNzBhNSIKICAgIH0KICB9Cn0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - ACACIA_PLANKS
+        grid:
+          - '0 0 0'
+          - '0 0 0'
+          - '0 0 0'
+  dark-oak-crate:
+    name: Dark Oak Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWEzMTA3NWViMjA2MDZmYmJmZGIzMTExODJiMDU0YmJiNzZhMzJkMzg5ZDgyYzk0ODUzMjQ3NTlmNWNiODM5YSIKICAgIH0KICB9Cn0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - DARK_OAK_PLANKS
+        grid:
+          - '0 0 0'
+          - '0 0 0'
+          - '0 0 0'
+  crimson-crate:
+    name: Crimson Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwMDFjNDkzOGE1Yjg4N2I1MzNmMzg3MDVhMTk1ZWIzM2ZmYTUzZTMwNjYwOGY1MDMyYjllZmE2MzMzNTlhNSIKICAgIH0KICB9Cn0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - CRIMSON_PLANKS
+        grid:
+          - '0 0 0'
+          - '0 0 0'
+          - '0 0 0'
+  warped-crate:
+    name: Warped Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNThiYmYwZDc3NjYwOTBhYTkwMzEzZDZlMTI5OTQwMzdmOGViNWYyZGMwYmIyM2FiZmIwM2JkOWE1NTI5Y2Y2NyIKICAgIH0KICB9Cn0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - WARPED_PLANKS
+        grid:
+          - '0 0 0'
+          - '0 0 0'
+          - '0 0 0'
