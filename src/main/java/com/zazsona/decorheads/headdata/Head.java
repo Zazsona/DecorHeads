@@ -64,7 +64,7 @@ public abstract class Head implements IHead
         }
     }
 
-    protected ItemStack createSkull(String name, OfflinePlayer offlinePlayer)
+    /*protected ItemStack createSkull(String name, OfflinePlayer offlinePlayer)
     {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
@@ -74,7 +74,7 @@ public abstract class Head implements IHead
         addLore(skullMeta);
         skull.setItemMeta(skullMeta);
         return skull;
-    }
+    }*/
 
     protected ItemMeta assignHeadKeyToItem(ItemMeta meta)
     {

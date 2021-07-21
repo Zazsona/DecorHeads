@@ -1,6 +1,7 @@
 package com.zazsona.decorheads.headdata;
 
 import com.google.gson.Gson;
+import com.mojang.authlib.GameProfile;
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.apiresponse.NameUUIDResponse;
@@ -9,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -19,6 +21,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.UUID;
 
 public class PlayerHead extends Head
@@ -57,33 +61,33 @@ public class PlayerHead extends Head
 
     public ItemStack createItem(UUID uuid)
     {
-        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-        if (player.isOnline() || player.hasPlayedBefore())
-            return createItem(player);     //Create a Player Head (dynamically changes skin)
-        else
-        {           //Unfortunately, I'm yet to find a way to do dynamically changing heads for players that have never joined before, if it's even possible! As such, we have to generate a custom one.
-            try
-            {
-                ProfileResponse pr = DecorHeadsUtil.fetchPlayerProfile(uuid);
-                ItemStack skull = createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), pr.getPropertyByName(TEXTURES_KEY).getValue());
-                ItemMeta meta = assignHeadUUIDToItem(skull.getItemMeta(), uuid.toString());
-                skull.setItemMeta(meta);
-                return skull;
-            }
-            catch (IOException e)
-            {
-                Bukkit.getLogger().warning(String.format("[%s] Unable to resolve player head for UUID: %s", Core.PLUGIN_NAME, uuid));
-                return new ItemStack(Material.PLAYER_HEAD);
-            }
+        try
+        {
+            ProfileResponse pr = DecorHeadsUtil.fetchPlayerProfile(uuid);
+            String encodedTextureData = pr.getPropertyByName(TEXTURES_KEY).getValue();
+            String textureDataJson = new String(Base64.getDecoder().decode(encodedTextureData));
+            Gson gson = new Gson();
+            ProfileTextureData textureData = gson.fromJson(textureDataJson, ProfileTextureData.class);
+            textureData.setTimestamp(null);
+            textureData.setProfileId(null); // Nulling the data removes it from the JSON output
+            textureData.setProfileName(null);
+            String skullTextureJson = gson.toJson(textureData);
+            String encodedSkullTexture = new String(Base64.getEncoder().encode(skullTextureJson.getBytes(StandardCharsets.UTF_8)));
+            ItemStack skull = createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), encodedSkullTexture);
+            ItemMeta meta = assignHeadUUIDToItem(skull.getItemMeta(), uuid.toString());
+            skull.setItemMeta(meta);
+            return skull;
+        }
+        catch (IOException e)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Unable to resolve player head for UUID: %s", Core.PLUGIN_NAME, uuid));
+            return new ItemStack(Material.PLAYER_HEAD);
         }
     }
 
     public ItemStack createItem(OfflinePlayer player)
     {
-        ItemStack skull = createSkull(String.format(HEAD_NAME_FORMAT, player.getName()), player);
-        ItemMeta meta = assignHeadUUIDToItem(skull.getItemMeta(), player.getUniqueId().toString());
-        skull.setItemMeta(meta);
-        return skull;
+        return createItem(player.getUniqueId());
     }
 
     private String getApiResponse(String query) throws IOException
