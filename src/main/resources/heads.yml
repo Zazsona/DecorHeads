@@ -2,7 +2,7 @@
 # All the details on how to add your own heads, or modify the default ones, are on the Wiki!
 # https://github.com/Zazsona/DecorHeads/wiki
 
-version: 2.0.0
+version: 2.1.0
 heads:
   player:
     sources:

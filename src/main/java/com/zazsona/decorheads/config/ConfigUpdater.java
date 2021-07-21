@@ -43,9 +43,21 @@ public class ConfigUpdater
             plugin.reloadConfig();
         }
 
-        plugin.getConfig().set(versionKey, plugin.getDescription().getVersion());
-        plugin.getConfig().options().copyDefaults(true);        // Anything 2.0.0+ should be handled just fine by this.
+        FileConfiguration config = plugin.getConfig();
+        update200To210(config);
+        config.set(versionKey, plugin.getDescription().getVersion());
+        config.options().copyDefaults(true);
         plugin.saveConfig();
+    }
+
+    private void update200To210(FileConfiguration config)
+    {
+        if (config.getString(versionKey).equals("2.0.0"))
+        {
+            boolean updateNotificationsEnabled = config.getBoolean(PluginConfig.UPDATE_NOTIFICATIONS_KEY);
+            UpdateNotificationLevel level = (updateNotificationsEnabled) ? UpdateNotificationLevel.MINOR : UpdateNotificationLevel.DISABLED;
+            config.set(PluginConfig.UPDATE_NOTIFICATIONS_KEY, level.toString().toLowerCase());
+        }
     }
 
     private void archiveLegacyConfig(Plugin plugin, File configFile)

@@ -4,6 +4,8 @@ import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Locale;
+
 public class PluginConfig
 {
     public static final String PLUGIN_ENABLED_KEY = "plugin-enabled";
@@ -76,15 +78,19 @@ public class PluginConfig
         return plugin.getConfig().getBoolean(WIKI_RECIPE_LEARN_KEY);
     }
 
-    public static void setUpdateNotificationsEnabled(boolean newEnabled)
+    public static void setUpdateNotificationsLevel(UpdateNotificationLevel level)
     {
-        plugin.getConfig().set(UPDATE_NOTIFICATIONS_KEY, newEnabled);
+        String levelLabel = level.toString().toLowerCase();
+        plugin.getConfig().set(UPDATE_NOTIFICATIONS_KEY, levelLabel);
         save();
     }
 
-    public static boolean isUpdateNotificationsEnabled()
+    public static UpdateNotificationLevel getUpdateNotificationsLevel()
     {
-        return plugin.getConfig().getBoolean(UPDATE_NOTIFICATIONS_KEY);
+        String levelLabel = plugin.getConfig().getString(UPDATE_NOTIFICATIONS_KEY);
+        String levelName = levelLabel.toUpperCase();
+        UpdateNotificationLevel level = UpdateNotificationLevel.valueOf(levelName);
+        return level;
     }
 
     public static void setDropSourceEnabled(HeadSourceType sourceType, boolean newEnabled)

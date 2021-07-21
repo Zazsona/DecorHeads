@@ -1,6 +1,7 @@
 package com.zazsona.decorheads;
 
 import com.zazsona.decorheads.config.PluginConfig;
+import com.zazsona.decorheads.config.UpdateNotificationLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -18,18 +19,22 @@ public class UpdateNotifier implements Listener
 {
     private static final String spigotResourceId = "88633";
     private Plugin plugin;
+    private String currentVersion;
     private String latestVersion;
+    private UpdateNotificationLevel updateLevel;
 
     public UpdateNotifier()
     {
-        plugin = Core.getSelfPlugin();
-        fetchLatestVersion();
-    }
+        this.plugin = Core.getSelfPlugin();
+        this.currentVersion = plugin.getDescription().getVersion();
+        this.latestVersion = currentVersion;            // Fetch query is async, so these are default values until that returns a result.
+        this.updateLevel = UpdateNotificationLevel.DISABLED;
 
-    private void fetchLatestVersion()
-    {
-        Bukkit.getScheduler().runTaskAsynchronously(Core.getSelfPlugin(), () -> latestVersion = getLatestVersion());
-        latestVersion = getLatestVersion();
+        Bukkit.getScheduler().runTaskAsynchronously(Core.getSelfPlugin(), () ->
+        {
+            latestVersion = getLatestVersion();
+            updateLevel = getUpdateLevel(currentVersion, latestVersion);
+        });
     }
 
     private String getLatestVersion()
@@ -53,16 +58,64 @@ public class UpdateNotifier implements Listener
         }
     }
 
+    private UpdateNotificationLevel getUpdateLevel(String currentVersion, String latestVersion)
+    {
+        if (latestVersion.compareTo(currentVersion) > 0)
+        {
+            String[] currentVerDigits = currentVersion.split("[.]");
+            String[] latestVerDigits = latestVersion.split("[.]");
+            int digitCount = 3; //X.Y.Z
+            for (int i = 0; i < digitCount; i++)
+            {
+                String currentVerDigit = (i < currentVerDigits.length) ? currentVerDigits[i] : "0";
+                String latestVerDigit = (i < latestVerDigits.length) ? latestVerDigits[i] : "0";
+                if (latestVerDigit.compareTo(currentVerDigit) > 0)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            return UpdateNotificationLevel.MAJOR;
+                        case 1:
+                            return UpdateNotificationLevel.MINOR;
+                        case 2:
+                            return UpdateNotificationLevel.PATCH;
+                    }
+                }
+            }
+        }
+        return UpdateNotificationLevel.DISABLED;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e)
     {
-        if (latestVersion != null && e.getPlayer().isOp() && PluginConfig.isUpdateNotificationsEnabled())
+        UpdateNotificationLevel notifLevel = PluginConfig.getUpdateNotificationsLevel();
+        if (e.getPlayer().isOp())
         {
-            String currentVersion = plugin.getDescription().getVersion();
-            if (!currentVersion.equalsIgnoreCase(latestVersion))
+            if ((updateLevel == UpdateNotificationLevel.MAJOR && (notifLevel == UpdateNotificationLevel.MAJOR || notifLevel == UpdateNotificationLevel.MINOR || notifLevel == UpdateNotificationLevel.PATCH))
+                    || (updateLevel == UpdateNotificationLevel.MINOR && (notifLevel == UpdateNotificationLevel.MINOR || notifLevel == UpdateNotificationLevel.PATCH))
+                    || (updateLevel == UpdateNotificationLevel.PATCH && notifLevel == UpdateNotificationLevel.PATCH))
             {
                 e.getPlayer().sendMessage(String.format(ChatColor.GREEN+"A new version of %s is available! (%s -> %s)", Core.PLUGIN_NAME, currentVersion, latestVersion));
             }
         }
     }
+
+    /*if (currentVerDigits.length != latestVerDigits.length)
+    {
+        int requiredDigits = (currentVerDigits.length > latestVerDigits.length) ? currentVerDigits.length : latestVerDigits.length;
+        String[] lowDigitsVer = (currentVerDigits.length > latestVerDigits.length) ? latestVerDigits : currentVerDigits;
+        String[] lengthenedDigits = new String[requiredDigits];
+        for (int i = 0; i < lengthenedDigits.length; i++)
+        {
+            if (i < lowDigitsVer.length)
+                lengthenedDigits[i] = lowDigitsVer[i];
+            else
+                lengthenedDigits[i] = "0";
+        }
+        if (currentVerDigits.length > latestVerDigits.length)
+            latestVerDigits = lengthenedDigits;
+        else
+            currentVerDigits = lengthenedDigits;
+    }*/
 }
