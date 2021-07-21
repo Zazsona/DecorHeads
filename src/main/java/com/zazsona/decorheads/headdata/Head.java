@@ -52,8 +52,8 @@ public abstract class Head implements IHead
             skullProfile.setAccessible(true);
             skullProfile.set(skullMeta, gameProfile);
             skullMeta.setDisplayName(name);
-            assignHeadKeyToItem(skullMeta);
-            addLore(skullMeta);
+            applyDecorHeadsSkullMeta(skullMeta);
+            addDecorHeadsLore(skullMeta);
             skull.setItemMeta(skullMeta);
             return skull;
         }
@@ -76,7 +76,7 @@ public abstract class Head implements IHead
         return skull;
     }*/
 
-    protected ItemMeta assignHeadKeyToItem(ItemMeta meta)
+    protected ItemMeta applyDecorHeadsSkullMeta(ItemMeta meta)
     {
         PersistentDataContainer dataHolder = meta.getPersistentDataContainer();
         NamespacedKey headKeyKey = getSkullHeadKeyKey();
@@ -84,7 +84,7 @@ public abstract class Head implements IHead
         return meta;
     }
 
-    protected static ItemMeta addLore(ItemMeta meta)
+    protected static ItemMeta addDecorHeadsLore(ItemMeta meta)
     {
         ArrayList<String> loreList = new ArrayList<>();
         loreList.add(PLUGIN_LORE);

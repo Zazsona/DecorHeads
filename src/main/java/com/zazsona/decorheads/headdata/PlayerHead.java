@@ -1,19 +1,15 @@
 package com.zazsona.decorheads.headdata;
 
 import com.google.gson.Gson;
-import com.mojang.authlib.GameProfile;
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.DecorHeadsUtil;
-import com.zazsona.decorheads.apiresponse.NameUUIDResponse;
 import com.zazsona.decorheads.apiresponse.ProfileResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -39,6 +35,11 @@ public class PlayerHead extends Head
         return new NamespacedKey(Core.getSelfPlugin(), "OwnerUUID");
     }
 
+    public static NamespacedKey getSkullTextureKey()
+    {
+        return new NamespacedKey(Core.getSelfPlugin(), "Texture");
+    }
+
     @Override
     public ItemStack createItem()
     {
@@ -59,6 +60,11 @@ public class PlayerHead extends Head
         return new ItemStack(Material.PLAYER_HEAD);
     }
 
+    public ItemStack createItem(OfflinePlayer player)
+    {
+        return createItem(player.getUniqueId());
+    }
+
     public ItemStack createItem(UUID uuid)
     {
         try
@@ -74,7 +80,7 @@ public class PlayerHead extends Head
             String skullTextureJson = gson.toJson(textureData);
             String encodedSkullTexture = new String(Base64.getEncoder().encode(skullTextureJson.getBytes(StandardCharsets.UTF_8)));
             ItemStack skull = createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), encodedSkullTexture);
-            ItemMeta meta = assignHeadUUIDToItem(skull.getItemMeta(), uuid.toString());
+            ItemMeta meta = applyDecorHeadsPlayerSkullMeta(skull.getItemMeta(), uuid.toString(), encodedSkullTexture);
             skull.setItemMeta(meta);
             return skull;
         }
@@ -85,30 +91,30 @@ public class PlayerHead extends Head
         }
     }
 
-    public ItemStack createItem(OfflinePlayer player)
+    public ItemStack createItem(UUID uuid, String texture)
     {
-        return createItem(player.getUniqueId());
-    }
-
-    private String getApiResponse(String query) throws IOException
-    {
-        URL restRequest = new URL(query);
-        InputStreamReader inputStreamReader = new InputStreamReader(restRequest.openStream());
-        BufferedReader reader = new BufferedReader((inputStreamReader));
-        StringBuilder responseBuilder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null)
+        try
         {
-            responseBuilder.append(line);
+            ProfileResponse pr = DecorHeadsUtil.fetchPlayerProfile(uuid);
+            ItemStack skull = createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), texture);
+            ItemMeta meta = applyDecorHeadsPlayerSkullMeta(skull.getItemMeta(), uuid.toString(), texture);
+            skull.setItemMeta(meta);
+            return skull;
         }
-        return responseBuilder.toString();
+        catch (IOException e)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Unable to resolve player head for UUID: %s", Core.PLUGIN_NAME, uuid));
+            return new ItemStack(Material.PLAYER_HEAD);
+        }
     }
 
-    protected ItemMeta assignHeadUUIDToItem(ItemMeta meta, String uuid)
+    protected ItemMeta applyDecorHeadsPlayerSkullMeta(ItemMeta meta, String uuid, String texture)
     {
         PersistentDataContainer dataHolder = meta.getPersistentDataContainer();
         NamespacedKey uuidKey = getSkullUUIDKey();
         dataHolder.set(uuidKey, PersistentDataType.STRING, uuid);
+        NamespacedKey textureKey = getSkullTextureKey();
+        dataHolder.set(textureKey, PersistentDataType.STRING, texture);
         return meta;
     }
 }

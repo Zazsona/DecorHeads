@@ -27,6 +27,7 @@ public class HeadBlockListener implements Listener
 {
     public static String ID_KEY = "HeadId";
     public static String PLAYER_ID_KEY = "HeadPlayerId";
+    public static String TEXTURE_KEY = "HeadTexture";
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e)
@@ -129,7 +130,13 @@ public class HeadBlockListener implements Listener
                 {
                     PlayerHead playerHead = (PlayerHead) head;
                     String uuid = metaLogger.getMetadata(location, PLAYER_ID_KEY);
-                    item = playerHead.createItem(UUID.fromString(uuid));
+                    if (metaLogger.isMetadataSet(location, TEXTURE_KEY))
+                    {
+                        String texture = metaLogger.getMetadata(location, TEXTURE_KEY);
+                        item = playerHead.createItem(UUID.fromString(uuid), texture);
+                    }
+                    else
+                        item = playerHead.createItem(UUID.fromString(uuid));
                 }
                 else
                     item = head.createItem();
@@ -138,6 +145,7 @@ public class HeadBlockListener implements Listener
             }
             metaLogger.removeMetadata(location, ID_KEY);
             metaLogger.removeMetadata(location, PLAYER_ID_KEY);
+            metaLogger.removeMetadata(location, TEXTURE_KEY);
         }
         return headDropped;
     }
@@ -152,14 +160,19 @@ public class HeadBlockListener implements Listener
             PersistentDataContainer dataContainer = placedItem.getItemMeta().getPersistentDataContainer();
             if (dataContainer.has(Head.getSkullHeadKeyKey(), PersistentDataType.STRING))
             {
-                String headKey = dataContainer.get(Head.getSkullHeadKeyKey(), PersistentDataType.STRING);
                 Block block = e.getBlock();
                 Location location = block.getLocation();
+                String headKey = dataContainer.get(Head.getSkullHeadKeyKey(), PersistentDataType.STRING);
                 metaLogger.setMetadata(location, ID_KEY, headKey);
                 if (dataContainer.has(PlayerHead.getSkullUUIDKey(), PersistentDataType.STRING))
                 {
                     String uuid = dataContainer.get(PlayerHead.getSkullUUIDKey(), PersistentDataType.STRING);
                     metaLogger.setMetadata(location, PLAYER_ID_KEY, uuid);
+                    if (dataContainer.has(PlayerHead.getSkullTextureKey(), PersistentDataType.STRING))
+                    {
+                        String texture = dataContainer.get(PlayerHead.getSkullTextureKey(), PersistentDataType.STRING);
+                        metaLogger.setMetadata(location, TEXTURE_KEY, texture);
+                    }
                 }
             }
         }
