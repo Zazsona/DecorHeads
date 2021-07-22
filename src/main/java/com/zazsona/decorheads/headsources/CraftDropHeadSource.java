@@ -31,7 +31,7 @@ public class CraftDropHeadSource extends DropHeadSource
             Player player = (Player) e.getWhoClicked();
             World world = e.getWhoClicked().getWorld();
             Location location = e.getInventory().getLocation();
-            return super.dropHead(world, location, player, null);
+            return super.dropHead(world, location, getBaseDropRate(), player, null);
         }
         return null;
     }

@@ -5,6 +5,8 @@ import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -39,8 +41,23 @@ public class EntityDropHeadSource extends DropHeadSource
             Player killer = e.getEntity().getKiller();
             World world = e.getEntity().getWorld();
             Location location = e.getEntity().getLocation();
-            return super.dropHead(world, location, killer, killedPlayerId);
+            double dropRate = getModifiedDropRate(e);
+            return super.dropHead(world, location, dropRate, killer, killedPlayerId);
         }
         return null;
+    }
+
+    private double getModifiedDropRate(EntityDeathEvent e)
+    {
+        double baseDropRate = getBaseDropRate();
+        double dropRate = baseDropRate;
+        Player killer = e.getEntity().getKiller();
+        if (killer != null && baseDropRate > 0) // Maintain 0% drop rate as this is a quick alternative to "off"
+        {
+            ItemStack murderWeapon = killer.getInventory().getItemInMainHand(); // Note: while a bow could be fired in the off-hand with an enchanted main hand, this is how Minecraft itself does things.
+            if (murderWeapon.containsEnchantment(Enchantment.LOOT_BONUS_MOBS))
+                dropRate += murderWeapon.getEnchantmentLevel(Enchantment.LOOT_BONUS_MOBS); // This mimics behaviour for "rare" loot drops.
+        }
+        return Math.min(100.0f, dropRate);
     }
 }

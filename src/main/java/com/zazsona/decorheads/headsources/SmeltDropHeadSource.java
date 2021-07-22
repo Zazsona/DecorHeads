@@ -33,7 +33,7 @@ public class SmeltDropHeadSource extends DropHeadSource
             Player player = (offlinePlayer != null) ? offlinePlayer.getPlayer() : null;
             World world = e.getBlock().getWorld();
             Location location = e.getBlock().getLocation();
-            return super.dropHead(world, location, player, null);
+            return super.dropHead(world, location, getBaseDropRate(), player, null);
         }
         return null;
     }

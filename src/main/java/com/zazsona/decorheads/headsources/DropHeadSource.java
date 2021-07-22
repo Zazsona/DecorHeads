@@ -33,7 +33,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
         this.dropFilters = new ArrayList<>();
     }
 
-    public double getDropRate()
+    public double getBaseDropRate()
     {
         return dropRate;
     }
@@ -43,9 +43,9 @@ public abstract class DropHeadSource extends HeadSource implements Listener
         return dropFilters;
     }
 
-    public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget)
+    public ItemStack dropHead(World world, Location location, double dropRate, @Nullable Player player, @Nullable UUID headSkinTarget)
     {
-        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && rollDrop()
+        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && rollDrop(dropRate)
                 && ((player == null && PluginConfig.isPlayerlessDropEventsEnabled()) || (player != null && player.hasPermission(Permissions.DROP_HEADS))))
         {
             ItemStack headStack;
@@ -67,7 +67,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
      * Performs a roll check against the chance to drop
      * @return true/false on head roll passed.
      */
-    protected boolean rollDrop()
+    protected boolean rollDrop(double dropRate)
     {
         double roll = rand.nextDouble() * 100.0f;
         return (roll < dropRate);

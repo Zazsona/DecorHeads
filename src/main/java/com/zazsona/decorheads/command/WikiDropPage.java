@@ -28,7 +28,7 @@ public class WikiDropPage implements IWikiPage
     {
         StringBuilder pageBuilder = new StringBuilder();
         pageBuilder.append(borderChar).append(" Drop Type: ").append(getScalar(headSource.getSourceType().name())).append("\n");
-        pageBuilder.append(borderChar).append(" Drop Rate: ").append(getScalar(headSource.getDropRate()+"%")).append("\n");
+        pageBuilder.append(borderChar).append(" Drop Rate: ").append(getScalar(headSource.getBaseDropRate()+"%")).append("\n");
         for (DropSourceFilter filter : headSource.getDropFilters())
         {
             if (filter instanceof BlockDropFilter)
