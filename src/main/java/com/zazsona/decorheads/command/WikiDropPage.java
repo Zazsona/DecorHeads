@@ -4,7 +4,6 @@ import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.headsources.DropHeadSource;
 import com.zazsona.decorheads.headsources.dropfilters.*;
 import org.bukkit.ChatColor;
-import org.bukkit.WeatherType;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -90,7 +89,7 @@ public class WikiDropPage implements IWikiPage
         stringBuilder.append(ChatColor.ITALIC);
         for (String uuid : uuids)
         {
-            String playerName = DecorHeadsUtil.getPlayerName(UUID.fromString(uuid));
+            String playerName = DecorHeadsUtil.fetchPlayerName(UUID.fromString(uuid));
             if (playerName != null)
                 stringBuilder.append(playerName).append(", ");
         }

@@ -57,7 +57,7 @@ public class DecorHeadsUtil
             throw new IOException(String.format("Request returned error: %s", uuidResponse.getError()));
     }
 
-    public static String getPlayerName(UUID uuid)
+    public static String fetchPlayerName(UUID uuid)
     {
         try
         {

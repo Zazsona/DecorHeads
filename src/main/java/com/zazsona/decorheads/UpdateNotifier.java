@@ -100,22 +100,4 @@ public class UpdateNotifier implements Listener
             }
         }
     }
-
-    /*if (currentVerDigits.length != latestVerDigits.length)
-    {
-        int requiredDigits = (currentVerDigits.length > latestVerDigits.length) ? currentVerDigits.length : latestVerDigits.length;
-        String[] lowDigitsVer = (currentVerDigits.length > latestVerDigits.length) ? latestVerDigits : currentVerDigits;
-        String[] lengthenedDigits = new String[requiredDigits];
-        for (int i = 0; i < lengthenedDigits.length; i++)
-        {
-            if (i < lowDigitsVer.length)
-                lengthenedDigits[i] = lowDigitsVer[i];
-            else
-                lengthenedDigits[i] = "0";
-        }
-        if (currentVerDigits.length > latestVerDigits.length)
-            latestVerDigits = lengthenedDigits;
-        else
-            currentVerDigits = lengthenedDigits;
-    }*/
 }
