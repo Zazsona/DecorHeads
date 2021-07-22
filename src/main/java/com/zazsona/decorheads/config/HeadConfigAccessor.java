@@ -30,6 +30,7 @@ public class HeadConfigAccessor
     public static final String dropRecipeResultsKey = "recipe-results";
     public static final String dropEventInvokerKey = "event-invoker";
     public static final String weatherKey = "weather";
+    public static final String worldsKey = "worlds";
     public static final String craftIngredientsKey = "ingredients";
     public static final String craftGridKey = "grid";
 

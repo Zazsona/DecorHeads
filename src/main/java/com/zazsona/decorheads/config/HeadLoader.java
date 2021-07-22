@@ -298,6 +298,7 @@ public class HeadLoader extends HeadConfigAccessor
                 applyRecipeResultDropFilter(dropRecipeResultsKey, dropHeadSource, sourceYaml);
                 applyEventInvokerFilter(dropEventInvokerKey, dropHeadSource, sourceYaml);
                 applyWeatherDropFilter(weatherKey, dropHeadSource, sourceYaml);
+                applyWorldDropFilter(worldsKey, dropHeadSource, sourceYaml);
                 return dropHeadSource;
             }
             else if (headSource instanceof CraftHeadSource)
@@ -496,6 +497,18 @@ public class HeadLoader extends HeadConfigAccessor
         return false;
     }
 
+    private boolean applyWorldDropFilter(String worldsKey, DropHeadSource headSource, ConfigurationSection sourceYaml)
+    {
+        List<String> worldNames = getWorldNames(worldsKey, sourceYaml);
+        if (worldNames != null)
+        {
+            WorldDropFilter worldDropFilter = new WorldDropFilter(worldNames);
+            headSource.getDropFilters().add(worldDropFilter);
+            return true;
+        }
+        return false;
+    }
+
     private double getDropRate(String dropRateKey, ConfigurationSection sourceYaml)
     {
         if (sourceYaml.getKeys(false).contains(dropRateKey))
@@ -607,6 +620,16 @@ public class HeadLoader extends HeadConfigAccessor
                 }
             }
             return (weatherTypes.size() > 0) ? weatherTypes : null;
+        }
+        return null;
+    }
+
+    private List<String> getWorldNames(String worldsKey, ConfigurationSection sourceYaml)
+    {
+        if (sourceYaml.getKeys(false).contains(worldsKey))
+        {
+            List<String> worldNames = sourceYaml.getStringList(worldsKey);
+            return (worldNames.size() > 0) ? worldNames : null;
         }
         return null;
     }

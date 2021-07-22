@@ -37,7 +37,11 @@ public class WeatherDropFilter extends DropSourceFilter
         Location location = block.getLocation();
         double biomeTemperature = world.getTemperature(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         double blockTemperature = block.getTemperature();
-        if (!world.hasStorm())
+        if (weatherTypes.size() == 0)
+        {
+            return true;
+        }
+        else if (!world.hasStorm())
         {
             return weatherTypes.contains(RegionalWeatherType.CLEAR);
         }

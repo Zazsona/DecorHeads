@@ -43,6 +43,8 @@ public class WikiDropPage implements IWikiPage
                 pageBuilder.append(borderChar).append(" Biomes: ").append(getEnumList(((BiomeDropFilter) filter).getBiomes()));
             else if (filter instanceof WeatherDropFilter)
                 pageBuilder.append(borderChar).append(" Weather: ").append(getEnumList(((WeatherDropFilter) filter).getWeatherTypes()));
+            else if (filter instanceof WorldDropFilter)
+                pageBuilder.append(borderChar).append(" Worlds: ").append(getObjectList(((WorldDropFilter) filter).getWorldNames()));
             else if (filter instanceof RecipeResultDropFilter)
                 pageBuilder.append(borderChar).append(" Recipe Results: ").append(getEnumList(((RecipeResultDropFilter) filter).getResults()));
             else if (filter instanceof EventInvokerFilter)
