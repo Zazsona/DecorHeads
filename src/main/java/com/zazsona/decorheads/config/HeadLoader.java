@@ -6,10 +6,8 @@ import com.zazsona.decorheads.exceptions.InvalidHeadSourceException;
 import com.zazsona.decorheads.headdata.*;
 import com.zazsona.decorheads.headsources.*;
 import com.zazsona.decorheads.headsources.dropfilters.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Keyed;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import com.zazsona.decorheads.headsources.dropfilters.WeatherDropFilter.RegionalWeatherType;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -298,7 +296,8 @@ public class HeadLoader extends HeadConfigAccessor
                 applyToolDropFilter(dropToolsKey, dropHeadSource, sourceYaml);
                 applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceYaml);
                 applyRecipeResultDropFilter(dropRecipeResultsKey, dropHeadSource, sourceYaml);
-                applyEventInvokerFilter(dropEventInvoker, dropHeadSource, sourceYaml);
+                applyEventInvokerFilter(dropEventInvokerKey, dropHeadSource, sourceYaml);
+                applyWeatherDropFilter(weatherKey, dropHeadSource, sourceYaml);
                 return dropHeadSource;
             }
             else if (headSource instanceof CraftHeadSource)
@@ -485,6 +484,18 @@ public class HeadLoader extends HeadConfigAccessor
         return false;
     }
 
+    private boolean applyWeatherDropFilter(String weatherTypeKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        List<RegionalWeatherType> weatherTypes = getRegionalWeatherTypes(weatherTypeKey, headSource.getHead().getKey(), sourceYaml);
+        if (weatherTypes != null)
+        {
+            WeatherDropFilter weatherDropFilter = new WeatherDropFilter(weatherTypes);
+            headSource.getDropFilters().add(weatherDropFilter);
+            return true;
+        }
+        return false;
+    }
+
     private double getDropRate(String dropRateKey, ConfigurationSection sourceYaml)
     {
         if (sourceYaml.getKeys(false).contains(dropRateKey))
@@ -573,6 +584,29 @@ public class HeadLoader extends HeadConfigAccessor
                 }
             }
             return (biomes.size() > 0) ? biomes : null;
+        }
+        return null;
+    }
+
+    private List<RegionalWeatherType> getRegionalWeatherTypes(String weatherTypeKey, String headKey, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        if (sourceYaml.getKeys(false).contains(weatherTypeKey))
+        {
+            List<String> weatherNames = sourceYaml.getStringList(weatherTypeKey);
+            List<RegionalWeatherType> weatherTypes = new ArrayList<>();
+            for (String weatherName : weatherNames)
+            {
+                try
+                {
+                    RegionalWeatherType weatherType = RegionalWeatherType.valueOf(weatherName.toUpperCase().trim());
+                    weatherTypes.add(weatherType);
+                }
+                catch (IllegalArgumentException e)
+                {
+                    throw new InvalidHeadSourceException(String.format("Unrecognised Weather Type \"%s\" for %s in %s.", weatherName, headKey, weatherTypeKey), e);
+                }
+            }
+            return (weatherTypes.size() > 0) ? weatherTypes : null;
         }
         return null;
     }

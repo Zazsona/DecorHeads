@@ -4,6 +4,7 @@ import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.headsources.DropHeadSource;
 import com.zazsona.decorheads.headsources.dropfilters.*;
 import org.bukkit.ChatColor;
+import org.bukkit.WeatherType;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -37,10 +38,12 @@ public class WikiDropPage implements IWikiPage
                 pageBuilder.append(borderChar).append(" Entities: ").append(getEnumList(((EntityDropFilter) filter).getEntities()));
             else if (filter instanceof PlayerDeathIdDropFilter)
                 pageBuilder.append(borderChar).append(" Target Players: ").append(getPlayerList(((PlayerDeathIdDropFilter) filter).getUuids()));
-            else if (filter instanceof BiomeDropFilter)
-                pageBuilder.append(borderChar).append(" Biomes: ").append(getEnumList(((BiomeDropFilter) filter).getBiomes()));
             else if (filter instanceof ToolDropFilter)
                 pageBuilder.append(borderChar).append(" Tools: ").append(getEnumList(((ToolDropFilter) filter).getTools()));
+            else if (filter instanceof BiomeDropFilter)
+                pageBuilder.append(borderChar).append(" Biomes: ").append(getEnumList(((BiomeDropFilter) filter).getBiomes()));
+            else if (filter instanceof WeatherDropFilter)
+                pageBuilder.append(borderChar).append(" Weather: ").append(getEnumList(((WeatherDropFilter) filter).getWeatherTypes()));
             else if (filter instanceof RecipeResultDropFilter)
                 pageBuilder.append(borderChar).append(" Recipe Results: ").append(getEnumList(((RecipeResultDropFilter) filter).getResults()));
             else if (filter instanceof EventInvokerFilter)
