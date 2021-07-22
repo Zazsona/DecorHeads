@@ -90,7 +90,7 @@ public class UpdateNotifier implements Listener
     public void onPlayerJoin(PlayerJoinEvent e)
     {
         UpdateNotificationLevel notifLevel = PluginConfig.getUpdateNotificationsLevel();
-        if (e.getPlayer().isOp())
+        if (e.getPlayer().hasPermission(Permissions.NOTIFY_UPDATES))
         {
             if ((updateLevel == UpdateNotificationLevel.MAJOR && (notifLevel == UpdateNotificationLevel.MAJOR || notifLevel == UpdateNotificationLevel.MINOR || notifLevel == UpdateNotificationLevel.PATCH))
                     || (updateLevel == UpdateNotificationLevel.MINOR && (notifLevel == UpdateNotificationLevel.MINOR || notifLevel == UpdateNotificationLevel.PATCH))

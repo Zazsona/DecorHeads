@@ -53,6 +53,9 @@ permissions:
    decorheads.config:
       description: Manage the plugin
       default: op
+   decorheads.notifyupdates:
+      description: Notifies the user if an update is available
+      default: op
    decorheads.*:
       description: All DecorHeads permissions
       default: op
@@ -62,3 +65,4 @@ permissions:
          decorheads.wiki: true
          decorheads.spawnhead: true
          decorheads.config: true
+         decorheads.notifyupdates: true
