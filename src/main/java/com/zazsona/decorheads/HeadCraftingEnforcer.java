@@ -18,7 +18,7 @@ public class HeadCraftingEnforcer implements Listener
     public void onItemCrafted(CraftItemEvent e)
     {
         ItemStack resultingItem = e.getRecipe().getResult();
-        if (resultingItem.getType() == Material.PLAYER_HEAD && resultingItem.getItemMeta().getPersistentDataContainer().has(Head.getSkullHeadKeyKey(), PersistentDataType.STRING))
+        if ((resultingItem.getType() == Material.PLAYER_HEAD || resultingItem.getType() == Material.PLAYER_WALL_HEAD) && resultingItem.getItemMeta().getPersistentDataContainer().has(Head.getSkullHeadKeyKey(), PersistentDataType.STRING))
         {
             HumanEntity craftingEntity = e.getWhoClicked();
             boolean craftingEnabled = PluginConfig.isPluginEnabled() && PluginConfig.isCraftingEnabled();

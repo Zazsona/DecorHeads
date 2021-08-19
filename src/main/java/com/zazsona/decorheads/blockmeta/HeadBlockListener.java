@@ -33,7 +33,7 @@ public class HeadBlockListener implements Listener
     public void onBlockBreak(BlockBreakEvent e)
     {
         Block block = e.getBlock();
-        if (e.getPlayer().getGameMode() != GameMode.CREATIVE && block.getType() == Material.PLAYER_HEAD)
+        if (e.getPlayer().getGameMode() != GameMode.CREATIVE)
         {
             boolean headDropped = dropHeadFromBlock(block);
             if (headDropped)
@@ -147,7 +147,7 @@ public class HeadBlockListener implements Listener
 
     private boolean isDecorHeadsHead(Block block)
     {
-        if (block.getType() == Material.PLAYER_HEAD)
+        if (block.getType() == Material.PLAYER_HEAD || block.getType() == Material.PLAYER_WALL_HEAD)
         {
             BlockMetaLogger metaLogger = BlockMetaLogger.getInstance();
             Location location = block.getLocation();
@@ -174,7 +174,7 @@ public class HeadBlockListener implements Listener
     {
         BlockMetaLogger metaLogger = BlockMetaLogger.getInstance();
         ItemStack placedItem = e.getItemInHand();
-        if (placedItem != null && placedItem.getType() == Material.PLAYER_HEAD)
+        if (placedItem != null && placedItem.getType() == Material.PLAYER_HEAD || placedItem.getType() == Material.PLAYER_WALL_HEAD)
         {
             PersistentDataContainer dataContainer = placedItem.getItemMeta().getPersistentDataContainer();
             if (dataContainer.has(Head.getSkullHeadKeyKey(), PersistentDataType.STRING))
