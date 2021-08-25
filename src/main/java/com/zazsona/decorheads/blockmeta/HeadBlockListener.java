@@ -4,6 +4,7 @@ import com.zazsona.decorheads.config.HeadLoader;
 import com.zazsona.decorheads.headdata.Head;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -174,7 +175,7 @@ public class HeadBlockListener implements Listener
     {
         BlockMetaLogger metaLogger = BlockMetaLogger.getInstance();
         ItemStack placedItem = e.getItemInHand();
-        if (placedItem != null && placedItem.getType() == Material.PLAYER_HEAD || placedItem.getType() == Material.PLAYER_WALL_HEAD)
+        if (placedItem != null && (placedItem.getType() == Material.PLAYER_HEAD || placedItem.getType() == Material.PLAYER_WALL_HEAD))
         {
             PersistentDataContainer dataContainer = placedItem.getItemMeta().getPersistentDataContainer();
             if (dataContainer.has(Head.getSkullHeadKeyKey(), PersistentDataType.STRING))
