@@ -1,0 +1,38 @@
+version: 2.2.0
+heads:
+  snail-shell:
+    name: Snail Shell
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjYxYTUxYmMxMTA2MDY5NjRmZTJhZTFlMzE1MTZkN2Y1MWJlYWJjYzU4ZDE0NDFiNjhjNWM0NzM3MjQ5NjkyMiJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        biomes:
+          - PLAINS
+          - FOREST
+          - BIRCH_FOREST
+          - DARK_FOREST
+          - FLOWER_FOREST
+          - BIRCH_FOREST_HILLS
+          - DARK_FOREST_HILLS
+          - TALL_BIRCH_FOREST
+          - SWAMP
+          - SWAMP_HILLS
+          - GIANT_SPRUCE_TAIGA
+          - GIANT_SPRUCE_TAIGA_HILLS
+          - GIANT_TREE_TAIGA
+          - GIANT_TREE_TAIGA_HILLS
+          - WOODED_HILLS
+          - WOODED_MOUNTAINS
+          - TAIGA
+          - TAIGA_HILLS
+          - TAIGA_MOUNTAINS
+        blocks:
+          - DIRT
+          - GRASS_BLOCK
+          - ACACIA_LEAVES
+          - BIRCH_LEAVES
+          - DARK_OAK_LEAVES
+          - JUNGLE_LEAVES
+          - OAK_LEAVES
+          - SPRUCE_LEAVES
+        drop-rate: 0.02
