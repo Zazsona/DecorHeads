@@ -86,3 +86,48 @@ heads:
           - PIGLIN_BRUTE
           - ZOMBIFIED_PIGLIN
         drop-rate: 0.3
+  pancakes:
+    name: Pancakes
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzRiMDgyMzhiMjdiZjZjMGM2MmE3NTAyYWFkZWQ4ZDlkNmZkNjAzNDViYzVmNzk5M2IyNjYxYjcxODBlMjIwYiJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPELESS_CRAFT
+        ingredients:
+          - EGG
+          - MILK_BUCKET
+          - WHEAT
+  mini-honey-block:
+    name: Mini Honey Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWI3YjE0ZjNjNzg3ODVjMWZkMjQ0MjU1ZTA1ZDUzN2Q2YzU1MTIwNzI2MmE2MGMzODEyNWMwMWY2NjNhMDc1ZSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - HONEY_BLOCK
+          - HONEYCOMB_BLOCK
+        drop-rate: 0.5
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - HONEY_BOTTLE
+        grid:
+          - '0 0'
+      default-craft-1:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - HONEY_BOTTLE
+        grid:
+          - '0'
+          - '0'
+  honey-pot:
+    name: Honey Pot
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGI4OTQyYjIyZGRkMjQ0MWYyY2U2YWQ2NTY3Zjg3NzRhOTdjYTZiMmE4MzJhM2FhZjVlNWNjNmJhY2JmIn19fQ==
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - CLAY
+          - HONEY_BOTTLE
+        grid:
+          - '0 1 0'
+          - '0 0 0'
