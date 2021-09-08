@@ -36,19 +36,23 @@ public class BlockDropHeadSource extends DropHeadSource
             {
                 World world = e.getBlock().getWorld();
                 Location location = e.getBlock().getLocation();
-                ItemStack droppedItem = super.dropHead(world, location, getBaseDropRate(), blockBreaker, null);
-                int fortuneDropCount = rollFortuneEnchantmentDropCount(blockBreaker, droppedItem);
-                for (int i = 0; i < fortuneDropCount; i++)
-                    super.dropHead(world, location, 100, blockBreaker, null); // 100% drop rate as fortune odds are calculated prior.
-                return droppedItem;
+                ItemStack droppedStack = null;
+                boolean dropHead = super.rollDrop(getBaseDropRate());
+                if (dropHead)
+                {
+                    int quantity = 1;
+                    quantity += rollFortuneEnchantmentDropCount(blockBreaker);
+                    droppedStack = super.dropHead(world, location, blockBreaker, null, quantity);
+                }
+                return droppedStack;
             }
         }
         return null;
     }
 
-    private int rollFortuneEnchantmentDropCount(Player blockBreaker, ItemStack itemStack)
+    private int rollFortuneEnchantmentDropCount(Player blockBreaker)
     {
-        if (blockBreaker != null && itemStack != null)
+        if (blockBreaker != null)
         {
             ItemStack miningTool = blockBreaker.getInventory().getItemInMainHand();
             if (miningTool.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS))

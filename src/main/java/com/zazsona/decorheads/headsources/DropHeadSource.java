@@ -43,9 +43,69 @@ public abstract class DropHeadSource extends HeadSource implements Listener
         return dropFilters;
     }
 
-    public ItemStack dropHead(World world, Location location, double dropRate, @Nullable Player player, @Nullable UUID headSkinTarget)
+    /**
+     * Drops heads in the world at the location based on how many of the specified rolls pass the provided drop rate.
+     * @param world the world to drop a head in
+     * @param location the location of the world to drop in
+     * @param player the player who the head is dropping for. Pass null for a "playerless head drop"
+     * @param headSkinTarget the UUID of a player whose skin should be used as the texture. Pass null for a decor head.
+     * @param dropRate the chance for a head to drop
+     * @param rolls the number of rolls to perform against the chance
+     * @return the dropped ItemStack
+     */
+    public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, double dropRate, int rolls)
     {
-        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && rollDrop(dropRate)
+        int totalToDrop = 0;
+        for (int i = 0; i < rolls; i++)
+        {
+            boolean dropHead = rollDrop(dropRate);
+            if (dropHead)
+                totalToDrop++;
+        }
+        return dropHead(world, location, player, headSkinTarget, totalToDrop);
+    }
+
+    /**
+     * Drops a head in the world at the location based on the provided drop rate.
+     * @param world the world to drop a head in
+     * @param location the location of the world to drop in
+     * @param player the player who the head is dropping for. Pass null for a "playerless head drop"
+     * @param headSkinTarget the UUID of a player whose skin should be used as the texture. Pass null for a decor head.
+     * @param dropRate the chance for a head to drop
+     * @return the dropped ItemStack
+     */
+    public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, double dropRate)
+    {
+        boolean dropHead = rollDrop(dropRate);
+        int quantity = (dropHead) ? 0 : 1;
+        return dropHead(world, location, player, headSkinTarget, quantity);
+    }
+
+    /**
+     * Drops heads in the world at the location
+     * @param world the world to drop a head in
+     * @param location the location of the world to drop in
+     * @param player the player who the head is dropping for. Pass null for a "playerless head drop"
+     * @param headSkinTarget the UUID of a player whose skin should be used as the texture. Pass null for a decor head.
+     * @return the dropped ItemStack
+     */
+    public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget)
+    {
+        return dropHead(world, location, player, headSkinTarget, 1);
+    }
+
+    /**
+     * Drops heads in the world at the location
+     * @param world the world to drop a head in
+     * @param location the location of the world to drop in
+     * @param player the player who the head is dropping for. Pass null for a "playerless head drop"
+     * @param headSkinTarget the UUID of a player whose skin should be used as the texture. Pass null for a decor head.
+     * @param stackSize the amount of heads in the stack to drop
+     * @return the dropped ItemStack
+     */
+    public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, int stackSize)
+    {
+        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && stackSize > 0
                 && ((player == null && PluginConfig.isPlayerlessDropEventsEnabled()) || (player != null && player.hasPermission(Permissions.DROP_HEADS))))
         {
             ItemStack headStack;
@@ -54,6 +114,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
             {
                 PlayerHead playerHead = (PlayerHead) head;
                 headStack = playerHead.createItem(headSkinTarget);
+                headStack.setAmount(stackSize);
             }
             else
                 headStack = head.createItem();

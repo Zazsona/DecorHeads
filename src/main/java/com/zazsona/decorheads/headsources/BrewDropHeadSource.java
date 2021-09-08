@@ -33,7 +33,7 @@ public class BrewDropHeadSource extends DropHeadSource
             Player player = (offlinePlayer != null) ? offlinePlayer.getPlayer() : null;
             World world = e.getBlock().getWorld();
             Location location = e.getBlock().getLocation();
-            return super.dropHead(world, location, getBaseDropRate(), player, null);
+            return super.dropHead(world, location, player, null, getBaseDropRate());
         }
         return null;
     }
