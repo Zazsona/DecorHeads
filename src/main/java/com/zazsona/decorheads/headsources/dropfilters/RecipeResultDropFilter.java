@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -35,14 +36,14 @@ public class RecipeResultDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(CraftItemEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, CraftItemEvent e)
     {
         Material result = e.getRecipe().getResult().getType();
         return checkPass(result);
     }
 
     @Override
-    protected boolean passFilter(BrewEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BrewEvent e)
     {
         for (ItemStack result : e.getContents())
         {
@@ -55,7 +56,7 @@ public class RecipeResultDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(FurnaceSmeltEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, FurnaceSmeltEvent e)
     {
         Material result = e.getResult().getType();
         return checkPass(result);

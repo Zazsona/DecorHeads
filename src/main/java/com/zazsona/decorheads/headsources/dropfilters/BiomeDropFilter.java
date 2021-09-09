@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -35,7 +36,7 @@ public class BiomeDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(BlockBreakEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BlockBreakEvent e)
     {
         World world = e.getBlock().getWorld();
         Location loc = e.getBlock().getLocation();
@@ -44,7 +45,7 @@ public class BiomeDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(EntityDeathEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, EntityDeathEvent e)
     {
         World world = e.getEntity().getWorld();
         Location loc = e.getEntity().getLocation();
@@ -53,7 +54,7 @@ public class BiomeDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(CraftItemEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, CraftItemEvent e)
     {
         World world = e.getWhoClicked().getWorld();
         Location loc = e.getInventory().getLocation();
@@ -62,7 +63,7 @@ public class BiomeDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(BrewEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BrewEvent e)
     {
         World world = e.getBlock().getWorld();
         Location loc = e.getBlock().getLocation();
@@ -71,7 +72,7 @@ public class BiomeDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(FurnaceSmeltEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, FurnaceSmeltEvent e)
     {
         World world = e.getBlock().getWorld();
         Location loc = e.getBlock().getLocation();

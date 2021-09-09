@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -31,7 +32,7 @@ public class EventInvokerFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(EntityDeathEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, EntityDeathEvent e)
     {
         LivingEntity entity = e.getEntity();
         return checkPass(entity.getKiller());

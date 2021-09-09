@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -33,9 +34,9 @@ public class PlayerDeathIdDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(EntityDeathEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, EntityDeathEvent e)
     {
-        if (e.getEntityType() == EntityType.PLAYER)
+        if (sourceType == HeadSourceType.PLAYER_DEATH_DROP && e.getEntityType() == EntityType.PLAYER)
             return checkPass(e.getEntity().getUniqueId().toString());
         else
             return false;

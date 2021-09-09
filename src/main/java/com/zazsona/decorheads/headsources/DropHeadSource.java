@@ -143,7 +143,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
     {
         for (DropSourceFilter filter : dropFilters)
         {
-            if (!filter.passFilter(e))
+            if (!filter.passFilter(getSourceType(), e))
                 return false;
         }
         return true;

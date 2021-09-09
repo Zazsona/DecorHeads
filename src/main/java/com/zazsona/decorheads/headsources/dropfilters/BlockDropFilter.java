@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -35,14 +36,14 @@ public class BlockDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(BlockBreakEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BlockBreakEvent e)
     {
         Material block = e.getBlock().getType();
         return checkPass(block);
     }
 
     @Override
-    protected boolean passFilter(EntityDeathEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, EntityDeathEvent e)
     {
         LivingEntity entity = e.getEntity();
         Location location = entity.getLocation();

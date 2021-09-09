@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -9,43 +10,43 @@ import org.bukkit.event.inventory.FurnaceSmeltEvent;
 
 public abstract class DropSourceFilter
 {
-    public boolean passFilter(Event e)
+    public boolean passFilter(HeadSourceType sourceType, Event e)
     {
         if (e instanceof BlockBreakEvent)
-            return passFilter((BlockBreakEvent) e);
+            return passFilter(sourceType, (BlockBreakEvent) e);
         else if (e instanceof EntityDeathEvent)
-            return passFilter((EntityDeathEvent) e);
+            return passFilter(sourceType, (EntityDeathEvent) e);
         else if (e instanceof CraftItemEvent)
-            return passFilter((CraftItemEvent) e);
+            return passFilter(sourceType, (CraftItemEvent) e);
         else if (e instanceof BrewEvent)
-            return passFilter((BrewEvent) e);
+            return passFilter(sourceType, (BrewEvent) e);
         else if (e instanceof FurnaceSmeltEvent)
-            return passFilter((FurnaceSmeltEvent) e);
+            return passFilter(sourceType, (FurnaceSmeltEvent) e);
         else
             return true;
     }
 
-    protected boolean passFilter(BlockBreakEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BlockBreakEvent e)
     {
         return true;
     }
 
-    protected boolean passFilter(EntityDeathEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, EntityDeathEvent e)
     {
         return true;
     }
 
-    protected boolean passFilter(CraftItemEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, CraftItemEvent e)
     {
         return true;
     }
 
-    protected boolean passFilter(BrewEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BrewEvent e)
     {
         return true;
     }
 
-    protected boolean passFilter(FurnaceSmeltEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, FurnaceSmeltEvent e)
     {
         return true;
     }

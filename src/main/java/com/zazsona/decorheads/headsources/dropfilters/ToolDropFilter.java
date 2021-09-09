@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
@@ -33,14 +34,14 @@ public class ToolDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(BlockBreakEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BlockBreakEvent e)
     {
         ItemStack tool = e.getPlayer().getInventory().getItemInMainHand();
         return checkPass(tool.getType());
     }
 
     @Override
-    protected boolean passFilter(EntityDeathEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, EntityDeathEvent e)
     {
         Player killer = e.getEntity().getKiller();
         ItemStack tool = (killer != null) ? killer.getInventory().getItemInMainHand() : new ItemStack(Material.AIR);

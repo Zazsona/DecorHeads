@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
+import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.Location;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
@@ -64,13 +65,13 @@ public class WeatherDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(BlockBreakEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BlockBreakEvent e)
     {
         return checkPass(e.getBlock());
     }
 
     @Override
-    protected boolean passFilter(EntityDeathEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, EntityDeathEvent e)
     {
         Location location = e.getEntity().getLocation();
         Block block = e.getEntity().getWorld().getBlockAt(location);
@@ -78,7 +79,7 @@ public class WeatherDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(CraftItemEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, CraftItemEvent e)
     {
         Location location = e.getInventory().getLocation();
         Block block = e.getWhoClicked().getWorld().getBlockAt(location);
@@ -86,13 +87,13 @@ public class WeatherDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(BrewEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BrewEvent e)
     {
         return checkPass(e.getBlock());
     }
 
     @Override
-    protected boolean passFilter(FurnaceSmeltEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, FurnaceSmeltEvent e)
     {
         return checkPass(e.getBlock());
     }
