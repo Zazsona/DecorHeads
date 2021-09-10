@@ -296,6 +296,7 @@ public class HeadLoader extends HeadConfigAccessor
                 applyToolDropFilter(dropToolsKey, dropHeadSource, sourceYaml);
                 applyBiomeDropFilter(dropBiomesKey, dropHeadSource, sourceYaml);
                 applyRecipeResultDropFilter(dropRecipeResultsKey, dropHeadSource, sourceYaml);
+                applyRecipeIngredientsDropFilter(dropRecipeIngredientsKey, dropHeadSource, sourceYaml);
                 applyEventInvokerFilter(dropEventInvokerKey, dropHeadSource, sourceYaml);
                 applyWeatherDropFilter(weatherKey, dropHeadSource, sourceYaml);
                 applyWorldDropFilter(worldsKey, dropHeadSource, sourceYaml);
@@ -470,6 +471,18 @@ public class HeadLoader extends HeadConfigAccessor
         return false;
     }
 
+    private boolean applyRecipeIngredientsDropFilter(String recipeIngredientsKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        Collection<Collection<Material>> ingredientTypes = getMaterialsLists(recipeIngredientsKey, headSource.getHead().getKey(), sourceYaml);
+        if (ingredientTypes != null)
+        {
+            RecipeIngredientsDropFilter recipeIngredientsDropFilter = new RecipeIngredientsDropFilter(ingredientTypes);
+            headSource.getDropFilters().add(recipeIngredientsDropFilter);
+            return true;
+        }
+        return false;
+    }
+
     private boolean applyEventInvokerFilter(String eventInvokerKey, DropHeadSource headSource, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
     {
         String invokerName = sourceYaml.getString(eventInvokerKey);
@@ -574,6 +587,59 @@ public class HeadLoader extends HeadConfigAccessor
                     materials.add(material);
             }
             return (materials.size() > 0) ? materials : null;
+        }
+        return null;
+    }
+
+    private Collection<Collection<Material>> getMaterialsLists(String materialsListsKey, String headKey, ConfigurationSection sourceYaml) throws InvalidHeadSourceException
+    {
+        if (sourceYaml.getKeys(false).contains(materialsListsKey))
+        {
+            List<?> elementList = sourceYaml.getList(materialsListsKey);
+            Collection<Collection<Material>> materialsLists = new ArrayList<>();
+            for (Object listItem : elementList)
+            {
+                if (listItem != null)
+                {
+                    if (listItem instanceof String)
+                    {
+                        String materialName = (String) listItem;
+                        Material material = Material.matchMaterial(materialName);
+                        if (material != null)
+                        {
+                            List<Material> materialList = new ArrayList<>();
+                            materialList.add(material);
+                            materialsLists.add(materialList);
+                        }
+                        else
+                            throw new InvalidHeadSourceException(String.format("Unrecognised material \"%s\" for %s in %s.", materialName, headKey, materialsListsKey));
+                    }
+                    else if (listItem instanceof List<?>)
+                    {
+                        List<?> listItemList = (List<?>) listItem;
+                        if (listItemList.size() > 0 && listItemList.stream().allMatch(e -> (e instanceof String)))
+                        {
+                            List<String> materialNameList = (List<String>) listItemList;
+                            List<Material> materialList = new ArrayList<>();
+                            for (String materialName : materialNameList)
+                            {
+                                Material material = Material.matchMaterial(materialName);
+                                if (material != null)
+                                    materialList.add(material);
+                                else
+                                    throw new InvalidHeadSourceException(String.format("Unrecognised material \"%s\" for %s in %s.", materialName, headKey, materialsListsKey));
+                            }
+                            if (materialList.size() > 0)
+                                materialsLists.add(materialList);
+                        }
+                        else
+                            throw new InvalidHeadSourceException(String.format("Invalid material list for %s in %s.", headKey, materialsListsKey));
+                    }
+                }
+            }
+
+            if (materialsLists.size() > 0)
+                return materialsLists;
         }
         return null;
     }

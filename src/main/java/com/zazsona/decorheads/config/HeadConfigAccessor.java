@@ -28,6 +28,7 @@ public class HeadConfigAccessor
     public static final String dropEntitiesKey = "entities";
     public static final String dropKilledPlayerIdsKey = "killed-player-ids";
     public static final String dropRecipeResultsKey = "recipe-results";
+    public static final String dropRecipeIngredientsKey = "recipe-ingredients";
     public static final String dropEventInvokerKey = "event-invoker";
     public static final String weatherKey = "weather";
     public static final String worldsKey = "worlds";
