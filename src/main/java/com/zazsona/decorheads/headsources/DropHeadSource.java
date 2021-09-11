@@ -6,9 +6,7 @@ import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
 import com.zazsona.decorheads.headsources.dropfilters.DropSourceFilter;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
@@ -114,10 +112,11 @@ public abstract class DropHeadSource extends HeadSource implements Listener
             {
                 PlayerHead playerHead = (PlayerHead) head;
                 headStack = playerHead.createItem(headSkinTarget);
-                headStack.setAmount(stackSize);
             }
             else
                 headStack = head.createItem();
+
+            headStack.setAmount(stackSize);
             world.dropItemNaturally(location, headStack);
             return headStack;
         }
