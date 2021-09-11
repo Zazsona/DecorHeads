@@ -40,12 +40,16 @@ public class CraftDropHeadSource extends DropHeadSource
             {
                 ItemStack[] matrixItems = e.getInventory().getMatrix();
                 int lowestQuantity = Integer.MAX_VALUE;
+                boolean quantitySet = false;
                 for (ItemStack itemStack : matrixItems)
                 {
-                    if (itemStack != null && itemStack.getType() == Material.AIR && itemStack.getAmount() < lowestQuantity)
+                    if (itemStack != null && itemStack.getType() != Material.AIR && itemStack.getAmount() < lowestQuantity)
+                    {
                         lowestQuantity = itemStack.getAmount();
+                        quantitySet = true;
+                    }
                 }
-                totalCrafted = lowestQuantity * e.getRecipe().getResult().getAmount();
+                totalCrafted = (quantitySet) ? lowestQuantity * e.getRecipe().getResult().getAmount() : 0;
             }
             else
                 totalCrafted = e.getRecipe().getResult().getAmount();
@@ -56,7 +60,6 @@ public class CraftDropHeadSource extends DropHeadSource
                 if (super.rollDrop(getBaseDropRate()))
                     totalHeadDrops++;
             }
-
             return super.dropHead(world, location, player, null, totalHeadDrops);
         }
         return null;
