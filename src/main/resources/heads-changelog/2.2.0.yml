@@ -105,7 +105,7 @@ heads:
         blocks:
           - HONEY_BLOCK
           - HONEYCOMB_BLOCK
-        drop-rate: 0.5
+        drop-rate: 0.01
       default-craft-0:
         source-type: SHAPED_CRAFT
         ingredients:
@@ -126,8 +126,232 @@ heads:
       default-craft-0:
         source-type: SHAPED_CRAFT
         ingredients:
-          - CLAY
+          - CLAY_BALL
           - HONEY_BOTTLE
         grid:
           - '0 1 0'
           - '0 0 0'
+  white-paint:
+    name: White Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTg2Y2Q1MjljOWRjNTQ4ODRmNTRmMzdhZWNhMzBmNThhYTk5M2U2YjM1OTFkYTA1MmQ4Nzc1ZjFjNzkzOTAifX19
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - WHITE_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - WHITE_DYE
+        drop-rate: 0.25
+  orange-paint:
+    name: Orange Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjIzYzRiNjcxZjI0NzNlMzgyYzYzMWRmMTcxZTI3MWYxY2FmNDlhZmMxNTQ4ZWU2NzUzY2Y2MjdiZTBmZDcyIn19fQ==
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - ORANGE_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - ORANGE_DYE
+        drop-rate: 0.25
+  magenta-paint:
+    name: Magenta Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmMzMGNiMzViMzgzN2U0ZWE5ZmFkM2UxYTc4Nzg4ZGVkOWM1NTA2NDQwMWI0MTc0ODViMzI0NDU1ZDg5NmU3MSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - MAGENTA_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - MAGENTA_DYE
+        drop-rate: 0.25
+  light-blue-paint:
+    name: Light Blue Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmY5ZDQyYjY3NGE5MjBmODQ5MTA3NDEzYmE0MDcyN2ViMTU1MWQ3ZDU0NTkxZjRlMWU1Y2JjNmMwMjg3YTg3In19fQ==
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - LIGHT_BLUE_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - LIGHT_BLUE_DYE
+        drop-rate: 0.25
+  yellow-paint:
+    name: Yellow Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2UyY2JlNGQ2NDJkYjRkNzI3ODg5NzExNjM3YTI1YTNlNGE1NTI0OWU1MTY5NTIwZGY5MTVkMmQ1NTg1YmEifX19
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - YELLOW_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - YELLOW_DYE
+        drop-rate: 0.25
+  lime-paint:
+    name: Lime Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzA5NTEzODlmMTczMzI4ZThiMjZjMDhmNzExNmE0NTUxMThkYTNmMTdkOTg1YzRmNGI1YTVjN2RhNzZkZjEifX19
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - LIME_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - LIME_DYE
+        drop-rate: 0.25
+  pink-paint:
+    name: Pink Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzgzZGI4NmJiODZkYzJlYzQ5NGUyZmZjYTc3NzY1ODEwZWQxMWE1MmVmZWY0ZTVjODUyNTJlYzM5YTI2YzAifX19
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - PINK_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - PINK_DYE
+        drop-rate: 0.25
+  gray-paint:
+    name: Gray Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDYxODk5MmUxOGNkNjdiMDI2NjU5ZTUwYjEzMGIzYjI1MTc4OWUwYjkxYmQxNmJlNGI3ZTU5Njk3YTY4ZDdhIn19fQ==
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - GRAY_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - GRAY_DYE
+        drop-rate: 0.25
+  light-gray-paint:
+    name: Light Gray Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTk0YTE0NmY3ODViNmJmMzgxZTcyY2Q4YzI4MzhmMGU3ODkzNWZkZjUzNGRlYzliOTg4Zjc4N2Y5N2RiN2VkIn19fQ==
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - LIGHT_GRAY_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - LIGHT_GRAY_DYE
+        drop-rate: 0.25
+  cyan-paint:
+    name: Cyan Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzdhOGJmZmYwMjY5YzI1YTVhYzQ1NDI4YzQ2ZWZjZTkyODYwODI0YzE0ZDNjNTRjMjg0MmU1ZGUxODJjIn19fQ==
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - CYAN_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - CYAN_DYE
+        drop-rate: 0.25
+  purple-paint:
+    name: Purple Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzUyYTRiMWIyY2M1NTQwNzJhMDE5ZjkyNDI0ODE0YWI0Y2UyZmNiYTVmZDY1ZWM5NjY5YzZhZWE4Y2IifX19
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - PURPLE_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - PURPLE_DYE
+        drop-rate: 0.25
+  blue-paint:
+    name: Blue Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RiMjU4YzcxZjE0NDFmN2E4YmM2NDZkNzRlZmYyNDgyMTI1YmY2OTg1ZDU4NjMxMzA2YzIzOTJmZGY2NTE1NyJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - BLUE_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - BLUE_DYE
+        drop-rate: 0.25
+  brown-paint:
+    name: Brown Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWEyMTE4ODU2NTNlZjE2YjRkMjg3YzY0NjVmZDM2OWJlMTM5NGE4Nzk0ZDVjMTgxZjMzZjkyNjkzZWNjNTEifX19
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - BROWN_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - BROWN_DYE
+        drop-rate: 0.25
+  green-paint:
+    name: Green Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDNjNTBjYzc1ZWFkYTdhZDFkY2YwMjM4YTdmMzBlZTI3ZGM4NjFkNTFkMDU3ODJlMDJjN2U1NmU4NDE0YzZjIn19fQ==
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - GREEN_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - GREEN_DYE
+        drop-rate: 0.25
+  red-paint:
+    name: Red Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjcyYjVjZjRmYjJlM2Q5MTU4YTRmNWVjZTcxNDk3MGJjYzEzNzFjYTAyOWU2NDU1NTU5MjdmZDE1NmUxODQifX19
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - RED_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - RED_DYE
+        drop-rate: 0.25
+  black-paint:
+    name: Black Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmY5ZGMxYTRjZTE5YThmOTliN2YxMjE1YzQ4NGE1NjU3N2M1MDFmODYzNDRmZTIyYzZlNWIxYmExYWQwIn19fQ==
+    sources:
+      default-drop-0:
+        source-type: CRAFT_DROP
+        recipe-ingredients:
+          - BLACK_DYE
+        drop-rate: 0.01
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - BLACK_DYE
+        drop-rate: 0.25
