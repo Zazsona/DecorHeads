@@ -139,7 +139,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - WHITE_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -153,7 +153,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - ORANGE_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -167,7 +167,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - MAGENTA_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -181,7 +181,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - LIGHT_BLUE_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -195,7 +195,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - YELLOW_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -209,7 +209,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - LIME_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -223,7 +223,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - PINK_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -237,7 +237,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - GRAY_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -251,7 +251,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - LIGHT_GRAY_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -265,7 +265,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - CYAN_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -279,7 +279,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - PURPLE_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -293,7 +293,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - BLUE_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -307,7 +307,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - BROWN_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -321,7 +321,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - GREEN_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -335,7 +335,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - RED_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
@@ -349,9 +349,17 @@ heads:
         source-type: CRAFT_DROP
         recipe-ingredients:
           - BLACK_DYE
-        drop-rate: 0.01
+        drop-rate: 0.5
       default-drop-1:
         source-type: CRAFT_DROP
         recipe-results:
           - BLACK_DYE
         drop-rate: 0.25
+  bread:
+    sources:
+      default-drop-0:
+        drop-rate: 0.1
+  cookie:
+    sources:
+      default-drop-0:
+        drop-rate: 0.05

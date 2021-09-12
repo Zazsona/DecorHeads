@@ -148,7 +148,6 @@ public class HeadUpdater extends HeadConfigAccessor
                 2. If defaultYaml exists, only adopt the update if the targetYaml value matches, thus retaining any custom user values
             */
             targetYaml.set(path, sourceYaml.get(path));
-            //TODO: If multiple drop configs per-head are added, iterate through these to find default and custom list entries
         }
         else if (targetYaml.contains(path) && sourceYaml.isConfigurationSection(path))
         {
