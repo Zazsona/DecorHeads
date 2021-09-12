@@ -42,7 +42,7 @@ public class EntityDropHeadSource extends DropHeadSource
             World world = e.getEntity().getWorld();
             Location location = e.getEntity().getLocation();
             double dropRate = getModifiedDropRate(e);
-            return super.dropHead(world, location, killer, killedPlayerId, dropRate);
+            return super.dropHead(world, location, killer, killedPlayerId, dropRate, 1);
         }
         return null;
     }

@@ -64,22 +64,6 @@ public abstract class DropHeadSource extends HeadSource implements Listener
     }
 
     /**
-     * Drops a head in the world at the location based on the provided drop rate.
-     * @param world the world to drop a head in
-     * @param location the location of the world to drop in
-     * @param player the player who the head is dropping for. Pass null for a "playerless head drop"
-     * @param headSkinTarget the UUID of a player whose skin should be used as the texture. Pass null for a decor head.
-     * @param dropRate the chance for a head to drop
-     * @return the dropped ItemStack
-     */
-    public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, double dropRate)
-    {
-        boolean dropHead = rollDrop(dropRate);
-        int quantity = (dropHead) ? 0 : 1;
-        return dropHead(world, location, player, headSkinTarget, quantity);
-    }
-
-    /**
      * Drops heads in the world at the location
      * @param world the world to drop a head in
      * @param location the location of the world to drop in
@@ -103,8 +87,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
      */
     public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, int stackSize)
     {
-        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && stackSize > 0
-                && ((player == null && PluginConfig.isPlayerlessDropEventsEnabled()) || (player != null && player.hasPermission(Permissions.DROP_HEADS))))
+        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && stackSize > 0 && ((player == null && PluginConfig.isPlayerlessDropEventsEnabled()) || (player != null && player.hasPermission(Permissions.DROP_HEADS))))
         {
             ItemStack headStack;
             IHead head = getHead();
@@ -116,9 +99,14 @@ public abstract class DropHeadSource extends HeadSource implements Listener
             else
                 headStack = head.createItem();
 
-            headStack.setAmount(stackSize);
-            world.dropItemNaturally(location, headStack);
-            return headStack;
+            if (stackSize <= headStack.getMaxStackSize())
+            {
+                headStack.setAmount(stackSize);
+                world.dropItemNaturally(location, headStack);
+                return headStack;
+            }
+            else
+                throw new IllegalArgumentException(String.format("Invalid stack size: %d. Values must be between 0 and %d", stackSize, headStack.getMaxStackSize()));
         }
         return null;
     }
