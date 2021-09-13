@@ -47,6 +47,10 @@ public class HeadBlockListener implements Listener
             if (headDropped)
                 e.setDropItems(false);
         }
+        else if (block.getType() == Material.PLAYER_HEAD || block.getType() == Material.PLAYER_WALL_HEAD)
+        {
+            clearHeadMeta(block.getLocation()); // While we don't want heads to drop from random blocks, still worth clearing the meta if a DecorHead is broken!
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
