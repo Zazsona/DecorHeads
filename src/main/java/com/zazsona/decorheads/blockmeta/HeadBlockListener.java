@@ -1,24 +1,31 @@
 package com.zazsona.decorheads.blockmeta;
 
 import com.zazsona.decorheads.config.HeadLoader;
+import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.Head;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
+import com.zazsona.decorheads.headdata.TextureHead;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Skull;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.w3c.dom.Text;
 
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -113,12 +120,11 @@ public class HeadBlockListener implements Listener
 
     private boolean dropHeadFromBlock(Block block)
     {
-        if (isDecorHeadsHead(block))
+        IHead head = getPlacedDecorHeadsHead(block);
+        if (head != null)
         {
             BlockMetaLogger metaLogger = BlockMetaLogger.getInstance();
             Location location = block.getLocation();
-            String headKey = metaLogger.getMetadata(location, ID_KEY);
-            IHead head = HeadLoader.getInstance().getLoadedHeads().get(headKey);
             ItemStack item;
             if (head instanceof PlayerHead)
             {
@@ -146,7 +152,7 @@ public class HeadBlockListener implements Listener
         }
     }
 
-    private boolean isDecorHeadsHead(Block block)
+    private IHead getPlacedDecorHeadsHead(Block block)
     {
         if (block.getType() == Material.PLAYER_HEAD || block.getType() == Material.PLAYER_WALL_HEAD)
         {
@@ -156,10 +162,36 @@ public class HeadBlockListener implements Listener
             {
                 String headKey = metaLogger.getMetadata(location, ID_KEY);
                 IHead head = HeadLoader.getInstance().getLoadedHeads().get(headKey);
-                return head != null;
+                return head;
+            }
+            else if (PluginConfig.isHeadMetaPatcherEnabled())
+            {
+                /*
+                    While a check for the textures value would be ideal here, that'd involve using NMS
+                    I don't really want to use NMS though to maximise the range of targeted Minecraft versions.
+
+                    Trade-off is that there's a greater risk of upsetting other plugins.
+                 */
+                for (ItemStack drop : block.getDrops())
+                {
+                    if ((drop.getType() == Material.PLAYER_HEAD || drop.getType() == Material.PLAYER_WALL_HEAD))
+                    {
+                        SkullMeta skullMeta = (SkullMeta) drop.getItemMeta();
+                        String name = skullMeta.getOwner(); // Deprecated, so not ideal, but only option short of NMS.
+                        for (IHead head : HeadLoader.getInstance().getLoadedHeads().values())
+                        {
+                            if (head instanceof TextureHead)
+                            {
+                                TextureHead textureHead = (TextureHead) head;
+                                if (textureHead.getName().equals(name))
+                                    return textureHead;
+                            }
+                        }
+                    }
+                }
             }
         }
-        return false;
+        return null;
     }
 
     private void clearHeadMeta(Location location)
