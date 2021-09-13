@@ -355,6 +355,123 @@ heads:
         recipe-results:
           - BLACK_DYE
         drop-rate: 0.25
+  warning-light:
+    name: Warning Light
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDgzMDBjM2EyYjNhNGRmNDRhNmE1OWM3NTY2YjlhMmYxYTdkNWFlOTcxOWEwZWQzZGE1MGZmNWY4ZDViY2E4ZiJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - IRON_BARS
+          - REDSTONE_LAMP
+        grid:
+          - '0 0 0'
+          - '0 1 0'
+          - '0 0 0'
+  oak-bird-house:
+    name: Oak Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTdmODJhY2ViOThmZTA2OWU4YzE2NmNlZDAwMjQyYTc2NjYwYmJlMDcwOTFjOTJjZGRlNTRjNmVkMTBkY2ZmOSJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - OAK_PLANKS
+          - OAK_LOG
+        grid:
+          - '/ 1 /'
+          - '1 0 1'
+          - '0 0 0'
+  birch-bird-house:
+    name: Birch Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTE5OTk3NTkzZjJjNTkyYjlmYmQ0ZjE1ZWFkMTY3M2I3NmY1MTlkN2FiM2VmYTE1ZWRkMTk0NDhkMWEyMGJmYyJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - BIRCH_PLANKS
+          - BIRCH_LOG
+        grid:
+          - '/ 1 /'
+          - '1 0 1'
+          - '0 0 0'
+  spruce-bird-house:
+    name: Spruce Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDQxMjE1ZDEwNmNkNWFkZWRhZTcxNzM2NGY2NDNjNjE5YTBjODgyNmYyYzZhYzRlOTdlZThjOTQ0NTQwYjkwZSJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - SPRUCE_PLANKS
+          - SPRUCE_LOG
+        grid:
+          - '/ 1 /'
+          - '1 0 1'
+          - '0 0 0'
+  jungle-bird-house:
+    name: Jungle Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkYjg0OWExNWVmMDFhMDMyMTNkMzZjN2M2MmUwN2I4OGMyNzdkYmE4NjkzMTdiN2UyNzU3MWZkZGIyOTNkNCJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - JUNGLE_PLANKS
+          - JUNGLE_LOG
+        grid:
+          - '/ 1 /'
+          - '1 0 1'
+          - '0 0 0'
+  acacia-bird-house:
+    name: Acacia Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTllMzE2YmE0OGU1MWM2ZWI3M2NiMDY4YTJkNDY4ZjY3OGVlZDgyZDQ1MjlkNGIxMmVlYzhiZmE3ODE5YWE4NiJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - ACACIA_PLANKS
+          - ACACIA_LOG
+        grid:
+          - '/ 1 /'
+          - '1 0 1'
+          - '0 0 0'
+  dark-oak-bird-house:
+    name: Dark Oak Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmE2NDhlMzU3YTYwYzI1N2YzYmYzODQwZmE1MzJjZmQ2YWRjZTJmODhkYWI5ZmQwYzBmOTMwM2NmNWFlYjg4OSJ9fX0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - DARK_OAK_PLANKS
+          - DARK_OAK_LOG
+        grid:
+          - '/ 1 /'
+          - '1 0 1'
+          - '0 0 0'
+  crimson-bird-house:
+    name: Crimson Bird House
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmY1ZDRhNzY4ZDkzNTEzYTc0ZjBlNDFlOGY3ZDhmMGFmOTI3NDU2YzllYmMyOWEwMGJmNmYyMjM1ZWU4OTNjMSIKICAgIH0KICB9Cn0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - CRIMSON_PLANKS
+          - CRIMSON_STEM
+        grid:
+          - '/ 1 /'
+          - '1 0 1'
+          - '0 0 0'
+  warped-bird-house:
+    name: Warped Bird House
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTQzZDA0YTA4Mzc3ODZjNGMxNzJhZTQzOGVhMGY5ZjA2YzA4ZDQwOTY2MzI5ZTU4YTZhZjdjOTljYjBmYzgxNiIKICAgIH0KICB9Cn0=
+    sources:
+      default-craft-0:
+        source-type: SHAPED_CRAFT
+        ingredients:
+          - WARPED_PLANKS
+          - WARPED_STEM
+        grid:
+          - '/ 1 /'
+          - '1 0 1'
+          - '0 0 0'
   bread:
     sources:
       default-drop-0:
