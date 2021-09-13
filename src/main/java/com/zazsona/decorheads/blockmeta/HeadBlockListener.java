@@ -182,6 +182,18 @@ public class HeadBlockListener implements Listener
                     {
                         SkullMeta skullMeta = (SkullMeta) drop.getItemMeta();
                         String name = skullMeta.getOwner(); // Deprecated, so not ideal, but only option short of NMS.
+
+                        // Shortcut attempt to avoid O(n) search - Often keys match names.
+                        String potentialKey = name.toLowerCase().replace(" ", "-");
+                        IHead potentialHead = HeadLoader.getInstance().getLoadedHeads().get(potentialKey);
+                        if (potentialHead != null && potentialHead instanceof TextureHead)
+                        {
+                            TextureHead textureHead = (TextureHead) potentialHead;
+                            if (textureHead.getName().equals(name))
+                                return textureHead;
+                        }
+
+                        // Shortcut attempt failed - Begin search.
                         for (IHead head : HeadLoader.getInstance().getLoadedHeads().values())
                         {
                             if (head instanceof TextureHead)

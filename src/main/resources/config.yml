@@ -1,6 +1,6 @@
 # Explanations & Usage: https://github.com/Zazsona/DecorHeads/wiki/Plugin-Config
 
-version: 2.1.0
+version: 2.2.0
 plugin-enabled: true
 crafting: true
 drops: true
