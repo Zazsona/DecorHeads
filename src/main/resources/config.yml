@@ -7,6 +7,7 @@ drops: true
 playerless-drop-events: true
 learn-recipes-from-wiki: true
 update-notifications: minor
+head-meta-patcher: false
 drop-sources:
   mine-drop: true
   brew-drop: true

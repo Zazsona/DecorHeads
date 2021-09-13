@@ -30,12 +30,16 @@ public class ConfigUpdater
     {
         Plugin plugin = Core.getSelfPlugin();
         File configFile = new File(plugin.getDataFolder().getPath()+"/"+configFileName);
+        boolean upgradingFromLegacy = false;
         if (configFile.exists())
         {
             FileConfiguration config = plugin.getConfig();
             String configVersion = config.getString(versionKey, null);
             if (configVersion == null)
+            {
+                upgradingFromLegacy = true;
                 archiveLegacyConfig(plugin, configFile);
+            }
         }
         else
         {
@@ -44,20 +48,27 @@ public class ConfigUpdater
         }
 
         FileConfiguration config = plugin.getConfig();
-        update200To210(config);
+        updateTo210(config, upgradingFromLegacy);
+        updateTo220(config, upgradingFromLegacy);
         config.set(versionKey, plugin.getDescription().getVersion());
         config.options().copyDefaults(true);
         plugin.saveConfig();
     }
 
-    private void update200To210(FileConfiguration config)
+    private void updateTo210(FileConfiguration config, boolean upgradingFromLegacy)
     {
-        if (config.getString(versionKey).equals("2.0.0"))
+        if (config.getString(versionKey).compareTo("2.1.0") < 0)
         {
             boolean updateNotificationsEnabled = config.getBoolean(PluginConfig.UPDATE_NOTIFICATIONS_KEY);
             UpdateNotificationLevel level = (updateNotificationsEnabled) ? UpdateNotificationLevel.MINOR : UpdateNotificationLevel.DISABLED;
             config.set(PluginConfig.UPDATE_NOTIFICATIONS_KEY, level.toString().toLowerCase());
         }
+    }
+
+    private void updateTo220(FileConfiguration config, boolean upgradingFromLegacy)
+    {
+        if (config.getString(versionKey).compareTo("2.2.0") < 0 || upgradingFromLegacy)
+            config.set(PluginConfig.HEAD_META_PATCHER_KEY, true); // Since we're updating from versions which may have had meta loss bugs, turn it on by default.
     }
 
     private void archiveLegacyConfig(Plugin plugin, File configFile)

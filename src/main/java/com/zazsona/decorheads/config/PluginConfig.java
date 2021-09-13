@@ -4,8 +4,6 @@ import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Locale;
-
 public class PluginConfig
 {
     public static final String PLUGIN_ENABLED_KEY = "plugin-enabled";
@@ -15,6 +13,7 @@ public class PluginConfig
     public static final String PLAYERLESS_DROP_EVENTS_KEY = "playerless-drop-events";
     public static final String WIKI_RECIPE_LEARN_KEY = "learn-recipes-from-wiki";
     public static final String UPDATE_NOTIFICATIONS_KEY = "update-notifications";
+    public static final String HEAD_META_PATCHER_KEY = "head-meta-patcher";
 
     private static Plugin plugin = Core.getPlugin(Core.class);
 
@@ -104,6 +103,17 @@ public class PluginConfig
     {
         String configKey = convertSourceTypeToConfigKey(sourceType);
         return plugin.getConfig().getBoolean(configKey);
+    }
+
+    public static void setHeadMetaPatcherEnabled(boolean newEnabled)
+    {
+        plugin.getConfig().set(HEAD_META_PATCHER_KEY, newEnabled);
+        save();
+    }
+
+    public static boolean isHeadMetaPatcherEnabled()
+    {
+        return plugin.getConfig().getBoolean(HEAD_META_PATCHER_KEY);
     }
 
     public static String convertSourceTypeToConfigKey(HeadSourceType sourceType)
