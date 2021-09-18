@@ -4,11 +4,9 @@ import com.zazsona.decorheads.DecorHeadsUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class WikiCraftRecipePage implements IWikiPage
@@ -50,9 +48,12 @@ public class WikiCraftRecipePage implements IWikiPage
         ArrayList<Material> ingredients = new ArrayList<>();
         for (ItemStack ingredientStack : ingredientStacks)
         {
-            Material ingredient = ingredientStack.getType();
-            if (ingredient != null && ingredient != Material.AIR)
-                ingredients.add(ingredient);
+            if (ingredientStack != null)
+            {
+                Material ingredient = ingredientStack.getType();
+                if (ingredient != null && ingredient != Material.AIR)
+                    ingredients.add(ingredient);
+            }
         }
         return ingredients;
     }
