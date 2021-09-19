@@ -29,11 +29,9 @@ public class PlayerEntityDropHeadSource extends EntityDropHeadSource
 
     @Override
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public ItemStack onEntityDeath(EntityDeathEvent e)
+    public void onEntityDeath(EntityDeathEvent e)
     {
         if (PluginConfig.isDropSourceEnabled(getSourceType()) && e.getEntityType() == EntityType.PLAYER)
-            return super.onEntityDeath(e);
-        else
-            return null;
+            super.onEntityDeath(e);
     }
 }

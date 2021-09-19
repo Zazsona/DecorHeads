@@ -27,7 +27,7 @@ public class BlockDropHeadSource extends DropHeadSource
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public ItemStack onBlockBreak(BlockBreakEvent e)
+    public void onBlockBreak(BlockBreakEvent e)
     {
         if (PluginConfig.isDropSourceEnabled(getSourceType()) && passFilters(e))
         {
@@ -36,18 +36,15 @@ public class BlockDropHeadSource extends DropHeadSource
             {
                 World world = e.getBlock().getWorld();
                 Location location = e.getBlock().getLocation();
-                ItemStack droppedStack = null;
                 boolean dropHead = super.rollDrop(getBaseDropRate());
                 if (dropHead)
                 {
                     int quantity = 1;
                     quantity += rollFortuneEnchantmentDropCount(blockBreaker);
-                    droppedStack = super.dropHead(world, location, blockBreaker, null, quantity);
+                    super.dropHeads(world, location, blockBreaker, null, quantity);
                 }
-                return droppedStack;
             }
         }
-        return null;
     }
 
     private int rollFortuneEnchantmentDropCount(Player blockBreaker)

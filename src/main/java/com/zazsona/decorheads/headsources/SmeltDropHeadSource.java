@@ -25,7 +25,7 @@ public class SmeltDropHeadSource extends DropHeadSource
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public ItemStack onSmeltComplete(FurnaceSmeltEvent e)
+    public void onSmeltComplete(FurnaceSmeltEvent e)
     {
         if (PluginConfig.isDropSourceEnabled(getSourceType()) && passFilters(e))
         {
@@ -33,8 +33,7 @@ public class SmeltDropHeadSource extends DropHeadSource
             Player player = (offlinePlayer != null) ? offlinePlayer.getPlayer() : null;
             World world = e.getBlock().getWorld();
             Location location = e.getBlock().getLocation();
-            return super.dropHead(world, location, player, null, getBaseDropRate(), 1);
+            super.dropHeads(world, location, player, null, getBaseDropRate(), 1);
         }
-        return null;
     }
 }

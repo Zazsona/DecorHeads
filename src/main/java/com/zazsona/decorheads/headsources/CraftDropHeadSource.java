@@ -8,11 +8,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.HashMap;
 
 public class CraftDropHeadSource extends DropHeadSource
 {
@@ -27,7 +24,7 @@ public class CraftDropHeadSource extends DropHeadSource
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public ItemStack onItemCrafted(CraftItemEvent e)
+    public void onItemCrafted(CraftItemEvent e)
     {
         if (PluginConfig.isDropSourceEnabled(getSourceType()) && passFilters(e))
         {
@@ -60,8 +57,7 @@ public class CraftDropHeadSource extends DropHeadSource
                 if (super.rollDrop(getBaseDropRate()))
                     totalHeadDrops++;
             }
-            return super.dropHead(world, location, player, null, totalHeadDrops);
+            super.dropHeads(world, location, player, null, totalHeadDrops);
         }
-        return null;
     }
 }

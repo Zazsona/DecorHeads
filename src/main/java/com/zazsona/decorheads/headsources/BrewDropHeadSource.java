@@ -25,7 +25,7 @@ public class BrewDropHeadSource extends DropHeadSource
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public ItemStack onBrewComplete(BrewEvent e)
+    public void onBrewComplete(BrewEvent e)
     {
         if (PluginConfig.isDropSourceEnabled(getSourceType()) && passFilters(e))
         {
@@ -33,8 +33,7 @@ public class BrewDropHeadSource extends DropHeadSource
             Player player = (offlinePlayer != null) ? offlinePlayer.getPlayer() : null;
             World world = e.getBlock().getWorld();
             Location location = e.getBlock().getLocation();
-            return super.dropHead(world, location, player, null, getBaseDropRate(), 1);
+            super.dropHeads(world, location, player, null, getBaseDropRate(), 1);
         }
-        return null;
     }
 }
