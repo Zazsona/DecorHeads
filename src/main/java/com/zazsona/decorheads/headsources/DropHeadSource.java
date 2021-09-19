@@ -51,7 +51,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
      * @param rolls the number of rolls to perform against the chance
      * @return the dropped ItemStack
      */
-    public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, double dropRate, int rolls)
+    public List<ItemStack> dropHeads(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, double dropRate, int rolls)
     {
         int totalToDrop = 0;
         for (int i = 0; i < rolls; i++)
@@ -60,7 +60,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
             if (dropHead)
                 totalToDrop++;
         }
-        return dropHead(world, location, player, headSkinTarget, totalToDrop);
+        return dropHeads(world, location, player, headSkinTarget, totalToDrop);
     }
 
     /**
@@ -73,7 +73,11 @@ public abstract class DropHeadSource extends HeadSource implements Listener
      */
     public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget)
     {
-        return dropHead(world, location, player, headSkinTarget, 1);
+        List<ItemStack> stacks = dropHeads(world, location, player, headSkinTarget, 1);
+        if (stacks.size() > 1)
+            return stacks.get(0);
+        else
+            return null;
     }
 
     /**
@@ -82,33 +86,36 @@ public abstract class DropHeadSource extends HeadSource implements Listener
      * @param location the location of the world to drop in
      * @param player the player who the head is dropping for. Pass null for a "playerless head drop"
      * @param headSkinTarget the UUID of a player whose skin should be used as the texture. Pass null for a decor head.
-     * @param stackSize the amount of heads in the stack to drop
+     * @param quantity the number of heads to drop
      * @return the dropped ItemStack
      */
-    public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, int stackSize)
+    public List<ItemStack> dropHeads(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, int quantity)
     {
-        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && stackSize > 0 && ((player == null && PluginConfig.isPlayerlessDropEventsEnabled()) || (player != null && player.hasPermission(Permissions.DROP_HEADS))))
+        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && quantity > 0 && ((player == null && PluginConfig.isPlayerlessDropEventsEnabled()) || (player != null && player.hasPermission(Permissions.DROP_HEADS))))
         {
-            ItemStack headStack;
+            ItemStack headStackTemplate;
             IHead head = getHead();
             if (headSkinTarget != null && head instanceof PlayerHead)
             {
                 PlayerHead playerHead = (PlayerHead) head;
-                headStack = playerHead.createItem(headSkinTarget);
+                headStackTemplate = playerHead.createItem(headSkinTarget);
             }
             else
-                headStack = head.createItem();
+                headStackTemplate = head.createItem();
 
-            if (stackSize <= headStack.getMaxStackSize())
+            List<ItemStack> headStacks = new ArrayList<>();
+            int headsToDrop = quantity;
+            while (headsToDrop > 0)
             {
+                int stackSize = (headsToDrop > headStackTemplate.getMaxStackSize()) ? headStackTemplate.getMaxStackSize() : headsToDrop;
+                ItemStack headStack = headStackTemplate.clone();
                 headStack.setAmount(stackSize);
                 world.dropItemNaturally(location, headStack);
-                return headStack;
+                headsToDrop -= stackSize;
+                headStacks.add(headStack);
             }
-            else
-                throw new IllegalArgumentException(String.format("Invalid stack size: %d. Values must be between 0 and %d", stackSize, headStack.getMaxStackSize()));
         }
-        return null;
+        return new ArrayList<>();
     }
 
     /**
