@@ -23,12 +23,14 @@ public abstract class DropHeadSource extends HeadSource implements Listener
     private static Random rand = new Random();
     private double dropRate;
     private ArrayList<DropSourceFilter> dropFilters;
+    private ArrayList<HeadDropHandler> dropHandlers;
 
     public DropHeadSource(IHead head, HeadSourceType headSourceType, double dropRate)
     {
         super(head, headSourceType);
         this.dropRate = dropRate;
         this.dropFilters = new ArrayList<>();
+        this.dropHandlers = new ArrayList<>();
     }
 
     public double getBaseDropRate()
@@ -39,6 +41,16 @@ public abstract class DropHeadSource extends HeadSource implements Listener
     public List<DropSourceFilter> getDropFilters()
     {
         return dropFilters;
+    }
+
+    public void addHeadDropListener(HeadDropHandler handler)
+    {
+        this.dropHandlers.add(handler);
+    }
+
+    public boolean removeHeadDropListener(HeadDropHandler handler)
+    {
+        return this.dropHandlers.remove(handler);
     }
 
     /**
@@ -114,6 +126,9 @@ public abstract class DropHeadSource extends HeadSource implements Listener
                 headsToDrop -= stackSize;
                 headStacks.add(headStack);
             }
+
+            for (HeadDropHandler dropHandler : dropHandlers)
+                dropHandler.onHeadDropped(this, headStacks, player);
         }
         return new ArrayList<>();
     }
