@@ -89,7 +89,8 @@ public class WikiCommand implements CommandExecutor
                 String headerText = String.format("Head Sources (%d/%d)", pageNo, sourceKeys.size());
                 String disabledNotice = getSourceTypeDisabledNotice(headSource.getSourceType());
                 String pageContent = (disabledNotice == null) ? page.getPage() : disabledNotice + "\n" + page.getPage();
-                sender.sendMessage(CommandUtil.addHeader(headerText, pageContent));
+                String message = CommandUtil.addHeader(headerText, pageContent);
+                sender.sendMessage("\n"+message); // New line to make it easier to read against previously opened pages.
 
                 if (PluginConfig.isLearnRecipesFromWikiEnabled() && headSource instanceof CraftHeadSource && sender instanceof Player)
                 {

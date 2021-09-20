@@ -480,3 +480,11 @@ heads:
     sources:
       default-drop-0:
         drop-rate: 0.05
+  player:
+    sources:
+      default-pvp-drop:
+        entities:
+          - PLAYER
+      default-pve-drop:
+        entities:
+          - PLAYER
