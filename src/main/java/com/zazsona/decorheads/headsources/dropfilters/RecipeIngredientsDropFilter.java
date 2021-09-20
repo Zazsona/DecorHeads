@@ -3,9 +3,9 @@ package com.zazsona.decorheads.headsources.dropfilters;
 import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.Material;
 import org.bukkit.block.Furnace;
+import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
@@ -90,20 +90,20 @@ public class RecipeIngredientsDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(HeadSourceType sourceType, FurnaceSmeltEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BlockCookEvent e)
     {
+        HashSet<Material> ingredients = new HashSet<>();
+        ItemStack source = e.getSource();
+        if (source != null && !source.getType().isAir())
+            ingredients.add(source.getType());
+
         if (e.getBlock().getState() instanceof Furnace)
         {
-            HashSet<Material> ingredients = new HashSet<>();
             Furnace furnace = (Furnace) e.getBlock().getState();
-            ItemStack smelting = furnace.getInventory().getSmelting();
             ItemStack fuel = furnace.getInventory().getFuel(); // Not perfect as this can be "tricked" by swapping fuels
-            if (smelting != null && !smelting.getType().isAir())
-                ingredients.add(smelting.getType());
             if (fuel != null && !fuel.getType().isAir())
                 ingredients.add(fuel.getType());
-            return checkPass(ingredients);
         }
-        return false;
+        return checkPass(ingredients);
     }
 }

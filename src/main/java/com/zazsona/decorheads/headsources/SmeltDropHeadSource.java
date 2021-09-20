@@ -9,8 +9,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.block.BlockCookEvent;
 
 public class SmeltDropHeadSource extends DropHeadSource
 {
@@ -25,7 +24,7 @@ public class SmeltDropHeadSource extends DropHeadSource
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onSmeltComplete(FurnaceSmeltEvent e)
+    public void onSmeltComplete(BlockCookEvent e)
     {
         if (PluginConfig.isDropSourceEnabled(getSourceType()) && passFilters(e))
         {

@@ -2,12 +2,9 @@ package com.zazsona.decorheads.headsources.dropfilters;
 
 import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
@@ -56,7 +53,7 @@ public class RecipeResultDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(HeadSourceType sourceType, FurnaceSmeltEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BlockCookEvent e)
     {
         Material result = e.getResult().getType();
         return checkPass(result);

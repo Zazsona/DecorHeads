@@ -3,10 +3,10 @@ package com.zazsona.decorheads.headsources.dropfilters;
 import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
 
 public abstract class DropSourceFilter
 {
@@ -20,8 +20,8 @@ public abstract class DropSourceFilter
             return passFilter(sourceType, (CraftItemEvent) e);
         else if (e instanceof BrewEvent)
             return passFilter(sourceType, (BrewEvent) e);
-        else if (e instanceof FurnaceSmeltEvent)
-            return passFilter(sourceType, (FurnaceSmeltEvent) e);
+        else if (e instanceof BlockCookEvent)
+            return passFilter(sourceType, (BlockCookEvent) e);
         else
             return true;
     }
@@ -46,7 +46,7 @@ public abstract class DropSourceFilter
         return true;
     }
 
-    protected boolean passFilter(HeadSourceType sourceType, FurnaceSmeltEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BlockCookEvent e)
     {
         return true;
     }

@@ -1,14 +1,12 @@
 package com.zazsona.decorheads.headsources.dropfilters;
 
 import com.zazsona.decorheads.headsources.HeadSourceType;
-import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -64,7 +62,7 @@ public class WorldDropFilter extends DropSourceFilter
     }
 
     @Override
-    protected boolean passFilter(HeadSourceType sourceType, FurnaceSmeltEvent e)
+    protected boolean passFilter(HeadSourceType sourceType, BlockCookEvent e)
     {
         World world = e.getBlock().getWorld();
         return checkPass(world.getName());
