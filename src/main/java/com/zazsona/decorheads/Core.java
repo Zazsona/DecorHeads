@@ -37,6 +37,7 @@ public class Core extends JavaPlugin
             HeadLoader headLoader = HeadLoader.getInstance();
             headLoader.loadHeads();
 
+            MaterialUtil.indexMaterials();
             getServer().getPluginManager().registerEvents(new HeadBlockListener(), this);
             getServer().getPluginManager().registerEvents(new HeadCraftingEnforcer(), this);
             getServer().getPluginManager().registerEvents(BlockInventoryOwnerListener.getInstance(), this);
