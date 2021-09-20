@@ -76,7 +76,7 @@ public class WikiDropPage implements IWikiPage
             case CRAFT_DROP:
                 return "Craft";
             case SMELT_DROP:
-                return "Smelt";
+                return "Cook";
             case ENTITY_DEATH_DROP:
                 return "Kill entities";
             case PLAYER_DEATH_DROP:
