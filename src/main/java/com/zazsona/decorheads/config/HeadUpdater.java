@@ -164,11 +164,16 @@ public class HeadUpdater extends HeadConfigAccessor
     private void createHeadsFile(File headsFile) throws IOException
     {
         Bukkit.getLogger().info(String.format("[%s] Creating new heads config...", Core.PLUGIN_NAME));
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(headsFileName);
-        byte[] buffer = new byte[inputStream.available()];
-        inputStream.read(buffer);
         headsFile.createNewFile();
-        Files.write(headsFile.toPath(), buffer, StandardOpenOption.WRITE);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(headsFileName);
+        OutputStream outputStream = new FileOutputStream(headsFile);
+        byte[] buffer = new byte[8 * 1024];
+        int providedBytes = inputStream.read(buffer);
+        while (providedBytes != -1)
+        {
+            outputStream.write(buffer, 0, providedBytes);
+            providedBytes = inputStream.read(buffer);
+        }
         Bukkit.getLogger().info(String.format("[%s] Created heads config!", Core.PLUGIN_NAME));
     }
 }
