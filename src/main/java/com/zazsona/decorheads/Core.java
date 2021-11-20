@@ -39,7 +39,7 @@ public class Core extends JavaPlugin
 
             MaterialUtil.indexMaterials();
             getServer().getPluginManager().registerEvents(new HeadBlockListener(), this);
-            getServer().getPluginManager().registerEvents(new HeadCraftingEnforcer(), this);
+            getServer().getPluginManager().registerEvents(new HeadCraftBlocker(), this);
             getServer().getPluginManager().registerEvents(BlockInventoryOwnerListener.getInstance(), this);
             BlockMetaLogger.getInstance().loadFromFile();
             scheduleBlockDataSaving();

@@ -36,16 +36,9 @@ public class ConfigCommand implements CommandExecutor
             if (args.length >= 2)
             {
                 String settingName = args[0];
-                String updatedSetting = setState(settingName, args[1]);
-                sender.sendMessage(getCurrentStates());
-                if ((updatedSetting.equalsIgnoreCase(PluginConfig.PLUGIN_ENABLED_KEY) && !PluginConfig.isPluginEnabled()) || (updatedSetting.equalsIgnoreCase(PluginConfig.CRAFTING_KEY) && !PluginConfig.isCraftingEnabled()))
-                {
-                    String craftDisabledWarning = ("" + ChatColor.RED + ChatColor.BOLD + "NOTE: " + ChatColor.RESET + ChatColor.RED + "To prevent progression data loss, crafting recipes will still be loaded and visible, though unusable. If you wish to remove crafting permanently, remove all craft sources from heads.yml.");
-                    sender.sendMessage(craftDisabledWarning);
-                }
+                setState(settingName, args[1]);
             }
-            else
-                sender.sendMessage(getCurrentStates());
+            sender.sendMessage(getCurrentStates());
         }
         catch (IllegalArgumentException e)
         {

@@ -64,18 +64,6 @@ public abstract class Head implements IHead
         }
     }
 
-    /*protected ItemStack createSkull(String name, OfflinePlayer offlinePlayer)
-    {
-        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-        skullMeta.setOwningPlayer(offlinePlayer);
-        skullMeta.setDisplayName(name);
-        assignHeadKeyToItem(skullMeta);
-        addLore(skullMeta);
-        skull.setItemMeta(skullMeta);
-        return skull;
-    }*/
-
     protected ItemMeta applyDecorHeadsSkullMeta(ItemMeta meta)
     {
         PersistentDataContainer dataHolder = meta.getPersistentDataContainer();
