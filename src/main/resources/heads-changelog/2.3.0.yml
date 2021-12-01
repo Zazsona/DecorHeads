@@ -69,6 +69,7 @@ heads:
         source-type: CRAFT_DROP
         recipe-results:
           - COPPER_BLOCK
+          - WAXED_COPPER_BLOCK
         drop-rate: 0.95
   mini-exposed-copper-block:
     name: Mini Exposed Copper Block
@@ -99,4 +100,70 @@ heads:
         blocks:
           - OXIDIZED_COPPER
           - WAXED_OXIDIZED_COPPER
+        drop-rate: 1.5
+  mini-cut-copper-block:
+    name: Mini Cut Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjU2NjlhZTM3MGU0MTRkOWExMGYzN2IwMjI5MzNmNjRlYzZkMWU5NzlmYWRiM2MxZjkwMDRiNDg1ZmRkZDIyNSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - CUT_COPPER
+          - WAXED_CUT_COPPER
+          - CUT_COPPER_SLAB
+          - WAXED_CUT_COPPER_SLAB
+          - CUT_COPPER_STAIRS
+          - WAXED_CUT_COPPER_STAIRS
+        drop-rate: 1.5
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - CUT_COPPER
+          - WAXED_CUT_COPPER
+          - CUT_COPPER_SLAB
+          - WAXED_CUT_COPPER_SLAB
+          - CUT_COPPER_STAIRS
+          - WAXED_CUT_COPPER_STAIRS
+        drop-rate: 0.95
+  mini-exposed-cut-copper-block:
+    name: Mini Exposed Cut Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzIxOTU5YmJlN2Q0NjAyNzA4ODc4ZGM5ZTJmZmYwODJlMjg0MGM2YzQxOTRhNGQ0MmVlNDA3MDk5MmZhMjZkMiJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - EXPOSED_CUT_COPPER
+          - WAXED_EXPOSED_CUT_COPPER
+          - EXPOSED_CUT_COPPER_SLAB
+          - WAXED_EXPOSED_CUT_COPPER_SLAB
+          - EXPOSED_CUT_COPPER_STAIRS
+          - WAXED_EXPOSED_CUT_COPPER_STAIRS
+        drop-rate: 1.5
+  mini-weathered-cut-copper-block:
+    name: Mini Weathered Cut Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDM4MDNjNDNjNjc5NWFhZjg3MzhmZTFkODNlOGUyNmJjNjY0OTdmMGUwNDA4MTM4NzEwYmE5MDNhODllY2VmYSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - WEATHERED_CUT_COPPER
+          - WAXED_WEATHERED_CUT_COPPER
+          - WEATHERED_CUT_COPPER_SLAB
+          - WAXED_WEATHERED_CUT_COPPER_SLAB
+          - WEATHERED_CUT_COPPER_STAIRS
+          - WAXED_WEATHERED_CUT_COPPER_STAIRS
+        drop-rate: 1.5
+  mini-oxidized-cut-copper-block:
+    name: Mini Oxidized Cut Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjRkYzViYzYwNDllYTgyYWFiYTE1NzkwM2E1YzZlODAyNTA2ZjQxNTE1NzkyNzAzZWQ1ZTUyNTJkMGM5YzFiMiJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OXIDIZED_CUT_COPPER
+          - WAXED_OXIDIZED_CUT_COPPER
+          - OXIDIZED_CUT_COPPER_SLAB
+          - WAXED_OXIDIZED_CUT_COPPER_SLAB
+          - OXIDIZED_CUT_COPPER_STAIRS
+          - WAXED_OXIDIZED_CUT_COPPER_STAIRS
         drop-rate: 1.5
