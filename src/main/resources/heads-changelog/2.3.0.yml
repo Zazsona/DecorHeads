@@ -55,3 +55,48 @@ heads:
           - ROOTED_DIRT
           - GRASS_BLOCK
           - PODZOL
+  mini-copper-block:
+    name: Mini Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWRjMzUyNjA1N2IzYTcyZTM5OWY1NThlZmM0NzExNDc3MTUzNTY5ZWQ4NDlmMGQxYzlhYjg0YjhhYzA1MTkwYyJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - COPPER_BLOCK
+          - WAXED_COPPER_BLOCK
+        drop-rate: 1.5
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - COPPER_BLOCK
+        drop-rate: 0.95
+  mini-exposed-copper-block:
+    name: Mini Exposed Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDc1MzA1NmVjYzEyYjY0MWJhNmE1Y2JkZjUwMzlkZWRlYzQ5MmFjNGZiNTgzNTQ1N2QzYTRlNDMyMmJkYjNkIn19fQ==
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - EXPOSED_COPPER
+          - WAXED_EXPOSED_COPPER
+        drop-rate: 1.5
+  mini-weathered-copper-block:
+    name: Mini Weathered Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTYxM2Y2MGU2ZWNmNmMyMWQ5MzA2NmIxYmQ2ZjdjNGI3YzQ4OGU2OGE2NDI1MTQ1Njc3Y2M2ZDVkYTMzYmE0OSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - WEATHERED_COPPER
+          - WAXED_WEATHERED_COPPER
+        drop-rate: 1.5
+  mini-oxidized-copper-block:
+    name: Mini Oxidized Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWE1YjBjMGUyOGExMDE1NzcyNWVhMDBiZGYwMGYxNzY0MTRkNDBhMTgxMmM2MGI5MGQzZmUyMmNjMzJkMDMyMyJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OXIDIZED_COPPER
+          - WAXED_OXIDIZED_COPPER
+        drop-rate: 1.5
