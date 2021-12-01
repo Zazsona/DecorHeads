@@ -18,3 +18,40 @@ heads:
           - MEADOW
           - JUNGLE
           - SPARSE_JUNGLE
+        blocks:
+          - DIRT
+          - DIRT_PATH
+          - COARSE_DIRT
+          - ROOTED_DIRT
+          - GRASS_BLOCK
+          - PODZOL
+          - ACACIA_LEAVES
+          - BIRCH_LEAVES
+          - DARK_OAK_LEAVES
+          - JUNGLE_LEAVES
+          - OAK_LEAVES
+          - SPRUCE_LEAVES
+  mini-coal-block:
+    sources:
+      default-drop-0:
+        blocks:
+          - COAL_ORE
+          - DEEPSLATE_COAL_ORE
+          - COAL_BLOCK
+  mini-redstone-block:
+    sources:
+      default-drop-0:
+        blocks:
+          - REDSTONE_BLOCK
+          - REDSTONE_ORE
+          - DEEPSLATE_REDSTONE_ORE
+  mini-dirt:
+    sources:
+      default-drop-0:
+        blocks:
+          - DIRT
+          - DIRT_PATH
+          - COARSE_DIRT
+          - ROOTED_DIRT
+          - GRASS_BLOCK
+          - PODZOL
