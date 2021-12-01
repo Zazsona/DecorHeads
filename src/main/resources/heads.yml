@@ -2,7 +2,7 @@
 # All the details on how to add your own heads, or modify the default ones, are on the Wiki!
 # https://github.com/Zazsona/DecorHeads/wiki
 
-version: 2.2.0
+version: 2.3.0
 heads:
   player:
     sources:
@@ -1489,20 +1489,15 @@ heads:
           - BIRCH_FOREST
           - DARK_FOREST
           - FLOWER_FOREST
-          - BIRCH_FOREST_HILLS
-          - DARK_FOREST_HILLS
-          - TALL_BIRCH_FOREST
+          - OLD_GROWTH_BIRCH_FOREST
           - SWAMP
-          - SWAMP_HILLS
-          - GIANT_SPRUCE_TAIGA
-          - GIANT_SPRUCE_TAIGA_HILLS
-          - GIANT_TREE_TAIGA
-          - GIANT_TREE_TAIGA_HILLS
-          - WOODED_HILLS
-          - WOODED_MOUNTAINS
+          - OLD_GROWTH_SPRUCE_TAIGA
+          - OLD_GROWTH_PINE_TAIGA
+          - WINDSWEPT_FOREST
           - TAIGA
-          - TAIGA_HILLS
-          - TAIGA_MOUNTAINS
+          - MEADOW
+          - JUNGLE
+          - SPARSE_JUNGLE
         blocks:
           - DIRT
           - GRASS_BLOCK

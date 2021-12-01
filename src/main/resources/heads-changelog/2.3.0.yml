@@ -1,0 +1,20 @@
+version: 2.3.0
+heads:
+  snail-shell:
+    sources:
+      default-drop-0:
+        biomes:
+          - PLAINS
+          - FOREST
+          - BIRCH_FOREST
+          - DARK_FOREST
+          - FLOWER_FOREST
+          - OLD_GROWTH_BIRCH_FOREST
+          - SWAMP
+          - OLD_GROWTH_SPRUCE_TAIGA
+          - OLD_GROWTH_PINE_TAIGA
+          - WINDSWEPT_FOREST
+          - TAIGA
+          - MEADOW
+          - JUNGLE
+          - SPARSE_JUNGLE
