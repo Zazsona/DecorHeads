@@ -1,8 +1,8 @@
 name: DecorHeads
-version: 2.2.0
+version: 2.3.0
 author: Zazsona
 main: com.zazsona.decorheads.Core
-api-version: 1.16
+api-version: 1.18
 commands:
    decorheads:
       aliases:
