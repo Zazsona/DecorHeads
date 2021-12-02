@@ -38,6 +38,11 @@ heads:
           - COAL_ORE
           - DEEPSLATE_COAL_ORE
           - COAL_BLOCK
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - COAL_BLOCK
+        drop-rate: 0.1
   mini-redstone-block:
     sources:
       default-drop-0:
@@ -45,6 +50,11 @@ heads:
           - REDSTONE_BLOCK
           - REDSTONE_ORE
           - DEEPSLATE_REDSTONE_ORE
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - REDSTONE_BLOCK
+        drop-rate: 0.1
   mini-dirt:
     sources:
       default-drop-0:
