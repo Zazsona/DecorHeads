@@ -111,8 +111,8 @@ heads:
           - OXIDIZED_COPPER
           - WAXED_OXIDIZED_COPPER
         drop-rate: 1.5
-  mini-cut-copper-block:
-    name: Mini Cut Copper Block
+  mini-cut-copper:
+    name: Mini Cut Copper
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjU2NjlhZTM3MGU0MTRkOWExMGYzN2IwMjI5MzNmNjRlYzZkMWU5NzlmYWRiM2MxZjkwMDRiNDg1ZmRkZDIyNSJ9fX0=
     sources:
       default-drop-0:
@@ -135,8 +135,8 @@ heads:
           - CUT_COPPER_STAIRS
           - WAXED_CUT_COPPER_STAIRS
         drop-rate: 0.95
-  mini-exposed-cut-copper-block:
-    name: Mini Exposed Cut Copper Block
+  mini-exposed-cut-copper:
+    name: Mini Exposed Cut Copper
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzIxOTU5YmJlN2Q0NjAyNzA4ODc4ZGM5ZTJmZmYwODJlMjg0MGM2YzQxOTRhNGQ0MmVlNDA3MDk5MmZhMjZkMiJ9fX0=
     sources:
       default-drop-0:
@@ -149,8 +149,8 @@ heads:
           - EXPOSED_CUT_COPPER_STAIRS
           - WAXED_EXPOSED_CUT_COPPER_STAIRS
         drop-rate: 1.5
-  mini-weathered-cut-copper-block:
-    name: Mini Weathered Cut Copper Block
+  mini-weathered-cut-copper:
+    name: Mini Weathered Cut Copper
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDM4MDNjNDNjNjc5NWFhZjg3MzhmZTFkODNlOGUyNmJjNjY0OTdmMGUwNDA4MTM4NzEwYmE5MDNhODllY2VmYSJ9fX0=
     sources:
       default-drop-0:
@@ -163,8 +163,8 @@ heads:
           - WEATHERED_CUT_COPPER_STAIRS
           - WAXED_WEATHERED_CUT_COPPER_STAIRS
         drop-rate: 1.5
-  mini-oxidized-cut-copper-block:
-    name: Mini Oxidized Cut Copper Block
+  mini-oxidized-cut-copper:
+    name: Mini Oxidized Cut Copper
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjRkYzViYzYwNDllYTgyYWFiYTE1NzkwM2E1YzZlODAyNTA2ZjQxNTE1NzkyNzAzZWQ1ZTUyNTJkMGM5YzFiMiJ9fX0=
     sources:
       default-drop-0:

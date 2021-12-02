@@ -33,7 +33,7 @@ commands:
          - headsummon
          - headsummoner
       description: Spawn a decor or player head
-      usage: /DHSpawn [Decor|Player] [Name] ||| /SpawnHead All
+      usage: /DHSpawn [Decor|Player] [Name] OR /DHSpawn All
       permission: decorheads.spawnhead
 permissions:
    decorheads.dropheads:
