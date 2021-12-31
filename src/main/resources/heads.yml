@@ -2,7 +2,7 @@
 # All the details on how to add your own heads, or modify the default ones, are on the Wiki!
 # https://github.com/Zazsona/DecorHeads/wiki
 
-version: 2.2.0
+version: 2.3.0
 heads:
   player:
     sources:
@@ -557,6 +557,12 @@ heads:
         source-type: MINE_DROP
         blocks:
           - COAL_ORE
+          - DEEPSLATE_COAL_ORE
+          - COAL_BLOCK
+        drop-rate: 0.1
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
           - COAL_BLOCK
         drop-rate: 0.1
   mini-cobblestone:
@@ -581,7 +587,11 @@ heads:
         source-type: MINE_DROP
         blocks:
           - DIRT
+          - DIRT_PATH
+          - COARSE_DIRT
+          - ROOTED_DIRT
           - GRASS_BLOCK
+          - PODZOL
         drop-rate: 0.05
   mini-gravel:
     name: Mini Gravel
@@ -746,7 +756,13 @@ heads:
         blocks:
           - REDSTONE_BLOCK
           - REDSTONE_ORE
+          - DEEPSLATE_REDSTONE_ORE
         drop-rate: 0.25
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - REDSTONE_BLOCK
+        drop-rate: 0.1
   mini-sand:
     name: Mini Sand
     texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTMzOThhYjNjYjY5NmIzNDQzMGJlOTQ0YjE0YWZiZDIyN2ZkODdlOTkwMjZiY2ZjOGI3Mzg3YTg2MWJkZSJ9fX0=
@@ -1489,23 +1505,22 @@ heads:
           - BIRCH_FOREST
           - DARK_FOREST
           - FLOWER_FOREST
-          - BIRCH_FOREST_HILLS
-          - DARK_FOREST_HILLS
-          - TALL_BIRCH_FOREST
+          - OLD_GROWTH_BIRCH_FOREST
           - SWAMP
-          - SWAMP_HILLS
-          - GIANT_SPRUCE_TAIGA
-          - GIANT_SPRUCE_TAIGA_HILLS
-          - GIANT_TREE_TAIGA
-          - GIANT_TREE_TAIGA_HILLS
-          - WOODED_HILLS
-          - WOODED_MOUNTAINS
+          - OLD_GROWTH_SPRUCE_TAIGA
+          - OLD_GROWTH_PINE_TAIGA
+          - WINDSWEPT_FOREST
           - TAIGA
-          - TAIGA_HILLS
-          - TAIGA_MOUNTAINS
+          - MEADOW
+          - JUNGLE
+          - SPARSE_JUNGLE
         blocks:
           - DIRT
+          - DIRT_PATH
+          - COARSE_DIRT
+          - ROOTED_DIRT
           - GRASS_BLOCK
+          - PODZOL
           - ACACIA_LEAVES
           - BIRCH_LEAVES
           - DARK_OAK_LEAVES
@@ -1949,3 +1964,115 @@ heads:
           - / 1 /
           - 1 0 1
           - 0 0 0
+  mini-copper-block:
+    name: Mini Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWRjMzUyNjA1N2IzYTcyZTM5OWY1NThlZmM0NzExNDc3MTUzNTY5ZWQ4NDlmMGQxYzlhYjg0YjhhYzA1MTkwYyJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - COPPER_BLOCK
+          - WAXED_COPPER_BLOCK
+        drop-rate: 1.5
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - COPPER_BLOCK
+          - WAXED_COPPER_BLOCK
+        drop-rate: 0.95
+  mini-exposed-copper-block:
+    name: Mini Exposed Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDc1MzA1NmVjYzEyYjY0MWJhNmE1Y2JkZjUwMzlkZWRlYzQ5MmFjNGZiNTgzNTQ1N2QzYTRlNDMyMmJkYjNkIn19fQ==
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - EXPOSED_COPPER
+          - WAXED_EXPOSED_COPPER
+        drop-rate: 1.5
+  mini-weathered-copper-block:
+    name: Mini Weathered Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTYxM2Y2MGU2ZWNmNmMyMWQ5MzA2NmIxYmQ2ZjdjNGI3YzQ4OGU2OGE2NDI1MTQ1Njc3Y2M2ZDVkYTMzYmE0OSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - WEATHERED_COPPER
+          - WAXED_WEATHERED_COPPER
+        drop-rate: 1.5
+  mini-oxidized-copper-block:
+    name: Mini Oxidized Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWE1YjBjMGUyOGExMDE1NzcyNWVhMDBiZGYwMGYxNzY0MTRkNDBhMTgxMmM2MGI5MGQzZmUyMmNjMzJkMDMyMyJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OXIDIZED_COPPER
+          - WAXED_OXIDIZED_COPPER
+        drop-rate: 1.5
+  mini-cut-copper:
+    name: Mini Cut Copper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjU2NjlhZTM3MGU0MTRkOWExMGYzN2IwMjI5MzNmNjRlYzZkMWU5NzlmYWRiM2MxZjkwMDRiNDg1ZmRkZDIyNSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - CUT_COPPER
+          - WAXED_CUT_COPPER
+          - CUT_COPPER_SLAB
+          - WAXED_CUT_COPPER_SLAB
+          - CUT_COPPER_STAIRS
+          - WAXED_CUT_COPPER_STAIRS
+        drop-rate: 1.5
+      default-drop-1:
+        source-type: CRAFT_DROP
+        recipe-results:
+          - CUT_COPPER
+          - WAXED_CUT_COPPER
+          - CUT_COPPER_SLAB
+          - WAXED_CUT_COPPER_SLAB
+          - CUT_COPPER_STAIRS
+          - WAXED_CUT_COPPER_STAIRS
+        drop-rate: 0.95
+  mini-exposed-cut-copper:
+    name: Mini Exposed Cut Copper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzIxOTU5YmJlN2Q0NjAyNzA4ODc4ZGM5ZTJmZmYwODJlMjg0MGM2YzQxOTRhNGQ0MmVlNDA3MDk5MmZhMjZkMiJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - EXPOSED_CUT_COPPER
+          - WAXED_EXPOSED_CUT_COPPER
+          - EXPOSED_CUT_COPPER_SLAB
+          - WAXED_EXPOSED_CUT_COPPER_SLAB
+          - EXPOSED_CUT_COPPER_STAIRS
+          - WAXED_EXPOSED_CUT_COPPER_STAIRS
+        drop-rate: 1.5
+  mini-weathered-cut-copper:
+    name: Mini Weathered Cut Copper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDM4MDNjNDNjNjc5NWFhZjg3MzhmZTFkODNlOGUyNmJjNjY0OTdmMGUwNDA4MTM4NzEwYmE5MDNhODllY2VmYSJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - WEATHERED_CUT_COPPER
+          - WAXED_WEATHERED_CUT_COPPER
+          - WEATHERED_CUT_COPPER_SLAB
+          - WAXED_WEATHERED_CUT_COPPER_SLAB
+          - WEATHERED_CUT_COPPER_STAIRS
+          - WAXED_WEATHERED_CUT_COPPER_STAIRS
+        drop-rate: 1.5
+  mini-oxidized-cut-copper:
+    name: Mini Oxidized Cut Copper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjRkYzViYzYwNDllYTgyYWFiYTE1NzkwM2E1YzZlODAyNTA2ZjQxNTE1NzkyNzAzZWQ1ZTUyNTJkMGM5YzFiMiJ9fX0=
+    sources:
+      default-drop-0:
+        source-type: MINE_DROP
+        blocks:
+          - OXIDIZED_CUT_COPPER
+          - WAXED_OXIDIZED_CUT_COPPER
+          - OXIDIZED_CUT_COPPER_SLAB
+          - WAXED_OXIDIZED_CUT_COPPER_SLAB
+          - OXIDIZED_CUT_COPPER_STAIRS
+          - WAXED_OXIDIZED_CUT_COPPER_STAIRS
+        drop-rate: 1.5

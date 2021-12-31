@@ -11,7 +11,6 @@ import com.zazsona.decorheads.config.ConfigUpdater;
 import com.zazsona.decorheads.config.HeadLoader;
 import com.zazsona.decorheads.config.HeadUpdater;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class Core extends JavaPlugin
 {
     public static final String PLUGIN_NAME = "DecorHeads";
 
-    public static Plugin getSelfPlugin()
+    public static JavaPlugin getSelfPlugin()
     {
         return Core.getPlugin(Core.class);
     }
