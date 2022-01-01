@@ -51,7 +51,7 @@ public class WikiCraftRecipePage implements IWikiPage
             if (ingredientStack != null)
             {
                 Material ingredient = ingredientStack.getType();
-                if (ingredient != null && ingredient != Material.AIR)
+                if (ingredient != null && !ingredient.isAir())
                     ingredients.add(ingredient);
             }
         }
