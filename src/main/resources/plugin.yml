@@ -22,7 +22,7 @@ commands:
       aliases:
          - decorheadsconfig
       description: Edit heads and config
-      usage: /DHEditor [Function] [Args]
+      usage: /DHConfig [Function] [Args]
       permission: decorheads.config
    dhspawn:
       aliases:
@@ -32,8 +32,8 @@ commands:
          - summonhead
          - headsummon
          - headsummoner
-      description: Spawn a decor or player head
-      usage: /DHSpawn [Decor|Player] [Name] OR /DHSpawn All
+      description: Spawn a head. You may specify Decor or Player if a name overlaps.
+      usage: /DHSpawn (Decor)/(Player) [Name] OR /DHSpawn All
       permission: decorheads.spawnhead
 permissions:
    decorheads.dropheads:
