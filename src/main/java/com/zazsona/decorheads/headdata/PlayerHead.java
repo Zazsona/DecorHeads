@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.apiresponse.ProfileResponse;
+import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -46,7 +47,7 @@ public class PlayerHead extends Head
         return new ItemStack(Material.PLAYER_HEAD);
     }
 
-    public ItemStack createItem(String playerName)
+    public ItemStack createItem(String playerName) throws InvalidHeadException
     {
         try
         {
@@ -55,17 +56,16 @@ public class PlayerHead extends Head
         }
         catch (IOException | NullPointerException e)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to get UUID for player: %s", Core.PLUGIN_NAME, playerName));
+            throw new InvalidHeadException(String.format("Unable to get UUID for player: %s", playerName));
         }
-        return new ItemStack(Material.PLAYER_HEAD);
     }
 
-    public ItemStack createItem(OfflinePlayer player)
+    public ItemStack createItem(OfflinePlayer player) throws InvalidHeadException
     {
         return createItem(player.getUniqueId());
     }
 
-    public ItemStack createItem(UUID uuid)
+    public ItemStack createItem(UUID uuid) throws InvalidHeadException
     {
         try
         {
@@ -86,12 +86,11 @@ public class PlayerHead extends Head
         }
         catch (IOException e)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to resolve player head for UUID: %s", Core.PLUGIN_NAME, uuid));
-            return new ItemStack(Material.PLAYER_HEAD);
+            throw new InvalidHeadException(String.format("Unable to resolve player head for UUID: %s", uuid));
         }
     }
 
-    public ItemStack createItem(UUID uuid, String texture)
+    public ItemStack createItem(UUID uuid, String texture) throws InvalidHeadException
     {
         try
         {
@@ -103,8 +102,7 @@ public class PlayerHead extends Head
         }
         catch (IOException e)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to resolve player head for UUID: %s", Core.PLUGIN_NAME, uuid));
-            return new ItemStack(Material.PLAYER_HEAD);
+            throw new InvalidHeadException(String.format("Unable to resolve player head for UUID: %s", uuid));
         }
     }
 

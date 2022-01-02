@@ -1,10 +1,13 @@
 package com.zazsona.decorheads.headsources;
 
+import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.Permissions;
 import com.zazsona.decorheads.config.PluginConfig;
+import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
 import com.zazsona.decorheads.headsources.dropfilters.DropSourceFilter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -62,6 +65,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
      * @param dropRate the chance for a head to drop
      * @param rolls the number of rolls to perform against the chance
      * @return the dropped ItemStack
+     * @throws InvalidHeadException invalid head data operands - unable to instantiate head stack
      */
     public List<ItemStack> dropHeads(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, double dropRate, int rolls)
     {
@@ -82,6 +86,7 @@ public abstract class DropHeadSource extends HeadSource implements Listener
      * @param player the player who the head is dropping for. Pass null for a "playerless head drop"
      * @param headSkinTarget the UUID of a player whose skin should be used as the texture. Pass null for a decor head.
      * @return the dropped ItemStack
+     * @throws InvalidHeadException invalid head data operands - unable to instantiate head stack
      */
     public ItemStack dropHead(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget)
     {
@@ -100,37 +105,46 @@ public abstract class DropHeadSource extends HeadSource implements Listener
      * @param headSkinTarget the UUID of a player whose skin should be used as the texture. Pass null for a decor head.
      * @param quantity the number of heads to drop
      * @return the dropped ItemStack
+     * @throws InvalidHeadException invalid head data operands - unable to instantiate head stack
      */
     public List<ItemStack> dropHeads(World world, Location location, @Nullable Player player, @Nullable UUID headSkinTarget, int quantity)
     {
-        if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && quantity > 0 && ((player == null && PluginConfig.isPlayerlessDropEventsEnabled()) || (player != null && player.hasPermission(Permissions.DROP_HEADS))))
+        try
         {
-            ItemStack headStackTemplate;
-            IHead head = getHead();
-            if (headSkinTarget != null && head instanceof PlayerHead)
+            if (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && quantity > 0 && ((player == null && PluginConfig.isPlayerlessDropEventsEnabled()) || (player != null && player.hasPermission(Permissions.DROP_HEADS))))
             {
-                PlayerHead playerHead = (PlayerHead) head;
-                headStackTemplate = playerHead.createItem(headSkinTarget);
-            }
-            else
-                headStackTemplate = head.createItem();
+                ItemStack headStackTemplate;
+                IHead head = getHead();
+                if (headSkinTarget != null && head instanceof PlayerHead)
+                {
+                    PlayerHead playerHead = (PlayerHead) head;
+                    headStackTemplate = playerHead.createItem(headSkinTarget);
+                }
+                else
+                    headStackTemplate = head.createItem();
 
-            List<ItemStack> headStacks = new ArrayList<>();
-            int headsToDrop = quantity;
-            while (headsToDrop > 0)
-            {
-                int stackSize = (headsToDrop > headStackTemplate.getMaxStackSize()) ? headStackTemplate.getMaxStackSize() : headsToDrop;
-                ItemStack headStack = headStackTemplate.clone();
-                headStack.setAmount(stackSize);
-                world.dropItemNaturally(location, headStack);
-                headsToDrop -= stackSize;
-                headStacks.add(headStack);
-            }
+                List<ItemStack> headStacks = new ArrayList<>();
+                int headsToDrop = quantity;
+                while (headsToDrop > 0)
+                {
+                    int stackSize = (headsToDrop > headStackTemplate.getMaxStackSize()) ? headStackTemplate.getMaxStackSize() : headsToDrop;
+                    ItemStack headStack = headStackTemplate.clone();
+                    headStack.setAmount(stackSize);
+                    world.dropItemNaturally(location, headStack);
+                    headsToDrop -= stackSize;
+                    headStacks.add(headStack);
+                }
 
-            for (HeadDropHandler dropHandler : dropHandlers)
-                dropHandler.onHeadDropped(this, headStacks, player);
+                for (HeadDropHandler dropHandler : dropHandlers)
+                    dropHandler.onHeadDropped(this, headStacks, player);
+            }
+            return new ArrayList<>();
         }
-        return new ArrayList<>();
+        catch (InvalidHeadException ihe)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Could not drop head %s for %s - %s", Core.PLUGIN_NAME, getHead().getKey(), getSourceType().toString(), ihe.getMessage()));
+            return new ArrayList<>();
+        }
     }
 
     /**

@@ -1,11 +1,14 @@
 package com.zazsona.decorheads.blockmeta;
 
+import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.config.HeadLoader;
 import com.zazsona.decorheads.config.PluginConfig;
+import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.headdata.Head;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
 import com.zazsona.decorheads.headdata.TextureHead;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -119,34 +122,44 @@ public class HeadBlockListener implements Listener
 
     private boolean dropHeadFromBlock(Block block)
     {
-        IHead head = getPlacedDecorHeadsHead(block);
-        if (head != null)
+        try
         {
-            BlockMetaLogger metaLogger = BlockMetaLogger.getInstance();
-            Location location = block.getLocation();
-            ItemStack item;
-            if (head instanceof PlayerHead)
+            IHead head = getPlacedDecorHeadsHead(block);
+            if (head != null)
             {
-                PlayerHead playerHead = (PlayerHead) head;
-                String uuid = metaLogger.getMetadata(location, PLAYER_ID_KEY);
-                if (metaLogger.isMetadataSet(location, TEXTURE_KEY))
+                BlockMetaLogger metaLogger = BlockMetaLogger.getInstance();
+                Location location = block.getLocation();
+                ItemStack item;
+                if (head instanceof PlayerHead)
                 {
-                    String texture = metaLogger.getMetadata(location, TEXTURE_KEY);
-                    item = playerHead.createItem(UUID.fromString(uuid), texture);
+                    PlayerHead playerHead = (PlayerHead) head;
+                    String uuid = metaLogger.getMetadata(location, PLAYER_ID_KEY);
+                    if (metaLogger.isMetadataSet(location, TEXTURE_KEY))
+                    {
+                        String texture = metaLogger.getMetadata(location, TEXTURE_KEY);
+                        item = playerHead.createItem(UUID.fromString(uuid), texture);
+                    }
+                    else
+                        item = playerHead.createItem(UUID.fromString(uuid));
                 }
                 else
-                    item = playerHead.createItem(UUID.fromString(uuid));
+                    item = head.createItem();
+                block.getWorld().dropItemNaturally(block.getLocation(), item);
+                clearHeadMeta(location);
+                return true;
             }
             else
-                item = head.createItem();
-            block.getWorld().dropItemNaturally(block.getLocation(), item);
-            clearHeadMeta(location);
-            return true;
+            {
+                Location location = block.getLocation();
+                clearHeadMeta(location);
+                return false;
+            }
         }
-        else
+        catch (InvalidHeadException e)
         {
             Location location = block.getLocation();
             clearHeadMeta(location);
+            Bukkit.getLogger().warning(String.format("[%s] Unable to retrieve head broken at %s - %s", Core.PLUGIN_NAME, location, e.getMessage()));
             return false;
         }
     }
