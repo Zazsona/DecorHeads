@@ -4,6 +4,9 @@ import org.bukkit.inventory.ItemStack;
 
 public interface IHead
 {
-    public String getKey();
-    public ItemStack createItem();
+    String getKey();
+    String getName();
+    String getTexture();
+    ItemStack createItem();
+
 }

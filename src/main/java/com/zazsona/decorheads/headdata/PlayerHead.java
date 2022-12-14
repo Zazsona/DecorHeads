@@ -4,8 +4,7 @@ import com.google.gson.Gson;
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.apiresponse.ProfileResponse;
-import com.zazsona.decorheads.exceptions.InvalidHeadException;
-import org.bukkit.Bukkit;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -14,21 +13,23 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Random;
 import java.util.UUID;
 
 public class PlayerHead extends Head
 {
-    private static final String HEAD_NAME_FORMAT = "%s's Head";
+    public static final String PLAYER_NAME_PLACEHOLDER = "%PlayerName%";
+    public static final String PLAYER_SKIN_PLACEHOLDER = "%PlayerSkin%";
 
-    public PlayerHead(String key)
+    private final String headNameFormat;
+
+    public PlayerHead(String key, String headNameFormat)
     {
         super(key);
+        this.headNameFormat = headNameFormat;
     }
 
     public static NamespacedKey getSkullUUIDKey()
@@ -42,12 +43,30 @@ public class PlayerHead extends Head
     }
 
     @Override
-    public ItemStack createItem()
+    public String getName()
     {
-        return new ItemStack(Material.PLAYER_HEAD);
+        return headNameFormat;
     }
 
-    public ItemStack createItem(String playerName) throws InvalidHeadException
+    @Override
+    public String getTexture()
+    {
+        return PLAYER_SKIN_PLACEHOLDER;
+    }
+
+    @Override
+    public ItemStack createItem()
+    {
+        boolean isSteve = new Random().nextBoolean();
+        String name = (isSteve) ? "Steve" : "Alex";
+        UUID id = (isSteve) ? UUID.fromString("c06f8906-4c8a-4911-9c29-ea1dbd1aab82") : UUID.fromString("6ab43178-89fd-4905-97f6-0f67d9d76fd9");
+        String headName = StringUtils.replaceIgnoreCase(headNameFormat, PLAYER_NAME_PLACEHOLDER, name);
+        ItemStack item = createItem(id);
+        item.getItemMeta().setDisplayName(headName);
+        return item;
+    }
+
+    public ItemStack createItem(String playerName) throws IllegalArgumentException
     {
         try
         {
@@ -56,16 +75,16 @@ public class PlayerHead extends Head
         }
         catch (IOException | NullPointerException e)
         {
-            throw new InvalidHeadException(String.format("Unable to get UUID for player: %s", playerName));
+            throw new IllegalArgumentException(String.format("Unable to get UUID for player: %s", playerName));
         }
     }
 
-    public ItemStack createItem(OfflinePlayer player) throws InvalidHeadException
+    public ItemStack createItem(OfflinePlayer player) throws IllegalArgumentException
     {
         return createItem(player.getUniqueId());
     }
 
-    public ItemStack createItem(UUID uuid) throws InvalidHeadException
+    public ItemStack createItem(UUID uuid) throws IllegalArgumentException
     {
         try
         {
@@ -79,30 +98,32 @@ public class PlayerHead extends Head
             textureData.setProfileName(null);
             String skullTextureJson = gson.toJson(textureData);
             String encodedSkullTexture = new String(Base64.getEncoder().encode(skullTextureJson.getBytes(StandardCharsets.UTF_8)));
-            ItemStack skull = createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), encodedSkullTexture);
+            String skullName = StringUtils.replaceIgnoreCase(headNameFormat, PLAYER_NAME_PLACEHOLDER, pr.getName());
+            ItemStack skull = createSkull(skullName, encodedSkullTexture);
             ItemMeta meta = applyDecorHeadsPlayerSkullMeta(skull.getItemMeta(), uuid.toString(), encodedSkullTexture);
             skull.setItemMeta(meta);
             return skull;
         }
         catch (IOException e)
         {
-            throw new InvalidHeadException(String.format("Unable to resolve player head for UUID: %s", uuid));
+            throw new IllegalArgumentException(String.format("Unable to resolve player head for UUID: %s", uuid));
         }
     }
 
-    public ItemStack createItem(UUID uuid, String texture) throws InvalidHeadException
+    public ItemStack createItem(UUID uuid, String texture) throws IllegalArgumentException
     {
         try
         {
             ProfileResponse pr = DecorHeadsUtil.fetchPlayerProfile(uuid);
-            ItemStack skull = createSkull(String.format(HEAD_NAME_FORMAT, pr.getName()), texture);
+            String skullName = StringUtils.replaceIgnoreCase(headNameFormat, PLAYER_NAME_PLACEHOLDER, pr.getName());
+            ItemStack skull = createSkull(skullName, texture);
             ItemMeta meta = applyDecorHeadsPlayerSkullMeta(skull.getItemMeta(), uuid.toString(), texture);
             skull.setItemMeta(meta);
             return skull;
         }
         catch (IOException e)
         {
-            throw new InvalidHeadException(String.format("Unable to resolve player head for UUID: %s", uuid));
+            throw new IllegalArgumentException(String.format("Unable to resolve player head for UUID: %s", uuid));
         }
     }
 
