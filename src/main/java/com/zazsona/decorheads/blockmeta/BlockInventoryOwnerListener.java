@@ -1,10 +1,9 @@
 package com.zazsona.decorheads.blockmeta;
 
+import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.MaterialUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Campfire;
@@ -16,127 +15,155 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.util.Iterator;
-import java.util.UUID;
 
 public class BlockInventoryOwnerListener implements Listener
 {
-    private final String OWNER_ID_KEY = "BlockInventoryOwnerId";
-    private static BlockInventoryOwnerListener instance;
-
-    private BlockInventoryOwnerListener()
-    {
-
-    }
-
-    public static BlockInventoryOwnerListener getInstance()
-    {
-        if (instance == null)
-            instance = new BlockInventoryOwnerListener();
-        return instance;
-    }
-
-    public OfflinePlayer getOwningPlayer(Block block)
-    {
-        BlockMetaLogger metaLogger = BlockMetaLogger.getInstance();
-        Location location = block.getLocation();
-        if (metaLogger.isMetadataSet(location, OWNER_ID_KEY))
-        {
-            String uuidValue = metaLogger.getMetadata(location, OWNER_ID_KEY);
-            UUID uuid = UUID.fromString(uuidValue);
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-            return offlinePlayer;
-        }
-        return null;
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e)
     {
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null)
+        try
         {
-            Player player = e.getPlayer();
-            Block clickedBlock = e.getClickedBlock();
-            if (clickedBlock.getState() instanceof Campfire)
+            if (e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock() != null)
             {
-                ItemStack usedItem = e.getItem();
-                if (usedItem != null && MaterialUtil.isCookableFood(usedItem.getType()))
-                    BlockMetaLogger.getInstance().setMetadata(clickedBlock.getLocation(), OWNER_ID_KEY, player.getUniqueId().toString());
+                Player player = e.getPlayer();
+                Block clickedBlock = e.getClickedBlock();
+                if (clickedBlock.getState() instanceof Campfire)
+                {
+                    ItemStack usedItem = e.getItem();
+                    if (usedItem != null && MaterialUtil.isCookableFood(usedItem.getType()))
+                        BlockMetaRepository.getInstance()
+                                .getChunk(clickedBlock.getChunk())
+                                .addBlockMeta(clickedBlock.getLocation(), BlockMetaKeys.INVENTORY_OWNER_ID_KEY, player.getUniqueId().toString());
+                }
             }
-
+        }
+        catch (IOException ioEx)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInventoryUsed(InventoryClickEvent e)
     {
-        if (e == null || e.getInventory() == null)
-            return;
-        InventoryHolder inventoryHolder = e.getInventory().getHolder();
-        if (inventoryHolder instanceof BlockState)
+        try
         {
-            BlockState blockState = (BlockState) inventoryHolder;
-            Block block = blockState.getBlock();
-            Location location = block.getLocation();
-            Player player = (Player) e.getWhoClicked();
-            BlockMetaLogger.getInstance().setMetadata(location, OWNER_ID_KEY, player.getUniqueId().toString());
+            if (e == null || e.getInventory() == null)
+                return;
+            InventoryHolder inventoryHolder = e.getInventory().getHolder();
+            if (inventoryHolder instanceof BlockState)
+            {
+                BlockState blockState = (BlockState) inventoryHolder;
+                Block block = blockState.getBlock();
+                Location location = block.getLocation();
+                Player player = (Player) e.getWhoClicked();
+                BlockMetaRepository.getInstance()
+                        .getChunk(block.getChunk())
+                        .addBlockMeta(location, BlockMetaKeys.INVENTORY_OWNER_ID_KEY, player.getUniqueId().toString());
+            }
+        }
+        catch (IOException ioEx)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e)
     {
-        BlockMetaLogger.getInstance().removeMetadata(e.getBlock().getLocation(), OWNER_ID_KEY);
+        try
+        {
+            clearInventoryOwnerMeta(e.getBlock().getLocation());
+        }
+        catch (IOException ioEx)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent e)
     {
-        Iterator blockIterator = e.blockList().iterator();
-        while (blockIterator.hasNext())
+        try
         {
-            Block block = (Block) blockIterator.next();
-            BlockMetaLogger.getInstance().removeMetadata(block.getLocation(), OWNER_ID_KEY);
+            Iterator blockIterator = e.blockList().iterator();
+            while (blockIterator.hasNext())
+            {
+                Block block = (Block) blockIterator.next();
+                clearInventoryOwnerMeta(block.getLocation());
+            }
+        }
+        catch (IOException ioEx)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent e)
     {
-        Iterator blockIterator = e.blockList().iterator();
-        while (blockIterator.hasNext())
+        try
         {
-            Block block = (Block) blockIterator.next();
-            BlockMetaLogger.getInstance().removeMetadata(block.getLocation(), OWNER_ID_KEY);
+            Iterator blockIterator = e.blockList().iterator();
+            while (blockIterator.hasNext())
+            {
+                Block block = (Block) blockIterator.next();
+                clearInventoryOwnerMeta(block.getLocation());
+            }
+        }
+        catch (IOException ioEx)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPistonExtend(BlockPistonExtendEvent e)
     {
-        for (Block movingBlock : e.getBlocks())
+        try
         {
-            if ((movingBlock.getPistonMoveReaction() != PistonMoveReaction.BLOCK || movingBlock.getPistonMoveReaction() != PistonMoveReaction.IGNORE) && BlockMetaLogger.getInstance().isMetadataSet(movingBlock.getLocation(), OWNER_ID_KEY))
+            for (Block movingBlock : e.getBlocks())
             {
-                BlockMetaLogger.getInstance().removeMetadata(movingBlock.getLocation(), OWNER_ID_KEY);
+                if ((movingBlock.getPistonMoveReaction() != PistonMoveReaction.BLOCK || movingBlock.getPistonMoveReaction() != PistonMoveReaction.IGNORE))
+                {
+                    clearInventoryOwnerMeta(movingBlock.getLocation());
+                }
             }
+        }
+        catch (IOException ioEx)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent e)
     {
-        BlockMetaLogger.getInstance().removeMetadata(e.getBlock().getLocation(), OWNER_ID_KEY);
+        try
+        {
+            clearInventoryOwnerMeta(e.getBlock().getLocation());
+        }
+        catch (IOException ioEx)
+        {
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+        }
     }
 
-    //@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    //public void onFromTo(BlockFromToEvent e)
-    //{
-    //             Unimplemented. No inventory-holding block is destroyed by liquids.
-    //}
+    /**
+     * Removes all inventory owner metadata from this location
+     * @param location the location to purge
+     * @throws IOException unable to get metadata file
+     */
+    private void clearInventoryOwnerMeta(Location location) throws IOException
+    {
+        BlockMetaRepository repository = BlockMetaRepository.getInstance();
+        BlockMetaChunkData chunk = repository.getChunk(location.getChunk());
+        chunk.removeBlockMeta(location, BlockMetaKeys.INVENTORY_OWNER_ID_KEY);
+    }
 }
