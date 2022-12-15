@@ -1,11 +1,13 @@
 package com.zazsona.decorheads.command;
 
-import com.zazsona.decorheads.DecorHeadsUtil;
+import com.zazsona.decorheads.crafting.MetaIngredient;
+import com.zazsona.decorheads.crafting.ShapedMetaRecipe;
+import com.zazsona.decorheads.crafting.ShapelessMetaRecipe;
+import com.zazsona.decorheads.headdata.Head;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
 
@@ -20,21 +22,20 @@ public class WikiCraftRecipePage implements IWikiPage
 
     private String page;
 
-    public WikiCraftRecipePage(ShapedRecipe shapedRecipe)
+    public WikiCraftRecipePage(ShapedMetaRecipe shapedRecipe)
     {
-        ArrayList<Material> ingredients = getIngredientsTypeList(shapedRecipe.getIngredientMap().values());
+        ArrayList<MetaIngredient> ingredients = new ArrayList<>(shapedRecipe.getIngredientMap().values());
         String craftGrid = buildGridDisplay(shapedSlotChar, shapedRecipe.getShape(), shapedRecipe.getIngredientMap(), ingredients);
         String[] gridRows = craftGrid.split("\n");
         String[] recipeKey = buildRecipeKey(gridRows.length, ingredients);
         this.page = buildPage(gridRows, recipeKey);
     }
 
-    public WikiCraftRecipePage(ShapelessRecipe shapelessRecipe)
+    public WikiCraftRecipePage(ShapelessMetaRecipe shapelessRecipe)
     {
-        ArrayList<Material> ingredients = getIngredientsTypeList(shapelessRecipe.getIngredientList());
-        String craftGrid = buildShapelessGridDisplay(ingredients);
+        String craftGrid = buildShapelessGridDisplay(shapelessRecipe.getIngredientList());
         String[] gridRows = craftGrid.split("\n");
-        String[] recipeKey = buildRecipeKey(gridRows.length, ingredients);
+        String[] recipeKey = buildRecipeKey(gridRows.length, shapelessRecipe.getIngredientList());
         this.page = buildPage(gridRows, recipeKey);
     }
 
@@ -43,22 +44,7 @@ public class WikiCraftRecipePage implements IWikiPage
         return page;
     }
 
-    private ArrayList<Material> getIngredientsTypeList(Collection<ItemStack> ingredientStacks)
-    {
-        ArrayList<Material> ingredients = new ArrayList<>();
-        for (ItemStack ingredientStack : ingredientStacks)
-        {
-            if (ingredientStack != null)
-            {
-                Material ingredient = ingredientStack.getType();
-                if (ingredient != null && !ingredient.isAir())
-                    ingredients.add(ingredient);
-            }
-        }
-        return ingredients;
-    }
-
-    private String buildShapelessGridDisplay(List<Material> orderedIngredients)
+    private String buildShapelessGridDisplay(List<MetaIngredient> orderedIngredients)
     {
         int gridSize;
         if (orderedIngredients.size() == 1)
@@ -83,17 +69,17 @@ public class WikiCraftRecipePage implements IWikiPage
             shapeGrid[y] = rowBuilder.toString();
         }
 
-        HashMap<Character, ItemStack> ingredientMap = new HashMap<>();
+        HashMap<Character, MetaIngredient> ingredientMap = new HashMap<>();
         for (int i = 0; i < orderedIngredients.size(); i++)
         {
-            ingredientMap.put(String.valueOf(i).charAt(0), new ItemStack(orderedIngredients.get(i)));
+            ingredientMap.put(String.valueOf(i).charAt(0), orderedIngredients.get(i));
         }
         if (ingredientMap.size() < 9)
-            ingredientMap.put(' ', new ItemStack(Material.AIR));
+            ingredientMap.put(' ', new MetaIngredient(new ItemStack(Material.AIR), (ingredient1, refIngredient) -> ingredient1.getType() == refIngredient.getType()));
         return buildGridDisplay(shapelessSlotChar, shapeGrid, ingredientMap, orderedIngredients);
     }
 
-    private String buildGridDisplay(String slotChar, String[] shape, Map<Character, ItemStack> ingredientMap, List<Material> orderedIngredients)
+    private String buildGridDisplay(String slotChar, String[] shape, Map<Character, MetaIngredient> ingredientMap, List<MetaIngredient> orderedIngredients)
     {
         StringBuilder gridBuilder = new StringBuilder();
         int gridLength = (slotSize * 3) + 2;
@@ -109,8 +95,8 @@ public class WikiCraftRecipePage implements IWikiPage
                 for (int x = 0; x < 3; x++)
                 {
                     Character ingredientChar = (x < row.length) ? row[x].charAt(0) : ' ';
-                    ItemStack ingredient = (ingredientChar != ' ') ? ingredientMap.get(ingredientChar) : new ItemStack(Material.AIR);
-                    int index = orderedIngredients.indexOf(ingredient.getType());
+                    MetaIngredient ingredient = (ingredientChar != ' ') ? ingredientMap.get(ingredientChar) : new MetaIngredient(new ItemStack(Material.AIR), (ingredient1, refIngredient) -> ingredient1.getType() == refIngredient.getType());
+                    int index = orderedIngredients.indexOf(ingredient);
                     ChatColor colour = (index > -1 && ingredientChar != ' ') ? ingredientColours[index] : neutralColour;
                     for (int slotX = 0; slotX < slotSize; slotX++)
                         gridBuilder.append(colour).append(slotChar);
@@ -124,7 +110,7 @@ public class WikiCraftRecipePage implements IWikiPage
         return gridBuilder.toString();
     }
 
-    private String[] buildRecipeKey(int linesCount, List<Material> orderedIngredients)
+    private String[] buildRecipeKey(int linesCount, List<MetaIngredient> orderedIngredients)
     {
         String[] lines = new String[linesCount];
         int startLine = Math.max(0, ((lines.length / 2) - (orderedIngredients.size() / 2)));
@@ -146,11 +132,15 @@ public class WikiCraftRecipePage implements IWikiPage
         return lines;
     }
 
-    private String buildKeyEntry(List<Material> orderedIngredients, int ingredientIndex, boolean firstInLine)
+    private String buildKeyEntry(List<MetaIngredient> orderedIngredients, int ingredientIndex, boolean firstInLine)
     {
         StringBuilder entryBuilder = new StringBuilder();
-        Material ingredient = orderedIngredients.get(ingredientIndex);
+        MetaIngredient ingredient = orderedIngredients.get(ingredientIndex);
         ChatColor colour = ingredientColours[ingredientIndex];
+        String ingredientName = (ingredient.getItemMeta().hasDisplayName()) ? ingredient.getItemMeta().getDisplayName() : ingredient.getItemMeta().getLocalizedName();
+        if (ingredient.getItemMeta().getPersistentDataContainer().has(Head.getSkullHeadKeyKey(), PersistentDataType.STRING))
+            ingredientName += " (Head)";
+
         if (!firstInLine)
             entryBuilder.append("     /     ");
         entryBuilder
@@ -158,7 +148,7 @@ public class WikiCraftRecipePage implements IWikiPage
                 .append(borderChar)
                 .append(neutralColour)
                 .append(" ")
-                .append(DecorHeadsUtil.capitaliseName(ingredient.name()));
+                .append(ingredientName);
         return entryBuilder.toString();
     }
 

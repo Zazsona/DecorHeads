@@ -14,9 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Map;
-
 public class SpawnHeadCommand implements CommandExecutor
 {
     public static final String COMMAND_KEY = "dhspawn";
@@ -45,17 +42,16 @@ public class SpawnHeadCommand implements CommandExecutor
                 return true;
             }
 
-            Map<String, IHead> loadedHeads = HeadConfig.getLoadedHeads();
             if (args.length == 2)
             {
                 try
                 {
-                    ItemStack headStack = getHead(loadedHeads, args[1], null);
+                    ItemStack headStack = getHeadItem(args[1], null);
                     spawnHead((Player) sender, headStack);
                 }
                 catch (InvalidHeadException e)
                 {
-                    ItemStack headStack = getHead(loadedHeads, SPAWN_COMMAND_PLAYER_HEAD_ID, args[1]);
+                    ItemStack headStack = getHeadItem(SPAWN_COMMAND_PLAYER_HEAD_ID, args[1]);
                     spawnHead((Player) sender, headStack);
                 }
             }
@@ -64,14 +60,14 @@ public class SpawnHeadCommand implements CommandExecutor
                 try
                 {
                     String headIdentifier = StringUtils.join(args, " ", 1, args.length);
-                    ItemStack headStack = getHead(loadedHeads, headIdentifier, null);
+                    ItemStack headStack = getHeadItem(headIdentifier, null);
                     spawnHead((Player) sender, headStack);
                 }
                 catch (InvalidHeadException e)
                 {
                     String headIdentifier = StringUtils.join(args, " ", 1, args.length - 1);
                     String playerName = args[args.length - 1];
-                    ItemStack headStack = getHead(loadedHeads, headIdentifier, playerName);
+                    ItemStack headStack = getHeadItem(headIdentifier, playerName);
                     spawnHead((Player) sender, headStack);
                 }
             }
@@ -93,12 +89,9 @@ public class SpawnHeadCommand implements CommandExecutor
         }
     }
 
-    private ItemStack getHead(Map<String, IHead> loadedHeads, String identifier, @Nullable String playerName) throws InvalidHeadException
+    private ItemStack getHeadItem(String identifier, @Nullable String playerName) throws InvalidHeadException
     {
-        String key = identifier.trim();
-        if (!loadedHeads.containsKey(key))
-            key = resolveHeadKey(loadedHeads, identifier);
-        IHead head = loadedHeads.get(key);
+        IHead head = HeadConfig.matchLoadedHead(identifier.trim());
         if (head != null)
         {
             if (head instanceof PlayerHead && playerName != null)
@@ -107,17 +100,6 @@ public class SpawnHeadCommand implements CommandExecutor
                 return head.createItem();
         }
         throw new InvalidHeadException(String.format("Head \"%s\" is not a recognised head.", identifier));
-    }
-
-    private String resolveHeadKey(Map<String, IHead> loadedHeads, String headName)
-    {
-        for (Map.Entry<String, IHead> loadedHead : loadedHeads.entrySet())
-        {
-            IHead head = loadedHead.getValue();
-            if ((head != null) && (head.getName().equalsIgnoreCase(headName)))
-                return head.getKey();
-        }
-        return null;
     }
 
     private void spawnHead(Player player, ItemStack headStack)

@@ -1,24 +1,24 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.Core;
-import com.zazsona.decorheads.DecorHeadsUtil;
-import com.zazsona.decorheads.config.HeadLoader;
+import com.zazsona.decorheads.config.HeadConfig;
 import com.zazsona.decorheads.config.PluginConfig;
+import com.zazsona.decorheads.crafting.IMetaRecipe;
+import com.zazsona.decorheads.crafting.MetaRecipeManager;
+import com.zazsona.decorheads.crafting.ShapedMetaRecipe;
+import com.zazsona.decorheads.crafting.ShapelessMetaRecipe;
 import com.zazsona.decorheads.headdata.IHead;
-import com.zazsona.decorheads.headdata.TextureHead;
-import com.zazsona.decorheads.headsources.*;
+import com.zazsona.decorheads.headdata.PlayerHead;
+import com.zazsona.decorheads.headsources.drops.IDrop;
 import org.bukkit.ChatColor;
-import org.bukkit.Keyed;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.*;
 
 public class WikiCommand implements CommandExecutor
 {
@@ -63,7 +63,7 @@ public class WikiCommand implements CommandExecutor
         }
     }
 
-    private void sendHeadSource(CommandSender sender, String[] args)    //This is a pretty long-winded method, but honestly, everything with user input seems to wind up this way. Can't see any approaches to minimising it.
+    private void sendHeadSource(CommandSender sender, String[] args)    // This is a pretty long-winded method, but honestly, everything with user input seems to wind up this way. Can't see any approaches to minimising it.
     {
         boolean pageSpecified = args[args.length-1].matches("[0-9]+");
         int headNameEnd = (pageSpecified) ? args.length-1 : args.length;
@@ -71,70 +71,67 @@ public class WikiCommand implements CommandExecutor
         for (int i = 1; i < headNameEnd; i++)
             headNameBuilder.append(args[i]).append(" ");
 
-        HeadLoader headLoader = HeadLoader.getInstance();
         String headName = headNameBuilder.toString().trim();
-        IHead head = getHead(headName);
-        if (head != null && headLoader.getLoadedHeadSources().get(head.getKey()) != null)
+        IHead head = HeadConfig.matchLoadedHead(headName);
+        if (head != null)
         {
-            ArrayList<String> sourceKeys = new ArrayList<>();
-            sourceKeys.addAll(headLoader.getLoadedHeadSources().get(head.getKey()).keySet());
-            sourceKeys.sort(Comparator.naturalOrder());
+            List<IDrop> drops = HeadConfig.getDropsFor(head.getKey());
+            List<IMetaRecipe> recipes = HeadConfig.getRecipesFor(head.getKey());
+            drops.sort(Comparator.comparing(IDrop::getKey));
+            recipes.sort(Comparator.comparing(recipe -> recipe.getKey().getKey()));
+            int totalSources = drops.size() + recipes.size();
 
-            int pageNo = getPageNo(args[args.length-1], 1, sourceKeys.size());
-            String sourceKey = sourceKeys.get((pageNo - 1));
-            HeadSource headSource = headLoader.getLoadedHeadSources().get(head.getKey()).get(sourceKey);
-            if (headSource != null)
+            if (totalSources == 0)
             {
-                IWikiPage page = getHeadSourcePage(headSource);
-                String headerText = String.format("Head Sources (%d/%d)", pageNo, sourceKeys.size());
-                String disabledNotice = getSourceTypeDisabledNotice(headSource.getSourceType());
-                String pageContent = (disabledNotice == null) ? page.getPage() : disabledNotice + "\n" + page.getPage();
-                String message = CommandUtil.addHeader(headerText, pageContent);
-                sender.sendMessage("\n"+message); // New line to make it easier to read against previously opened pages.
-
-                if (PluginConfig.isLearnRecipesFromWikiEnabled() && headSource instanceof CraftHeadSource && sender instanceof Player)
-                {
-                    CraftHeadSource craftHeadSource = (CraftHeadSource) headSource;
-                    Player player = (Player) sender;                                        //They've got Wiki page access, may as well give the recipe in the prettier UI
-                    NamespacedKey recipeKey = ((Keyed) craftHeadSource.getRecipe()).getKey();
-                    player.discoverRecipe(recipeKey);
-                }
+                sender.sendMessage(ChatColor.RED+String.format("Head \"%s\" has no sources.", headName));
+                return;
             }
-            else
-                sender.sendMessage(ChatColor.RED+String.format("Could not load page for head source: \"%s\"", sourceKey));
+
+            int pageNo = getPageNo(args[args.length-1], 1, totalSources);
+            IDrop drop = ((pageNo - 1) < drops.size()) ? drops.get(pageNo - 1) : null;
+            IMetaRecipe recipe = (((pageNo - 1) - drops.size()) >= 0) ? recipes.get((pageNo - 1) - drops.size()) : null;
+
+            IWikiPage wikiPage = null;
+            if (drop != null)
+                wikiPage = new WikiDropPage(drop);
+            if (recipe != null && recipe instanceof ShapedMetaRecipe)
+                wikiPage = new WikiCraftRecipePage((ShapedMetaRecipe) recipe);
+            if (recipe != null && recipe instanceof ShapelessMetaRecipe)
+                wikiPage = new WikiCraftRecipePage((ShapelessMetaRecipe) recipe);
+
+            String headerText = String.format("Head Sources (%d/%d)", pageNo, totalSources);
+            boolean isDisabled = (drop != null) ? isDropEnabled(drop) : isRecipeEnabled(recipe);
+            String disabledNotice = (isDisabled) ? "Note: This source is currently disabled." : null;
+            String pageContent = (isDisabled) ? disabledNotice + "\n" + wikiPage.getPage() : wikiPage.getPage();
+            String message = CommandUtil.addHeader(headerText, pageContent);
+            sender.sendMessage("\n"+message); // New line to make it easier to read against previously opened pages.
+
+            if (PluginConfig.isLearnRecipesFromWikiEnabled() && recipe != null && sender instanceof Player)
+            {
+                Player player = (Player) sender;                 // They've got Wiki page access, may as well give the recipe in the prettier UI
+                player.discoverRecipe(recipe.getKey());
+            }
         }
         else if (headName == null || headName.equals(""))
             sender.sendMessage(ChatColor.RED+String.format("Usage: /%s %s", COMMAND_KEY, SOURCES_USAGE));
         else if (head == null)
             sender.sendMessage(ChatColor.RED+String.format("Unrecognised head: \"%s\"", headName));
-        else if (headLoader.getLoadedHeadSources().get(head.getKey()) == null)
-            sender.sendMessage(ChatColor.RED+String.format("Head \"%s\" has no sources.", headName));
     }
 
-    private String getSourceTypeDisabledNotice(HeadSourceType sourceType)
+    private boolean isRecipeEnabled(IMetaRecipe recipe)
     {
-        String lineTemplate = ChatColor.GRAY+"Note: %s is currently disabled."+ChatColor.RESET;
-        boolean isCraftSource = (sourceType == HeadSourceType.SHAPED_CRAFT || sourceType == HeadSourceType.SHAPELESS_CRAFT);
-        if (!PluginConfig.isPluginEnabled())
-            return String.format(lineTemplate, Core.PLUGIN_NAME);
-        else if (isCraftSource && !PluginConfig.isCraftingEnabled())
-            return String.format(lineTemplate, "Head crafting");
-        else if (!isCraftSource && (!PluginConfig.isDropSourceEnabled(sourceType) || !PluginConfig.isDropsEnabled()))
-            return String.format(lineTemplate, DecorHeadsUtil.capitaliseName(sourceType.name()));
-        else
-            return null;
+        return (PluginConfig.isPluginEnabled() && PluginConfig.isCraftingEnabled() && MetaRecipeManager.getRecipe(recipe.getKey()) != null);
+    }
+
+    private boolean isDropEnabled(IDrop drop)
+    {
+        return (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && PluginConfig.isDropTypeEnabled(drop.getDropType()));
     }
 
     private void sendHeadsList(CommandSender sender, String[] args)
     {
-        HeadLoader headLoader = HeadLoader.getInstance();
-        ArrayList<IHead> heads = new ArrayList<>(headLoader.getLoadedHeads().values());
-        heads.sort((o1, o2) ->
-                   {
-                       String head1Name = (o1 instanceof TextureHead) ? ((TextureHead) o1).getName() : DecorHeadsUtil.capitaliseName(o1.getKey());
-                       String head2Name = (o2 instanceof TextureHead) ? ((TextureHead) o2).getName() : DecorHeadsUtil.capitaliseName(o2.getKey());
-                       return head1Name.compareTo(head2Name);
-                   });
+        ArrayList<IHead> heads = new ArrayList<>(HeadConfig.getLoadedHeads().values());
+        heads.sort(Comparator.comparing(IHead::getPrettyName));
         int headsPerPage = 8;
         int pages = (int) (Math.ceil(heads.size() / headsPerPage) + 1);
         int pageNo = getPageNo(args[args.length-1], 1, pages);
@@ -144,8 +141,7 @@ public class WikiCommand implements CommandExecutor
         for (int i = startingHeadIndex; i<endingHeadIndex; i++)
         {
             IHead head = heads.get(i);
-            String headName = (head instanceof TextureHead) ? ((TextureHead) head).getName() : DecorHeadsUtil.capitaliseName(head.getKey());
-            sb.append(headName).append("\n");
+            sb.append(head.getPrettyName()).append("\n");
         }
         String headerText = String.format("Heads (%d/%d)", pageNo, pages);
         String page = CommandUtil.addHeader(headerText, sb.toString().trim());
@@ -164,19 +160,33 @@ public class WikiCommand implements CommandExecutor
         for (int i = 1; i < args.length; i++)
             headNameBuilder.append(args[i]).append(" ");
         String headName = headNameBuilder.toString().trim();
-        IHead head = getHead(headName);
-        if (head != null && head instanceof TextureHead && sender instanceof Player)
+        if (headName == null || headName.equals(""))
         {
-            PreviewInventory previewInventory = getPreviewInventory((TextureHead) head);
-            Player player = (Player) sender;
-            previewInventory.showInventory(player);
-        }
-        else if (headName == null || headName.equals(""))
             sender.sendMessage(ChatColor.RED+String.format("Usage: /%s %s", COMMAND_KEY, PREVIEW_USAGE));
-        else if (head == null)
+            return;
+        }
+
+        IHead head = HeadConfig.matchLoadedHead(headName);
+        if (head == null)
+        {
             sender.sendMessage(ChatColor.RED+String.format("Unrecognised head: \"%s\"", headName));
-        else if (!(head instanceof TextureHead))
-            sender.sendMessage(ChatColor.RED+String.format("Sorry, player head previews are not supported."));
+            return;
+        }
+
+        // Extract the Player Name
+        String playerName = null;
+        String headNameLwr = head.getName().toLowerCase();
+        String playerNamePlaceholderLwr = PlayerHead.PLAYER_NAME_PLACEHOLDER.toLowerCase();
+        if (headNameLwr.contains(playerNamePlaceholderLwr))
+        {
+            int startIndex = headNameLwr.indexOf(playerNamePlaceholderLwr);
+            char endChar = headNameLwr.charAt(startIndex + playerNamePlaceholderLwr.length());
+            playerName = headNameLwr.substring(startIndex).substring(0, headNameLwr.indexOf(endChar));
+        }
+
+        PreviewInventory previewInventory = getPreviewInventory(head, playerName);
+        Player player = (Player) sender;
+        previewInventory.showInventory(player);
     }
 
     private int getPageNo(String pageParam, int minPage, int maxPage)
@@ -194,57 +204,19 @@ public class WikiCommand implements CommandExecutor
         return page;
     }
 
-    private IWikiPage getHeadSourcePage(HeadSource headSource)
+    private PreviewInventory getPreviewInventory(IHead head, @Nullable String playerName)
     {
-        IWikiPage wikiPage = null;
-        if (headSource instanceof DropHeadSource)
-            wikiPage = new WikiDropPage((DropHeadSource) headSource);
-        else if (headSource instanceof CraftHeadSource)
-        {
-            CraftHeadSource craftHeadSource = (CraftHeadSource) headSource;
-            Recipe recipe = craftHeadSource.getRecipe();
-            if (recipe instanceof ShapedRecipe)
-                wikiPage = new WikiCraftRecipePage((ShapedRecipe) recipe);
-            else if (recipe instanceof ShapelessRecipe)
-                wikiPage = new WikiCraftRecipePage((ShapelessRecipe) recipe);
-        }
-        return wikiPage;
-    }
+        String inventoryKey = head.getKey();
+        if (head instanceof PlayerHead && playerName != null)
+            inventoryKey += ":" + playerName;
 
-    private PreviewInventory getPreviewInventory(TextureHead head)
-    {
-        if (!previewInventories.containsKey(head.getKey()))
-        {
-            ItemStack headStack = head.createItem();
-            PreviewInventory previewInventory = new PreviewInventory(headStack);
-            Core.getSelfPlugin().getServer().getPluginManager().registerEvents(previewInventory, Core.getSelfPlugin());
-            previewInventories.put(head.getKey(), previewInventory);    //Cache preview heads for re-use so there's no memory leak, as the listener retains a reference stopping GC.
-        }
-        return previewInventories.get(head.getKey());
-    }
+        if (previewInventories.containsKey(inventoryKey))
+            return previewInventories.get(inventoryKey);
 
-    private IHead getHead(String identifier)
-    {
-        HeadLoader headLoader = HeadLoader.getInstance();
-        String key = identifier.trim();
-        if (!headLoader.getLoadedHeads().containsKey(key))
-            key = getHeadKey(identifier);
-        return headLoader.getLoadedHeads().get(key);
-    }
-
-    private String getHeadKey(String headName)
-    {
-        HeadLoader headLoader = HeadLoader.getInstance();
-        for (String loadedHeadKey : headLoader.getLoadedHeads().keySet())
-        {
-            IHead head = headLoader.getLoadedHeads().get(loadedHeadKey);
-            if (head != null && head instanceof TextureHead)
-            {
-                TextureHead textureHead = (TextureHead) head;
-                if (textureHead.getName().equalsIgnoreCase(headName))
-                    return textureHead.getKey();
-            }
-        }
-        return null;
+        ItemStack headStack = (head instanceof PlayerHead && playerName != null) ? ((PlayerHead) head).createItem(playerName) : head.createItem();
+        PreviewInventory previewInventory = new PreviewInventory(headStack);
+        Core.getSelfPlugin().getServer().getPluginManager().registerEvents(previewInventory, Core.getSelfPlugin());
+        previewInventories.put(inventoryKey, previewInventory);
+        return previewInventory;
     }
 }

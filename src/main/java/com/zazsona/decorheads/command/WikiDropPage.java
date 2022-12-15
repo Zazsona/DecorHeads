@@ -1,12 +1,16 @@
 package com.zazsona.decorheads.command;
 
+import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.DecorHeadsUtil;
-import com.zazsona.decorheads.headsources.DropHeadSource;
-import com.zazsona.decorheads.headsources.HeadSourceType;
-import com.zazsona.decorheads.headsources.dropfilters.*;
+import com.zazsona.decorheads.config.DropType;
+import com.zazsona.decorheads.headsources.drops.IDrop;
+import com.zazsona.decorheads.headsources.filters.BlockFilter;
+import com.zazsona.decorheads.headsources.filters.IDropFilter;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 public class WikiDropPage implements IWikiPage
@@ -14,9 +18,9 @@ public class WikiDropPage implements IWikiPage
     private final String borderChar = "\u2B1B";
     private String page;
 
-    public WikiDropPage(DropHeadSource headSource)
+    public WikiDropPage(IDrop drop)
     {
-        page = buildPage(headSource);
+        page = buildPage(drop);
     }
 
     @Override
@@ -25,28 +29,30 @@ public class WikiDropPage implements IWikiPage
         return page;
     }
 
-    private String buildPage(DropHeadSource headSource)
+    private String buildPage(IDrop drop)
     {
         StringBuilder pageBuilder = new StringBuilder();
-        pageBuilder.append(borderChar).append(" Drop Type: ").append(getScalar(headSource.getSourceType().name())).append("\n");
-        pageBuilder.append(borderChar).append(" Drop Rate: ").append(getScalar(headSource.getBaseDropRate()+"%")).append("\n");
+        pageBuilder.append(borderChar).append(" Drop Type: ").append(formatScalar(DecorHeadsUtil.capitaliseName(drop.getDropType().toString()))).append("\n");
+        pageBuilder.append(borderChar).append(" Drop Rate: ").append(formatScalar(drop.getDropRate()+"%")).append("\n");
         pageBuilder.append(CommandUtil.addHeader("How to Drop", ""));
-        if (headSource.getDropFilters().size() > 0)
+        List<IDropFilter> dropFilters = drop.getDropFilters();
+        if (dropFilters.size() > 0)
         {
-            for (DropSourceFilter filter : headSource.getDropFilters())
+            for (IDropFilter filter : dropFilters)
             {
-                if (filter instanceof BlockDropFilter)
-                    pageBuilder.append(borderChar).append(" Break Blocks: ").append(getEnumList(((BlockDropFilter) filter).getBlocks()));
-                else if (filter instanceof EntityDropFilter)
+                if (filter instanceof BlockFilter)
+                    pageBuilder.append(borderChar).append(" Break Blocks: ").append(formatKeyList(((BlockFilter) filter).getBlockKeys()));
+                // TODO: Restore as filters are reimplemented
+                /*else if (filter instanceof EntityDropFilter)
                     pageBuilder.append(borderChar).append(" Kill Entities: ").append(getEnumList(((EntityDropFilter) filter).getEntities()));
                 else if (filter instanceof PlayerDeathIdDropFilter)
                     pageBuilder.append(borderChar).append(" Kill Players: ").append(getPlayerList(((PlayerDeathIdDropFilter) filter).getUuids()));
                 else if (filter instanceof ToolDropFilter)
                     pageBuilder.append(borderChar).append(" Using Tools: ").append(getEnumList(((ToolDropFilter) filter).getTools()));
                 else if (filter instanceof RecipeResultDropFilter)
-                    pageBuilder.append(borderChar).append(String.format(" %s to Make: ", getSourceTypeActionName(headSource.getSourceType()))).append(getEnumList(((RecipeResultDropFilter) filter).getResults()));
+                    pageBuilder.append(borderChar).append(String.format(" %s to Make: ", getSourceTypeActionName(drop.getDropType()))).append(getEnumList(((RecipeResultDropFilter) filter).getResults()));
                 else if (filter instanceof RecipeIngredientsDropFilter)
-                    pageBuilder.append(borderChar).append(String.format(" %s using Ingredients: ", getSourceTypeActionName(headSource.getSourceType()))).append(getNestedEnumList(((RecipeIngredientsDropFilter) filter).getIngredientWhitelists()));
+                    pageBuilder.append(borderChar).append(String.format(" %s using Ingredients: ", getSourceTypeActionName(drop.getDropType()))).append(getNestedEnumList(((RecipeIngredientsDropFilter) filter).getIngredientWhitelists()));
                 else if (filter instanceof WorldDropFilter)
                     pageBuilder.append(borderChar).append(" In Worlds: ").append(getObjectList(((WorldDropFilter) filter).getWorldNames()));
                 else if (filter instanceof BiomeDropFilter)
@@ -54,39 +60,39 @@ public class WikiDropPage implements IWikiPage
                 else if (filter instanceof WeatherDropFilter)
                     pageBuilder.append(borderChar).append(" During Weather: ").append(getEnumList(((WeatherDropFilter) filter).getWeatherTypes()));
                 else if (filter instanceof EventInvokerFilter)
-                    pageBuilder.append(borderChar).append(" Performed By: ").append(getScalar(((EventInvokerFilter) filter).getInvoker()));
+                    pageBuilder.append(borderChar).append(" Performed By: ").append(getScalar(((EventInvokerFilter) filter).getInvoker()));*/
                 pageBuilder.append("\n");
             }
         }
         else
         {
-            pageBuilder.append(borderChar).append(" ").append(getSourceTypeActionName(headSource.getSourceType()));
+            pageBuilder.append(borderChar).append(" ").append(getSourceTypeActionName(drop.getDropType()));
         }
         return pageBuilder.toString().trim();
     }
 
-    private String getSourceTypeActionName(HeadSourceType sourceType)
+    private String getSourceTypeActionName(DropType dropType)
     {
-        switch (sourceType)
+        switch (dropType)
         {
-            case MINE_DROP:
+            case BLOCK_BREAK:
                 return "Mine blocks";
-            case BREW_DROP:
+            case BREW:
                 return "Brew";
-            case CRAFT_DROP:
+            case CRAFT:
                 return "Craft";
-            case SMELT_DROP:
+            case SMELT:
                 return "Cook";
-            case ENTITY_DEATH_DROP:
+            case ENTITY_DEATH:
                 return "Kill entities";
-            case PLAYER_DEATH_DROP:
+            case PLAYER_DEATH:
                 return "Kill players";
             default:
                 return "Unknown";
         }
     }
 
-    private String getScalar(Object value)
+    private String formatScalar(Object value)
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(ChatColor.ITALIC);
@@ -95,7 +101,7 @@ public class WikiDropPage implements IWikiPage
         return stringBuilder.toString();
     }
 
-    private String getObjectList(Collection<? extends Object> objects)
+    private String formatObjectList(Collection<? extends Object> objects)
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(ChatColor.ITALIC);
@@ -106,30 +112,44 @@ public class WikiDropPage implements IWikiPage
         return stringBuilder.toString();
     }
 
-    private String getEnumList(Collection<? extends Enum> enums)
+    private String formatEnumList(Collection<? extends Enum> enums)
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(ChatColor.ITALIC);
         for (Enum enumEntry : enums)
-            stringBuilder.append(DecorHeadsUtil.capitaliseName(enumEntry.name())).append(", ");
+            stringBuilder.append(DecorHeadsUtil.capitaliseName(enumEntry.toString())).append(", ");
         stringBuilder.setLength(stringBuilder.length()-2); //Remove final ", "
         stringBuilder.append(ChatColor.RESET);
         return stringBuilder.toString();
     }
 
-    private String getNestedEnumList(Collection<? extends Collection<? extends Enum>> nestedEnums)
+    private String formatKeyList(Collection<NamespacedKey> keys)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(ChatColor.ITALIC);
+        for (NamespacedKey keyEntry : keys)
+        {
+            String suffix = (keyEntry.getNamespace().equalsIgnoreCase(Core.PLUGIN_NAME)) ? " (Head)" : "";
+            stringBuilder.append(DecorHeadsUtil.capitaliseName(keyEntry.getKey())).append(suffix).append(", ");
+        }
+        stringBuilder.setLength(stringBuilder.length()-2); //Remove final ", "
+        stringBuilder.append(ChatColor.RESET);
+        return stringBuilder.toString();
+    }
+
+    private String formatNestedEnumList(Collection<? extends Collection<? extends Enum>> nestedEnums)
     {
         StringBuilder stringBuilder = new StringBuilder();
         for (Collection<? extends Enum> enums : nestedEnums)
         {
             if (nestedEnums.size() > 1)
                 stringBuilder.append("\n").append(borderChar).append(" ");
-            stringBuilder.append(getEnumList(enums));
+            stringBuilder.append(formatEnumList(enums));
         }
         return stringBuilder.toString();
     }
 
-    private String getPlayerList(Collection<String> uuids)
+    private String formatPlayerList(Collection<String> uuids)
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(ChatColor.ITALIC);
