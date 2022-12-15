@@ -3,17 +3,17 @@ package com.zazsona.decorheads;
 import com.google.gson.Gson;
 import com.zazsona.decorheads.apiresponse.NameUUIDResponse;
 import com.zazsona.decorheads.apiresponse.ProfileResponse;
+import com.zazsona.decorheads.headdata.PlayerHead;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Locale;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class DecorHeadsUtil
 {
@@ -90,5 +90,35 @@ public class DecorHeadsUtil
             responseBuilder.append(line);
         }
         return responseBuilder.toString();
+    }
+
+    /**
+     * Attempts to extract a Player's Name from a head name, using the provided template
+     * @param headInstanceName - The name of a head, e.g "Zazsona's Head"
+     * @param headNameTemplate - The template for a head's name, e.g "%PlayerName%'s Head"
+     * @return the player's name, or null if no valid extract could be found.
+     */
+    public static String extractPlayerNameFromHead(String headInstanceName, String headNameTemplate)
+    {
+        try
+        {
+            String playerName = null;
+            String headTemplateLwr = headNameTemplate.toLowerCase();
+            String playerNamePlaceholderLwr = PlayerHead.PLAYER_NAME_PLACEHOLDER.toLowerCase();
+            if (headTemplateLwr.contains(playerNamePlaceholderLwr))
+            {
+                int startIndex = headTemplateLwr.indexOf(playerNamePlaceholderLwr);
+                char endChar = headNameTemplate.charAt(startIndex + playerNamePlaceholderLwr.length()); // Using "headNameTemplate" here to get the case-matching terminating char
+                playerName = headInstanceName.toLowerCase().substring(startIndex).substring(0, headInstanceName.indexOf(endChar));
+                if (Pattern.matches("[a-zA-Z0-9_]{2,16}", playerName))
+                    return playerName;
+            }
+            return playerName;
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            // Head Instance's Name does not comply with the Head Name Template; name cannot be extracted.
+            return null;
+        }
     }
 }

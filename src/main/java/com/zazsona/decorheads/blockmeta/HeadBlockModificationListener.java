@@ -1,19 +1,20 @@
 package com.zazsona.decorheads.blockmeta;
 
 import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.HeadConfig;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.event.head.*;
 import com.zazsona.decorheads.headdata.Head;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
-import com.zazsona.decorheads.headdata.TextureHead;
 import com.zazsona.decorheads.headsources.drops.DropUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -327,11 +328,8 @@ public class HeadBlockModificationListener implements Listener
         }
 
         if (!blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY) && PluginConfig.isHeadMetaPatcherEnabled())
-        {
-            TextureHead textureHead = identifyUnknownHead(block);
-            if (textureHead != null)
-                return textureHead;
-        }
+            return identifyUnknownHead(block);
+
         return null;
     }
 
@@ -340,46 +338,15 @@ public class HeadBlockModificationListener implements Listener
      * @param block the head block
      * @return the "best guess" head, or null if no reasonable identification could be made.
      */
-    @SuppressWarnings("deprecation")
-    private TextureHead identifyUnknownHead(Block block)
+    @SuppressWarnings("deprecation") // Skull::getOwner() usage is required here, as the head name is custom. It does not belong to a player.
+    private IHead identifyUnknownHead(Block block)
     {
-        /*
-            While a check for the textures value would be ideal here, that'd involve using NMS
-            I don't really want to use NMS though to maximise the range of targeted Minecraft versions.
+        if (block.getBlockData().getMaterial() != Material.PLAYER_HEAD && block.getBlockData().getMaterial() != Material.PLAYER_WALL_HEAD)
+            return null;
 
-            Trade-off is that there's a greater risk of upsetting other plugins.
-        */
-        for (ItemStack drop : block.getDrops())
-        {
-            if ((drop.getType() == Material.PLAYER_HEAD || drop.getType() == Material.PLAYER_WALL_HEAD))
-            {
-                SkullMeta skullMeta = (SkullMeta) drop.getItemMeta();
-                String name = skullMeta.getOwner(); // Deprecated, so not ideal, but only option short of NMS.
-                Map<String, IHead> loadedHeads = HeadConfig.getLoadedHeads();
-
-                // Shortcut attempt to avoid O(n) search - Often keys match names.
-                String potentialKey = name.toLowerCase().replace(" ", "-");
-                IHead potentialHead = loadedHeads.get(potentialKey);
-                if (potentialHead != null && potentialHead instanceof TextureHead)
-                {
-                    TextureHead textureHead = (TextureHead) potentialHead;
-                    if (textureHead.getName().equals(name))
-                        return textureHead;
-                }
-
-                // Shortcut attempt failed - Begin search.
-                for (IHead head : loadedHeads.values())
-                {
-                    if (head instanceof TextureHead)
-                    {
-                        TextureHead textureHead = (TextureHead) head;
-                        if (textureHead.getName().equals(name))
-                            return textureHead;
-                    }
-                }
-            }
-        }
-        return null;
+        Skull blockSkull = (Skull) block.getState();
+        String instanceName = blockSkull.getOwner();
+        return HeadConfig.matchLoadedHead(instanceName);
     }
 
     /**
@@ -388,6 +355,7 @@ public class HeadBlockModificationListener implements Listener
      * @return an ItemStack matching the block's data, or null if the block is not a valid head
      * @throws IOException unable to get player head details
      */
+    @SuppressWarnings("deprecation") // Skull::getOwner() usage is required here, as the head name is custom. It does not belong to a player.
     private ItemStack getHeadDrop(Block headBlock) throws IOException
     {
         IHead head = getBlockHeadData(headBlock);
@@ -404,10 +372,20 @@ public class HeadBlockModificationListener implements Listener
             PlayerHead playerHead = (PlayerHead) head;
             String uuid = blockMeta.get(BlockMetaKeys.PLAYER_ID_KEY);
             String texture = blockMeta.get(BlockMetaKeys.HEAD_TEXTURE_KEY);
-            if (texture == null)
+            if (uuid == null && PluginConfig.isHeadMetaPatcherEnabled())
+            {
+                Skull headBlockSkullState = (Skull) headBlock.getState();
+                String instanceName = headBlockSkullState.getOwner();
+                String playerName = DecorHeadsUtil.extractPlayerNameFromHead(instanceName, head.getName());
+                uuid = DecorHeadsUtil.fetchPlayerUUID(playerName);
+            }
+
+            if (uuid != null && texture != null)
+                return playerHead.createItem(UUID.fromString(uuid), texture);
+            else if (uuid != null)
                 return playerHead.createItem(UUID.fromString(uuid));
             else
-                return playerHead.createItem(UUID.fromString(uuid), texture);
+                return playerHead.createItem();
         }
         else
              return head.createItem();
