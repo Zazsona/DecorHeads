@@ -34,6 +34,12 @@ public abstract class Head implements IHead
         return key;
     }
 
+    @Override
+    public String getPrettyName()
+    {
+        return getName();
+    }
+
     public static NamespacedKey getSkullHeadKeyKey()
     {
         return new NamespacedKey(Core.getSelfPlugin(), "HeadKey");

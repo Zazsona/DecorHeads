@@ -49,6 +49,17 @@ public class PlayerHead extends Head
     }
 
     @Override
+    public String getPrettyName()
+    {
+        return getPrettyName("Player");
+    }
+
+    public String getPrettyName(String playerName)
+    {
+        return StringUtils.replaceIgnoreCase(headNameFormat, PLAYER_NAME_PLACEHOLDER, playerName);
+    }
+
+    @Override
     public String getTexture()
     {
         return PLAYER_SKIN_PLACEHOLDER;
@@ -115,7 +126,7 @@ public class PlayerHead extends Head
         try
         {
             ProfileResponse pr = DecorHeadsUtil.fetchPlayerProfile(uuid);
-            String skullName = StringUtils.replaceIgnoreCase(headNameFormat, PLAYER_NAME_PLACEHOLDER, pr.getName());
+            String skullName = getPrettyName(pr.getName());
             ItemStack skull = createSkull(skullName, texture);
             ItemMeta meta = applyDecorHeadsPlayerSkullMeta(skull.getItemMeta(), uuid.toString(), texture);
             skull.setItemMeta(meta);
