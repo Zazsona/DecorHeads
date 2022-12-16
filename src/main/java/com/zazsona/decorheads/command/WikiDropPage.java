@@ -66,12 +66,12 @@ public class WikiDropPage implements IWikiPage
         }
         else
         {
-            pageBuilder.append(borderChar).append(" ").append(getSourceTypeActionName(drop.getDropType()));
+            pageBuilder.append(borderChar).append(" ").append(getDropTypeActionName(drop.getDropType()));
         }
         return pageBuilder.toString().trim();
     }
 
-    private String getSourceTypeActionName(DropType dropType)
+    private String getDropTypeActionName(DropType dropType)
     {
         switch (dropType)
         {

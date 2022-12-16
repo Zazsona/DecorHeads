@@ -1,17 +1,17 @@
 # Explanations & Usage: https://github.com/Zazsona/DecorHeads/wiki/Plugin-Config
 
-version: 2.2.0
+version: 2.4.0
 plugin-enabled: true
 crafting: true
 drops: true
-playerless-drop-events: true
+environmental-drops: true
 learn-recipes-from-wiki: true
 update-notifications: minor
 head-meta-patcher: false
-drop-sources:
-  mine-drop: true
-  brew-drop: true
-  smelt-drop: true
-  craft-drop: true
-  entity-death-drop: true
-  player-death-drop: true
+drop-types:
+  mine: true
+  brew: true
+  smelt: true
+  craft: true
+  entity-death: true
+  player-death: true

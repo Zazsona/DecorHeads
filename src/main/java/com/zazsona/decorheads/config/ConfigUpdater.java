@@ -9,6 +9,7 @@ import java.io.File;
 
 public class ConfigUpdater
 {
+    // TODO: Migrate 2.3.1 configs to new split configs (separate files or single? Hmmm!) (Also do the blockMetaLogger.json file?)
     private static final String configFileName = "config.yml";
     private static final String legacyConfigFileName = "legacy-config.yml";
     private static final String versionKey = "version";
@@ -50,6 +51,7 @@ public class ConfigUpdater
         FileConfiguration config = plugin.getConfig();
         updateTo210(config, upgradingFromLegacy);
         updateTo220(config, upgradingFromLegacy);
+        updateTo240(config, upgradingFromLegacy);
         config.set(versionKey, plugin.getDescription().getVersion());
         config.options().copyDefaults(true);
         plugin.saveConfig();
@@ -57,18 +59,45 @@ public class ConfigUpdater
 
     private void updateTo210(FileConfiguration config, boolean upgradingFromLegacy)
     {
-        if (config.getString(versionKey).compareTo("2.1.0") < 0)
+        if (config.getString(versionKey).compareTo("2.1.0") < 0 || upgradingFromLegacy)
         {
-            boolean updateNotificationsEnabled = config.getBoolean(PluginConfig.UPDATE_NOTIFICATIONS_KEY);
+            boolean updateNotificationsEnabled = config.getBoolean("update-notifications");
             UpdateNotificationLevel level = (updateNotificationsEnabled) ? UpdateNotificationLevel.MINOR : UpdateNotificationLevel.DISABLED;
-            config.set(PluginConfig.UPDATE_NOTIFICATIONS_KEY, level.toString().toLowerCase());
+            config.set("update-notifications", level.toString().toLowerCase());
         }
     }
 
     private void updateTo220(FileConfiguration config, boolean upgradingFromLegacy)
     {
         if (config.getString(versionKey).compareTo("2.2.0") < 0 || upgradingFromLegacy)
-            config.set(PluginConfig.HEAD_META_PATCHER_KEY, true); // Since we're updating from versions which may have had meta loss bugs, turn it on by default.
+            config.set("head-meta-patcher", true); // Since we're updating from versions which may have had meta loss bugs, turn it on by default.
+    }
+
+    private void updateTo240(FileConfiguration config, boolean upgradingFromLegacy)
+    {
+        if (config.getString(versionKey).compareTo("2.4.0") >= 0 && !upgradingFromLegacy)
+            return;
+
+        boolean environmentalDrops = config.getBoolean("playerless-drop-events");
+        config.set("environmental-drops", environmentalDrops);
+        config.set("playerless-drop-events", null);
+
+        boolean mineDrops = config.getBoolean("drop-sources.mine-drop");
+        boolean brewDrops = config.getBoolean("drop-sources.brew-drop");
+        boolean smeltDrops = config.getBoolean("drop-sources.smelt-drop");
+        boolean craftDrops = config.getBoolean("drop-sources.craft-drop");
+        boolean entityDeathDrops = config.getBoolean("drop-sources.entity-death-drop");
+        boolean playerDeathDrops = config.getBoolean("drop-sources.player-death-drop");
+
+        config.createSection("drop-types");
+        config.set("drop-types.mine", mineDrops);
+        config.set("drop-types.brew", brewDrops);
+        config.set("drop-types.smelt", smeltDrops);
+        config.set("drop-types.craft", craftDrops);
+        config.set("drop-types.entity-death", entityDeathDrops);
+        config.set("drop-types.player-death", playerDeathDrops);
+
+        config.set("drop-sources", null);
     }
 
     private void archiveLegacyConfig(Plugin plugin, File configFile)

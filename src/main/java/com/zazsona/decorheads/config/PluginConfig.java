@@ -1,7 +1,6 @@
 package com.zazsona.decorheads.config;
 
 import com.zazsona.decorheads.Core;
-import com.zazsona.decorheads.headsources.HeadSourceType;
 import org.bukkit.plugin.Plugin;
 
 public class PluginConfig
@@ -9,8 +8,8 @@ public class PluginConfig
     public static final String PLUGIN_ENABLED_KEY = "plugin-enabled";
     public static final String CRAFTING_KEY = "crafting";
     public static final String DROPS_KEY = "drops";
-    public static final String DROP_SOURCES_KEY = "drop-sources";
-    public static final String PLAYERLESS_DROP_EVENTS_KEY = "playerless-drop-events";
+    public static final String DROP_TYPES_KEY = "drop-types";
+    public static final String ENVIRONMENTAL_DROPS_KEY = "environmental-drops";
     public static final String WIKI_RECIPE_LEARN_KEY = "learn-recipes-from-wiki";
     public static final String UPDATE_NOTIFICATIONS_KEY = "update-notifications";
     public static final String HEAD_META_PATCHER_KEY = "head-meta-patcher";
@@ -55,15 +54,15 @@ public class PluginConfig
         return plugin.getConfig().getBoolean(DROPS_KEY);
     }
 
-    public static void setPlayerlessDropEventsEnabled(boolean newEnabled)
+    public static void setEnvironmentalDropsEnabled(boolean newEnabled)
     {
-        plugin.getConfig().set(PLAYERLESS_DROP_EVENTS_KEY, newEnabled);
+        plugin.getConfig().set(ENVIRONMENTAL_DROPS_KEY, newEnabled);
         save();
     }
 
-    public static boolean isPlayerlessDropEventsEnabled()
+    public static boolean isEnvironmentalDropsEnabled()
     {
-        return plugin.getConfig().getBoolean(PLAYERLESS_DROP_EVENTS_KEY);
+        return plugin.getConfig().getBoolean(ENVIRONMENTAL_DROPS_KEY);
     }
 
     public static void setLearnRecipesFromWikiEnabled(boolean newEnabled)
@@ -92,16 +91,16 @@ public class PluginConfig
         return level;
     }
 
-    public static void setDropSourceEnabled(HeadSourceType sourceType, boolean newEnabled)
+    public static void setDropTypeEnabled(DropType dropType, boolean newEnabled)
     {
-        String configKey = convertSourceTypeToConfigKey(sourceType);
+        String configKey = convertDropTypeToConfigKey(dropType);
         plugin.getConfig().set(configKey, newEnabled);
         save();
     }
 
-    public static boolean isDropSourceEnabled(HeadSourceType sourceType)
+    public static boolean isDropTypeEnabled(DropType dropType)
     {
-        String configKey = convertSourceTypeToConfigKey(sourceType);
+        String configKey = convertDropTypeToConfigKey(dropType);
         return plugin.getConfig().getBoolean(configKey);
     }
 
@@ -116,26 +115,19 @@ public class PluginConfig
         return plugin.getConfig().getBoolean(HEAD_META_PATCHER_KEY);
     }
 
-    public static String convertSourceTypeToConfigKey(HeadSourceType sourceType)
+    public static String convertDropTypeToConfigKey(DropType dropType)
     {
-        if (sourceType != HeadSourceType.SHAPELESS_CRAFT && sourceType != HeadSourceType.SHAPED_CRAFT)
-        {
-            String sourceKey = sourceType.name().toLowerCase().replace("_", "-");
-            String configKey = String.format("%s.%s", DROP_SOURCES_KEY, sourceKey);
-            return configKey;
-        }
-        else
-            throw new IllegalArgumentException(String.format("%s is not a valid drop head source.", sourceType.name()));
-
+        String sourceKey = dropType.name().toLowerCase().replace("_", "-");
+        String configKey = String.format("%s.%s", DROP_TYPES_KEY, sourceKey);
+        return configKey;
     }
 
-    public static HeadSourceType convertConfigKeyToSourceType(String configKey) throws IllegalArgumentException
+    public static DropType convertConfigKeyToDropType(String configKey) throws IllegalArgumentException
     {
         String[] configTree = configKey.split("[.]");
-        String headTypeName = configTree[configTree.length-1];
-        String enumFormatHeadTypeName = headTypeName.toUpperCase().replace("-", "_");
-        HeadSourceType headSourceType = HeadSourceType.valueOf(enumFormatHeadTypeName);
-        return headSourceType;
+        String dropTypeName = configTree[configTree.length-1];
+        DropType dropType = DropType.matchDropType(dropTypeName);
+        return dropType;
     }
 
 }
