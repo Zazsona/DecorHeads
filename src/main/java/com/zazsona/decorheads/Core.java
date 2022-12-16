@@ -1,19 +1,20 @@
 package com.zazsona.decorheads;
 
 import com.zazsona.decorheads.blockmeta.BlockInventoryOwnerListener;
-import com.zazsona.decorheads.blockmeta.BlockMetaLogger;
-import com.zazsona.decorheads.blockmeta.HeadBlockListener;
+import com.zazsona.decorheads.blockmeta.BlockMetaRepository;
+import com.zazsona.decorheads.blockmeta.BlockMetaSaveOnUnloadListener;
+import com.zazsona.decorheads.blockmeta.HeadBlockModificationListener;
 import com.zazsona.decorheads.command.ConfigCommand;
 import com.zazsona.decorheads.command.MasterCommand;
 import com.zazsona.decorheads.command.SpawnHeadCommand;
 import com.zazsona.decorheads.command.WikiCommand;
 import com.zazsona.decorheads.config.ConfigUpdater;
-import com.zazsona.decorheads.config.HeadLoader;
+import com.zazsona.decorheads.config.HeadConfig;
 import com.zazsona.decorheads.config.HeadUpdater;
+import com.zazsona.decorheads.event.block.BlockBreakByExplosionEventTrigger;
+import com.zazsona.decorheads.event.block.BlockPistonReactionEventTrigger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.IOException;
 
 public class Core extends JavaPlugin
 {
@@ -29,29 +30,71 @@ public class Core extends JavaPlugin
     {
         try
         {
+            // ============================================
+            // Initialisers
+            // ============================================
+            MaterialUtil.indexMaterials();
+
+            // ============================================
+            // Updaters
+            // ============================================
             ConfigUpdater configUpdater = ConfigUpdater.getInstance();
             configUpdater.updateConfig();
+
             HeadUpdater headUpdater = HeadUpdater.getInstance();
             headUpdater.updateHeadsFile();
-            HeadLoader headLoader = HeadLoader.getInstance();
-            headLoader.loadHeads();
 
-            MaterialUtil.indexMaterials();
-            getServer().getPluginManager().registerEvents(new HeadBlockListener(), this);
+            HeadConfig.loadConfig(this);
+
+            // ============================================
+            // Permissions
+            // ============================================
             getServer().getPluginManager().registerEvents(new HeadCraftBlocker(), this);
-            getServer().getPluginManager().registerEvents(BlockInventoryOwnerListener.getInstance(), this);
-            BlockMetaLogger.getInstance().loadFromFile();
-            scheduleBlockDataSaving();
 
-            getCommand(PLUGIN_NAME).setExecutor(new MasterCommand());
-            getCommand(SpawnHeadCommand.COMMAND_KEY).setExecutor(new SpawnHeadCommand());
-            getCommand(WikiCommand.COMMAND_KEY).setExecutor(new WikiCommand());
-            getCommand(ConfigCommand.COMMAND_KEY).setExecutor(new ConfigCommand());
+            // ============================================
+            // Commands
+            // ============================================
+            MasterCommand masterCommand = new MasterCommand();
+            SpawnHeadCommand spawnHeadCommand = new SpawnHeadCommand();
+            spawnHeadCommand.loadCommandHeads();
+            WikiCommand wikiCommand = new WikiCommand();
+            ConfigCommand configCommand = new ConfigCommand();
 
+            getCommand(PLUGIN_NAME).setExecutor(masterCommand);
+            getCommand(SpawnHeadCommand.COMMAND_KEY).setExecutor(spawnHeadCommand);
+            getCommand(WikiCommand.COMMAND_KEY).setExecutor(wikiCommand);
+            getCommand(ConfigCommand.COMMAND_KEY).setExecutor(configCommand);
+
+            // ============================================
+            // Plugin Stat Events
+            // ============================================
             MetricsManager.getInstance().enable();
-
             UpdateNotifier updateNotifier = new UpdateNotifier();
             getServer().getPluginManager().registerEvents(updateNotifier, this);
+
+            // ============================================
+            // Bukkit Events
+            // ============================================
+            BlockBreakByExplosionEventTrigger blockBreakByExplosionEventTrigger = new BlockBreakByExplosionEventTrigger();
+            getServer().getPluginManager().registerEvents(blockBreakByExplosionEventTrigger, this);
+
+            BlockPistonReactionEventTrigger blockPistonReactionEventTrigger = new BlockPistonReactionEventTrigger();
+            getServer().getPluginManager().registerEvents(blockPistonReactionEventTrigger, this);
+
+            // ============================================
+            // Block Metadata
+            // ============================================
+            BlockMetaRepository blockMetaRepository = BlockMetaRepository.getInstance();
+            getServer().getPluginManager().registerEvents(blockMetaRepository, this);
+
+            BlockMetaSaveOnUnloadListener saveMetaListener = new BlockMetaSaveOnUnloadListener();
+            getServer().getPluginManager().registerEvents(saveMetaListener, this);
+
+            BlockInventoryOwnerListener inventoryOwnerMetaListener = new BlockInventoryOwnerListener();
+            getServer().getPluginManager().registerEvents(inventoryOwnerMetaListener, this);
+
+            HeadBlockModificationListener headBlockMetaListener = new HeadBlockModificationListener();
+            getServer().getPluginManager().registerEvents(headBlockMetaListener, this);
         }
         catch (Exception e)
         {
@@ -63,34 +106,8 @@ public class Core extends JavaPlugin
     @Override
     public void onDisable()
     {
-        try
-        {
-            BlockMetaLogger.getInstance().saveToFile();
-        }
-        catch (IOException e)
-        {
-            Bukkit.getLogger().severe(String.format("[%s] Unable to save block data: %s", PLUGIN_NAME, e.getMessage()));
-        }
-        finally
-        {
-            super.onDisable();
-        }
-    }
-
-    private void scheduleBlockDataSaving()
-    {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(getSelfPlugin(), () ->
-        {
-            try
-            {
-                BlockMetaLogger blockMetaLogger = BlockMetaLogger.getInstance();
-                if (blockMetaLogger.isDirty())
-                    blockMetaLogger.saveToFile();
-            }
-            catch (IOException e)
-            {
-                Bukkit.getLogger().severe(String.format("[%s] Unable to save block data: %s", PLUGIN_NAME, e.getMessage()));
-            }
-        }, 600, 600);
+        HeadConfig.unloadHeads();
+        HeadConfig.unloadDrops();
+        HeadConfig.unloadRecipes();
     }
 }
