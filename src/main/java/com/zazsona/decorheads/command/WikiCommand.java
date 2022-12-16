@@ -10,7 +10,7 @@ import com.zazsona.decorheads.crafting.ShapedMetaRecipe;
 import com.zazsona.decorheads.crafting.ShapelessMetaRecipe;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
-import com.zazsona.decorheads.headsources.drops.IDrop;
+import com.zazsona.decorheads.drops.drops.IDrop;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

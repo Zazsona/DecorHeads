@@ -3,9 +3,9 @@ package com.zazsona.decorheads.command;
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.DropType;
-import com.zazsona.decorheads.headsources.drops.IDrop;
-import com.zazsona.decorheads.headsources.filters.BlockFilter;
-import com.zazsona.decorheads.headsources.filters.IDropFilter;
+import com.zazsona.decorheads.drops.drops.IDrop;
+import com.zazsona.decorheads.drops.filters.BlockFilter;
+import com.zazsona.decorheads.drops.filters.IDropFilter;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 

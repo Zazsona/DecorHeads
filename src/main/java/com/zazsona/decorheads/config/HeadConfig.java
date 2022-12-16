@@ -6,7 +6,7 @@ import com.zazsona.decorheads.crafting.MetaRecipeManager;
 import com.zazsona.decorheads.headdata.Head;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
-import com.zazsona.decorheads.headsources.drops.IDrop;
+import com.zazsona.decorheads.drops.drops.IDrop;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
