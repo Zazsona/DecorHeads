@@ -2,7 +2,7 @@ package com.zazsona.decorheads.blockmeta;
 
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.DecorHeadsUtil;
-import com.zazsona.decorheads.config.HeadConfig;
+import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.event.head.*;
 import com.zazsona.decorheads.headdata.Head;
@@ -44,7 +44,7 @@ public class HeadBlockModificationListener implements Listener
             return;
 
         String headKey = dataContainer.get(Head.getSkullHeadKeyKey(), PersistentDataType.STRING);
-        IHead head = HeadConfig.getLoadedHeads().get(headKey);
+        IHead head = HeadRepository.getLoadedHeads().get(headKey);
 
         HeadPlaceEvent headEvent = new HeadPlaceEvent(e.getBlockPlaced(), e.getBlockReplacedState(), e.getBlockAgainst(), e.getItemInHand(), e.getPlayer(), e.canBuild(), e.getHand(), head);
         Bukkit.getPluginManager().callEvent(headEvent);
@@ -320,7 +320,7 @@ public class HeadBlockModificationListener implements Listener
         if (blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY))
         {
             String headKey = blockMeta.get(BlockMetaKeys.HEAD_ID_KEY);
-            IHead head = HeadConfig.getLoadedHeads().get(headKey);
+            IHead head = HeadRepository.getLoadedHeads().get(headKey);
             return head;
         }
 
@@ -343,7 +343,7 @@ public class HeadBlockModificationListener implements Listener
 
         Skull blockSkull = (Skull) block.getState();
         String instanceName = blockSkull.getOwner();
-        return HeadConfig.matchLoadedHead(instanceName);
+        return HeadRepository.matchLoadedHead(instanceName);
     }
 
     /**

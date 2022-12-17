@@ -11,16 +11,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.zazsona.decorheads.config.HeadConfig.*;
+
 class HeadLoader
 {
-    public static final String VERSION_KEY = "version";
-    public static final String HEADS_KEY = "heads";
-    public static final String HEAD_KEY_KEY = "key";
-    public static final String HEAD_TYPE_KEY = "head-type";
-    public static final String HEAD_NAME_KEY = "name";
-
-    public static final String HEAD_TEXTURE_KEY = "texture";
-
     /**
      * Loads all the heads in the provided data, provided it complies with the expected format.
      * @param headsYaml the head data

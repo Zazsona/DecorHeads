@@ -9,8 +9,8 @@ import com.zazsona.decorheads.command.MasterCommand;
 import com.zazsona.decorheads.command.SpawnHeadCommand;
 import com.zazsona.decorheads.command.WikiCommand;
 import com.zazsona.decorheads.config.ConfigUpdater;
-import com.zazsona.decorheads.config.HeadConfig;
-import com.zazsona.decorheads.config.HeadUpdater;
+import com.zazsona.decorheads.config.HeadRepository;
+import com.zazsona.decorheads.config.HeadUpdaterLegacy;
 import com.zazsona.decorheads.event.block.BlockBreakByExplosionEventTrigger;
 import com.zazsona.decorheads.event.block.BlockPistonReactionEventTrigger;
 import org.bukkit.Bukkit;
@@ -41,10 +41,10 @@ public class Core extends JavaPlugin
             ConfigUpdater configUpdater = ConfigUpdater.getInstance();
             configUpdater.updateConfig();
 
-            HeadUpdater headUpdater = HeadUpdater.getInstance();
+            HeadUpdaterLegacy headUpdater = HeadUpdaterLegacy.getInstance();
             headUpdater.updateHeadsFile();
 
-            HeadConfig.loadConfig(this);
+            HeadRepository.loadConfig(this);
 
             // ============================================
             // Permissions
@@ -106,8 +106,8 @@ public class Core extends JavaPlugin
     @Override
     public void onDisable()
     {
-        HeadConfig.unloadHeads();
-        HeadConfig.unloadDrops();
-        HeadConfig.unloadRecipes();
+        HeadRepository.unloadHeads();
+        HeadRepository.unloadDrops();
+        HeadRepository.unloadRecipes();
     }
 }

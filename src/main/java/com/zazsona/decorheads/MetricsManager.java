@@ -1,6 +1,6 @@
 package com.zazsona.decorheads;
 
-import com.zazsona.decorheads.config.HeadConfig;
+import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.dependencies.Metrics;
 import org.bukkit.Bukkit;
@@ -83,6 +83,6 @@ public class MetricsManager
     private void addHeadsLoadedChart(Metrics metrics)
     {
         metrics.addCustomChart(new SimplePie(headsLoadedChart, () ->
-                String.valueOf(HeadConfig.getLoadedHeads().size())));
+                String.valueOf(HeadRepository.getLoadedHeads().size())));
     }
 }

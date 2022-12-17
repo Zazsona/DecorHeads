@@ -1,7 +1,7 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.Core;
-import com.zazsona.decorheads.config.HeadConfig;
+import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
@@ -24,11 +24,11 @@ public class SpawnHeadCommand implements CommandExecutor
      */
     public void loadCommandHeads()
     {
-        if (HeadConfig.getLoadedHeads().containsKey(SPAWN_COMMAND_PLAYER_HEAD_ID))
+        if (HeadRepository.getLoadedHeads().containsKey(SPAWN_COMMAND_PLAYER_HEAD_ID))
             return;
 
         IHead playerHead = new PlayerHead(SPAWN_COMMAND_PLAYER_HEAD_ID, String.format("%s's Head", PlayerHead.PLAYER_NAME_PLACEHOLDER));
-        HeadConfig.loadHead(playerHead);
+        HeadRepository.loadHead(playerHead);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SpawnHeadCommand implements CommandExecutor
 
     private ItemStack getHeadItem(String identifier, @Nullable String playerName) throws InvalidHeadException
     {
-        IHead head = HeadConfig.matchLoadedHead(identifier.trim());
+        IHead head = HeadRepository.matchLoadedHead(identifier.trim());
         if (head != null)
         {
             if (head instanceof PlayerHead && playerName != null)

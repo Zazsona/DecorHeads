@@ -2,7 +2,7 @@ package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.Core;
 import com.zazsona.decorheads.DecorHeadsUtil;
-import com.zazsona.decorheads.config.HeadConfig;
+import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.crafting.IMetaRecipe;
 import com.zazsona.decorheads.crafting.MetaRecipeManager;
@@ -73,11 +73,11 @@ public class WikiCommand implements CommandExecutor
             headNameBuilder.append(args[i]).append(" ");
 
         String headName = headNameBuilder.toString().trim();
-        IHead head = HeadConfig.matchLoadedHead(headName);
+        IHead head = HeadRepository.matchLoadedHead(headName);
         if (head != null)
         {
-            List<IDrop> drops = HeadConfig.getDropsFor(head.getKey());
-            List<IMetaRecipe> recipes = HeadConfig.getRecipesFor(head.getKey());
+            List<IDrop> drops = HeadRepository.getDropsFor(head.getKey());
+            List<IMetaRecipe> recipes = HeadRepository.getRecipesFor(head.getKey());
             drops.sort(Comparator.comparing(IDrop::getKey));
             recipes.sort(Comparator.comparing(recipe -> recipe.getKey().getKey()));
             int totalSources = drops.size() + recipes.size();
@@ -131,7 +131,7 @@ public class WikiCommand implements CommandExecutor
 
     private void sendHeadsList(CommandSender sender, String[] args)
     {
-        ArrayList<IHead> heads = new ArrayList<>(HeadConfig.getLoadedHeads().values());
+        ArrayList<IHead> heads = new ArrayList<>(HeadRepository.getLoadedHeads().values());
         heads.sort(Comparator.comparing(IHead::getPrettyName));
         int headsPerPage = 8;
         int pages = (int) (Math.ceil(heads.size() / headsPerPage) + 1);
@@ -167,7 +167,7 @@ public class WikiCommand implements CommandExecutor
             return;
         }
 
-        IHead head = HeadConfig.matchLoadedHead(headName);
+        IHead head = HeadRepository.matchLoadedHead(headName);
         if (head == null)
         {
             sender.sendMessage(ChatColor.RED+String.format("Unrecognised head: \"%s\"", headName));
