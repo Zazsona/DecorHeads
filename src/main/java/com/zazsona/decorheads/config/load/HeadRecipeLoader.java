@@ -1,6 +1,8 @@
-package com.zazsona.decorheads.config;
+package com.zazsona.decorheads.config.load;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
+import com.zazsona.decorheads.config.HeadRecipeConfig;
+import com.zazsona.decorheads.config.RecipeType;
 import com.zazsona.decorheads.crafting.IMetaRecipe;
 import com.zazsona.decorheads.crafting.ShapedMetaRecipe;
 import com.zazsona.decorheads.crafting.ShapelessMetaRecipe;
@@ -18,37 +20,25 @@ import java.util.*;
 
 import static com.zazsona.decorheads.config.HeadRecipeConfig.*;
 
-class HeadRecipeLoader
+public class HeadRecipeLoader
 {
     /**
      * Loads all the recipes in the provided data, provided it complies with the expected format.
-     * @param recipeYaml the recipe data
-     * @param heads a key:head map of registered heads
-     * @return a key:recipe map of loaded recipes
-     * @throws MissingFieldsException invalid YAML format
-     */
-    public HashMap<String, IMetaRecipe> loadRecipes(ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException
-    {
-        if (!recipeYaml.contains(RECIPES_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", RECIPES_KEY), RECIPES_KEY);
-
-        List<ConfigurationSection> recipeList = (List<ConfigurationSection>) recipeYaml.getList(RECIPES_KEY);
-        return loadRecipes(recipeList, heads);
-    }
-
-    /**
-     * Loads all the recipes in the provided data, provided it complies with the expected format.
-     * @param recipeList the recipe data
+     * @param recipeConfig the recipe config
      * @param heads a key:head map of registered heads
      * @return a key:recipe map of loaded recipes
      */
-    public HashMap<String, IMetaRecipe> loadRecipes(List<ConfigurationSection> recipeList, HashMap<String, IHead> heads)
+    public HashMap<String, IMetaRecipe> loadRecipes(HeadRecipeConfig recipeConfig, HashMap<String, IHead> heads)
     {
+        ConfigurationSection recipes = recipeConfig.getRecipes();
+        Set<String> recipeKeys = recipeConfig.getRecipeKeys();
+
         HashMap<String, IMetaRecipe> loadedRecipes = new HashMap<>();
-        for (ConfigurationSection recipeData : recipeList)
+        for (String recipeKey : recipeKeys)
         {
             try
             {
+                ConfigurationSection recipeData = recipes.getConfigurationSection(recipeKey);
                 IMetaRecipe recipe = loadRecipe(recipeData, heads);
                 String key = recipe.getKey().getKey();
                 if (loadedRecipes.containsKey(key))
@@ -80,7 +70,7 @@ class HeadRecipeLoader
         }
         catch (Exception e)
         {
-            String name = (recipeYaml.contains(RECIPE_KEY_KEY) ? recipeYaml.getString(RECIPE_KEY_KEY) : "[UNKNOWN]");
+            String name = (recipeYaml.getName() != null ? recipeYaml.getString(recipeYaml.getName()) : "[UNKNOWN]");
             throw new IllegalArgumentException(String.format("Unable to load recipe \"%s\": %s", name, e.getMessage()));
         }
     }
@@ -95,8 +85,6 @@ class HeadRecipeLoader
      */
     private IMetaRecipe parseRecipe(ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException, IllegalArgumentException
     {
-        if (!recipeYaml.contains(RECIPE_KEY_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_KEY_KEY), RECIPE_KEY_KEY);
         if (!recipeYaml.contains(RECIPE_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_TYPE_KEY), RECIPE_TYPE_KEY);
 
@@ -122,8 +110,8 @@ class HeadRecipeLoader
     private ShapelessMetaRecipe parseShapelessMetaRecipe(ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException, IllegalArgumentException
     {
         // Check Keys
-        if (!recipeYaml.contains(RECIPE_KEY_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_KEY_KEY), RECIPE_KEY_KEY);
+        if (recipeYaml.getName() == null)
+            throw new MissingFieldsException("Missing Key: Recipe Key");
         if (!recipeYaml.contains(RECIPE_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_TYPE_KEY), RECIPE_TYPE_KEY);
         if (!recipeYaml.contains(RECIPE_INGREDIENTS_KEY))
@@ -132,7 +120,7 @@ class HeadRecipeLoader
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_RESULT_KEY), RECIPE_RESULT_KEY);
 
         // Load from YAML
-        String key = recipeYaml.getString(RECIPE_KEY_KEY).toLowerCase();
+        String key = recipeYaml.getName().toLowerCase();
         String resultName = recipeYaml.getString(RECIPE_RESULT_KEY);
         ConfigurationSection ingredientsMap = recipeYaml.getConfigurationSection(RECIPE_INGREDIENTS_KEY);
 
@@ -168,8 +156,8 @@ class HeadRecipeLoader
     private ShapedMetaRecipe parseShapedMetaRecipe(ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException, IllegalArgumentException
     {
         // Check Keys
-        if (!recipeYaml.contains(RECIPE_KEY_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_KEY_KEY), RECIPE_KEY_KEY);
+        if (recipeYaml.getName() == null)
+            throw new MissingFieldsException("Missing Key: Recipe Key");
         if (!recipeYaml.contains(RECIPE_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_TYPE_KEY), RECIPE_TYPE_KEY);
         if (!recipeYaml.contains(RECIPE_INGREDIENTS_KEY))
@@ -180,7 +168,7 @@ class HeadRecipeLoader
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_GRID_KEY), RECIPE_GRID_KEY);
 
         // Load from YAML
-        String key = recipeYaml.getString(RECIPE_KEY_KEY).toLowerCase();
+        String key = recipeYaml.getName().toLowerCase();
         String resultName = recipeYaml.getString(RECIPE_RESULT_KEY);
         ConfigurationSection ingredientsMap = recipeYaml.getConfigurationSection(RECIPE_INGREDIENTS_KEY);
 

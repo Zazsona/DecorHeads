@@ -1,4 +1,4 @@
-package com.zazsona.decorheads.config;
+package com.zazsona.decorheads.config.load;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.headdata.IHead;

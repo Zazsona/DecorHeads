@@ -1,6 +1,9 @@
-package com.zazsona.decorheads.config;
+package com.zazsona.decorheads.config.load;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
+import com.zazsona.decorheads.config.DropType;
+import com.zazsona.decorheads.config.HeadConfig;
+import com.zazsona.decorheads.config.HeadDropConfig;
 import com.zazsona.decorheads.exceptions.MissingFieldsException;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.drops.drops.*;
@@ -15,40 +18,29 @@ import org.bukkit.inventory.ItemStack;
 import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import static com.zazsona.decorheads.config.HeadDropConfig.*;
 
-class HeadDropLoader
+public class HeadDropLoader
 {
     /**
      * Loads all the drops in the provided data, provided it complies with the expected format.
-     * @param dropYaml the drop data
-     * @param heads a key:head map of registered heads
-     * @return a key:drop map of loaded drops
-     * @throws MissingFieldsException invalid YAML format
-     */
-    public HashMap<String, IDrop> loadDrops(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException
-    {
-        if (!dropYaml.contains(DROPS_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", DROPS_KEY), DROPS_KEY);
-
-        List<ConfigurationSection> dropList = (List<ConfigurationSection>) dropYaml.getList(DROPS_KEY);
-        return loadDrops(dropList, heads, filterLoader);
-    }
-
-    /**
-     * Loads all the drops in the provided data, provided it complies with the expected format.
-     * @param dropList the drop data
+     * @param dropConfig the drop config
      * @param heads a key:head map of registered heads
      * @return a key:drop map of loaded drops
      */
-    public HashMap<String, IDrop> loadDrops(List<ConfigurationSection> dropList, HashMap<String, IHead> heads, DropFilterLoader filterLoader)
+    public HashMap<String, IDrop> loadDrops(HeadDropConfig dropConfig, HashMap<String, IHead> heads, DropFilterLoader filterLoader)
     {
+        ConfigurationSection drops = dropConfig.getDrops();
+        Set<String> dropKeys = dropConfig.getDropKeys();
+
         HashMap<String, IDrop> loadedDrops = new HashMap<>();
-        for (ConfigurationSection dropData : dropList)
+        for (String dropKey : dropKeys)
         {
             try
             {
+                ConfigurationSection dropData = drops.getConfigurationSection(dropKey);
                 IDrop drop = loadDrop(dropData, heads, filterLoader);
                 if (loadedDrops.containsKey(drop.getKey()))
                     throw new IllegalArgumentException(String.format("Duplicate Drop Key: %s", drop.getKey()));
@@ -79,7 +71,7 @@ class HeadDropLoader
         }
         catch (Exception e)
         {
-            String name = (dropYaml.contains(DROP_KEY_KEY) ? dropYaml.getString(DROP_KEY_KEY) : "[UNKNOWN]");
+            String name = (dropYaml.getName() != null ? dropYaml.getString(dropYaml.getName()) : "[UNKNOWN]");
             throw new IllegalArgumentException(String.format("Unable to load drop \"%s\": %s", name, e.getMessage()));
         }
     }
@@ -94,8 +86,6 @@ class HeadDropLoader
      */
     private IDrop parseDrop(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException
     {
-        if (!dropYaml.contains(DROP_KEY_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", DROP_KEY_KEY), DROP_KEY_KEY);
         if (!dropYaml.contains(DROP_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", DROP_TYPE_KEY), DROP_TYPE_KEY);
 
@@ -268,15 +258,15 @@ class HeadDropLoader
     private DropProperties parseBaseDropProperties(ConfigurationSection dropYaml, HashMap<String, IHead> heads) throws InvalidKeyException
     {
         // Check Keys
-        if (!dropYaml.contains(DROP_KEY_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", DROP_KEY_KEY), DROP_KEY_KEY);
+        if (dropYaml.getName() == null)
+            throw new MissingFieldsException("Missing Key: Drop Key");
         if (!dropYaml.contains(DROP_RESULT_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", DROP_RESULT_KEY), DROP_RESULT_KEY);
         if (!dropYaml.contains(DROP_PERCENTAGE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", DROP_PERCENTAGE_KEY), DROP_PERCENTAGE_KEY);
 
         // Load from YAML
-        String key = dropYaml.getString(DROP_KEY_KEY).toLowerCase();
+        String key = dropYaml.getName().toLowerCase();
         String resultName = dropYaml.getString(DROP_RESULT_KEY);
         double dropRate = dropYaml.getDouble(DROP_PERCENTAGE_KEY);
 

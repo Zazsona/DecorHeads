@@ -1,4 +1,4 @@
-package com.zazsona.decorheads.config;
+package com.zazsona.decorheads.config.load;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.exceptions.MissingFieldsException;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-class DropFilterLoader
+public class DropFilterLoader
 {
     public static final String FILTER_BLOCKS_KEY = "blocks";
     public static final String FILTER_TOOLS_KEY = "tools";

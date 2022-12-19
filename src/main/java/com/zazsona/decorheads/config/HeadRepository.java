@@ -1,6 +1,10 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
+import com.zazsona.decorheads.config.load.DropFilterLoader;
+import com.zazsona.decorheads.config.load.HeadDropLoader;
+import com.zazsona.decorheads.config.load.HeadLoader;
+import com.zazsona.decorheads.config.load.HeadRecipeLoader;
 import com.zazsona.decorheads.crafting.IMetaRecipe;
 import com.zazsona.decorheads.crafting.MetaRecipeManager;
 import com.zazsona.decorheads.headdata.Head;
@@ -9,22 +13,17 @@ import com.zazsona.decorheads.headdata.PlayerHead;
 import com.zazsona.decorheads.drops.drops.IDrop;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
 import java.util.*;
 import java.util.regex.Pattern;
 
 public class HeadRepository
 {
-    public static String HEADS_FILE_NAME = "heads.yml";
-    public static String DROPS_FILE_NAME = "drops.yml";
-    public static String RECIPES_FILE_NAME = "recipes.yml";
     private static HeadLoader headLoader;
     private static HeadDropLoader dropLoader;
     private static DropFilterLoader filterLoader;
@@ -38,57 +37,53 @@ public class HeadRepository
      * Additively loads heads, drops, and recipes from the config files
      * @param plugin the plugin context
      */
-    public static void loadConfig(Plugin plugin)
+    public static void loadConfig(DecorHeadsPlugin plugin)
     {
-        File headsFile = getHeadsFile(plugin);
-        File dropsFile = getDropsFile(plugin);
-        File recipesFile = getRecipesFile(plugin);
+        HeadConfig headConfig = plugin.getHeadConfig();
+        HeadDropConfig dropConfig = plugin.getHeadDropConfig();
+        HeadRecipeConfig recipeConfig = plugin.getHeadRecipeConfig();
 
-        ConfigurationSection headsYaml = YamlConfiguration.loadConfiguration(headsFile);
-        ConfigurationSection dropsYaml = YamlConfiguration.loadConfiguration(dropsFile);
-        ConfigurationSection recipesYaml = YamlConfiguration.loadConfiguration(recipesFile);
-
-        loadGroup(plugin, headsYaml, dropsYaml, recipesYaml);
+        loadGroup(plugin, headConfig, dropConfig, recipeConfig);
     }
 
     /**
      * Additively loads heads, drops, and recipes from the provided yaml
      * @param plugin the plugin context
-     * @param headsYaml the heads to load
-     * @param dropsYaml the drops to load
-     * @param recipesYaml the recipes to load
+     * @param headConfig the heads to load
+     * @param dropConfig the drops to load
+     * @param recipeConfig the recipes to load
      */
-    public static void loadGroup(Plugin plugin, ConfigurationSection headsYaml, ConfigurationSection dropsYaml, ConfigurationSection recipesYaml)
+    public static void loadGroup(Plugin plugin, HeadConfig headConfig, HeadDropConfig dropConfig, HeadRecipeConfig recipeConfig)
     {
         boolean headSuccess = false;
         boolean dropSuccess = false;
         boolean recipeSuccess = false;
 
-        headSuccess = loadHeads(headsYaml);
+        headSuccess = loadHeads(headConfig);
         if (headSuccess)
-            dropSuccess = loadDrops(plugin, dropsYaml);
+            dropSuccess = loadDrops(plugin, dropConfig);
         if (dropSuccess)
-            recipeSuccess = loadRecipes(recipesYaml);
+            recipeSuccess = loadRecipes(recipeConfig);
     }
 
     /**
-     * Additively loads heads from the provided yaml
-     * @param headsYaml the heads to load
+     * Additively loads heads from the provided config
+     * @param headConfig the heads to load
      */
-    public static boolean loadHeads(ConfigurationSection headsYaml)
+    public static boolean loadHeads(HeadConfig headConfig)
     {
         try
         {
             if (headLoader == null)
                 headLoader = new HeadLoader();
 
-            HashMap<String, IHead> heads = headLoader.loadHeads(headsYaml);
+            HashMap<String, IHead> heads = headLoader.loadHeads(headConfig);
             loadedHeads.putAll(heads);
             return true;
         }
         catch (Exception e)
         {
-            Bukkit.getLogger().severe(String.format("[%s] Error when loading heads: %s", Core.PLUGIN_NAME, e.getMessage()));
+            Bukkit.getLogger().severe(String.format("[%s] Error when loading heads: %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             return false;
         }
     }
@@ -96,9 +91,9 @@ public class HeadRepository
     /**
      * Additively loads drops from the provided yaml
      * @param plugin the plugin context for listeners
-     * @param dropsYaml the drops to load
+     * @param dropConfig the drops to load
      */
-    public static boolean loadDrops(Plugin plugin, ConfigurationSection dropsYaml)
+    public static boolean loadDrops(Plugin plugin, HeadDropConfig dropConfig)
     {
         try
         {
@@ -107,7 +102,7 @@ public class HeadRepository
             if (filterLoader == null)
                 filterLoader = new DropFilterLoader();
 
-            HashMap<String, IDrop> drops = dropLoader.loadDrops(dropsYaml, loadedHeads, filterLoader);
+            HashMap<String, IDrop> drops = dropLoader.loadDrops(dropConfig, loadedHeads, filterLoader);
 
             for (IDrop drop : drops.values())
             {
@@ -123,23 +118,23 @@ public class HeadRepository
         }
         catch (Exception e)
         {
-            Bukkit.getLogger().severe(String.format("[%s] Error when loading drops: %s", Core.PLUGIN_NAME, e.getMessage()));
+            Bukkit.getLogger().severe(String.format("[%s] Error when loading drops: %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             return false;
         }
     }
 
     /**
      * Additively loads recipes from the provided yaml
-     * @param recipesYaml the recipes to load
+     * @param recipeConfig the recipes to load
      */
-    public static boolean loadRecipes(ConfigurationSection recipesYaml)
+    public static boolean loadRecipes(HeadRecipeConfig recipeConfig)
     {
         try
         {
             if (recipeLoader == null)
                 recipeLoader = new HeadRecipeLoader();
 
-            HashMap<String, IMetaRecipe> recipes = recipeLoader.loadRecipes(recipesYaml, loadedHeads);
+            HashMap<String, IMetaRecipe> recipes = recipeLoader.loadRecipes(recipeConfig, loadedHeads);
 
             for (IMetaRecipe recipe : recipes.values())
                 MetaRecipeManager.addRecipe(recipe);
@@ -149,7 +144,7 @@ public class HeadRepository
         }
         catch (Exception e)
         {
-            Bukkit.getLogger().severe(String.format("[%s] Error when loading recipes: %s", Core.PLUGIN_NAME, e.getMessage()));
+            Bukkit.getLogger().severe(String.format("[%s] Error when loading recipes: %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             return false;
         }
     }
@@ -171,7 +166,7 @@ public class HeadRepository
         }
         catch (Exception e)
         {
-            Bukkit.getLogger().severe(String.format("[%s] Error when loading head: %s", Core.PLUGIN_NAME, e.getMessage()));
+            Bukkit.getLogger().severe(String.format("[%s] Error when loading head: %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             return false;
         }
     }
@@ -201,7 +196,7 @@ public class HeadRepository
         }
         catch (Exception e)
         {
-            Bukkit.getLogger().severe(String.format("[%s] Error when loading drop: %s", Core.PLUGIN_NAME, e.getMessage()));
+            Bukkit.getLogger().severe(String.format("[%s] Error when loading drop: %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             return false;
         }
     }
@@ -224,7 +219,7 @@ public class HeadRepository
         }
         catch (Exception e)
         {
-            Bukkit.getLogger().severe(String.format("[%s] Error when loading recipes: %s", Core.PLUGIN_NAME, e.getMessage()));
+            Bukkit.getLogger().severe(String.format("[%s] Error when loading recipes: %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             return false;
         }
     }
@@ -473,38 +468,5 @@ public class HeadRepository
                 headRecipes.add(recipe);
         }
         return headRecipes;
-    }
-
-    /**
-     * Gets the heads config file.
-     * @param plugin the plugin context
-     * @return the file
-     */
-    public static File getHeadsFile(Plugin plugin)
-    {
-        File headsFile = new File(plugin.getDataFolder().getPath()+"/"+ HEADS_FILE_NAME);
-        return headsFile;
-    }
-
-    /**
-     * Gets the drops config file.
-     * @param plugin the plugin context
-     * @return the file
-     */
-    public static File getDropsFile(Plugin plugin)
-    {
-        File dropsFile = new File(plugin.getDataFolder().getPath()+"/"+ DROPS_FILE_NAME);
-        return dropsFile;
-    }
-
-    /**
-     * Gets the recipes config file.
-     * @param plugin the plugin context
-     * @return the file
-     */
-    public static File getRecipesFile(Plugin plugin)
-    {
-        File recipesFile = new File(plugin.getDataFolder().getPath()+"/"+ RECIPES_FILE_NAME);
-        return recipesFile;
     }
 }

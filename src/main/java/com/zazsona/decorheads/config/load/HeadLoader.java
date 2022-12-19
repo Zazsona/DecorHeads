@@ -1,6 +1,8 @@
-package com.zazsona.decorheads.config;
+package com.zazsona.decorheads.config.load;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
+import com.zazsona.decorheads.config.HeadConfig;
+import com.zazsona.decorheads.config.HeadType;
 import com.zazsona.decorheads.exceptions.MissingFieldsException;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
@@ -9,39 +11,29 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Set;
 
 import static com.zazsona.decorheads.config.HeadConfig.*;
 
-class HeadLoader
+public class HeadLoader
 {
     /**
-     * Loads all the heads in the provided data, provided it complies with the expected format.
-     * @param headsYaml the head data
+     * Loads all the heads in the provided config
+     * @param headsConfig the heads config
      * @return a key:head map of registered heads
-     * @throws MissingFieldsException invalid YAML format
+     * @throws MissingFieldsException invalid config
      */
-    public HashMap<String, IHead> loadHeads(ConfigurationSection headsYaml) throws MissingFieldsException
+    public HashMap<String, IHead> loadHeads(HeadConfig headsConfig) throws MissingFieldsException
     {
-        if (!headsYaml.contains(HEADS_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", HEADS_KEY), HEADS_KEY);
+        ConfigurationSection heads = headsConfig.getHeads();
+        Set<String> headKeys = headsConfig.getHeadKeys();
 
-        List<ConfigurationSection> headsList = (List<ConfigurationSection>) headsYaml.getList(HEADS_KEY);
-        return loadHeads(headsList);
-    }
-
-    /**
-     * Loads all the heads in the provided data, provided it complies with the expected format.
-     * @param headsList the head data
-     * @return a key:head map of registered heads
-     */
-    public HashMap<String, IHead> loadHeads(List<ConfigurationSection> headsList)
-    {
         HashMap<String, IHead> loadedHeads = new HashMap<>();
-        for (ConfigurationSection headData : headsList)
+        for (String headKey : headKeys)
         {
             try
             {
+                ConfigurationSection headData = heads.getConfigurationSection(headKey);
                 IHead head = loadHead(headData);
                 if (loadedHeads.containsKey(head.getKey()))
                     throw new IllegalArgumentException(String.format("Duplicate Head Key: %s", head.getKey()));
@@ -71,7 +63,7 @@ class HeadLoader
         }
         catch (Exception e)
         {
-            String name = (headYaml.contains(HEAD_KEY_KEY) ? headYaml.getString(HEAD_KEY_KEY) : "[UNKNOWN]");
+            String name = (headYaml.getName() != null ? headYaml.getString(headYaml.getName()) : "[UNKNOWN]");
             throw new IllegalArgumentException(String.format("Unable to load head \"%s\": %s", name, e.getMessage()));
         }
     }
@@ -85,14 +77,14 @@ class HeadLoader
      */
     private IHead parseHead(ConfigurationSection headYaml) throws MissingFieldsException, IllegalArgumentException
     {
-        if (!headYaml.contains(HEAD_KEY_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", HEAD_KEY_KEY), HEAD_KEY_KEY);
+        if (headYaml.getName() == null)
+            throw new MissingFieldsException("Missing Key: Head Key");
         if (!headYaml.contains(HEAD_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", HEAD_TYPE_KEY), HEAD_TYPE_KEY);
         if (!headYaml.contains(HEAD_NAME_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", HEAD_NAME_KEY), HEAD_NAME_KEY);
 
-        String key = headYaml.getString(HEAD_KEY_KEY);
+        String key = headYaml.getName().toLowerCase();
         String headTypeName = headYaml.getString(HEAD_TYPE_KEY);
         String name = headYaml.getString(HEAD_NAME_KEY);
 

@@ -1,15 +1,14 @@
 package com.zazsona.decorheads.config;
 
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.regex.Pattern;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
-public class PluginConfig extends YamlConfigWrapper
+public class PluginConfig extends VersionedYamlConfigWrapper
 {
     public static final String VERSION_KEY = "version";
     public static final String PLUGIN_ENABLED_KEY = "plugin-enabled";
@@ -23,46 +22,12 @@ public class PluginConfig extends YamlConfigWrapper
 
     public PluginConfig(FileConfiguration config, File saveLocation)
     {
-        super(config, saveLocation);
+        super(config, saveLocation, VERSION_KEY);
     }
 
     public PluginConfig(File configFile)
     {
-        super(configFile);
-    }
-
-    /**
-     * Gets the version of the config
-     * @return the version, following semantic versioning.
-     */
-    public String getVersion()
-    {
-        return config.getString(VERSION_KEY);
-    }
-
-    /**
-     * Sets the version of the config
-     * @param major major version
-     * @param minor minor version
-     * @param patch patch version
-     */
-    public void setVersion(int major, int minor, int patch)
-    {
-        String version = String.format("%d.%d.%d", major, minor, patch);
-        config.set(VERSION_KEY, version);
-    }
-
-    /**
-     * Sets the version of the config
-     * @param version version string following semantic versioning (X.Y.Z)
-     * @throws IllegalArgumentException - Provided version does not follow the X.Y.Z convention
-     */
-    public void setVersion(String version)
-    {
-        if (!Pattern.matches("[0-9]+[.][0-9]+[.][0-9]+", version))
-            throw new IllegalArgumentException("Version must follow semantic versioning pattern. (X.Y.Z)");
-
-        config.set(VERSION_KEY, version);
+        super(configFile, VERSION_KEY);
     }
 
     public void setPluginEnabled(boolean newEnabled)
@@ -166,4 +131,11 @@ public class PluginConfig extends YamlConfigWrapper
         return dropType;
     }
 
+    @Override
+    protected FileConfiguration getEmptyConfigData()
+    {
+        InputStream is = DecorHeadsPlugin.getInstance().getResource("config.yml");
+        InputStreamReader isr = new InputStreamReader(is);
+        return YamlConfiguration.loadConfiguration(isr);
+    }
 }
