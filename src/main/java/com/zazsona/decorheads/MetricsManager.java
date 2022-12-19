@@ -38,7 +38,7 @@ public class MetricsManager
         if (enabled)
             return;
 
-        Metrics metrics = new Metrics(Core.getSelfPlugin(), pluginId);
+        Metrics metrics = new Metrics(DecorHeadsPlugin.getInstance(), pluginId);
         addDropsEnabledChart(metrics);
         addCraftingEnabledChart(metrics);
         addDropCraftPermissionsActiveChart(metrics);
@@ -50,7 +50,8 @@ public class MetricsManager
     {
         metrics.addCustomChart(new SimplePie(dropsChartId, () ->
         {
-            boolean dropsEnabled = (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled());
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+            boolean dropsEnabled = (config.isPluginEnabled() && config.isDropsEnabled());
             return String.valueOf(dropsEnabled);
         }));
     }
@@ -59,7 +60,8 @@ public class MetricsManager
     {
         metrics.addCustomChart(new SimplePie(craftingChartId, () ->
         {
-            boolean craftingEnabled = (PluginConfig.isPluginEnabled() && PluginConfig.isCraftingEnabled());
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+            boolean craftingEnabled = (config.isPluginEnabled() && config.isCraftingEnabled());
             return String.valueOf(craftingEnabled);
         }));
     }

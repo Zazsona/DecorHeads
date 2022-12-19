@@ -2,7 +2,7 @@ package com.zazsona.decorheads.headdata;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,7 +42,7 @@ public abstract class Head implements IHead
 
     public static NamespacedKey getSkullHeadKeyKey()
     {
-        return new NamespacedKey(Core.getSelfPlugin(), "HeadKey");
+        return new NamespacedKey(DecorHeadsPlugin.getInstance(), "HeadKey");
     }
 
     protected ItemStack createSkull(String name, String texture)
@@ -65,7 +65,7 @@ public abstract class Head implements IHead
         }
         catch (NoSuchFieldException | IllegalAccessException e)
         {
-            Bukkit.getLogger().severe(String.format("[%s] Could not create head %s", Core.PLUGIN_NAME, getKey()));
+            Bukkit.getLogger().severe(String.format("[%s] Could not create head %s", DecorHeadsPlugin.PLUGIN_NAME, getKey()));
             return new ItemStack(Material.PLAYER_HEAD);
         }
     }

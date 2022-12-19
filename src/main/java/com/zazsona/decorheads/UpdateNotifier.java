@@ -25,12 +25,12 @@ public class UpdateNotifier implements Listener
 
     public UpdateNotifier()
     {
-        this.plugin = Core.getSelfPlugin();
+        this.plugin = DecorHeadsPlugin.getInstance();
         this.currentVersion = plugin.getDescription().getVersion();
         this.latestVersion = currentVersion;            // Fetch query is async, so these are default values until that returns a result.
         this.updateLevel = UpdateNotificationLevel.DISABLED;
 
-        Bukkit.getScheduler().runTaskAsynchronously(Core.getSelfPlugin(), () ->
+        Bukkit.getScheduler().runTaskAsynchronously(DecorHeadsPlugin.getInstance(), () ->
         {
             latestVersion = getLatestVersion();
             updateLevel = getUpdateLevel(currentVersion, latestVersion);
@@ -53,7 +53,7 @@ public class UpdateNotifier implements Listener
         }
         catch (IOException e)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to fetch latest version.", Core.PLUGIN_NAME));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to fetch latest version.", DecorHeadsPlugin.PLUGIN_NAME));
             return null;
         }
     }
@@ -89,14 +89,14 @@ public class UpdateNotifier implements Listener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e)
     {
-        UpdateNotificationLevel notifLevel = PluginConfig.getUpdateNotificationsLevel();
+        UpdateNotificationLevel notifLevel = DecorHeadsPlugin.getInstanceConfig().getUpdateNotificationsLevel();
         if (e.getPlayer().hasPermission(Permissions.NOTIFY_UPDATES))
         {
             if ((updateLevel == UpdateNotificationLevel.MAJOR && (notifLevel == UpdateNotificationLevel.MAJOR || notifLevel == UpdateNotificationLevel.MINOR || notifLevel == UpdateNotificationLevel.PATCH))
                     || (updateLevel == UpdateNotificationLevel.MINOR && (notifLevel == UpdateNotificationLevel.MINOR || notifLevel == UpdateNotificationLevel.PATCH))
                     || (updateLevel == UpdateNotificationLevel.PATCH && notifLevel == UpdateNotificationLevel.PATCH))
             {
-                e.getPlayer().sendMessage(String.format(ChatColor.GREEN+"A new version of %s is available! (%s -> %s)", Core.PLUGIN_NAME, currentVersion, latestVersion));
+                e.getPlayer().sendMessage(String.format(ChatColor.GREEN+"A new version of %s is available! (%s -> %s)", DecorHeadsPlugin.PLUGIN_NAME, currentVersion, latestVersion));
             }
         }
     }

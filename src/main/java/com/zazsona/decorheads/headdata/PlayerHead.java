@@ -1,11 +1,10 @@
 package com.zazsona.decorheads.headdata;
 
 import com.google.gson.Gson;
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.apiresponse.ProfileResponse;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
@@ -34,12 +33,12 @@ public class PlayerHead extends Head
 
     public static NamespacedKey getSkullUUIDKey()
     {
-        return new NamespacedKey(Core.getSelfPlugin(), "OwnerUUID");
+        return new NamespacedKey(DecorHeadsPlugin.getInstance(), "OwnerUUID");
     }
 
     public static NamespacedKey getSkullTextureKey()
     {
-        return new NamespacedKey(Core.getSelfPlugin(), "Texture");
+        return new NamespacedKey(DecorHeadsPlugin.getInstance(), "Texture");
     }
 
     @Override

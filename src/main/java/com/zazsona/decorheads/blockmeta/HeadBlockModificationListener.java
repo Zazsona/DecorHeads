@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.blockmeta;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.config.PluginConfig;
@@ -81,7 +81,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -101,7 +101,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -121,7 +121,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -156,7 +156,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -181,7 +181,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -212,7 +212,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -234,7 +234,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -254,7 +254,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -275,7 +275,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -296,7 +296,7 @@ public class HeadBlockModificationListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -314,7 +314,7 @@ public class HeadBlockModificationListener implements Listener
         BlockMetaRepository metaRepository = BlockMetaRepository.getInstance();
         BlockMetaChunkData chunkMeta = metaRepository.getChunk(block.getChunk());
         HashMap<String, String> blockMeta = chunkMeta.getBlockMeta(block.getLocation());
-        if (!blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY) && !PluginConfig.isHeadMetaPatcherEnabled())
+        if (!blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY) && !DecorHeadsPlugin.getInstanceConfig().isHeadMetaPatcherEnabled())
             return null;
 
         if (blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY))
@@ -324,7 +324,7 @@ public class HeadBlockModificationListener implements Listener
             return head;
         }
 
-        if (!blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY) && PluginConfig.isHeadMetaPatcherEnabled())
+        if (!blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY) && DecorHeadsPlugin.getInstanceConfig().isHeadMetaPatcherEnabled())
             return identifyUnknownHead(block);
 
         return null;
@@ -369,7 +369,7 @@ public class HeadBlockModificationListener implements Listener
             PlayerHead playerHead = (PlayerHead) head;
             String uuid = blockMeta.get(BlockMetaKeys.PLAYER_ID_KEY);
             String texture = blockMeta.get(BlockMetaKeys.HEAD_TEXTURE_KEY);
-            if (uuid == null && PluginConfig.isHeadMetaPatcherEnabled())
+            if (uuid == null && DecorHeadsPlugin.getInstanceConfig().isHeadMetaPatcherEnabled())
             {
                 Skull headBlockSkullState = (Skull) headBlock.getState();
                 String instanceName = headBlockSkullState.getOwner();

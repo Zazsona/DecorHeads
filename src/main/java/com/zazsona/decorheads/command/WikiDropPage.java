@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.command;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.DropType;
 import com.zazsona.decorheads.drops.drops.IDrop;
@@ -129,7 +129,7 @@ public class WikiDropPage implements IWikiPage
         stringBuilder.append(ChatColor.ITALIC);
         for (NamespacedKey keyEntry : keys)
         {
-            String suffix = (keyEntry.getNamespace().equalsIgnoreCase(Core.PLUGIN_NAME)) ? " (Head)" : "";
+            String suffix = (keyEntry.getNamespace().equalsIgnoreCase(DecorHeadsPlugin.PLUGIN_NAME)) ? " (Head)" : "";
             stringBuilder.append(DecorHeadsUtil.capitaliseName(keyEntry.getKey())).append(suffix).append(", ");
         }
         stringBuilder.setLength(stringBuilder.length()-2); //Remove final ", "

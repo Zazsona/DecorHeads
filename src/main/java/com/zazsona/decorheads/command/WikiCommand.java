@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.command;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.config.PluginConfig;
@@ -107,7 +107,7 @@ public class WikiCommand implements CommandExecutor
             String message = CommandUtil.addHeader(headerText, pageContent);
             sender.sendMessage("\n"+message); // New line to make it easier to read against previously opened pages.
 
-            if (PluginConfig.isLearnRecipesFromWikiEnabled() && recipe != null && sender instanceof Player)
+            if (DecorHeadsPlugin.getInstanceConfig().isLearnRecipesFromWikiEnabled() && recipe != null && sender instanceof Player)
             {
                 Player player = (Player) sender;                 // They've got Wiki page access, may as well give the recipe in the prettier UI
                 player.discoverRecipe(recipe.getKey());
@@ -121,12 +121,14 @@ public class WikiCommand implements CommandExecutor
 
     private boolean isRecipeEnabled(IMetaRecipe recipe)
     {
-        return (PluginConfig.isPluginEnabled() && PluginConfig.isCraftingEnabled() && MetaRecipeManager.getRecipe(recipe.getKey()) != null);
+        PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+        return (config.isPluginEnabled() && config.isCraftingEnabled() && MetaRecipeManager.getRecipe(recipe.getKey()) != null);
     }
 
     private boolean isDropEnabled(IDrop drop)
     {
-        return (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && PluginConfig.isDropTypeEnabled(drop.getDropType()));
+        PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+        return (config.isPluginEnabled() && config.isDropsEnabled() && config.isDropTypeEnabled(drop.getDropType()));
     }
 
     private void sendHeadsList(CommandSender sender, String[] args)
@@ -206,7 +208,7 @@ public class WikiCommand implements CommandExecutor
 
         ItemStack headStack = (head instanceof PlayerHead && playerName != null) ? ((PlayerHead) head).createItem(playerName) : head.createItem();
         PreviewInventory previewInventory = new PreviewInventory(headStack);
-        Core.getSelfPlugin().getServer().getPluginManager().registerEvents(previewInventory, Core.getSelfPlugin());
+        DecorHeadsPlugin.getInstance().getServer().getPluginManager().registerEvents(previewInventory, DecorHeadsPlugin.getInstance());
         previewInventories.put(inventoryKey, previewInventory);
         return previewInventory;
     }

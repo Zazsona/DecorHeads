@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.drops.drops;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.Permissions;
 import com.zazsona.decorheads.blockmeta.BlockMetaChunkData;
 import com.zazsona.decorheads.blockmeta.BlockMetaKeys;
@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockCookEvent;
-import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,7 +57,8 @@ public class SmeltDrop extends Drop
     {
         try
         {
-            boolean enabledPass = (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && PluginConfig.isDropTypeEnabled(getDropType()));
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+            boolean enabledPass = (config.isPluginEnabled() && config.isDropsEnabled() && config.isDropTypeEnabled(getDropType()));
             boolean rollPass = DropUtil.rollDrop(getDropRate());
 
             if (enabledPass && rollPass && isFiltersPass(e))
@@ -82,7 +82,7 @@ public class SmeltDrop extends Drop
                     ItemStack result = getResult(player.getUniqueId());
                     DropUtil.dropItems(location, result, 1);
                 }
-                else if (player == null && PluginConfig.isEnvironmentalDropsEnabled())
+                else if (player == null && config.isEnvironmentalDropsEnabled())
                 {
                     ItemStack result = getResult(null);
                     DropUtil.dropItems(location, result, 1);
@@ -91,7 +91,7 @@ public class SmeltDrop extends Drop
         }
         catch (IllegalArgumentException | IOException ex)
         {
-            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", Core.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", DecorHeadsPlugin.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
         }
     }
 }

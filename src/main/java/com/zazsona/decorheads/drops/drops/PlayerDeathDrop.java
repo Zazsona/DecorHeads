@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.drops.drops;
 
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.config.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
@@ -44,7 +45,8 @@ public class PlayerDeathDrop extends EntityDeathDrop
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent e)
     {
-        if (PluginConfig.isDropTypeEnabled(getDropType()) && e.getEntityType() == EntityType.PLAYER)
+        PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+        if (config.isDropTypeEnabled(getDropType()) && e.getEntityType() == EntityType.PLAYER)
             super.onEntityDeath(e);
     }
 }

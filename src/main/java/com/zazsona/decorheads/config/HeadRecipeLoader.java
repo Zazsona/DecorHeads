@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.crafting.IMetaRecipe;
 import com.zazsona.decorheads.crafting.ShapedMetaRecipe;
 import com.zazsona.decorheads.crafting.ShapelessMetaRecipe;
@@ -58,7 +58,7 @@ class HeadRecipeLoader
             }
             catch (Exception e)
             {
-                Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+                Bukkit.getLogger().warning(String.format("[%s] %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             }
         }
         return loadedRecipes;
@@ -137,7 +137,7 @@ class HeadRecipeLoader
         ConfigurationSection ingredientsMap = recipeYaml.getConfigurationSection(RECIPE_INGREDIENTS_KEY);
 
         // Transform Data
-        NamespacedKey recipeNamespacedKey = new NamespacedKey(Core.getSelfPlugin(), key);
+        NamespacedKey recipeNamespacedKey = new NamespacedKey(DecorHeadsPlugin.getInstance(), key);
         NamespacedKey resultNamespacedKey = NamespacedKey.fromString(resultName);
         ItemStack result = ItemLoader.loadItem(resultNamespacedKey, heads);
         HashMap<Character, ItemStack> ingredientStackMap = parseIngredientsMap(ingredientsMap, heads);
@@ -185,7 +185,7 @@ class HeadRecipeLoader
         ConfigurationSection ingredientsMap = recipeYaml.getConfigurationSection(RECIPE_INGREDIENTS_KEY);
 
         // Transform Data
-        NamespacedKey recipeNamespacedKey = new NamespacedKey(Core.getSelfPlugin(), key);
+        NamespacedKey recipeNamespacedKey = new NamespacedKey(DecorHeadsPlugin.getInstance(), key);
         NamespacedKey resultNamespacedKey = NamespacedKey.fromString(resultName);
         ItemStack result = ItemLoader.loadItem(resultNamespacedKey, heads);
         HashMap<Character, ItemStack> ingredientStackMap = parseIngredientsMap(ingredientsMap, heads);

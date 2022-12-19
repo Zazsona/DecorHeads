@@ -1,10 +1,17 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-public class PluginConfig
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.regex.Pattern;
+
+public class PluginConfig extends YamlConfigWrapper
 {
+    public static final String VERSION_KEY = "version";
     public static final String PLUGIN_ENABLED_KEY = "plugin-enabled";
     public static final String CRAFTING_KEY = "crafting";
     public static final String DROPS_KEY = "drops";
@@ -14,105 +21,134 @@ public class PluginConfig
     public static final String UPDATE_NOTIFICATIONS_KEY = "update-notifications";
     public static final String HEAD_META_PATCHER_KEY = "head-meta-patcher";
 
-    private static Plugin plugin = Core.getPlugin(Core.class);
-
-    public static void save()
+    public PluginConfig(FileConfiguration config, File saveLocation)
     {
-        plugin.saveConfig();
+        super(config, saveLocation);
     }
 
-    public static void setPluginEnabled(boolean newEnabled)
+    public PluginConfig(File configFile)
     {
-        plugin.getConfig().set(PLUGIN_ENABLED_KEY, newEnabled);
-        save();
+        super(configFile);
     }
 
-    public static boolean isPluginEnabled()
+    /**
+     * Gets the version of the config
+     * @return the version, following semantic versioning.
+     */
+    public String getVersion()
     {
-        return plugin.getConfig().getBoolean(PLUGIN_ENABLED_KEY);
+        return config.getString(VERSION_KEY);
     }
 
-    public static void setCraftingEnabled(boolean newEnabled)
+    /**
+     * Sets the version of the config
+     * @param major major version
+     * @param minor minor version
+     * @param patch patch version
+     */
+    public void setVersion(int major, int minor, int patch)
     {
-        plugin.getConfig().set(CRAFTING_KEY, newEnabled);
-        save();
+        String version = String.format("%d.%d.%d", major, minor, patch);
+        config.set(VERSION_KEY, version);
     }
 
-    public static boolean isCraftingEnabled()
+    /**
+     * Sets the version of the config
+     * @param version version string following semantic versioning (X.Y.Z)
+     * @throws IllegalArgumentException - Provided version does not follow the X.Y.Z convention
+     */
+    public void setVersion(String version)
     {
-        return plugin.getConfig().getBoolean(CRAFTING_KEY);
+        if (!Pattern.matches("[0-9]+[.][0-9]+[.][0-9]+", version))
+            throw new IllegalArgumentException("Version must follow semantic versioning pattern. (X.Y.Z)");
+
+        config.set(VERSION_KEY, version);
     }
 
-    public static void setDropsEnabled(boolean newEnabled)
+    public void setPluginEnabled(boolean newEnabled)
     {
-        plugin.getConfig().set(DROPS_KEY, newEnabled);
-        save();
+        config.set(PLUGIN_ENABLED_KEY, newEnabled);
     }
 
-    public static boolean isDropsEnabled()
+    public boolean isPluginEnabled()
     {
-        return plugin.getConfig().getBoolean(DROPS_KEY);
+        return config.getBoolean(PLUGIN_ENABLED_KEY);
     }
 
-    public static void setEnvironmentalDropsEnabled(boolean newEnabled)
+    public void setCraftingEnabled(boolean newEnabled)
     {
-        plugin.getConfig().set(ENVIRONMENTAL_DROPS_KEY, newEnabled);
-        save();
+        config.set(CRAFTING_KEY, newEnabled);
     }
 
-    public static boolean isEnvironmentalDropsEnabled()
+    public boolean isCraftingEnabled()
     {
-        return plugin.getConfig().getBoolean(ENVIRONMENTAL_DROPS_KEY);
+        return config.getBoolean(CRAFTING_KEY);
     }
 
-    public static void setLearnRecipesFromWikiEnabled(boolean newEnabled)
+    public void setDropsEnabled(boolean newEnabled)
     {
-        plugin.getConfig().set(WIKI_RECIPE_LEARN_KEY, newEnabled);
-        save();
+        config.set(DROPS_KEY, newEnabled);
     }
 
-    public static boolean isLearnRecipesFromWikiEnabled()
+    public boolean isDropsEnabled()
     {
-        return plugin.getConfig().getBoolean(WIKI_RECIPE_LEARN_KEY);
+        return config.getBoolean(DROPS_KEY);
     }
 
-    public static void setUpdateNotificationsLevel(UpdateNotificationLevel level)
+    public void setEnvironmentalDropsEnabled(boolean newEnabled)
+    {
+        config.set(ENVIRONMENTAL_DROPS_KEY, newEnabled);
+    }
+
+    public boolean isEnvironmentalDropsEnabled()
+    {
+        return config.getBoolean(ENVIRONMENTAL_DROPS_KEY);
+    }
+
+    public void setLearnRecipesFromWikiEnabled(boolean newEnabled)
+    {
+        config.set(WIKI_RECIPE_LEARN_KEY, newEnabled);
+    }
+
+    public boolean isLearnRecipesFromWikiEnabled()
+    {
+        return config.getBoolean(WIKI_RECIPE_LEARN_KEY);
+    }
+
+    public void setUpdateNotificationsLevel(UpdateNotificationLevel level)
     {
         String levelLabel = level.toString().toLowerCase();
-        plugin.getConfig().set(UPDATE_NOTIFICATIONS_KEY, levelLabel);
-        save();
+        config.set(UPDATE_NOTIFICATIONS_KEY, levelLabel);
     }
 
-    public static UpdateNotificationLevel getUpdateNotificationsLevel()
+    public UpdateNotificationLevel getUpdateNotificationsLevel()
     {
-        String levelLabel = plugin.getConfig().getString(UPDATE_NOTIFICATIONS_KEY);
+        String levelLabel = config.getString(UPDATE_NOTIFICATIONS_KEY);
         String levelName = levelLabel.toUpperCase();
         UpdateNotificationLevel level = UpdateNotificationLevel.valueOf(levelName);
         return level;
     }
 
-    public static void setDropTypeEnabled(DropType dropType, boolean newEnabled)
+    public void setDropTypeEnabled(DropType dropType, boolean newEnabled)
     {
         String configKey = convertDropTypeToConfigKey(dropType);
-        plugin.getConfig().set(configKey, newEnabled);
-        save();
+        config.set(configKey, newEnabled);
     }
 
-    public static boolean isDropTypeEnabled(DropType dropType)
+    public boolean isDropTypeEnabled(DropType dropType)
     {
         String configKey = convertDropTypeToConfigKey(dropType);
-        return plugin.getConfig().getBoolean(configKey);
+        return config.getBoolean(configKey);
     }
 
-    public static void setHeadMetaPatcherEnabled(boolean newEnabled)
+    public void setHeadMetaPatcherEnabled(boolean newEnabled)
     {
-        plugin.getConfig().set(HEAD_META_PATCHER_KEY, newEnabled);
-        save();
+        config.set(HEAD_META_PATCHER_KEY, newEnabled);
     }
 
-    public static boolean isHeadMetaPatcherEnabled()
+    public boolean isHeadMetaPatcherEnabled()
     {
-        return plugin.getConfig().getBoolean(HEAD_META_PATCHER_KEY);
+        return config.getBoolean(HEAD_META_PATCHER_KEY);
     }
 
     public static String convertDropTypeToConfigKey(DropType dropType)

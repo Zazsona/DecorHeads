@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.command;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.headdata.IHead;
@@ -76,7 +76,7 @@ public class SpawnHeadCommand implements CommandExecutor
         }
         catch (ArrayIndexOutOfBoundsException | IllegalArgumentException | NullPointerException e)
         {
-            String usage = (String) Core.getSelfPlugin().getDescription().getCommands().get(COMMAND_KEY).get("usage");
+            String usage = (String) DecorHeadsPlugin.getInstance().getDescription().getCommands().get(COMMAND_KEY).get("usage");
             sender.sendMessage(ChatColor.RED + String.format("Invalid command arguments. Usage:\n%s", usage));
         }
         catch (InvalidHeadException e)

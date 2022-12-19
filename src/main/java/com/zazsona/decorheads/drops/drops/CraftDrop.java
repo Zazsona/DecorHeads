@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.drops.drops;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.Permissions;
 import com.zazsona.decorheads.config.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
@@ -51,7 +51,8 @@ public class CraftDrop extends Drop
         try
         {
             Player player = (Player) e.getWhoClicked();
-            boolean enabledPass = (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && PluginConfig.isDropTypeEnabled(getDropType()));
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+            boolean enabledPass = (config.isPluginEnabled() && config.isDropsEnabled() && config.isDropTypeEnabled(getDropType()));
             boolean rollPass = DropUtil.rollDrop(getDropRate());
             boolean permissionsPass = player.hasPermission(Permissions.DROP_HEADS);
 
@@ -77,7 +78,7 @@ public class CraftDrop extends Drop
                     }
 
                     final int quantityPreviouslyHeld = preCraftQuantity;
-                    Bukkit.getScheduler().runTaskLater(Core.getSelfPlugin(), () ->
+                    Bukkit.getScheduler().runTaskLater(DecorHeadsPlugin.getInstance(), () ->
                     {
                         int quantityHeld = 0;
                         ItemStack[] updatedInventoryContents = e.getWhoClicked().getInventory().getStorageContents();
@@ -94,7 +95,7 @@ public class CraftDrop extends Drop
         }
         catch (IllegalArgumentException ex)
         {
-            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", Core.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", DecorHeadsPlugin.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
         }
     }
 }

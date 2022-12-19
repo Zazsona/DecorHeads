@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -29,7 +29,7 @@ public class ConfigUpdater
 
     public void updateConfig()
     {
-        Plugin plugin = Core.getSelfPlugin();
+        Plugin plugin = DecorHeadsPlugin.getInstance();
         File configFile = new File(plugin.getDataFolder().getPath()+"/"+configFileName);
         boolean upgradingFromLegacy = false;
         if (configFile.exists())
@@ -106,18 +106,18 @@ public class ConfigUpdater
         {
             if (configFile.exists())
             {
-                Bukkit.getLogger().info(String.format("[%s] Found legacy 1.x DecorHeads config. Archiving...", Core.PLUGIN_NAME));
+                Bukkit.getLogger().info(String.format("[%s] Found legacy 1.x DecorHeads config. Archiving...", DecorHeadsPlugin.PLUGIN_NAME));
                 String archivePath = configFile.getParent()+"/"+legacyConfigFileName;
                 moveConfig(configFile, archivePath);
                 plugin.reloadConfig();
                 plugin.saveDefaultConfig();
                 plugin.reloadConfig();
-                Bukkit.getLogger().info(String.format("[%s] Archive complete. Thanks for being a long-time supporter of the plugin!", Core.PLUGIN_NAME));
+                Bukkit.getLogger().info(String.format("[%s] Archive complete. Thanks for being a long-time supporter of the plugin!", DecorHeadsPlugin.PLUGIN_NAME));
             }
         }
         catch (SecurityException e)
         {
-            Bukkit.getLogger().severe(String.format("[%s] Unable to archive legacy config. You may experience unintended behaviour.", Core.PLUGIN_NAME));
+            Bukkit.getLogger().severe(String.format("[%s] Unable to archive legacy config. You may experience unintended behaviour.", DecorHeadsPlugin.PLUGIN_NAME));
         }
     }
 

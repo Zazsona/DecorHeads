@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.blockmeta;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -26,7 +26,7 @@ public class BlockMetaSaveOnUnloadListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to save chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to save chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -35,7 +35,7 @@ public class BlockMetaSaveOnUnloadListener implements Listener
     {
         try
         {
-            if (e.getPlugin().getName().equals(Core.getSelfPlugin().getName()))
+            if (e.getPlugin().getName().equals(DecorHeadsPlugin.getInstance().getName()))
             {
                 BlockMetaRepository repo = BlockMetaRepository.getInstance();
                 List<World> worlds = Bukkit.getWorlds();
@@ -52,7 +52,7 @@ public class BlockMetaSaveOnUnloadListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to save chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to save chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 }

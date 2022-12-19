@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.exceptions.MissingFieldsException;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.drops.drops.*;
@@ -57,7 +57,7 @@ class HeadDropLoader
             }
             catch (Exception e)
             {
-                Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+                Bukkit.getLogger().warning(String.format("[%s] %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             }
         }
         return loadedDrops;
@@ -284,7 +284,7 @@ class HeadDropLoader
         NamespacedKey resultKey = NamespacedKey.fromString(resultName);
         IHead headResult = null;
         ItemStack itemResult = null;
-        if (resultKey.getNamespace().equalsIgnoreCase(Core.PLUGIN_NAME))
+        if (resultKey.getNamespace().equalsIgnoreCase(DecorHeadsPlugin.PLUGIN_NAME))
             headResult = heads.get(resultKey.getKey());
         else
             itemResult = ItemLoader.loadItem(resultKey.getKey(), heads);

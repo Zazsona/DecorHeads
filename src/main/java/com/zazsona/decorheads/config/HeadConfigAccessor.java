@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -10,8 +10,8 @@ import java.io.InputStream;
 public class HeadConfigAccessor
 {
     public static final String headsFileName = "heads.yml";
-    public static final String baseHeadsFileName = "base-heads.yml";
-    public static final String headsChangelogDirName = "heads-changelog";
+    public static final String baseHeadsFileName = "base.yml";
+    public static final String updatesResPath = "updates/legacy";
     public static final String changelogFileFormat = ".yml";
 
     public static final String versionKey = "version";
@@ -37,20 +37,20 @@ public class HeadConfigAccessor
 
     public File getHeadsFile()
     {
-        Plugin plugin = Core.getPlugin(Core.class);
+        Plugin plugin = DecorHeadsPlugin.getPlugin(DecorHeadsPlugin.class);
         File headsFile = new File(plugin.getDataFolder().getPath()+"/"+ headsFileName);
         return headsFile;
     }
 
     public InputStream getBaseHeadsStream() throws IOException
     {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(headsChangelogDirName+"/"+baseHeadsFileName);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(updatesResPath +"/"+baseHeadsFileName);
         return inputStream;
     }
 
     public InputStream getChangelog(String version) throws IOException
     {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(headsChangelogDirName+"/"+version+changelogFileFormat);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(updatesResPath +"/"+version+changelogFileFormat);
         return inputStream;
     }
 }

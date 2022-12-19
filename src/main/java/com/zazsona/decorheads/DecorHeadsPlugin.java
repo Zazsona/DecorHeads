@@ -11,18 +11,37 @@ import com.zazsona.decorheads.command.WikiCommand;
 import com.zazsona.decorheads.config.ConfigUpdater;
 import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.config.HeadUpdaterLegacy;
+import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.event.block.BlockBreakByExplosionEventTrigger;
 import com.zazsona.decorheads.event.block.BlockPistonReactionEventTrigger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Core extends JavaPlugin
+import java.nio.file.Paths;
+
+public class DecorHeadsPlugin extends JavaPlugin
 {
     public static final String PLUGIN_NAME = "DecorHeads";
 
-    public static JavaPlugin getSelfPlugin()
+    public static DecorHeadsPlugin getInstance()
     {
-        return Core.getPlugin(Core.class);
+        return DecorHeadsPlugin.getPlugin(DecorHeadsPlugin.class);
+    }
+
+    public static PluginConfig getInstanceConfig()
+    {
+        return DecorHeadsPlugin.getInstance().getPluginConfig();
+    }
+
+    private PluginConfig pluginConfig;
+
+    /**
+     * Returns the default config available via {@link #getConfig()} wrapped with {@link PluginConfig}
+     * @return pluginConfig the wrapped config
+     */
+    public PluginConfig getPluginConfig()
+    {
+        return pluginConfig;
     }
 
     @Override
@@ -34,6 +53,8 @@ public class Core extends JavaPlugin
             // Initialisers
             // ============================================
             MaterialUtil.indexMaterials();
+            pluginConfig = new PluginConfig(getConfig(), Paths.get(getDataFolder().toString(), "config.yml").toFile());
+
 
             // ============================================
             // Updaters
@@ -98,7 +119,7 @@ public class Core extends JavaPlugin
         }
         catch (Exception e)
         {
-            Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             e.printStackTrace();
         }
     }
@@ -109,5 +130,12 @@ public class Core extends JavaPlugin
         HeadRepository.unloadHeads();
         HeadRepository.unloadDrops();
         HeadRepository.unloadRecipes();
+    }
+
+    @Override
+    public void reloadConfig()
+    {
+        super.reloadConfig();
+        pluginConfig.setConfigData(getConfig());
     }
 }

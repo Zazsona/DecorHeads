@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.blockmeta;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.MaterialUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -45,7 +45,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -70,7 +70,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -83,7 +83,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -101,7 +101,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -119,7 +119,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -138,7 +138,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -151,7 +151,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 

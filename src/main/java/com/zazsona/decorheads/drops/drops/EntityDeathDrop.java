@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.drops.drops;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.Permissions;
 import com.zazsona.decorheads.config.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
@@ -53,9 +53,10 @@ public class EntityDeathDrop extends Drop
         try
         {
             Player killer = e.getEntity().getKiller();
-            boolean enabledPass = (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && PluginConfig.isDropTypeEnabled(getDropType()));
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+            boolean enabledPass = (config.isPluginEnabled() && config.isDropsEnabled() && config.isDropTypeEnabled(getDropType()));
             boolean rollPass = DropUtil.rollDrop(getModifiedDropRate(e));
-            boolean permissionsPass = (killer == null) ? PluginConfig.isEnvironmentalDropsEnabled() : killer.hasPermission(Permissions.DROP_HEADS);
+            boolean permissionsPass = (killer == null) ? config.isEnvironmentalDropsEnabled() : killer.hasPermission(Permissions.DROP_HEADS);
 
             if (enabledPass && rollPass && permissionsPass && isFiltersPass(e))
             {
@@ -67,7 +68,7 @@ public class EntityDeathDrop extends Drop
         }
         catch (IllegalArgumentException ex)
         {
-            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", Core.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", DecorHeadsPlugin.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
         }
     }
 

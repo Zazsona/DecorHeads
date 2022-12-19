@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.exceptions.MissingFieldsException;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
@@ -50,7 +50,7 @@ class HeadLoader
             }
             catch (Exception e)
             {
-                Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+                Bukkit.getLogger().warning(String.format("[%s] %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             }
         }
         return loadedHeads;

@@ -1,7 +1,6 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
-import com.zazsona.decorheads.exceptions.InvalidHeadException;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -44,7 +43,7 @@ public class ItemLoader
             ItemStack itemStack = new ItemStack(material);
             return itemStack;
         }
-        else if (namespace.equalsIgnoreCase(Core.PLUGIN_NAME))
+        else if (namespace.equalsIgnoreCase(DecorHeadsPlugin.PLUGIN_NAME))
         {
             String headKey = key.getKey();
             IHead head = headMap.get(headKey);

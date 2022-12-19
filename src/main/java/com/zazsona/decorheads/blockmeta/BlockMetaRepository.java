@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.blockmeta;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
@@ -59,7 +59,7 @@ public class BlockMetaRepository implements Listener
         String fileName = CHUNK_FILE_NAME_FORMAT.replace("{x}", chunkX).replace("{z}", chunkZ);
         String worldsPath = Bukkit.getServer().getWorldContainer().getAbsolutePath();
         String worldPath = worldsPath + "/" + worldName;
-        String worldPluginPath = worldPath + "/" + Core.PLUGIN_NAME.toLowerCase();
+        String worldPluginPath = worldPath + "/" + DecorHeadsPlugin.PLUGIN_NAME.toLowerCase();
         String filePath = worldPluginPath + "/" + fileName;
         return new File(filePath);
     }
@@ -79,7 +79,7 @@ public class BlockMetaRepository implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", Core.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 

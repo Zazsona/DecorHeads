@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.drops.filters;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.blockmeta.BlockMetaChunkData;
 import com.zazsona.decorheads.blockmeta.BlockMetaKeys;
 import com.zazsona.decorheads.blockmeta.BlockMetaRepository;
@@ -84,7 +84,7 @@ public class BlockFilter extends DropFilter
                 String headId = blockMeta.get(BlockMetaKeys.HEAD_ID_KEY);
                 if (headId != null)
                 {
-                    NamespacedKey headKey = new NamespacedKey(Core.getSelfPlugin(), headId);
+                    NamespacedKey headKey = new NamespacedKey(DecorHeadsPlugin.getInstance(), headId);
                     return blockKeys.contains(headKey);
                 }
             }
@@ -92,7 +92,7 @@ public class BlockFilter extends DropFilter
         }
         catch (IOException ex)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Block filter failed: %s", Core.PLUGIN_NAME, ex.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Block filter failed: %s", DecorHeadsPlugin.PLUGIN_NAME, ex.getMessage()));
             return false;
         }
     }

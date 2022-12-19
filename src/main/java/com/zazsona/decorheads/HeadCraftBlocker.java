@@ -2,6 +2,7 @@ package com.zazsona.decorheads;
 
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.Head;
+import jdk.tools.jlink.plugin.Plugin;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
@@ -21,8 +22,9 @@ public class HeadCraftBlocker implements Listener
             ItemStack resultingItem = e.getRecipe().getResult();
             if ((resultingItem.getType() == Material.PLAYER_HEAD || resultingItem.getType() == Material.PLAYER_WALL_HEAD) && resultingItem.getItemMeta().getPersistentDataContainer().has(Head.getSkullHeadKeyKey(), PersistentDataType.STRING))
             {
+                PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
                 HumanEntity craftingEntity = e.getView().getPlayer();
-                boolean craftingEnabled = PluginConfig.isPluginEnabled() && PluginConfig.isCraftingEnabled();
+                boolean craftingEnabled = config.isPluginEnabled() && config.isCraftingEnabled();
                 if (!craftingEntity.hasPermission(Permissions.CRAFT_HEADS) || (!craftingEnabled))
                     e.getInventory().setResult(null);
             }

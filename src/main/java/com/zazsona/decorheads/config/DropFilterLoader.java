@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.exceptions.MissingFieldsException;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.drops.filters.BlockFilter;
@@ -44,7 +44,7 @@ class DropFilterLoader
             }
             catch (Exception e)
             {
-                Bukkit.getLogger().warning(String.format("[%s] %s", Core.PLUGIN_NAME, e.getMessage()));
+                Bukkit.getLogger().warning(String.format("[%s] %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
             }
         }
         return loadedFilters;
@@ -86,11 +86,11 @@ class DropFilterLoader
                     if (material == null)
                         throw new InvalidKeyException(String.format("Minecraft item key \"%s\" does not exist.", key));
                 }
-                else if (namespace.equalsIgnoreCase(Core.PLUGIN_NAME))
+                else if (namespace.equalsIgnoreCase(DecorHeadsPlugin.PLUGIN_NAME))
                 {
                     IHead head = heads.get(key);
                     if (head == null)
-                        throw new InvalidKeyException(String.format("%s item key \"%s\" does not exist.", Core.PLUGIN_NAME, key));
+                        throw new InvalidKeyException(String.format("%s item key \"%s\" does not exist.", DecorHeadsPlugin.PLUGIN_NAME, key));
                 }
                 blockKeys.add(blockKey);
             }

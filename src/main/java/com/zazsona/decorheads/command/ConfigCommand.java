@@ -1,5 +1,6 @@
 package com.zazsona.decorheads.command;
 
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
@@ -8,6 +9,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import java.io.IOException;
 
 public class ConfigCommand implements CommandExecutor
 {
@@ -20,73 +23,81 @@ public class ConfigCommand implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        if (args.length >= 1 && args[0].equalsIgnoreCase(PluginConfig.DROP_TYPES_KEY))
-            manageDropTypesConfig(sender, args);
-        else
-            manageRootConfig(sender, args);
-        return true;
-
-    }
-
-    private void manageRootConfig(CommandSender sender, String[] args)
-    {
         try
         {
-            if (args.length >= 2)
-            {
-                String settingName = args[0];
-                setState(settingName, args[1]);
-            }
-            sender.sendMessage(getCurrentStates());
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+            if (args.length >= 1 && args[0].equalsIgnoreCase(PluginConfig.DROP_TYPES_KEY))
+                manageDropTypesConfig(config, sender, args);
+            else
+                manageRootConfig(config, sender, args);
         }
-        catch (IllegalArgumentException e)
+        catch (IllegalArgumentException iaEx)
         {
-            sender.sendMessage(ChatColor.RED+e.getMessage());
+            sender.sendMessage(ChatColor.RED+iaEx.getMessage());
+        }
+        catch (IOException ioEx)
+        {
+            sender.sendMessage(ChatColor.RED+"Unable to save config. See log for details.");
+            ioEx.printStackTrace();
+        }
+        finally
+        {
+            return true;
         }
     }
 
-    private void manageDropTypesConfig(CommandSender sender, String[] args)
+    private void manageRootConfig(PluginConfig config, CommandSender sender, String[] args) throws IOException
+    {
+        if (args.length >= 2)
+        {
+            String settingName = args[0];
+            setState(config, settingName, args[1]);
+        }
+        sender.sendMessage(getCurrentStates(config));
+    }
+
+    private void manageDropTypesConfig(PluginConfig config, CommandSender sender, String[] args) throws IOException
     {
         if (args.length >= 3 && (args[2].equalsIgnoreCase(onText) || args[2].equalsIgnoreCase(offText)))
         {
             String typeName = args[1];
             boolean enable = args[2].equalsIgnoreCase(onText);
-            String updatedType = setDropTypeState(typeName, enable);
-            sender.sendMessage(getCurrentDropTypeStates());
+            String updatedType = setDropTypeState(config, typeName, enable);
+            sender.sendMessage(getCurrentDropTypeStates(config));
             if (updatedType == null)
-                sender.sendMessage(String.format(ChatColor.RED+"Unknown drop type: %s", typeName));
+                throw new IllegalArgumentException(String.format("Unknown drop type: %s", typeName));
         }
         else
-            sender.sendMessage(getCurrentDropTypeStates());
+            sender.sendMessage(getCurrentDropTypeStates(config));
     }
 
-    private String setState(String setting, String value) throws IllegalArgumentException
+    private String setState(PluginConfig config, String setting, String value) throws IllegalArgumentException, IOException
     {
         switch (setting.toLowerCase())
         {
             case PluginConfig.PLUGIN_ENABLED_KEY:
-                PluginConfig.setPluginEnabled(value.equalsIgnoreCase(onText));
+                config.setPluginEnabled(value.equalsIgnoreCase(onText));
                 break;
             case PluginConfig.CRAFTING_KEY:
-                PluginConfig.setCraftingEnabled(value.equalsIgnoreCase(onText));
+                config.setCraftingEnabled(value.equalsIgnoreCase(onText));
                 break;
             case PluginConfig.DROPS_KEY:
-                PluginConfig.setDropsEnabled(value.equalsIgnoreCase(onText));
+                config.setDropsEnabled(value.equalsIgnoreCase(onText));
                 break;
             case PluginConfig.ENVIRONMENTAL_DROPS_KEY:
-                PluginConfig.setEnvironmentalDropsEnabled(value.equalsIgnoreCase(onText));
+                config.setEnvironmentalDropsEnabled(value.equalsIgnoreCase(onText));
                 break;
             case PluginConfig.WIKI_RECIPE_LEARN_KEY:
-                PluginConfig.setLearnRecipesFromWikiEnabled(value.equalsIgnoreCase(onText));
+                config.setLearnRecipesFromWikiEnabled(value.equalsIgnoreCase(onText));
                 break;
             case PluginConfig.HEAD_META_PATCHER_KEY:
-                PluginConfig.setHeadMetaPatcherEnabled(value.equalsIgnoreCase(onText));
+                config.setHeadMetaPatcherEnabled(value.equalsIgnoreCase(onText));
                 break;
             case PluginConfig.UPDATE_NOTIFICATIONS_KEY:
                 try
                 {
                     UpdateNotificationLevel level = UpdateNotificationLevel.valueOf(value.toUpperCase());
-                    PluginConfig.setUpdateNotificationsLevel(level);
+                    config.setUpdateNotificationsLevel(level);
                 }
                 catch (IllegalArgumentException e)
                 {
@@ -101,15 +112,18 @@ public class ConfigCommand implements CommandExecutor
             default:
                 throw new IllegalArgumentException(String.format("Unknown setting: %s", setting));
         }
+
+        config.save();
         return setting; //If it passes the switch, setting must be equal to a constant in PluginConfig, so works for displaying the updated setting.
     }
 
-    private String setDropTypeState(String typeName, boolean value)
+    private String setDropTypeState(PluginConfig config, String typeName, boolean value) throws IOException
     {
         try
         {
             DropType dropType = PluginConfig.convertConfigKeyToDropType(typeName);
-            PluginConfig.setDropTypeEnabled(dropType, value);
+            config.setDropTypeEnabled(dropType, value);
+            config.save();
             return typeName;
         }
         catch (IllegalArgumentException e)
@@ -118,23 +132,23 @@ public class ConfigCommand implements CommandExecutor
         }
     }
 
-    private String getCurrentStates()
+    private String getCurrentStates(PluginConfig config)
     {
         StringBuilder contentBuilder = new StringBuilder();
         contentBuilder.append(ChatColor.DARK_GRAY).append(String.format("Use /%s %s to get drop types config.", COMMAND_KEY, PluginConfig.DROP_TYPES_KEY)).append("\n");
         contentBuilder.append(ChatColor.GRAY).append(String.format("Use /%s [Name] [%s|%s] to change setting.", COMMAND_KEY, onText, offText)).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.PLUGIN_ENABLED_KEY)).append((PluginConfig.isPluginEnabled()) ? onColour : offColour).append((PluginConfig.isPluginEnabled()) ? onText : offText).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.CRAFTING_KEY)).append((PluginConfig.isCraftingEnabled()) ? onColour : offColour).append((PluginConfig.isCraftingEnabled()) ? onText : offText).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.DROPS_KEY)).append((PluginConfig.isDropsEnabled()) ? onColour : offColour).append((PluginConfig.isDropsEnabled()) ? onText : offText).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.ENVIRONMENTAL_DROPS_KEY)).append((PluginConfig.isEnvironmentalDropsEnabled()) ? onColour : offColour).append((PluginConfig.isEnvironmentalDropsEnabled()) ? onText : offText).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.WIKI_RECIPE_LEARN_KEY)).append((PluginConfig.isLearnRecipesFromWikiEnabled()) ? onColour : offColour).append((PluginConfig.isLearnRecipesFromWikiEnabled()) ? onText : offText).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.UPDATE_NOTIFICATIONS_KEY)).append((PluginConfig.getUpdateNotificationsLevel() != UpdateNotificationLevel.DISABLED) ? onColour : offColour).append(DecorHeadsUtil.capitaliseName(PluginConfig.getUpdateNotificationsLevel().toString())).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.HEAD_META_PATCHER_KEY)).append((PluginConfig.isHeadMetaPatcherEnabled()) ? onColour : offColour).append((PluginConfig.isHeadMetaPatcherEnabled()) ? onText : offText);
-        String contentWithHeader = CommandUtil.addHeader("DecorHeads Config", contentBuilder.toString());
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.PLUGIN_ENABLED_KEY)).append((config.isPluginEnabled()) ? onColour : offColour).append((config.isPluginEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.CRAFTING_KEY)).append((config.isCraftingEnabled()) ? onColour : offColour).append((config.isCraftingEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.DROPS_KEY)).append((config.isDropsEnabled()) ? onColour : offColour).append((config.isDropsEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.ENVIRONMENTAL_DROPS_KEY)).append((config.isEnvironmentalDropsEnabled()) ? onColour : offColour).append((config.isEnvironmentalDropsEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.WIKI_RECIPE_LEARN_KEY)).append((config.isLearnRecipesFromWikiEnabled()) ? onColour : offColour).append((config.isLearnRecipesFromWikiEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.UPDATE_NOTIFICATIONS_KEY)).append((config.getUpdateNotificationsLevel() != UpdateNotificationLevel.DISABLED) ? onColour : offColour).append(DecorHeadsUtil.capitaliseName(config.getUpdateNotificationsLevel().toString())).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.HEAD_META_PATCHER_KEY)).append((config.isHeadMetaPatcherEnabled()) ? onColour : offColour).append((config.isHeadMetaPatcherEnabled()) ? onText : offText);
+        String contentWithHeader = CommandUtil.addHeader(String.format("%s Config", DecorHeadsPlugin.PLUGIN_NAME), contentBuilder.toString());
         return contentWithHeader;
     }
 
-    private String getCurrentDropTypeStates()
+    private String getCurrentDropTypeStates(PluginConfig config)
     {
         StringBuilder contentBuilder = new StringBuilder();
         contentBuilder.append(ChatColor.DARK_GRAY).append(String.format("Use /%s to get standard config.", COMMAND_KEY)).append("\n");
@@ -143,9 +157,9 @@ public class ConfigCommand implements CommandExecutor
         {
             String[] configTree = PluginConfig.convertDropTypeToConfigKey(dropType).split("[.]");
             String configKey = configTree[configTree.length-1];
-            contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", configKey)).append((PluginConfig.isDropTypeEnabled(dropType)) ? onColour : offColour).append((PluginConfig.isDropTypeEnabled(dropType)) ? onText : offText).append("\n");
+            contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", configKey)).append((config.isDropTypeEnabled(dropType)) ? onColour : offColour).append((config.isDropTypeEnabled(dropType)) ? onText : offText).append("\n");
         }
-        String contentWithHeader = CommandUtil.addHeader("DecorHeads Config", contentBuilder.toString().trim());
+        String contentWithHeader = CommandUtil.addHeader(String.format("%s Config", DecorHeadsPlugin.PLUGIN_NAME), contentBuilder.toString().trim());
         return contentWithHeader;
     }
 }

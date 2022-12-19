@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.drops.drops;
 
-import com.zazsona.decorheads.Core;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.Permissions;
 import com.zazsona.decorheads.config.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
@@ -55,7 +55,8 @@ public class BlockBreakDrop extends Drop
     {
         try
         {
-            boolean enabledPass = (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && PluginConfig.isDropTypeEnabled(getDropType()));
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+            boolean enabledPass = (config.isPluginEnabled() && config.isDropsEnabled() && config.isDropTypeEnabled(getDropType()));
             boolean rollPass = DropUtil.rollDrop(getDropRate());
 
             if (enabledPass && rollPass && isFiltersPass(e))
@@ -73,7 +74,7 @@ public class BlockBreakDrop extends Drop
         }
         catch (IllegalArgumentException ex)
         {
-            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", Core.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", DecorHeadsPlugin.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
         }
     }
 
@@ -103,7 +104,8 @@ public class BlockBreakDrop extends Drop
     {
         try
         {
-            boolean enabledPass = (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && PluginConfig.isEnvironmentalDropsEnabled() && PluginConfig.isDropTypeEnabled(getDropType()));
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
+            boolean enabledPass = (config.isPluginEnabled() && config.isDropsEnabled() && config.isEnvironmentalDropsEnabled() && config.isDropTypeEnabled(getDropType()));
             boolean rollPass = DropUtil.rollDrop(getDropRate());
 
             if (enabledPass && rollPass && isFiltersPass(e))
@@ -115,7 +117,7 @@ public class BlockBreakDrop extends Drop
         }
         catch (IllegalArgumentException ex)
         {
-            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", Core.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", DecorHeadsPlugin.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
         }
     }
 
@@ -124,8 +126,9 @@ public class BlockBreakDrop extends Drop
     {
         try
         {
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
             boolean isBreak = e.getReaction() == PistonMoveReaction.BREAK;
-            boolean enabledPass = (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && PluginConfig.isEnvironmentalDropsEnabled() && PluginConfig.isDropTypeEnabled(getDropType()));
+            boolean enabledPass = (config.isPluginEnabled() && config.isDropsEnabled() && config.isEnvironmentalDropsEnabled() && config.isDropTypeEnabled(getDropType()));
             boolean rollPass = DropUtil.rollDrop(getDropRate());
 
             if (enabledPass && rollPass && isBreak && isFiltersPass(e))
@@ -137,7 +140,7 @@ public class BlockBreakDrop extends Drop
         }
         catch (IllegalArgumentException ex)
         {
-            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", Core.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", DecorHeadsPlugin.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
         }
     }
 
@@ -146,11 +149,12 @@ public class BlockBreakDrop extends Drop
     {
         try
         {
+            PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
             Block fromBlock = e.getBlock();
             Block toBlock = e.getToBlock();
             if (!fromBlock.isEmpty() && !fromBlock.isLiquid() && toBlock.isLiquid())
             {
-                boolean enabledPass = (PluginConfig.isPluginEnabled() && PluginConfig.isDropsEnabled() && PluginConfig.isEnvironmentalDropsEnabled() && PluginConfig.isDropTypeEnabled(getDropType()));
+                boolean enabledPass = (config.isPluginEnabled() && config.isDropsEnabled() && config.isEnvironmentalDropsEnabled() && config.isDropTypeEnabled(getDropType()));
                 boolean rollPass = DropUtil.rollDrop(getDropRate());
 
                 if (enabledPass && rollPass && isFiltersPass(e))
@@ -163,7 +167,7 @@ public class BlockBreakDrop extends Drop
         }
         catch (IllegalArgumentException ex)
         {
-            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", Core.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", DecorHeadsPlugin.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
         }
     }
 
