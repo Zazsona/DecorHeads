@@ -2,7 +2,7 @@ package com.zazsona.decorheads.config.load;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.config.HeadRecipeConfig;
-import com.zazsona.decorheads.config.RecipeType;
+import com.zazsona.decorheads.RecipeType;
 import com.zazsona.decorheads.crafting.IMetaRecipe;
 import com.zazsona.decorheads.crafting.ShapedMetaRecipe;
 import com.zazsona.decorheads.crafting.ShapelessMetaRecipe;

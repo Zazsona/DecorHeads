@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.drops.drops;
 
-import com.zazsona.decorheads.config.DropType;
+import com.zazsona.decorheads.DropType;
 import com.zazsona.decorheads.drops.filters.IDropFilter;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;

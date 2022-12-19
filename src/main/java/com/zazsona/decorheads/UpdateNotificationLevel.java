@@ -1,4 +1,4 @@
-package com.zazsona.decorheads.config;
+package com.zazsona.decorheads;
 
 public enum UpdateNotificationLevel
 {

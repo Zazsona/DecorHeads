@@ -1,6 +1,6 @@
 package com.zazsona.decorheads.drops.filters;
 
-import com.zazsona.decorheads.config.DropType;
+import com.zazsona.decorheads.DropType;
 import com.zazsona.decorheads.event.block.BlockBreakByExplosionEvent;
 import com.zazsona.decorheads.event.block.BlockPistonReactionEvent;
 import org.bukkit.event.Event;

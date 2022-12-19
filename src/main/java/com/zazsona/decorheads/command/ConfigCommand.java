@@ -2,9 +2,9 @@ package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.DecorHeadsUtil;
-import com.zazsona.decorheads.config.DropType;
+import com.zazsona.decorheads.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
-import com.zazsona.decorheads.config.UpdateNotificationLevel;
+import com.zazsona.decorheads.UpdateNotificationLevel;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

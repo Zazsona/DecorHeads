@@ -2,7 +2,7 @@ package com.zazsona.decorheads.drops.drops;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.Permissions;
-import com.zazsona.decorheads.config.DropType;
+import com.zazsona.decorheads.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.drops.filters.IDropFilter;

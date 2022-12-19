@@ -5,7 +5,7 @@ import com.zazsona.decorheads.Permissions;
 import com.zazsona.decorheads.blockmeta.BlockMetaChunkData;
 import com.zazsona.decorheads.blockmeta.BlockMetaKeys;
 import com.zazsona.decorheads.blockmeta.BlockMetaRepository;
-import com.zazsona.decorheads.config.DropType;
+import com.zazsona.decorheads.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.drops.filters.IDropFilter;

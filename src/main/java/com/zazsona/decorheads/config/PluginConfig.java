@@ -1,6 +1,8 @@
 package com.zazsona.decorheads.config;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
+import com.zazsona.decorheads.DropType;
+import com.zazsona.decorheads.UpdateNotificationLevel;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

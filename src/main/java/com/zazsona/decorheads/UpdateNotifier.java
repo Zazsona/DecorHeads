@@ -1,7 +1,5 @@
 package com.zazsona.decorheads;
 
-import com.zazsona.decorheads.config.PluginConfig;
-import com.zazsona.decorheads.config.UpdateNotificationLevel;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;

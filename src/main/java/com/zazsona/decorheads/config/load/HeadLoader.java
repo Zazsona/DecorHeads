@@ -2,7 +2,7 @@ package com.zazsona.decorheads.config.load;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.config.HeadConfig;
-import com.zazsona.decorheads.config.HeadType;
+import com.zazsona.decorheads.HeadType;
 import com.zazsona.decorheads.exceptions.MissingFieldsException;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
