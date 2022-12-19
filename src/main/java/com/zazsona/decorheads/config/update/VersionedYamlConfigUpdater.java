@@ -1,16 +1,18 @@
 package com.zazsona.decorheads.config.update;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
-import com.zazsona.decorheads.config.HeadConfig;
 import com.zazsona.decorheads.config.VersionedYamlConfigWrapper;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import javax.annotation.Nullable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.file.*;
 import java.util.*;
@@ -19,7 +21,7 @@ import java.util.regex.Pattern;
 import static com.zazsona.decorheads.config.HeadConfig.MAX_CONFIG_VERSION;
 import static com.zazsona.decorheads.config.HeadConfig.MIN_CONFIG_VERSION;
 
-public abstract class VersionedYamlConfigUpdater
+public abstract class VersionedYamlConfigUpdater<T extends VersionedYamlConfigWrapper>
 {
     protected String baseFileName;
     protected String updatesResourcesDirectory;
@@ -36,25 +38,41 @@ public abstract class VersionedYamlConfigUpdater
         this.baseFileName = baseFileName;
     }
 
-    protected VersionedYamlConfigWrapper updateToVersion(VersionedYamlConfigWrapper configWrapper, String targetVersion) throws IOException
+    protected T updateToVersion(T configWrapper, String targetVersion) throws IOException, InstantiationException
     {
-        // Validate Inputs
-        if (!Pattern.matches(VersionedYamlConfigWrapper.VERSION_PATTERN, targetVersion))
-            throw new IllegalArgumentException("Version must follow semantic versioning pattern. (X.Y.Z)");
-
-        // Check if config is already on targetVersion or greater
-        FileConfiguration configYaml = configWrapper.getConfigData();
-        String configVersion = configWrapper.getVersion();
-        if (configVersion.compareTo(targetVersion) >= 1)
-            return configWrapper;
-
-        // Get Default Config and match the provided HeadConfig's version
-        VersionedYamlConfigWrapper baseConfigWrapper = getBaseConfig();
-        FileConfiguration baseYaml = baseConfigWrapper.getConfigData();
-        String baseVersion = baseConfigWrapper.getVersion();
-        if (configVersion.compareTo(baseVersion) >= 1)
+        try
         {
-            List<Path> changeFiles = getChangeFiles(baseVersion, configVersion);
+            // Validate Inputs
+            if (!Pattern.matches(VersionedYamlConfigWrapper.VERSION_PATTERN, targetVersion))
+                throw new IllegalArgumentException("Version must follow semantic versioning pattern. (X.Y.Z)");
+
+            // Check if config is already on targetVersion or greater
+            FileConfiguration configYaml = configWrapper.getConfigData();
+            String configVersion = configWrapper.getVersion();
+            if (configVersion.compareTo(targetVersion) >= 1)
+                return configWrapper;
+
+            // Get Default Config and match the provided Config's version
+            T baseConfigWrapper = getBaseConfig((Class<T>) configWrapper.getClass());
+            FileConfiguration baseYaml = baseConfigWrapper.getConfigData();
+            String baseVersion = baseConfigWrapper.getVersion();
+            if (configVersion.compareTo(baseVersion) >= 1)
+            {
+                List<Path> changeFiles = getChangeFiles(baseVersion, configVersion);
+                if (changeFiles.size() > 0)
+                {
+                    for (Path changeFile : changeFiles)
+                    {
+                        InputStreamReader changeStreamReader = new InputStreamReader(DecorHeadsPlugin.getInstance().getResource(changeFile.toString()));
+                        FileConfiguration changeYaml = YamlConfiguration.loadConfiguration(changeStreamReader);
+                        for (String key : changeYaml.getKeys(false))
+                            updateYamlValue(key, changeYaml, baseYaml, null); // Set default to current update
+                    }
+                }
+            }
+
+            // Update the Config, making sure the Default Config always matches the version for referencing values
+            List<Path> changeFiles = getChangeFiles(configVersion, targetVersion);
             if (changeFiles.size() > 0)
             {
                 for (Path changeFile : changeFiles)
@@ -62,35 +80,27 @@ public abstract class VersionedYamlConfigUpdater
                     InputStreamReader changeStreamReader = new InputStreamReader(DecorHeadsPlugin.getInstance().getResource(changeFile.toString()));
                     FileConfiguration changeYaml = YamlConfiguration.loadConfiguration(changeStreamReader);
                     for (String key : changeYaml.getKeys(false))
+                        updateYamlValue(key, changeYaml, configYaml, baseYaml);
+                    for (String key : changeYaml.getKeys(false))
                         updateYamlValue(key, changeYaml, baseYaml, null); // Set default to current update
                 }
             }
-        }
 
-        // Update the HeadConfig, making sure the Default Config always matches the version for referencing values
-        List<Path> changeFiles = getChangeFiles(configVersion, targetVersion);
-        if (changeFiles.size() > 0)
+            return configWrapper;
+        }
+        catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e)
         {
-            for (Path changeFile : changeFiles)
-            {
-                InputStreamReader changeStreamReader = new InputStreamReader(DecorHeadsPlugin.getInstance().getResource(changeFile.toString()));
-                FileConfiguration changeYaml = YamlConfiguration.loadConfiguration(changeStreamReader);
-                for (String key : changeYaml.getKeys(false))
-                    updateYamlValue(key, changeYaml, configYaml, baseYaml);
-                for (String key : changeYaml.getKeys(false))
-                    updateYamlValue(key, changeYaml, baseYaml, null); // Set default to current update
-            }
+            throw new InstantiationException("Unable to create a wrapper around the Base Config, as no valid constructor was found.\nPlease override getBaseConfig() with a correct implementation.");
         }
-
-        return configWrapper;
     }
 
-    protected VersionedYamlConfigWrapper getBaseConfig()
+    protected T getBaseConfig(Class<T> configClass) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException
     {
         InputStream is = DecorHeadsPlugin.getInstance().getResource(Paths.get(updatesResourcesDirectory, baseFileName).toString());
         InputStreamReader isr = new InputStreamReader(is);
         FileConfiguration fileConfig = YamlConfiguration.loadConfiguration(isr);
-        return new HeadConfig(fileConfig, null);
+        Constructor<T> ctor = configClass.getConstructor(FileConfiguration.class, File.class);
+        return ctor.newInstance(fileConfig, null);
     }
 
     /**
@@ -108,7 +118,8 @@ public abstract class VersionedYamlConfigUpdater
             final URI uri = this.getClass().getClassLoader().getResource(updatesResourcesDirectory).toURI();
             final FileSystem changelogsFileSys = FileSystems.newFileSystem(uri, Collections.emptyMap());
             Files.walk(changelogsFileSys.getPath("/"+ updatesResourcesDirectory +"/"))
-                    .filter(path -> !Files.isDirectory(path) && !path.toString().equals(Paths.get(updatesResourcesDirectory, baseFileName).toString()))
+                    .filter(path -> !Files.isDirectory(path))
+                    .filter(path -> Pattern.matches(VersionedYamlConfigWrapper.VERSION_PATTERN+"\\Q.yml\\E", path.getFileName().toString()))
                     .filter(path -> getChangeFileVersion(path).compareTo(startVersion) >= 1 && getChangeFileVersion(path).compareTo(targetVersion) <= 0)
                     .forEach(path -> updateFilePaths.add(path));
             changelogsFileSys.close();

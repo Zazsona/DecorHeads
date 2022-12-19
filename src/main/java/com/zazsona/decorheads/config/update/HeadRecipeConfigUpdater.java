@@ -13,12 +13,12 @@ public class HeadRecipeConfigUpdater extends VersionedYamlConfigUpdater implemen
         super("updates/recipes", "base.yml");
     }
 
-    public HeadRecipeConfig update(HeadRecipeConfig config) throws IOException
+    public HeadRecipeConfig update(HeadRecipeConfig config) throws IOException, InstantiationException
     {
         return (HeadRecipeConfig) super.updateToVersion(config, VersionedYamlConfigWrapper.MAX_CONFIG_VERSION);
     }
 
-    public HeadRecipeConfig update(HeadRecipeConfig config, String targetVersion) throws IOException
+    public HeadRecipeConfig update(HeadRecipeConfig config, String targetVersion) throws IOException, InstantiationException
     {
         return (HeadRecipeConfig) super.updateToVersion(config, targetVersion);
     }

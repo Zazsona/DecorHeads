@@ -12,12 +12,12 @@ public class HeadConfigUpdater extends VersionedYamlConfigUpdater implements IVe
         super("updates/heads", "base.yml");
     }
 
-    public HeadConfig update(HeadConfig config) throws IOException
+    public HeadConfig update(HeadConfig config) throws IOException, InstantiationException
     {
         return (HeadConfig) super.updateToVersion(config, VersionedYamlConfigWrapper.MAX_CONFIG_VERSION);
     }
 
-    public HeadConfig update(HeadConfig config, String targetVersion) throws IOException
+    public HeadConfig update(HeadConfig config, String targetVersion) throws IOException, InstantiationException
     {
         return (HeadConfig) super.updateToVersion(config, targetVersion);
     }

@@ -12,7 +12,7 @@ public interface IVersionedYamlConfigUpdater<T extends VersionedYamlConfigWrappe
      * @return the updated config
      * @throws IOException error accessing update data
      */
-    T update(T config) throws IOException;
+    T update(T config) throws IOException, InstantiationException;
 
     /**
      * Updates the provided config to the target version
@@ -21,5 +21,5 @@ public interface IVersionedYamlConfigUpdater<T extends VersionedYamlConfigWrappe
      * @return the updated config
      * @throws IOException error accessing update data
      */
-    T update(T config, String targetVersion) throws IOException;
+    T update(T config, String targetVersion) throws IOException, InstantiationException;
 }

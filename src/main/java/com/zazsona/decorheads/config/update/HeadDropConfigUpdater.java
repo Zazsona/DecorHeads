@@ -13,12 +13,12 @@ public class HeadDropConfigUpdater extends VersionedYamlConfigUpdater implements
         super("updates/drops", "base.yml");
     }
 
-    public HeadDropConfig update(HeadDropConfig config) throws IOException
+    public HeadDropConfig update(HeadDropConfig config) throws IOException, InstantiationException
     {
         return (HeadDropConfig) super.updateToVersion(config, VersionedYamlConfigWrapper.MAX_CONFIG_VERSION);
     }
 
-    public HeadDropConfig update(HeadDropConfig config, String targetVersion) throws IOException
+    public HeadDropConfig update(HeadDropConfig config, String targetVersion) throws IOException, InstantiationException
     {
         return (HeadDropConfig) super.updateToVersion(config, targetVersion);
     }
