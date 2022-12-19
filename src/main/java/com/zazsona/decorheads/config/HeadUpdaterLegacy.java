@@ -1,11 +1,9 @@
 package com.zazsona.decorheads.config;
 
-import com.zazsona.decorheads.Core;
-import com.zazsona.decorheads.headdata.IHead;
+import com.zazsona.decorheads.DecorHeadsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nullable;
 import java.io.*;
@@ -13,18 +11,18 @@ import java.net.URI;
 import java.nio.file.*;
 import java.util.*;
 
-public class HeadUpdater extends HeadConfigAccessor
+public class HeadUpdaterLegacy extends HeadConfigAccessor
 {
-    private static HeadUpdater instance;
+    private static HeadUpdaterLegacy instance;
 
-    public static HeadUpdater getInstance()
+    public static HeadUpdaterLegacy getInstance()
     {
         if (instance == null)
-            instance = new HeadUpdater();
+            instance = new HeadUpdaterLegacy();
         return instance;
     }
 
-    private HeadUpdater()
+    private HeadUpdaterLegacy()
     {
         //private constructor
     }
@@ -39,12 +37,12 @@ public class HeadUpdater extends HeadConfigAccessor
 
             YamlConfiguration headsYaml = YamlConfiguration.loadConfiguration(headsFile);
             String fileVersion = getFileVersion(headsYaml);
-            String pluginVersion = Core.getPlugin(Core.class).getDescription().getVersion();
+            String pluginVersion = DecorHeadsPlugin.getPlugin(DecorHeadsPlugin.class).getDescription().getVersion();
 
             String[] updates = getUpdates(fileVersion, pluginVersion);
             if (updates.length > 0)
             {
-                Bukkit.getLogger().info(String.format("[%s] Heads config for %s found. Updating to %s...", Core.PLUGIN_NAME, fileVersion, pluginVersion));
+                Bukkit.getLogger().info(String.format("[%s] Heads config for %s found. Updating to %s...", DecorHeadsPlugin.PLUGIN_NAME, fileVersion, pluginVersion));
                 YamlConfiguration defaultYaml = buildDefaultHeadsConfig(fileVersion);
                 for (int i = 0; i < updates.length; i++)
                 {
@@ -55,7 +53,7 @@ public class HeadUpdater extends HeadConfigAccessor
                         updateKeyValue(key, updateYaml, defaultYaml, null); //Set default to current update
                 }
                 headsYaml.save(headsFile);
-                Bukkit.getLogger().info(String.format("[%s] Heads config successfully updated to %s!", Core.PLUGIN_NAME, pluginVersion));
+                Bukkit.getLogger().info(String.format("[%s] Heads config successfully updated to %s!", DecorHeadsPlugin.PLUGIN_NAME, pluginVersion));
                 return true;
             }
             else
@@ -63,7 +61,7 @@ public class HeadUpdater extends HeadConfigAccessor
         }
         catch (IOException e)
         {
-            Bukkit.getLogger().severe(String.format("[%s] Unable to access heads config: ", Core.PLUGIN_NAME));
+            Bukkit.getLogger().severe(String.format("[%s] Unable to access heads config: ", DecorHeadsPlugin.PLUGIN_NAME));
             e.printStackTrace();
             throw e;
         }
@@ -97,9 +95,9 @@ public class HeadUpdater extends HeadConfigAccessor
         try
         {
             ArrayList<String> changelogs = new ArrayList<>();
-            final URI uri = this.getClass().getClassLoader().getResource(headsChangelogDirName).toURI();
+            final URI uri = this.getClass().getClassLoader().getResource(updatesResPath).toURI();
             final FileSystem changelogsFileSys = FileSystems.newFileSystem(uri, Collections.emptyMap());
-            Files.walk(changelogsFileSys.getPath("/"+ headsChangelogDirName+"/")).forEach(path ->
+            Files.walk(changelogsFileSys.getPath("/"+ updatesResPath +"/")).forEach(path ->
                                                                               {
                                                                                   String fileNameWithExtension = path.getFileName().toString();
                                                                                   if (!Files.isDirectory(path) && !fileNameWithExtension.equals(baseHeadsFileName))
@@ -163,7 +161,7 @@ public class HeadUpdater extends HeadConfigAccessor
 
     private void createHeadsFile(File headsFile) throws IOException
     {
-        Bukkit.getLogger().info(String.format("[%s] Creating new heads config...", Core.PLUGIN_NAME));
+        Bukkit.getLogger().info(String.format("[%s] Creating new heads config...", DecorHeadsPlugin.PLUGIN_NAME));
         headsFile.createNewFile();
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(headsFileName);
         OutputStream outputStream = new FileOutputStream(headsFile);
@@ -174,6 +172,6 @@ public class HeadUpdater extends HeadConfigAccessor
             outputStream.write(buffer, 0, providedBytes);
             providedBytes = inputStream.read(buffer);
         }
-        Bukkit.getLogger().info(String.format("[%s] Created heads config!", Core.PLUGIN_NAME));
+        Bukkit.getLogger().info(String.format("[%s] Created heads config!", DecorHeadsPlugin.PLUGIN_NAME));
     }
 }

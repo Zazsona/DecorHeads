@@ -8,10 +8,11 @@ import com.zazsona.decorheads.command.ConfigCommand;
 import com.zazsona.decorheads.command.MasterCommand;
 import com.zazsona.decorheads.command.SpawnHeadCommand;
 import com.zazsona.decorheads.command.WikiCommand;
-import com.zazsona.decorheads.config.ConfigUpdater;
-import com.zazsona.decorheads.config.HeadRepository;
-import com.zazsona.decorheads.config.HeadUpdaterLegacy;
-import com.zazsona.decorheads.config.PluginConfig;
+import com.zazsona.decorheads.config.*;
+import com.zazsona.decorheads.config.update.HeadConfigUpdater;
+import com.zazsona.decorheads.config.update.HeadDropConfigUpdater;
+import com.zazsona.decorheads.config.update.HeadRecipeConfigUpdater;
+import com.zazsona.decorheads.config.update.PluginConfigUpdater;
 import com.zazsona.decorheads.event.block.BlockBreakByExplosionEventTrigger;
 import com.zazsona.decorheads.event.block.BlockPistonReactionEventTrigger;
 import org.bukkit.Bukkit;
@@ -34,6 +35,9 @@ public class DecorHeadsPlugin extends JavaPlugin
     }
 
     private PluginConfig pluginConfig;
+    private HeadConfig headConfig;
+    private HeadDropConfig headDropConfig;
+    private HeadRecipeConfig headRecipeConfig;
 
     /**
      * Returns the default config available via {@link #getConfig()} wrapped with {@link PluginConfig}
@@ -42,6 +46,18 @@ public class DecorHeadsPlugin extends JavaPlugin
     public PluginConfig getPluginConfig()
     {
         return pluginConfig;
+    }
+    public HeadConfig getHeadConfig()
+    {
+        return headConfig;
+    }
+    public HeadDropConfig getHeadDropConfig()
+    {
+        return headDropConfig;
+    }
+    public HeadRecipeConfig getHeadRecipeConfig()
+    {
+        return headRecipeConfig;
     }
 
     @Override
@@ -53,14 +69,29 @@ public class DecorHeadsPlugin extends JavaPlugin
             // Initialisers
             // ============================================
             MaterialUtil.indexMaterials();
-            pluginConfig = new PluginConfig(getConfig(), Paths.get(getDataFolder().toString(), "config.yml").toFile());
-
+            pluginConfig = new PluginConfig(getConfig(), Paths.get(getDataFolder().toString(), "config.yml").toFile()); // Call getConfig() here to match reference stored by Bukkit internally
+            headConfig = new HeadConfig(Paths.get(getDataFolder().toString(), "heads.yml").toFile());
+            headDropConfig = new HeadDropConfig(Paths.get(getDataFolder().toString(), "drops.yml").toFile());
+            headRecipeConfig = new HeadRecipeConfig(Paths.get(getDataFolder().toString(), "recipes.yml").toFile());
 
             // ============================================
             // Updaters
             // ============================================
-            ConfigUpdater configUpdater = ConfigUpdater.getInstance();
-            configUpdater.updateConfig();
+            PluginConfigUpdater pluginConfigUpdater = new PluginConfigUpdater();
+            pluginConfigUpdater.update(pluginConfig, PluginConfig.MAX_CONFIG_VERSION);
+            pluginConfig.save();
+
+            HeadConfigUpdater headConfigUpdater = new HeadConfigUpdater();
+            headConfigUpdater.update(headConfig, HeadConfig.MAX_CONFIG_VERSION);
+            headConfig.save();
+
+            HeadDropConfigUpdater headDropConfigUpdater = new HeadDropConfigUpdater();
+            headDropConfigUpdater.update(headDropConfig, HeadDropConfig.MAX_CONFIG_VERSION);
+            headDropConfig.save();
+
+            HeadRecipeConfigUpdater headRecipeConfigUpdater = new HeadRecipeConfigUpdater();
+            headRecipeConfigUpdater.update(headRecipeConfig, HeadRecipeConfig.MAX_CONFIG_VERSION);
+            headRecipeConfig.save();
 
             HeadUpdaterLegacy headUpdater = HeadUpdaterLegacy.getInstance();
             headUpdater.updateHeadsFile();
@@ -119,7 +150,7 @@ public class DecorHeadsPlugin extends JavaPlugin
         }
         catch (Exception e)
         {
-            Bukkit.getLogger().warning(String.format("[%s] %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
+            getLogger().warning(e.getMessage());
             e.printStackTrace();
         }
     }
