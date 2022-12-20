@@ -2,7 +2,7 @@ package com.zazsona.decorheads.drops.drops;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.Permissions;
-import com.zazsona.decorheads.config.DropType;
+import com.zazsona.decorheads.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.event.block.BlockBreakByExplosionEvent;
 import com.zazsona.decorheads.event.block.BlockPistonReactionEvent;
@@ -189,19 +189,19 @@ public class BlockBreakDrop extends Drop
                 else if (fortuneLevel == 2)
                 {
                     double value = r.nextDouble();
-                    if (value < 25)
+                    if (value < 0.25)
                         dropCount = 1;
-                    else if (value >= 25 && value < 50)
+                    else if (value >= 0.25 && value < 0.5)
                         dropCount = 2;
                 }
                 else if (fortuneLevel == 3)
                 {
                     double value = r.nextDouble();
-                    if (value < 20)
+                    if (value < 0.2)
                         dropCount = 1;
-                    else if (value >= 20 && value < 40)
+                    else if (value >= 0.2 && value < 0.4)
                         dropCount = 2;
-                    else if (value >= 40 && value < 60)
+                    else if (value >= 0.4 && value < 0.6)
                         dropCount = 3;
                 }
                 return dropCount;
