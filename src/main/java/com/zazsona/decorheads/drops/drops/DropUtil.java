@@ -19,7 +19,7 @@ public class DropUtil
      */
     public static boolean rollDrop(double dropRate)
     {
-        double roll = r.nextDouble() * 100.0f;
+        double roll = r.nextDouble();
         return (roll < dropRate);
     }
 

@@ -1,8 +1,7 @@
 package com.zazsona.decorheads.config.load;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
-import com.zazsona.decorheads.config.DropType;
-import com.zazsona.decorheads.config.HeadConfig;
+import com.zazsona.decorheads.DropType;
 import com.zazsona.decorheads.config.HeadDropConfig;
 import com.zazsona.decorheads.exceptions.MissingFieldsException;
 import com.zazsona.decorheads.headdata.IHead;
@@ -262,13 +261,13 @@ public class HeadDropLoader
             throw new MissingFieldsException("Missing Key: Drop Key");
         if (!dropYaml.contains(DROP_RESULT_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", DROP_RESULT_KEY), DROP_RESULT_KEY);
-        if (!dropYaml.contains(DROP_PERCENTAGE_KEY))
-            throw new MissingFieldsException(String.format("Missing Field: %s", DROP_PERCENTAGE_KEY), DROP_PERCENTAGE_KEY);
+        if (!dropYaml.contains(DROP_RATE_KEY))
+            throw new MissingFieldsException(String.format("Missing Field: %s", DROP_RATE_KEY), DROP_RATE_KEY);
 
         // Load from YAML
         String key = dropYaml.getName().toLowerCase();
         String resultName = dropYaml.getString(DROP_RESULT_KEY);
-        double dropRate = dropYaml.getDouble(DROP_PERCENTAGE_KEY);
+        double dropRate = dropYaml.getDouble(DROP_RATE_KEY);
 
         // Transform Data
         NamespacedKey resultKey = NamespacedKey.fromString(resultName);

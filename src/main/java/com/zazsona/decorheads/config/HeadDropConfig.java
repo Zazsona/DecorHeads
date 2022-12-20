@@ -11,8 +11,8 @@ public class HeadDropConfig extends VersionedYamlConfigWrapper
     public static final String VERSION_KEY = "version";
     public static final String DROPS_KEY = "drops";
     public static final String DROP_TYPE_KEY = "drop-type";
-    public static final String DROP_RESULT_KEY = "drop-percentage";
-    public static final String DROP_PERCENTAGE_KEY = "drop-percentage";
+    public static final String DROP_RESULT_KEY = "result";
+    public static final String DROP_RATE_KEY = "drop-rate";
 
     public HeadDropConfig(FileConfiguration config, File saveLocation)
     {

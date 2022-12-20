@@ -2,7 +2,7 @@ package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.DecorHeadsUtil;
-import com.zazsona.decorheads.config.DropType;
+import com.zazsona.decorheads.DropType;
 import com.zazsona.decorheads.drops.drops.IDrop;
 import com.zazsona.decorheads.drops.filters.BlockFilter;
 import com.zazsona.decorheads.drops.filters.IDropFilter;
@@ -33,7 +33,7 @@ public class WikiDropPage implements IWikiPage
     {
         StringBuilder pageBuilder = new StringBuilder();
         pageBuilder.append(borderChar).append(" Drop Type: ").append(formatScalar(DecorHeadsUtil.capitaliseName(drop.getDropType().toString()))).append("\n");
-        pageBuilder.append(borderChar).append(" Drop Rate: ").append(formatScalar(drop.getDropRate()+"%")).append("\n");
+        pageBuilder.append(borderChar).append(" Drop Rate: ").append(formatScalar((drop.getDropRate() * 100.0f)+"%")).append("\n");
         pageBuilder.append(CommandUtil.addHeader("How to Drop", ""));
         List<IDropFilter> dropFilters = drop.getDropFilters();
         if (dropFilters.size() > 0)
