@@ -2,13 +2,12 @@ package com.zazsona.decorheads;
 
 import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.config.PluginConfig;
-import com.zazsona.decorheads.dependencies.Metrics;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
-
-import static com.zazsona.decorheads.dependencies.Metrics.*;
 
 public class MetricsManager
 {
