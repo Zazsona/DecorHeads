@@ -84,9 +84,7 @@ public class WikiDropPage implements IWikiPage
             case SMELT:
                 return "Cook";
             case ENTITY_DEATH:
-                return "Kill entities";
-            case PLAYER_DEATH:
-                return "Kill players";
+                return "Kill";
             default:
                 return "Unknown";
         }

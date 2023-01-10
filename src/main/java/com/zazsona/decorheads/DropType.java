@@ -6,8 +6,7 @@ public enum DropType
     BREW,
     SMELT,
     CRAFT,
-    ENTITY_DEATH,
-    PLAYER_DEATH;
+    ENTITY_DEATH;
 
     /**
      * Attempts to match the {@link DropType} from the provided string by matching the enum value name format
