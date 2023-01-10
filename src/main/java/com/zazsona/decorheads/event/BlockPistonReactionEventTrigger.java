@@ -1,4 +1,4 @@
-package com.zazsona.decorheads.event.block;
+package com.zazsona.decorheads.event;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;

@@ -1,4 +1,4 @@
-package com.zazsona.decorheads.event.block;
+package com.zazsona.decorheads.event;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.PistonMoveReaction;
@@ -48,6 +48,10 @@ public class BlockPistonReactionEvent extends BlockEvent implements Cancellable
     @Override
     public HandlerList getHandlers()
     {
+        return HANDLERS;
+    }
+
+    public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 
