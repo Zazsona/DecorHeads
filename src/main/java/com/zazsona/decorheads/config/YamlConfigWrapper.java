@@ -21,8 +21,6 @@ public abstract class YamlConfigWrapper implements IYamlConfigWrapper
     {
         if (config == null)
             config = getEmptyConfigData();
-        if (!validateConfigData(config))
-            throw new IllegalArgumentException("The provided FileConfiguration is invalid for this config type.");
 
         this.config = config;
         this.saveLocation = saveLocation;
@@ -81,6 +79,11 @@ public abstract class YamlConfigWrapper implements IYamlConfigWrapper
         config = configContents;
     }
 
+    public boolean validateConfigData()
+    {
+        return validateConfigData(this.config);
+    }
+
     /**
      * Gets an empty config supported by this wrapper
      * @return an empty, but valid, config
@@ -113,9 +116,6 @@ public abstract class YamlConfigWrapper implements IYamlConfigWrapper
             configContents = YamlConfiguration.loadConfiguration(configFile);
         else
             configContents = getEmptyConfigData();
-
-        if (!validateConfigData(config))
-            throw new IllegalArgumentException("The provided FileConfiguration is invalid for this config type.");
 
         return configContents;
     }

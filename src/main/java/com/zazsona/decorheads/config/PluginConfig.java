@@ -24,12 +24,12 @@ public class PluginConfig extends VersionedYamlConfigWrapper
 
     public PluginConfig(FileConfiguration config, File saveLocation)
     {
-        super(config, saveLocation, VERSION_KEY);
+        super(config, saveLocation);
     }
 
     public PluginConfig(File configFile)
     {
-        super(configFile, VERSION_KEY);
+        super(configFile);
     }
 
     public void setPluginEnabled(boolean newEnabled)

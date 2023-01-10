@@ -9,20 +9,43 @@ import java.util.regex.Pattern;
 public abstract class VersionedYamlConfigWrapper extends YamlConfigWrapper
 {
     public static final String VERSION_PATTERN = "[0-9]+[.][0-9]+[.][0-9]+";
-    public static final String MIN_CONFIG_VERSION = "0.0.0";
-    public static final String MAX_CONFIG_VERSION = "9999.9999.9999";
-    private String versionPath;
+    public static final String VERSION_KEY = "version";
 
-    public VersionedYamlConfigWrapper(FileConfiguration config, File saveLocation, String versionPath)
+    public VersionedYamlConfigWrapper(FileConfiguration config, File saveLocation)
     {
         super(config, saveLocation);
-        this.versionPath = versionPath;
     }
 
-    public VersionedYamlConfigWrapper(File configFile, String versionPath)
+    public VersionedYamlConfigWrapper(File configFile)
     {
         super(configFile);
-        this.versionPath = versionPath;
+    }
+
+    /**
+     * Gets the minimum valid version for this config
+     * @return the minimum valid version
+     */
+    public static String getMinConfigVersion()
+    {
+        return "0.0.0";
+    }
+
+    /**
+     * Gets the maximum valid version for this config (though this may not be released)
+     * @return the maximum valid version
+     */
+    public static String getMaxConfigVersion()
+    {
+        return "9999.9999.9999";
+    }
+
+    /**
+     * Gets the path to the value where the version is stored
+     * @return the path
+     */
+    protected String getVersionPath()
+    {
+        return VERSION_KEY;
     }
 
     /**
@@ -31,7 +54,7 @@ public abstract class VersionedYamlConfigWrapper extends YamlConfigWrapper
      */
     public String getVersion()
     {
-        return config.getString(versionPath);
+        return config.getString(getVersionPath());
     }
 
     /**
@@ -43,7 +66,7 @@ public abstract class VersionedYamlConfigWrapper extends YamlConfigWrapper
     public void setVersion(int major, int minor, int patch)
     {
         String version = String.format("%d.%d.%d", major, minor, patch);
-        config.set(versionPath, version);
+        config.set(getVersionPath(), version);
     }
 
     /**
@@ -56,14 +79,14 @@ public abstract class VersionedYamlConfigWrapper extends YamlConfigWrapper
         if (!Pattern.matches(VERSION_PATTERN, version))
             throw new IllegalArgumentException("Version must follow semantic versioning pattern. (X.Y.Z)");
 
-        config.set(versionPath, version);
+        config.set(getVersionPath(), version);
     }
 
     @Override
     protected FileConfiguration getEmptyConfigData()
     {
         FileConfiguration emptyConfig = super.getEmptyConfigData();
-        emptyConfig.set(versionPath, MIN_CONFIG_VERSION);
+        emptyConfig.set(getVersionPath(), getMinConfigVersion());
         return emptyConfig;
     }
 
@@ -73,7 +96,7 @@ public abstract class VersionedYamlConfigWrapper extends YamlConfigWrapper
         if (!super.validateConfigData(configData))
             return false;
 
-        String version = configData.getString(versionPath);
+        String version = configData.getString(getVersionPath());
         boolean hasValidVersion = (version != null) && Pattern.matches(VERSION_PATTERN, version);
         return hasValidVersion;
     }

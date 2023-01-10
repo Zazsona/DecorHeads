@@ -1,8 +1,10 @@
 package com.zazsona.decorheads.config;
 
+import com.zazsona.decorheads.HeadType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 
@@ -16,26 +18,76 @@ public class HeadConfig extends VersionedYamlConfigWrapper
 
     public HeadConfig(FileConfiguration config, File saveLocation)
     {
-        super(config, saveLocation, VERSION_KEY);
+        super(config, saveLocation);
     }
 
     public HeadConfig(File configFile)
     {
-        super(configFile, VERSION_KEY);
+        super(configFile);
+    }
+
+    public static String getMinConfigVersion()
+    {
+        return "3.0.0";
+    }
+
+    /**
+     * Gets the path to the value where the heads are stored
+     * @return the path
+     */
+    protected String getHeadsPath()
+    {
+        return HEADS_KEY;
+    }
+
+    /**
+     * Gets the path to the value where a head is stored
+     * @return the path
+     */
+    protected String getHeadPath(String headKey)
+    {
+        return String.format("%s.%s", getHeadsPath(), headKey);
+    }
+
+    /**
+     * Gets the path to the value where a head's type is stored
+     * @return the path
+     */
+    protected String getHeadTypePath(String headKey)
+    {
+        return String.format("%s.%s", getHeadPath(headKey), HEAD_TYPE_KEY);
+    }
+
+    /**
+     * Gets the path to the value where a head's name is stored
+     * @return the path
+     */
+    protected String getHeadNamePath(String headKey)
+    {
+        return String.format("%s.%s", getHeadPath(headKey), HEAD_NAME_KEY);
+    }
+
+    /**
+     * Gets the path to the value where a head's texture is stored
+     * @return the path
+     */
+    protected String getHeadTexturePath(String headKey)
+    {
+        return String.format("%s.%s", getHeadPath(headKey), HEAD_TEXTURE_KEY);
     }
 
     public ConfigurationSection getHeads()
     {
-        return config.getConfigurationSection(HEADS_KEY);
+        return config.getConfigurationSection(getHeadsPath());
     }
 
     public void setHeads(ConfigurationSection heads)
     {
-        if (!config.isConfigurationSection(HEADS_KEY) || heads == null)
-            config.createSection(HEADS_KEY);
+        if (!config.isConfigurationSection(getHeadsPath()) || heads == null)
+            config.createSection(getHeadsPath());
 
         if (heads != null)
-            config.set(HEADS_KEY, heads);
+            config.set(getHeadsPath(), heads);
     }
 
     public Set<String> getHeadKeys()
@@ -45,20 +97,64 @@ public class HeadConfig extends VersionedYamlConfigWrapper
 
     public ConfigurationSection getHead(String headKey)
     {
-        return getHeads().getConfigurationSection(headKey);
+        return getHeads().getConfigurationSection(getHeadPath(headKey));
     }
 
-    public void setHead(String headKey, ConfigurationSection head)
+    public void addHead(String headKey, String headType, String headName, @Nullable String headTexture)
     {
-        String path = String.format("%s.%s", HEADS_KEY, headKey);
-        config.set(path, head);
+        String path = getHeadPath(headKey);
+        if (config.getConfigurationSection(path) != null)
+            throw new IllegalArgumentException(String.format("Head with key \"%s\" already exists.", headKey));
+        if (HeadType.matchHeadType(headType) == HeadType.DECOR && headTexture == null)
+            throw new IllegalArgumentException(String.format("Creating a head of type \"%s\" for \"%s\" requires headTexture to be set.", headType, headKey));
+
+        config.createSection(path);
+        setHeadType(headKey, headType);
+        setHeadName(headKey, headName);
+        if (HeadType.matchHeadType(headType) == HeadType.DECOR)
+            setHeadTexture(headKey, headTexture);
+    }
+
+    public void removeHead(String headKey)
+    {
+        config.set(getHeadPath(headKey), null);
+    }
+
+    public String getHeadName(String headKey)
+    {
+        return config.getString(getHeadNamePath(headKey));
+    }
+
+    public void setHeadName(String headKey, String headName)
+    {
+        config.set(getHeadNamePath(headKey), headName);
+    }
+
+    public String getHeadType(String headKey)
+    {
+        return config.getString(getHeadTypePath(headKey));
+    }
+
+    public void setHeadType(String headKey, String headType)
+    {
+        config.set(getHeadTypePath(headKey), headType);
+    }
+
+    public String getHeadTexture(String headKey)
+    {
+        return config.getString(getHeadTexturePath(headKey));
+    }
+
+    public void setHeadTexture(String headKey, String headTexture)
+    {
+        config.set(getHeadTexturePath(headKey), headTexture);
     }
 
     @Override
     protected FileConfiguration getEmptyConfigData()
     {
         FileConfiguration emptyConfig = super.getEmptyConfigData();
-        emptyConfig.createSection(HEADS_KEY);
+        emptyConfig.createSection(getHeadsPath());
         return emptyConfig;
     }
 
@@ -68,7 +164,7 @@ public class HeadConfig extends VersionedYamlConfigWrapper
         if (!super.validateConfigData(configData))
             return false;
 
-        boolean hasHeadsSection = configData.getConfigurationSection(HEADS_KEY) != null;
+        boolean hasHeadsSection = configData.getConfigurationSection(getHeadsPath()) != null;
         return hasHeadsSection;
     }
 }
