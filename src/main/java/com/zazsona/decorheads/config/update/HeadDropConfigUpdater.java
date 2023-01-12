@@ -15,7 +15,7 @@ public class HeadDropConfigUpdater extends VersionedYamlConfigUpdater implements
 
     public HeadDropConfig update(HeadDropConfig config) throws IOException, InstantiationException
     {
-        return (HeadDropConfig) super.updateToVersion(config, VersionedYamlConfigWrapper.MAX_CONFIG_VERSION);
+        return (HeadDropConfig) super.updateToVersion(config, HeadDropConfig.getMaxConfigVersion());
     }
 
     public HeadDropConfig update(HeadDropConfig config, String targetVersion) throws IOException, InstantiationException

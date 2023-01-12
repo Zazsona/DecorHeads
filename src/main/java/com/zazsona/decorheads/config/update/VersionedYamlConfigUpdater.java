@@ -18,9 +18,6 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static com.zazsona.decorheads.config.HeadConfig.MAX_CONFIG_VERSION;
-import static com.zazsona.decorheads.config.HeadConfig.MIN_CONFIG_VERSION;
-
 public abstract class VersionedYamlConfigUpdater<T extends VersionedYamlConfigWrapper>
 {
     protected String baseFileName;
@@ -49,14 +46,14 @@ public abstract class VersionedYamlConfigUpdater<T extends VersionedYamlConfigWr
             // Check if config is already on targetVersion or greater
             FileConfiguration configYaml = configWrapper.getConfigData();
             String configVersion = configWrapper.getVersion();
-            if (configVersion.compareTo(targetVersion) >= 1)
+            if (configVersion.compareTo(targetVersion) >= 0)
                 return configWrapper;
 
             // Get Default Config and match the provided Config's version
             T baseConfigWrapper = getBaseConfig((Class<T>) configWrapper.getClass());
             FileConfiguration baseYaml = baseConfigWrapper.getConfigData();
             String baseVersion = baseConfigWrapper.getVersion();
-            if (configVersion.compareTo(baseVersion) >= 1)
+            if (configVersion.compareTo(baseVersion) >= 0)
             {
                 List<Path> changeFiles = getChangeFiles(baseVersion, configVersion);
                 if (changeFiles.size() > 0)
@@ -96,7 +93,7 @@ public abstract class VersionedYamlConfigUpdater<T extends VersionedYamlConfigWr
 
     protected T getBaseConfig(Class<T> configClass) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException
     {
-        InputStream is = DecorHeadsPlugin.getInstance().getResource(Paths.get(updatesResourcesDirectory, baseFileName).toString());
+        InputStream is = getClass().getClassLoader().getResourceAsStream(updatesResourcesDirectory+"/"+baseFileName);
         InputStreamReader isr = new InputStreamReader(is);
         FileConfiguration fileConfig = YamlConfiguration.loadConfiguration(isr);
         Constructor<T> ctor = configClass.getConstructor(FileConfiguration.class, File.class);
@@ -139,7 +136,7 @@ public abstract class VersionedYamlConfigUpdater<T extends VersionedYamlConfigWr
      */
     protected List<Path> getChangeFiles() throws IOException
     {
-        return getChangeFiles(MIN_CONFIG_VERSION, MAX_CONFIG_VERSION);
+        return getChangeFiles(VersionedYamlConfigWrapper.getMinConfigVersion(), VersionedYamlConfigWrapper.getMaxConfigVersion());
     }
 
     /**

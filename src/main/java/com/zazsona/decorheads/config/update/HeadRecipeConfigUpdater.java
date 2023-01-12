@@ -15,7 +15,7 @@ public class HeadRecipeConfigUpdater extends VersionedYamlConfigUpdater implemen
 
     public HeadRecipeConfig update(HeadRecipeConfig config) throws IOException, InstantiationException
     {
-        return (HeadRecipeConfig) super.updateToVersion(config, VersionedYamlConfigWrapper.MAX_CONFIG_VERSION);
+        return (HeadRecipeConfig) super.updateToVersion(config, HeadRecipeConfig.getMaxConfigVersion());
     }
 
     public HeadRecipeConfig update(HeadRecipeConfig config, String targetVersion) throws IOException, InstantiationException

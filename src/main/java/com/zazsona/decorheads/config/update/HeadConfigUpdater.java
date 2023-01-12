@@ -14,7 +14,7 @@ public class HeadConfigUpdater extends VersionedYamlConfigUpdater implements IVe
 
     public HeadConfig update(HeadConfig config) throws IOException, InstantiationException
     {
-        return (HeadConfig) super.updateToVersion(config, VersionedYamlConfigWrapper.MAX_CONFIG_VERSION);
+        return (HeadConfig) super.updateToVersion(config, HeadConfig.getMaxConfigVersion());
     }
 
     public HeadConfig update(HeadConfig config, String targetVersion) throws IOException, InstantiationException
