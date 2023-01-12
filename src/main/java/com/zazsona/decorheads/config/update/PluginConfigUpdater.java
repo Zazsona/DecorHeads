@@ -1,7 +1,7 @@
 package com.zazsona.decorheads.config.update;
 
 import com.zazsona.decorheads.config.PluginConfig;
-import com.zazsona.decorheads.config.UpdateNotificationLevel;
+import com.zazsona.decorheads.UpdateNotificationLevel;
 import com.zazsona.decorheads.config.VersionedYamlConfigWrapper;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -10,12 +10,12 @@ import java.util.regex.Pattern;
 
 public class PluginConfigUpdater implements IVersionedYamlConfigUpdater<PluginConfig>
 {
-    // TODO: Migrate 2.3.1 configs to new split configs (separate files or single? Hmmm!) (Also do the blockMetaLogger.json file?)
+    // TODO: Migrate blockMetaLogger.json file
 
     @Override
     public PluginConfig update(PluginConfig config) throws IOException
     {
-        return update(config, PluginConfig.MAX_CONFIG_VERSION);
+        return update(config, PluginConfig.getMaxConfigVersion());
     }
 
     public PluginConfig update(PluginConfig config, String targetVersion)
@@ -27,12 +27,12 @@ public class PluginConfigUpdater implements IVersionedYamlConfigUpdater<PluginCo
         // Check if config is already on targetVersion or greater
         FileConfiguration configYaml = config.getConfigData();
         String configVersion = config.getVersion();
-        if (configVersion.compareTo(targetVersion) >= 1)
+        if (configVersion.compareTo(targetVersion) >= 0)
             return config;
 
         updateTo210(configYaml);
         updateTo220(configYaml);
-        updateTo240(configYaml);
+        updateTo300(configYaml);
         return config;
     }
 
@@ -56,9 +56,9 @@ public class PluginConfigUpdater implements IVersionedYamlConfigUpdater<PluginCo
         }
     }
 
-    private void updateTo240(FileConfiguration config)
+    private void updateTo300(FileConfiguration config)
     {
-        if (config.getString(PluginConfig.VERSION_KEY).compareTo("2.4.0") >= 0)
+        if (config.getString(PluginConfig.VERSION_KEY).compareTo("3.0.0") >= 0)
             return;
 
         boolean environmentalDrops = config.getBoolean("playerless-drop-events");
@@ -70,17 +70,17 @@ public class PluginConfigUpdater implements IVersionedYamlConfigUpdater<PluginCo
         boolean smeltDrops = config.getBoolean("drop-sources.smelt-drop");
         boolean craftDrops = config.getBoolean("drop-sources.craft-drop");
         boolean entityDeathDrops = config.getBoolean("drop-sources.entity-death-drop");
-        boolean playerDeathDrops = config.getBoolean("drop-sources.player-death-drop");
 
+        // TODO: Test "mine" becomes "block-break"
         config.createSection("drop-types");
-        config.set("drop-types.mine", mineDrops);
+        config.set("drop-types.block-break", mineDrops);
         config.set("drop-types.brew", brewDrops);
         config.set("drop-types.smelt", smeltDrops);
         config.set("drop-types.craft", craftDrops);
         config.set("drop-types.entity-death", entityDeathDrops);
-        config.set("drop-types.player-death", playerDeathDrops);
+        config.set("drop-types.player-death", null);
 
         config.set("drop-sources", null);
-        config.set(PluginConfig.VERSION_KEY, "2.4.0");
+        config.set(PluginConfig.VERSION_KEY, "3.0.0");
     }
 }
