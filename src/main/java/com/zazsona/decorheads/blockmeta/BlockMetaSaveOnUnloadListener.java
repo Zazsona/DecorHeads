@@ -1,6 +1,8 @@
 package com.zazsona.decorheads.blockmeta;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
+import com.zazsona.decorheads.event.RegionEvent;
+import com.zazsona.decorheads.event.RegionUnloadEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -8,51 +10,71 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.WorldSaveEvent;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class BlockMetaSaveOnUnloadListener implements Listener
 {
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onChunkUnload(ChunkUnloadEvent e)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onRegionUnlock(RegionUnloadEvent e)
     {
         try
         {
-            Chunk chunk = e.getChunk();
-            BlockMetaChunkData chunkMetaData = BlockMetaRepository.getInstance().getChunk(chunk);
-            chunkMetaData.save();
+            BlockMetaRegionData regionMeta = BlockMetaRepository.getInstance().getRegionData(e.getRegionKey(), e.getWorld().getName());
+            regionMeta.save();
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to save chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to save region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void OnWorldSave(WorldSaveEvent e)
+    {
+        BlockMetaRepository repo = BlockMetaRepository.getInstance();
+        World world = e.getWorld();
+
+        saveLoadedRegionsMeta(repo, world);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPluginDisable(PluginDisableEvent e)
     {
-        try
+        if (e.getPlugin().getName().equals(DecorHeadsPlugin.getInstance().getName()))
         {
-            if (e.getPlugin().getName().equals(DecorHeadsPlugin.getInstance().getName()))
-            {
-                BlockMetaRepository repo = BlockMetaRepository.getInstance();
-                List<World> worlds = Bukkit.getWorlds();
-                for (World world : worlds)
-                {
-                    Chunk[] chunks = world.getLoadedChunks();
-                    for (Chunk chunk : chunks)
-                    {
-                        BlockMetaChunkData chunkMetaData = repo.getChunk(chunk);
-                        chunkMetaData.save();
-                    }
-                }
-            }
+            BlockMetaRepository repo = BlockMetaRepository.getInstance();
+            List<World> worlds = Bukkit.getWorlds();
+            for (World world : worlds)
+                saveLoadedRegionsMeta(repo, world);
         }
-        catch (IOException ioEx)
+    }
+
+    private void saveLoadedRegionsMeta(BlockMetaRepository repo, World world)
+    {
+        String worldName = world.getName();
+        Chunk[] chunks = world.getLoadedChunks();
+        Set<String> regionKeys = new HashSet<>();
+        for (Chunk chunk : chunks)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to save chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            String regionKey = RegionEvent.getRegionKey(chunk);
+            regionKeys.add(regionKey);
         }
+
+        regionKeys.forEach(regionKey ->
+                           {
+                               try
+                               {
+                                   repo.getRegionData(regionKey, worldName).save();
+                               }
+                               catch (IOException ioEx)
+                               {
+                                   Bukkit.getLogger().warning(String.format("[%s] Unable to save region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+                               }
+                           });
     }
 }

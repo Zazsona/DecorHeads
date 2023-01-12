@@ -9,18 +9,18 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 
-public class BlockMetaChunkData
+public class BlockMetaRegionData
 {
     private static final String LOCATION_KEY_FORMAT = "{x}.{y}.{z}";
-    private static final TypeToken CHUNK_FILE_TYPE_TOKEN = new TypeToken<HashMap<String, HashMap<String, String>>>(){};
+    private static final TypeToken REGION_FILE_TYPE_TOKEN = new TypeToken<HashMap<String, HashMap<String, String>>>(){};
 
-    private File chunkFile;
-    private HashMap<String, HashMap<String, String>> chunkData;
+    private File regionFile;
+    private HashMap<String, HashMap<String, String>> regionData;
 
-    public BlockMetaChunkData(File chunkFile) throws IOException
+    public BlockMetaRegionData(File regionFile) throws IOException
     {
-        this.chunkFile = chunkFile;
-        this.chunkData = loadChunkData(chunkFile);
+        this.regionFile = regionFile;
+        this.regionData = loadRegionData(regionFile);
     }
 
     /**
@@ -29,7 +29,7 @@ public class BlockMetaChunkData
      */
     public void save() throws IOException
     {
-        saveChunkData(chunkFile, chunkData);
+        saveRegionData(regionFile, regionData);
     }
 
     /**
@@ -41,9 +41,10 @@ public class BlockMetaChunkData
     public void addBlockMeta(Location location, String key, String value)
     {
         String blockKey = getBlockKey(location);
+        System.out.println(blockKey+": " + key + "/"+value);
         HashMap<String, String> blockMeta = getBlockMeta(location);
         blockMeta.put(key, value);
-        chunkData.put(blockKey, blockMeta);
+        regionData.put(blockKey, blockMeta);
     }
 
     /**
@@ -56,7 +57,10 @@ public class BlockMetaChunkData
         String blockKey = getBlockKey(location);
         HashMap<String, String> blockMeta = getBlockMeta(location);
         blockMeta.remove(key);
-        chunkData.put(blockKey, blockMeta);
+        regionData.put(blockKey, blockMeta);
+
+        if (regionData.get(blockKey).size() == 0)
+            regionData.remove(blockKey);
     }
 
     /**
@@ -66,7 +70,7 @@ public class BlockMetaChunkData
     public HashMap<String, String> getBlockMeta(Location location)
     {
         String blockKey = getBlockKey(location);
-        HashMap<String, String> blockMetaEntries = chunkData.get(blockKey);
+        HashMap<String, String> blockMetaEntries = regionData.get(blockKey);
         return (blockMetaEntries != null) ? blockMetaEntries : new HashMap<>();
     }
 
@@ -78,11 +82,11 @@ public class BlockMetaChunkData
         return LOCATION_KEY_FORMAT.replace("{x}", blockX).replace("{y}", blockY).replace("{z}", blockZ);
     }
 
-    private HashMap<String, HashMap<String, String>> loadChunkData(File chunkFile) throws IOException
+    private HashMap<String, HashMap<String, String>> loadRegionData(File regionFile) throws IOException
     {
-        if (chunkFile.exists())
+        if (regionFile.exists())
         {
-            FileReader fileReader = new FileReader(chunkFile);
+            FileReader fileReader = new FileReader(regionFile);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             StringBuilder jsonBuilder = new StringBuilder();
             String line;
@@ -93,9 +97,9 @@ public class BlockMetaChunkData
             String json = jsonBuilder.toString();
 
             Gson gson = new Gson();
-            Type type = CHUNK_FILE_TYPE_TOKEN.getType();
-            HashMap<String, HashMap<String, String>> chunkEntries = gson.fromJson(json, type);
-            return chunkEntries;
+            Type type = REGION_FILE_TYPE_TOKEN.getType();
+            HashMap<String, HashMap<String, String>> regionEntries = gson.fromJson(json, type);
+            return regionEntries;
         }
         else
         {
@@ -103,16 +107,19 @@ public class BlockMetaChunkData
         }
     }
 
-    private void saveChunkData(File chunkFile, HashMap<String, HashMap<String, String>> metadata) throws IOException
+    private void saveRegionData(File regionFile, HashMap<String, HashMap<String, String>> metadata) throws IOException
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
-        Type type = CHUNK_FILE_TYPE_TOKEN.getType();
+        Type type = REGION_FILE_TYPE_TOKEN.getType();
         String json = gson.toJson(metadata, type);
 
-        if (!chunkFile.exists())
-            chunkFile.createNewFile();
+        if (!regionFile.exists())
+        {
+            regionFile.getParentFile().mkdirs();
+            regionFile.createNewFile();
+        }
 
-        FileWriter fileWriter = new FileWriter(chunkFile, false);
+        FileWriter fileWriter = new FileWriter(regionFile, false);
         PrintWriter printWriter = new PrintWriter(fileWriter);
         printWriter.print(json);
         printWriter.close();

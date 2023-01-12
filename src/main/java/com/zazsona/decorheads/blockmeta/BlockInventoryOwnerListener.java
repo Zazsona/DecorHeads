@@ -38,14 +38,14 @@ public class BlockInventoryOwnerListener implements Listener
                     ItemStack usedItem = e.getItem();
                     if (usedItem != null && MaterialUtil.isCookableFood(usedItem.getType()))
                         BlockMetaRepository.getInstance()
-                                .getChunk(clickedBlock.getChunk())
+                                .getRegionData(clickedBlock.getChunk())
                                 .addBlockMeta(clickedBlock.getLocation(), BlockMetaKeys.INVENTORY_OWNER_ID_KEY, player.getUniqueId().toString());
                 }
             }
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -64,13 +64,13 @@ public class BlockInventoryOwnerListener implements Listener
                 Location location = block.getLocation();
                 Player player = (Player) e.getWhoClicked();
                 BlockMetaRepository.getInstance()
-                        .getChunk(block.getChunk())
+                        .getRegionData(block.getChunk())
                         .addBlockMeta(location, BlockMetaKeys.INVENTORY_OWNER_ID_KEY, player.getUniqueId().toString());
             }
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -83,7 +83,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -101,7 +101,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -119,7 +119,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -138,7 +138,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -151,7 +151,7 @@ public class BlockInventoryOwnerListener implements Listener
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            Bukkit.getLogger().warning(String.format("[%s] Unable to load region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
@@ -163,7 +163,7 @@ public class BlockInventoryOwnerListener implements Listener
     private void clearInventoryOwnerMeta(Location location) throws IOException
     {
         BlockMetaRepository repository = BlockMetaRepository.getInstance();
-        BlockMetaChunkData chunk = repository.getChunk(location.getChunk());
-        chunk.removeBlockMeta(location, BlockMetaKeys.INVENTORY_OWNER_ID_KEY);
+        BlockMetaRegionData regionData = repository.getRegionData(location.getChunk());
+        regionData.removeBlockMeta(location, BlockMetaKeys.INVENTORY_OWNER_ID_KEY);
     }
 }

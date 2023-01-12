@@ -1,24 +1,27 @@
 package com.zazsona.decorheads.blockmeta;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
+import com.zazsona.decorheads.event.RegionEvent;
+import com.zazsona.decorheads.event.RegionLoadEvent;
+import com.zazsona.decorheads.event.RegionUnloadEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Map;
 
 public class BlockMetaRepository implements Listener
 {
-    public static final String CHUNK_FILE_NAME_FORMAT = "r.{x}.{z}.json";
-    private static final String CHUNK_KEY_FORMAT = "{x}.{z}";
+    public static final String REGION_FILE_NAME_FORMAT = "r.%s.json";
     private static BlockMetaRepository instance;
 
-    private HashMap<String, BlockMetaChunkData> chunkCache = new HashMap<>();
+    private Map<String, Map<String, BlockMetaRegionData>> worldRegionDataMap = new HashMap<>();
 
     public static BlockMetaRepository getInstance()
     {
@@ -28,79 +31,82 @@ public class BlockMetaRepository implements Listener
     }
 
     /**
-     * Gets the meta entries for a chunk.
-     * @param chunk the chunk, must include world, x, and z.
+     * Gets the meta entries for a region
+     * @param regionKey the region key
+     * @param worldName the region's world
+     * @return the region's meta data
      */
-    public BlockMetaChunkData getChunk(Chunk chunk) throws IOException
+    public BlockMetaRegionData getRegionData(String regionKey, @NotNull String worldName) throws IOException
     {
-        if (chunk.getWorld() == null)
-            throw new NullPointerException("Chunk must have a world defined.");
+        if (worldRegionDataMap.containsKey(worldName) && worldRegionDataMap.get(worldName).containsKey(regionKey))
+            return worldRegionDataMap.get(worldName).get(regionKey);
 
-        String chunkCacheKey = getChunkCacheKey(chunk);
-        if (chunkCache.containsKey(chunkCacheKey))
-            return chunkCache.get(chunkCacheKey);
-
-        File chunkFile = getChunkFile(chunk);
-        BlockMetaChunkData chunkData = new BlockMetaChunkData(chunkFile);
-        return chunkData;
+        File regionFile = getRegionFile(regionKey, worldName);
+        BlockMetaRegionData regionData = new BlockMetaRegionData(regionFile);
+        return regionData;
     }
 
     /**
-     * Loads the meta file for the provided chunk
-     * @param chunk the chunk to load the meta for
+     * Gets the meta entries for a chunk's region
+     * @param chunk the chunk residing in a region
+     * @return the region's meta data
+     */
+    public BlockMetaRegionData getRegionData(Chunk chunk) throws IOException
+    {
+        return getRegionData(RegionEvent.getRegionKey(chunk), chunk.getWorld().getName());
+    }
+
+    /**
+     * Loads the meta file for the provided chunk's region
+     * @param regionKey the region key
+     * @param worldName the region's world
      * @return the file
      */
-    private File getChunkFile(Chunk chunk)
+    private File getRegionFile(String regionKey, String worldName)
     {
-        String worldName = chunk.getWorld().getName();
-        String chunkX = String.valueOf(chunk.getX());
-        String chunkZ = String.valueOf(chunk.getZ());
-
-        String fileName = CHUNK_FILE_NAME_FORMAT.replace("{x}", chunkX).replace("{z}", chunkZ);
-        String worldsPath = Bukkit.getServer().getWorldContainer().getAbsolutePath();
-        String worldPath = worldsPath + "/" + worldName;
-        String worldPluginPath = worldPath + "/" + DecorHeadsPlugin.PLUGIN_NAME.toLowerCase();
-        String filePath = worldPluginPath + "/" + fileName;
+        String fileName = String.format(REGION_FILE_NAME_FORMAT, regionKey);
+        String filePath = Paths.get(Bukkit.getServer().getWorldContainer().toString(), worldName, DecorHeadsPlugin.PLUGIN_NAME.toLowerCase(), fileName).toString();
         return new File(filePath);
     }
 
+    /**
+     * Loads the meta file for the provided chunk's region
+     * @param chunk the chunk to load the region meta for
+     * @return the file
+     */
+    private File getRegionFile(Chunk chunk)
+    {
+        String regionKey = RegionEvent.getRegionKey(chunk);
+        String worldName = chunk.getWorld().getName();
+        return getRegionFile(regionKey, worldName);
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onChunkLoad(ChunkLoadEvent e)
+    public void onRegionLoad(RegionLoadEvent e)
     {
         try
         {
-            Chunk chunk = e.getChunk();
-            String key = getChunkCacheKey(chunk);
-            if (!chunkCache.containsKey(key))
-            {
-                BlockMetaChunkData loadedChunkMeta = getChunk(chunk);
-                chunkCache.put(key, loadedChunkMeta);
-            }
+            String regionKey = e.getRegionKey();
+            String worldName = e.getWorld().getName();
+
+            BlockMetaRegionData loadedRegionMeta = getRegionData(e.getTriggeringChunk());
+            if (!worldRegionDataMap.containsKey(worldName))
+                worldRegionDataMap.put(worldName, new HashMap<>());
+            worldRegionDataMap.get(worldName).put(regionKey, loadedRegionMeta);
         }
         catch (IOException ioEx)
         {
-            Bukkit.getLogger().warning(String.format("[%s] Unable to load chunk meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
+            DecorHeadsPlugin.getInstance().getLogger().warning(String.format("Unable to load region meta: %s", DecorHeadsPlugin.PLUGIN_NAME, ioEx.getMessage()));
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onChunkUnload(ChunkUnloadEvent e)
+    public void onRegionUnload(RegionUnloadEvent e)
     {
-        Chunk chunk = e.getChunk();
-        String key = getChunkCacheKey(chunk);
-        if (chunkCache.containsKey(key))
-            chunkCache.remove(chunk);
-    }
-
-    /**
-     * Converts the chunk into a key for use within the map
-     * @param chunk the chunk to get the key for
-     * @return the key
-     */
-    private String getChunkCacheKey(Chunk chunk)
-    {
-        String chunkX = String.valueOf(chunk.getX());
-        String chunkZ = String.valueOf(chunk.getZ());
-        return CHUNK_KEY_FORMAT.replace("{x}", chunkX).replace("{z}", chunkZ);
+        String regionKey = e.getRegionKey();
+        String worldName = e.getWorld().getName();
+        if (!worldRegionDataMap.containsKey(worldName))
+            return;
+        worldRegionDataMap.get(worldName).remove(regionKey);
     }
 }
