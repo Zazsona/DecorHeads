@@ -34,11 +34,12 @@ public class HeadLoader
             try
             {
                 ConfigurationSection headData = heads.getConfigurationSection(headKey);
-                IHead head = loadHead(headData);
-                if (loadedHeads.containsKey(head.getKey()))
-                    throw new IllegalArgumentException(String.format("Duplicate Head Key: %s", head.getKey()));
+                String headKeyLower = headKey.toLowerCase();
+                IHead head = loadHead(headKeyLower, headData);
+                if (loadedHeads.containsKey(headKeyLower))
+                    throw new IllegalArgumentException(String.format("Duplicate Head Key: %s", headKeyLower));
                 else
-                    loadedHeads.put(head.getKey(), head);
+                    loadedHeads.put(headKeyLower, head);
             }
             catch (Exception e)
             {
@@ -54,16 +55,16 @@ public class HeadLoader
      * @return the loaded head
      * @throws IllegalArgumentException head failed to load
      */
-    public IHead loadHead(ConfigurationSection headYaml) throws IllegalArgumentException
+    public IHead loadHead(String key, ConfigurationSection headYaml) throws IllegalArgumentException
     {
         try
         {
-            IHead head = parseHead(headYaml);
+            IHead head = parseHead(key, headYaml);
             return head;
         }
         catch (Exception e)
         {
-            String name = (headYaml.getName() != null ? headYaml.getString(headYaml.getName()) : "[UNKNOWN]");
+            String name = ((key != null) ? key : "[UNKNOWN]");
             throw new IllegalArgumentException(String.format("Unable to load head \"%s\": %s", name, e.getMessage()));
         }
     }
@@ -75,16 +76,15 @@ public class HeadLoader
      * @throws MissingFieldsException invalid head data
      * @throws IllegalArgumentException invalid head data
      */
-    private IHead parseHead(ConfigurationSection headYaml) throws MissingFieldsException, IllegalArgumentException
+    private IHead parseHead(String key, ConfigurationSection headYaml) throws MissingFieldsException, IllegalArgumentException
     {
-        if (headYaml.getName() == null)
+        if (key == null)
             throw new MissingFieldsException("Missing Key: Head Key");
         if (!headYaml.contains(HEAD_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", HEAD_TYPE_KEY), HEAD_TYPE_KEY);
         if (!headYaml.contains(HEAD_NAME_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", HEAD_NAME_KEY), HEAD_NAME_KEY);
 
-        String key = headYaml.getName().toLowerCase();
         String headTypeName = headYaml.getString(HEAD_TYPE_KEY);
         String name = headYaml.getString(HEAD_NAME_KEY);
 

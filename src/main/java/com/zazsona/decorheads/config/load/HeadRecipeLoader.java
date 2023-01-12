@@ -16,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.io.IOException;
 import java.util.*;
 
 import static com.zazsona.decorheads.config.HeadRecipeConfig.*;
@@ -39,12 +40,12 @@ public class HeadRecipeLoader
             try
             {
                 ConfigurationSection recipeData = recipes.getConfigurationSection(recipeKey);
-                IMetaRecipe recipe = loadRecipe(recipeData, heads);
-                String key = recipe.getKey().getKey();
-                if (loadedRecipes.containsKey(key))
-                    throw new IllegalArgumentException(String.format("Duplicate Recipe Key: %s", key));
+                String recipeKeyLower = recipeKey.toLowerCase();
+                IMetaRecipe recipe = loadRecipe(recipeKeyLower, recipeData, heads);
+                if (loadedRecipes.containsKey(recipeKeyLower))
+                    throw new IllegalArgumentException(String.format("Duplicate Recipe Key: %s", recipeKeyLower));
                 else
-                    loadedRecipes.put(key, recipe);
+                    loadedRecipes.put(recipeKeyLower, recipe);
             }
             catch (Exception e)
             {
@@ -56,34 +57,36 @@ public class HeadRecipeLoader
 
     /**
      * Loads a specific recipe.
+     * @param key the key for the recipe
      * @param recipeYaml the recipe data
      * @param heads a key:head map of registered heads
      * @return the loaded {@link IMetaRecipe}
      * @throws IllegalArgumentException recipe failed to load
      */
-    public IMetaRecipe loadRecipe(ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws IllegalArgumentException
+    public IMetaRecipe loadRecipe(String key, ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws IllegalArgumentException
     {
         try
         {
-            IMetaRecipe recipe = parseRecipe(recipeYaml, heads);
+            IMetaRecipe recipe = parseRecipe(key, recipeYaml, heads);
             return recipe;
         }
         catch (Exception e)
         {
-            String name = (recipeYaml.getName() != null ? recipeYaml.getString(recipeYaml.getName()) : "[UNKNOWN]");
+            String name = ((key != null) ? key : "[UNKNOWN]");
             throw new IllegalArgumentException(String.format("Unable to load recipe \"%s\": %s", name, e.getMessage()));
         }
     }
 
     /**
      * Parses recipe YAML data and converts it into an IMetaRecipe implementation
+     * @param key the key for the recipe
      * @param recipeYaml the recipe to parse
      * @param heads a key:head map of registered heads
      * @return an {@link IMetaRecipe}
      * @throws MissingFieldsException invalid recipe data
      * @throws IllegalArgumentException invalid recipe data
      */
-    private IMetaRecipe parseRecipe(ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException, IllegalArgumentException
+    private IMetaRecipe parseRecipe(String key, ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException, IllegalArgumentException, IOException
     {
         if (!recipeYaml.contains(RECIPE_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_TYPE_KEY), RECIPE_TYPE_KEY);
@@ -92,25 +95,26 @@ public class HeadRecipeLoader
         RecipeType recipeType = RecipeType.matchRecipeType(recipeTypeName);
 
         if (recipeType == RecipeType.CRAFT && !recipeYaml.contains(RECIPE_GRID_KEY))
-            return parseShapelessMetaRecipe(recipeYaml, heads);
+            return parseShapelessMetaRecipe(key, recipeYaml, heads);
         else if (recipeType == RecipeType.CRAFT && recipeYaml.contains(RECIPE_GRID_KEY))
-            return parseShapedMetaRecipe(recipeYaml, heads);
+            return parseShapedMetaRecipe(key, recipeYaml, heads);
         else
             throw new IllegalArgumentException(String.format("Invalid recipe type: %s", recipeTypeName));
     }
 
     /**
      * Parses recipe YAML data and converts it into a {@link ShapelessMetaRecipe}
+     * @param key the key for the recipe
      * @param recipeYaml the recipe yaml
      * @param heads a key:head map of registered heads
      * @return the recipe
      * @throws MissingFieldsException invalid recipe data
      * @throws IllegalArgumentException invalid recipe data
      */
-    private ShapelessMetaRecipe parseShapelessMetaRecipe(ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException, IllegalArgumentException
+    private ShapelessMetaRecipe parseShapelessMetaRecipe(String key, ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException, IllegalArgumentException, IOException
     {
         // Check Keys
-        if (recipeYaml.getName() == null)
+        if (key == null)
             throw new MissingFieldsException("Missing Key: Recipe Key");
         if (!recipeYaml.contains(RECIPE_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_TYPE_KEY), RECIPE_TYPE_KEY);
@@ -120,19 +124,17 @@ public class HeadRecipeLoader
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_RESULT_KEY), RECIPE_RESULT_KEY);
 
         // Load from YAML
-        String key = recipeYaml.getName().toLowerCase();
         String resultName = recipeYaml.getString(RECIPE_RESULT_KEY);
         ConfigurationSection ingredientsMap = recipeYaml.getConfigurationSection(RECIPE_INGREDIENTS_KEY);
 
         // Transform Data
         NamespacedKey recipeNamespacedKey = new NamespacedKey(DecorHeadsPlugin.getInstance(), key);
-        NamespacedKey resultNamespacedKey = NamespacedKey.fromString(resultName);
-        ItemStack result = ItemLoader.loadItem(resultNamespacedKey, heads);
+        ItemStack result = ItemLoader.loadItem(resultName, heads);
         HashMap<Character, ItemStack> ingredientStackMap = parseIngredientsMap(ingredientsMap, heads);
 
         // Create Recipe
         ShapelessMetaRecipe recipe = new ShapelessMetaRecipe(recipeNamespacedKey, result);
-        recipe.setGroup(resultNamespacedKey.toString());
+        recipe.setGroup(resultName);
         for (Map.Entry<Character, ItemStack> ingredientEntry : ingredientStackMap.entrySet())
         {
             String headKey = ingredientEntry.getValue().getItemMeta().getPersistentDataContainer().get(Head.getSkullHeadKeyKey(), PersistentDataType.STRING);
@@ -147,16 +149,17 @@ public class HeadRecipeLoader
 
     /**
      * Parses recipe YAML data and converts it into a {@link ShapedMetaRecipe}
+     * @param key the key for the recipe
      * @param recipeYaml the recipe yaml
      * @param heads a key:head map of registered heads
      * @return the recipe
      * @throws MissingFieldsException invalid recipe data
      * @throws IllegalArgumentException invalid recipe data
      */
-    private ShapedMetaRecipe parseShapedMetaRecipe(ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException, IllegalArgumentException
+    private ShapedMetaRecipe parseShapedMetaRecipe(String key, ConfigurationSection recipeYaml, HashMap<String, IHead> heads) throws MissingFieldsException, IllegalArgumentException, IOException
     {
         // Check Keys
-        if (recipeYaml.getName() == null)
+        if (key == null)
             throw new MissingFieldsException("Missing Key: Recipe Key");
         if (!recipeYaml.contains(RECIPE_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_TYPE_KEY), RECIPE_TYPE_KEY);
@@ -168,19 +171,17 @@ public class HeadRecipeLoader
             throw new MissingFieldsException(String.format("Missing Field: %s", RECIPE_GRID_KEY), RECIPE_GRID_KEY);
 
         // Load from YAML
-        String key = recipeYaml.getName().toLowerCase();
         String resultName = recipeYaml.getString(RECIPE_RESULT_KEY);
         ConfigurationSection ingredientsMap = recipeYaml.getConfigurationSection(RECIPE_INGREDIENTS_KEY);
 
         // Transform Data
         NamespacedKey recipeNamespacedKey = new NamespacedKey(DecorHeadsPlugin.getInstance(), key);
-        NamespacedKey resultNamespacedKey = NamespacedKey.fromString(resultName);
-        ItemStack result = ItemLoader.loadItem(resultNamespacedKey, heads);
+        ItemStack result = ItemLoader.loadItem(resultName, heads);
         HashMap<Character, ItemStack> ingredientStackMap = parseIngredientsMap(ingredientsMap, heads);
 
         // Create Recipe
         ShapedMetaRecipe recipe = new ShapedMetaRecipe(recipeNamespacedKey, result);
-        recipe.setGroup(resultNamespacedKey.toString());
+        recipe.setGroup(resultName);
 
         // Create Shape
         List<String> recipeGrid = recipeYaml.getStringList(RECIPE_GRID_KEY);
@@ -212,7 +213,7 @@ public class HeadRecipeLoader
      * @return a mapping of crafting grid keys and the item stacks they represent
      * @throws IllegalArgumentException invalid ingredients or key
      */
-    private HashMap<Character, ItemStack> parseIngredientsMap(ConfigurationSection ingredientsYaml, HashMap<String, IHead> headMap) throws IllegalArgumentException
+    private HashMap<Character, ItemStack> parseIngredientsMap(ConfigurationSection ingredientsYaml, HashMap<String, IHead> headMap) throws IllegalArgumentException, IOException
     {
         HashMap<Character, ItemStack> ingredientStackMap = new HashMap<>();
         for (String ingredientKey : ingredientsYaml.getKeys(false))
@@ -221,8 +222,7 @@ public class HeadRecipeLoader
                 throw new IllegalArgumentException(String.format("Invalid ingredient key \"%s\" - Keys may only be one character.", ingredientKey));
 
             String ingredientItemName = ingredientsYaml.getString(ingredientKey);
-            NamespacedKey ingredientItemKey = NamespacedKey.fromString(ingredientItemName);
-            ItemStack ingredientStack = ItemLoader.loadItem(ingredientItemKey, headMap);
+            ItemStack ingredientStack = ItemLoader.loadItem(ingredientItemName, headMap);
             char gridKey = ingredientKey.toUpperCase().charAt(0);
             ingredientStackMap.put(gridKey, ingredientStack);
         }

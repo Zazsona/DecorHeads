@@ -153,14 +153,14 @@ public class HeadRepository
      * Additively loads a head from the provided yaml
      * @param headYaml the head to load
      */
-    public static boolean loadHead(ConfigurationSection headYaml)
+    public static boolean loadHead(String key, ConfigurationSection headYaml)
     {
         try
         {
             if (headLoader == null)
                 headLoader = new HeadLoader();
 
-            IHead head = headLoader.loadHead(headYaml);
+            IHead head = headLoader.loadHead(key, headYaml);
             loadedHeads.put(head.getKey(), head);
             return true;
         }
@@ -176,7 +176,7 @@ public class HeadRepository
      * @param plugin the plugin context for listeners
      * @param dropYaml the drop to load
      */
-    public static boolean loadDrop(Plugin plugin, ConfigurationSection dropYaml)
+    public static boolean loadDrop(Plugin plugin, String key, ConfigurationSection dropYaml)
     {
         try
         {
@@ -185,7 +185,7 @@ public class HeadRepository
             if (filterLoader == null)
                 filterLoader = new DropFilterLoader();
 
-            IDrop drop = dropLoader.loadDrop(dropYaml, loadedHeads, filterLoader);
+            IDrop drop = dropLoader.loadDrop(key, dropYaml, loadedHeads, filterLoader);
             if (drop instanceof Listener)
             {
                 Listener dropListener = (Listener) drop;
@@ -205,14 +205,14 @@ public class HeadRepository
      * Additively loads a recipe from the provided yaml
      * @param recipeYaml the recipe to load
      */
-    public static boolean loadRecipe(ConfigurationSection recipeYaml)
+    public static boolean loadRecipe(String key, ConfigurationSection recipeYaml)
     {
         try
         {
             if (recipeLoader == null)
                 recipeLoader = new HeadRecipeLoader();
 
-            IMetaRecipe recipe = recipeLoader.loadRecipe(recipeYaml, loadedHeads);
+            IMetaRecipe recipe = recipeLoader.loadRecipe(key, recipeYaml, loadedHeads);
             MetaRecipeManager.addRecipe(recipe);
             loadedRecipes.put(recipe.getKey().getKey(), recipe);
             return true;

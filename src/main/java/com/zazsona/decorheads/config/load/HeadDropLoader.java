@@ -14,6 +14,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.List;
@@ -40,11 +41,12 @@ public class HeadDropLoader
             try
             {
                 ConfigurationSection dropData = drops.getConfigurationSection(dropKey);
-                IDrop drop = loadDrop(dropData, heads, filterLoader);
-                if (loadedDrops.containsKey(drop.getKey()))
-                    throw new IllegalArgumentException(String.format("Duplicate Drop Key: %s", drop.getKey()));
+                String dropKeyLower = dropKey.toLowerCase();
+                IDrop drop = loadDrop(dropKeyLower, dropData, heads, filterLoader);
+                if (loadedDrops.containsKey(dropKeyLower))
+                    throw new IllegalArgumentException(String.format("Duplicate Drop Key: %s", dropKeyLower));
                 else
-                    loadedDrops.put(drop.getKey(), drop);
+                    loadedDrops.put(dropKeyLower, drop);
             }
             catch (Exception e)
             {
@@ -61,16 +63,16 @@ public class HeadDropLoader
      * @return the loaded {@link IDrop}
      * @throws IllegalArgumentException drop failed to load
      */
-    public IDrop loadDrop(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws IllegalArgumentException
+    public IDrop loadDrop(String key, ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws IllegalArgumentException
     {
         try
         {
-            IDrop drop = parseDrop(dropYaml, heads, filterLoader);
+            IDrop drop = parseDrop(key, dropYaml, heads, filterLoader);
             return drop;
         }
         catch (Exception e)
         {
-            String name = (dropYaml.getName() != null ? dropYaml.getString(dropYaml.getName()) : "[UNKNOWN]");
+            String name = ((key != null) ? key : "[UNKNOWN]");
             throw new IllegalArgumentException(String.format("Unable to load drop \"%s\": %s", name, e.getMessage()));
         }
     }
@@ -83,7 +85,7 @@ public class HeadDropLoader
      * @throws MissingFieldsException invalid drop data
      * @throws IllegalArgumentException invalid drop data
      */
-    private IDrop parseDrop(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException
+    private IDrop parseDrop(String key, ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException, IOException
     {
         if (!dropYaml.contains(DROP_TYPE_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", DROP_TYPE_KEY), DROP_TYPE_KEY);
@@ -93,17 +95,15 @@ public class HeadDropLoader
 
         IDrop drop;
         if (dropType == DropType.BLOCK_BREAK)
-            drop = parseBreakDrop(dropYaml, heads, filterLoader);
+            drop = parseBreakDrop(key, dropYaml, heads, filterLoader);
         else if (dropType == DropType.BREW)
-            drop = parseBrewDrop(dropYaml, heads, filterLoader);
+            drop = parseBrewDrop(key, dropYaml, heads, filterLoader);
         else if (dropType == DropType.CRAFT)
-            drop = parseCraftDrop(dropYaml, heads, filterLoader);
+            drop = parseCraftDrop(key, dropYaml, heads, filterLoader);
         else if (dropType == DropType.SMELT)
-            drop = parseSmeltDrop(dropYaml, heads, filterLoader);
+            drop = parseSmeltDrop(key, dropYaml, heads, filterLoader);
         else if (dropType == DropType.ENTITY_DEATH)
-            drop = parseEntityDeathDrop(dropYaml, heads, filterLoader);
-        else if (dropType == DropType.PLAYER_DEATH)
-            drop = parsePlayerDeathDrop(dropYaml, heads, filterLoader);
+            drop = parseEntityDeathDrop(key, dropYaml, heads, filterLoader);
         else
             throw new IllegalArgumentException(String.format("Invalid drop type: %s", dropTypeName));
 
@@ -112,16 +112,17 @@ public class HeadDropLoader
 
     /**
      * Parses drop YAML data and converts it into a {@link BlockBreakDrop}
+     * @param key the key for the drop
      * @param dropYaml the drop yaml
      * @param heads a key:head map of registered heads
      * @return the drop
      * @throws MissingFieldsException invalid drop data
      * @throws IllegalArgumentException invalid drop data
      */
-    private IDrop parseBreakDrop(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException
+    private IDrop parseBreakDrop(String key, ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException, IOException
     {
         // Get parameters
-        DropProperties dropProperties = parseBaseDropProperties(dropYaml, heads);
+        DropProperties dropProperties = parseBaseDropProperties(key, dropYaml, heads);
         List<IDropFilter> filters = filterLoader.loadDropFilters(dropYaml, heads);
 
         // Create the Drop
@@ -135,16 +136,17 @@ public class HeadDropLoader
 
     /**
      * Parses drop YAML data and converts it into a {@link BrewDrop}
+     * @param key the key for the drop
      * @param dropYaml the drop yaml
      * @param heads a key:head map of registered heads
      * @return the drop
      * @throws MissingFieldsException invalid drop data
      * @throws IllegalArgumentException invalid drop data
      */
-    private IDrop parseBrewDrop(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException
+    private IDrop parseBrewDrop(String key, ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException, IOException
     {
         // Get parameters
-        DropProperties dropProperties = parseBaseDropProperties(dropYaml, heads);
+        DropProperties dropProperties = parseBaseDropProperties(key, dropYaml, heads);
         List<IDropFilter> filters = filterLoader.loadDropFilters(dropYaml, heads);
 
         // Create the Drop
@@ -158,16 +160,17 @@ public class HeadDropLoader
 
     /**
      * Parses drop YAML data and converts it into a {@link CraftDrop}
+     * @param key the key for the drop
      * @param dropYaml the drop yaml
      * @param heads a key:head map of registered heads
      * @return the drop
      * @throws MissingFieldsException invalid drop data
      * @throws IllegalArgumentException invalid drop data
      */
-    private IDrop parseCraftDrop(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException
+    private IDrop parseCraftDrop(String key, ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException, IOException
     {
         // Get parameters
-        DropProperties dropProperties = parseBaseDropProperties(dropYaml, heads);
+        DropProperties dropProperties = parseBaseDropProperties(key, dropYaml, heads);
         List<IDropFilter> filters = filterLoader.loadDropFilters(dropYaml, heads);
 
         // Create the Drop
@@ -181,16 +184,17 @@ public class HeadDropLoader
 
     /**
      * Parses drop YAML data and converts it into a {@link SmeltDrop}
+     * @param key the key for the drop
      * @param dropYaml the drop yaml
      * @param heads a key:head map of registered heads
      * @return the drop
      * @throws MissingFieldsException invalid drop data
      * @throws IllegalArgumentException invalid drop data
      */
-    private IDrop parseSmeltDrop(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException
+    private IDrop parseSmeltDrop(String key, ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException, IOException
     {
         // Get parameters
-        DropProperties dropProperties = parseBaseDropProperties(dropYaml, heads);
+        DropProperties dropProperties = parseBaseDropProperties(key, dropYaml, heads);
         List<IDropFilter> filters = filterLoader.loadDropFilters(dropYaml, heads);
 
         // Create the Drop
@@ -204,16 +208,17 @@ public class HeadDropLoader
 
     /**
      * Parses drop YAML data and converts it into a {@link EntityDeathDrop}
+     * @param key the key for the drop
      * @param dropYaml the drop yaml
      * @param heads a key:head map of registered heads
      * @return the drop
      * @throws MissingFieldsException invalid drop data
      * @throws IllegalArgumentException invalid drop data
      */
-    private IDrop parseEntityDeathDrop(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException
+    private IDrop parseEntityDeathDrop(String key, ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException, IOException
     {
         // Get parameters
-        DropProperties dropProperties = parseBaseDropProperties(dropYaml, heads);
+        DropProperties dropProperties = parseBaseDropProperties(key, dropYaml, heads);
         List<IDropFilter> filters = filterLoader.loadDropFilters(dropYaml, heads);
 
         // Create the Drop
@@ -226,38 +231,16 @@ public class HeadDropLoader
     }
 
     /**
-     * Parses drop YAML data and converts it into a {@link PlayerDeathDrop}
-     * @param dropYaml the drop yaml
-     * @param heads a key:head map of registered heads
-     * @return the drop
-     * @throws MissingFieldsException invalid drop data
-     * @throws IllegalArgumentException invalid drop data
-     */
-    private IDrop parsePlayerDeathDrop(ConfigurationSection dropYaml, HashMap<String, IHead> heads, DropFilterLoader filterLoader) throws MissingFieldsException, IllegalArgumentException, InvalidKeyException
-    {
-        // Get parameters
-        DropProperties dropProperties = parseBaseDropProperties(dropYaml, heads);
-        List<IDropFilter> filters = filterLoader.loadDropFilters(dropYaml, heads);
-
-        // Create the Drop
-        PlayerDeathDrop drop;
-        if (dropProperties.headResult != null)
-            drop = new PlayerDeathDrop(dropProperties.key, dropProperties.dropRate, dropProperties.headResult, filters);
-        else
-            drop = new PlayerDeathDrop(dropProperties.key, dropProperties.dropRate, dropProperties.itemResult, filters);
-        return drop;
-    }
-
-    /**
      * Build the common parameters for all {@link Drop} instances.
+     * @param key the key for the drop
      * @param dropYaml the drop to parse
      * @param heads a key:head map of registered heads
      * @return a record containing parameter data, used for instantiating subclasses of {@link Drop}
      */
-    private DropProperties parseBaseDropProperties(ConfigurationSection dropYaml, HashMap<String, IHead> heads) throws InvalidKeyException
+    private DropProperties parseBaseDropProperties(String key, ConfigurationSection dropYaml, HashMap<String, IHead> heads) throws InvalidKeyException, IOException
     {
         // Check Keys
-        if (dropYaml.getName() == null)
+        if (key == null)
             throw new MissingFieldsException("Missing Key: Drop Key");
         if (!dropYaml.contains(DROP_RESULT_KEY))
             throw new MissingFieldsException(String.format("Missing Field: %s", DROP_RESULT_KEY), DROP_RESULT_KEY);
@@ -265,7 +248,6 @@ public class HeadDropLoader
             throw new MissingFieldsException(String.format("Missing Field: %s", DROP_RATE_KEY), DROP_RATE_KEY);
 
         // Load from YAML
-        String key = dropYaml.getName().toLowerCase();
         String resultName = dropYaml.getString(DROP_RESULT_KEY);
         double dropRate = dropYaml.getDouble(DROP_RATE_KEY);
 
