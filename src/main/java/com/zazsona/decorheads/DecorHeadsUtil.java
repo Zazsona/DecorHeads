@@ -3,15 +3,26 @@ package com.zazsona.decorheads;
 import com.google.gson.Gson;
 import com.zazsona.decorheads.apiresponse.NameUUIDResponse;
 import com.zazsona.decorheads.apiresponse.ProfileResponse;
+import com.zazsona.decorheads.blockmeta.BlockMetaKeys;
+import com.zazsona.decorheads.blockmeta.BlockMetaRegionData;
+import com.zazsona.decorheads.blockmeta.BlockMetaRepository;
+import com.zazsona.decorheads.config.HeadRepository;
+import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
+import org.bukkit.block.Skull;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -90,6 +101,108 @@ public class DecorHeadsUtil
             responseBuilder.append(line);
         }
         return responseBuilder.toString();
+    }
+
+    /**
+     * Retrieves the head registration from a placed head block
+     * @param block the head block
+     * @return the head registration, or null if the block is not a valid or recognised head
+     * @throws IOException unable to access head storage
+     */
+    public static IHead getBlockHeadData(Block block) throws IOException
+    {
+        if (block.getType() != Material.PLAYER_HEAD && block.getType() != Material.PLAYER_WALL_HEAD)
+            return null;
+
+        BlockMetaRepository metaRepository = BlockMetaRepository.getInstance();
+        BlockMetaRegionData regionData = metaRepository.getRegionData(block.getChunk());
+        HashMap<String, String> blockMeta = regionData.getBlockMeta(block.getLocation());
+        if (!blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY) && !DecorHeadsPlugin.getInstanceConfig().isHeadMetaPatcherEnabled())
+            return null;
+
+        if (blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY))
+        {
+            String headKey = blockMeta.get(BlockMetaKeys.HEAD_ID_KEY);
+            IHead head = HeadRepository.getLoadedHeads().get(headKey);
+            return head;
+        }
+
+        if (!blockMeta.containsKey(BlockMetaKeys.HEAD_ID_KEY) && DecorHeadsPlugin.getInstanceConfig().isHeadMetaPatcherEnabled())
+            return identifyUnknownHead(block);
+
+        return null;
+    }
+
+    /**
+     * Gets a head stack matching the head block
+     * @param headBlock a head block
+     * @return an ItemStack matching the block's data, or null if the block is not a valid head
+     * @throws IOException unable to get player head details
+     */
+    @SuppressWarnings("deprecation") // Skull::getOwner() usage is required here, as the head name is custom. It does not belong to a player.
+    public static ItemStack getHeadDrop(Block headBlock) throws IOException
+    {
+        IHead head = getBlockHeadData(headBlock);
+        if (head == null)
+            return null;
+
+        if (head instanceof PlayerHead)
+        {
+            Location location = headBlock.getLocation();
+            BlockMetaRepository metaRepository = BlockMetaRepository.getInstance();
+            BlockMetaRegionData regionData = metaRepository.getRegionData(location.getChunk());
+            HashMap<String, String> blockMeta = regionData.getBlockMeta(location);
+
+            PlayerHead playerHead = (PlayerHead) head;
+            String uuid = blockMeta.get(BlockMetaKeys.PLAYER_ID_KEY);
+            String texture = blockMeta.get(BlockMetaKeys.HEAD_TEXTURE_KEY);
+            if (uuid == null && DecorHeadsPlugin.getInstanceConfig().isHeadMetaPatcherEnabled())
+            {
+                Skull headBlockSkullState = (Skull) headBlock.getState();
+                String instanceName = headBlockSkullState.getOwner();
+                String playerName = extractPlayerNameFromHead(instanceName, head.getName());
+                uuid = fetchPlayerUUID(playerName);
+            }
+
+            if (uuid != null && texture != null)
+                return playerHead.createItem(UUID.fromString(uuid), texture);
+            else if (uuid != null)
+                return playerHead.createItem(UUID.fromString(uuid));
+            else
+                return playerHead.createItem();
+        }
+        else
+            return head.createItem();
+    }
+
+    /**
+     * Removes all head metadata from this location
+     * @param location the location to purge
+     * @throws IOException unable to get metadata file
+     */
+    public static void clearBlockHeadMeta(Location location) throws IOException
+    {
+        BlockMetaRepository repository = BlockMetaRepository.getInstance();
+        BlockMetaRegionData regionData = repository.getRegionData(location.getChunk());
+        regionData.removeBlockMeta(location, BlockMetaKeys.HEAD_ID_KEY);
+        regionData.removeBlockMeta(location, BlockMetaKeys.PLAYER_ID_KEY);
+        regionData.removeBlockMeta(location, BlockMetaKeys.HEAD_TEXTURE_KEY);
+    }
+
+    /**
+     * Attempts to identify a DecorHeads head if the data has been lost
+     * @param block the head block
+     * @return the "best guess" head, or null if no reasonable identification could be made.
+     */
+    @SuppressWarnings("deprecation") // Skull::getOwner() usage is required here, as the head name is custom. It does not belong to a player.
+    public static IHead identifyUnknownHead(Block block)
+    {
+        if (block.getBlockData().getMaterial() != Material.PLAYER_HEAD && block.getBlockData().getMaterial() != Material.PLAYER_WALL_HEAD)
+            return null;
+
+        Skull blockSkull = (Skull) block.getState();
+        String instanceName = blockSkull.getOwner();
+        return HeadRepository.matchLoadedHead(instanceName);
     }
 
     /**
