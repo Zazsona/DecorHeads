@@ -1,12 +1,12 @@
 package com.zazsona.decorheads.drops.filters;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
-import com.zazsona.decorheads.blockmeta.BlockMetaChunkData;
+import com.zazsona.decorheads.blockmeta.BlockMetaRegionData;
 import com.zazsona.decorheads.blockmeta.BlockMetaKeys;
 import com.zazsona.decorheads.blockmeta.BlockMetaRepository;
 import com.zazsona.decorheads.DropType;
-import com.zazsona.decorheads.event.block.BlockBreakByExplosionEvent;
-import com.zazsona.decorheads.event.block.BlockPistonReactionEvent;
+import com.zazsona.decorheads.event.BlockBreakByExplosionEvent;
+import com.zazsona.decorheads.event.BlockPistonReactionEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -79,8 +79,8 @@ public class BlockFilter extends DropFilter
             if (blockType == Material.PLAYER_HEAD && blockType == Material.PLAYER_WALL_HEAD)
             {
                 BlockMetaRepository metaRepo = BlockMetaRepository.getInstance();
-                BlockMetaChunkData chunkMeta = metaRepo.getChunk(block.getChunk());
-                HashMap<String, String> blockMeta = chunkMeta.getBlockMeta(block.getLocation());
+                BlockMetaRegionData regionMeta = metaRepo.getRegionData(block.getChunk());
+                HashMap<String, String> blockMeta = regionMeta.getBlockMeta(block.getLocation());
                 String headId = blockMeta.get(BlockMetaKeys.HEAD_ID_KEY);
                 if (headId != null)
                 {

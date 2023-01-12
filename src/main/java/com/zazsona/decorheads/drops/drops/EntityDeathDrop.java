@@ -9,6 +9,7 @@ import com.zazsona.decorheads.drops.filters.IDropFilter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,6 +20,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.UUID;
 
+// TODO: At the moment, an error is occasionally thrown stating UUID is null. This is due to the fact entity filter hasn't been implemented yet, so all mobs try to drop the head, even though only players with UUIDs can.
+// Implementing the filter fixes this, but a null check should be added as server owners could cock up their configs and do this.
 public class EntityDeathDrop extends Drop
 {
     public EntityDeathDrop(@NotNull String key, double dropRate, @NotNull ItemStack result)
@@ -61,7 +64,7 @@ public class EntityDeathDrop extends Drop
             if (enabledPass && rollPass && permissionsPass && isFiltersPass(e))
             {
                 Location location = e.getEntity().getLocation();
-                UUID playerUuid = (e.getEntity() instanceof Player) ? e.getEntity().getUniqueId() : null;
+                UUID playerUuid = (e.getEntity().getType() == EntityType.PLAYER) ? e.getEntity().getUniqueId() : null;
                 ItemStack result = getResult(playerUuid);
                 DropUtil.dropItem(location, result);
             }

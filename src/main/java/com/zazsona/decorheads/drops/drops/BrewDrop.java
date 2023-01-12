@@ -2,7 +2,7 @@ package com.zazsona.decorheads.drops.drops;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.Permissions;
-import com.zazsona.decorheads.blockmeta.BlockMetaChunkData;
+import com.zazsona.decorheads.blockmeta.BlockMetaRegionData;
 import com.zazsona.decorheads.blockmeta.BlockMetaKeys;
 import com.zazsona.decorheads.blockmeta.BlockMetaRepository;
 import com.zazsona.decorheads.DropType;
@@ -66,8 +66,8 @@ public class BrewDrop extends Drop
                 Location location = e.getBlock().getLocation();
 
                 BlockMetaRepository repo = BlockMetaRepository.getInstance();
-                BlockMetaChunkData chunk = repo.getChunk(e.getBlock().getChunk());
-                Map<String, String> blockMeta = chunk.getBlockMeta(e.getBlock().getLocation());
+                BlockMetaRegionData regionMeta = repo.getRegionData(e.getBlock().getChunk());
+                Map<String, String> blockMeta = regionMeta.getBlockMeta(e.getBlock().getLocation());
                 String playerId = blockMeta.get(BlockMetaKeys.INVENTORY_OWNER_ID_KEY);
                 Player player = null;
                 if (playerId != null)

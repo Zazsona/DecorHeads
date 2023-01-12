@@ -1,8 +1,8 @@
 package com.zazsona.decorheads.drops.filters;
 
 import com.zazsona.decorheads.DropType;
-import com.zazsona.decorheads.event.block.BlockBreakByExplosionEvent;
-import com.zazsona.decorheads.event.block.BlockPistonReactionEvent;
+import com.zazsona.decorheads.event.BlockBreakByExplosionEvent;
+import com.zazsona.decorheads.event.BlockPistonReactionEvent;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityDeathEvent;
