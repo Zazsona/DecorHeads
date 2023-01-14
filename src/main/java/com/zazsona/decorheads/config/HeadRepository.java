@@ -405,9 +405,9 @@ public class HeadRepository
                 return head;
             if (headNameLwr.contains(playerNamePlaceholderLwr))
             {
-                String matchPattern = headNameLwr.replace(playerNamePlaceholderLwr, "\\E[a-zA-Z0-9_]{2,16}\\Q");
+                String matchPattern = "\\Q" + headNameLwr.replace(playerNamePlaceholderLwr, "\\E[a-z0-9_]{2,16}\\Q") + "\\E";
                 matchPattern = matchPattern.replace("\\Q\\E", "");
-                if (Pattern.matches(matchPattern, headNameLwr))
+                if (Pattern.matches(matchPattern, headIdLwr))
                     return head;
             }
         }

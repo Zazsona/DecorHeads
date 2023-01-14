@@ -1,6 +1,7 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
+import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.headdata.IHead;
@@ -42,42 +43,43 @@ public class SpawnHeadCommand implements CommandExecutor
                 return true;
             }
 
-            if (args.length == 2)
+            if (args.length == 1 && args[0].equalsIgnoreCase("all"))
             {
-                try
+                for (IHead head : HeadRepository.getLoadedHeads().values())
                 {
-                    ItemStack headStack = getHeadItem(args[1], null);
-                    spawnHead((Player) sender, headStack);
-                }
-                catch (InvalidHeadException e)
-                {
-                    ItemStack headStack = getHeadItem(SPAWN_COMMAND_PLAYER_HEAD_ID, args[1]);
+                    ItemStack headStack = getHeadItem(head, null);
                     spawnHead((Player) sender, headStack);
                 }
             }
-            else if (args.length > 2)
+            else if (args.length == 1)
             {
-                try
+                IHead head = HeadRepository.matchLoadedHead(args[0].trim());
+                String playerName = null;
+                if (head == null)
                 {
-                    String headIdentifier = StringUtils.join(args, " ", 1, args.length);
-                    ItemStack headStack = getHeadItem(headIdentifier, null);
-                    spawnHead((Player) sender, headStack);
+                    // getLoadedHead() is more performant. As the key is hard-coded, there's no room input uncertainty.
+                    head = HeadRepository.getLoadedHead(SPAWN_COMMAND_PLAYER_HEAD_ID.trim());
+                    playerName = args[0].trim();
                 }
-                catch (InvalidHeadException e)
-                {
-                    String headIdentifier = StringUtils.join(args, " ", 1, args.length - 1);
-                    String playerName = args[args.length - 1];
-                    ItemStack headStack = getHeadItem(headIdentifier, playerName);
-                    spawnHead((Player) sender, headStack);
-                }
+                ItemStack headStack = getHeadItem(head, playerName);
+                spawnHead((Player) sender, headStack);
+            }
+            else if (args.length > 1)
+            {
+                String headIdentifier = StringUtils.join(args, " ", 0, args.length);
+                IHead head = HeadRepository.matchLoadedHead(headIdentifier.trim());
+                String playerName = DecorHeadsUtil.extractPlayerNameFromHead(headIdentifier, head.getName());
+                ItemStack headStack = getHeadItem(head, playerName);
+                spawnHead((Player) sender, headStack);
             }
             else
                 throw new IllegalArgumentException();
         }
         catch (ArrayIndexOutOfBoundsException | IllegalArgumentException | NullPointerException e)
         {
+            String argString = StringUtils.join(args, " ", 0, args.length);
             String usage = (String) DecorHeadsPlugin.getInstance().getDescription().getCommands().get(COMMAND_KEY).get("usage");
-            sender.sendMessage(ChatColor.RED + String.format("Invalid command arguments. Usage:\n%s", usage));
+            sender.sendMessage(ChatColor.RED + String.format("Unable to find head \"%s\".\nPlease check the head name and any included player names are correct.\nCommand Usage: %s", argString, usage));
         }
         catch (InvalidHeadException e)
         {
@@ -89,9 +91,8 @@ public class SpawnHeadCommand implements CommandExecutor
         }
     }
 
-    private ItemStack getHeadItem(String identifier, @Nullable String playerName) throws InvalidHeadException
+    private ItemStack getHeadItem(IHead head, @Nullable String playerName) throws InvalidHeadException
     {
-        IHead head = HeadRepository.matchLoadedHead(identifier.trim());
         if (head != null)
         {
             if (head instanceof PlayerHead && playerName != null)
@@ -99,7 +100,7 @@ public class SpawnHeadCommand implements CommandExecutor
             else
                 return head.createItem();
         }
-        throw new InvalidHeadException(String.format("Head \"%s\" is not a recognised head.", identifier));
+        throw new NullPointerException(String.format("Cannot create item as Head is null."));
     }
 
     private void spawnHead(Player player, ItemStack headStack)

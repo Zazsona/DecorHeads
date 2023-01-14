@@ -41,7 +41,6 @@ public class BlockMetaRegionData
     public void addBlockMeta(Location location, String key, String value)
     {
         String blockKey = getBlockKey(location);
-        System.out.println(blockKey+": " + key + "/"+value);
         HashMap<String, String> blockMeta = getBlockMeta(location);
         blockMeta.put(key, value);
         regionData.put(blockKey, blockMeta);

@@ -222,7 +222,7 @@ public class DecorHeadsUtil
             {
                 int startIndex = headTemplateLwr.indexOf(playerNamePlaceholderLwr);
                 char endChar = headNameTemplate.charAt(startIndex + playerNamePlaceholderLwr.length()); // Using "headNameTemplate" here to get the case-matching terminating char
-                playerName = headInstanceName.toLowerCase().substring(startIndex).substring(0, headInstanceName.indexOf(endChar));
+                playerName = headInstanceName.substring(startIndex).substring(0, headInstanceName.indexOf(endChar));
                 if (Pattern.matches("[a-zA-Z0-9_]{2,16}", playerName))
                     return playerName;
             }
