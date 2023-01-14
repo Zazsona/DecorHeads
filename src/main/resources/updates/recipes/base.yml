@@ -1,0 +1,584 @@
+version: 3.0.0
+recipes:
+  alex-plush-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:alex-plush
+    ingredients:
+      A: ORANGE_WOOL
+      B: LIME_WOOL
+      C: BROWN_WOOL
+    grid:
+      - A
+      - B
+      - C
+  aquarium-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:aquarium
+    ingredients:
+      A: GLASS_PANE
+      B: SALMON
+    grid:
+      - A A A
+      - A B A
+      - A A A
+  aquarium-default-craft-1:
+    recipe-type: CRAFT
+    result: decorheads:aquarium
+    ingredients:
+      A: GLASS_PANE
+      B: COD
+    grid:
+      - A A A
+      - A B A
+      - A A A
+  aquarium-default-craft-2:
+    recipe-type: CRAFT
+    result: decorheads:aquarium
+    ingredients:
+      A: GLASS_PANE
+      B: TROPICAL_FISH
+    grid:
+      - A A A
+      - A B A
+      - A A A
+  aquarium-default-craft-3:
+    recipe-type: CRAFT
+    result: decorheads:aquarium
+    ingredients:
+      A: GLASS_PANE
+      B: PUFFERFISH
+    grid:
+      - A A A
+      - A B A
+      - A A A
+  beachball-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:beachball
+    ingredients:
+      A: BLUE_DYE
+      B: GREEN_DYE
+      C: LIME_DYE
+      D: YELLOW_DYE
+      E: ORANGE_DYE
+      F: RED_DYE
+      G: PURPLE_DYE
+      H: WHITE_DYE
+      I: LEATHER
+  cardboard-box-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:cardboard-box
+    ingredients:
+      A: PAPER
+    grid:
+      - A A A
+      - A / A
+      - A A A
+  cave-diorama-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:cave-diorama
+    ingredients:
+      A: LIGHT_BLUE_WOOL
+      B: STONE
+      C: GREEN_WOOL
+    grid:
+      - A B B
+      - B B B
+      - B B C
+  cave-diorama-default-craft-1:
+    recipe-type: CRAFT
+    result: decorheads:cave-diorama
+    ingredients:
+      A: LIGHT_BLUE_WOOL
+      B: STONE
+      C: GREEN_WOOL
+    grid:
+      - C B B
+      - B B B
+      - B B A
+  cave-diorama-default-craft-2:
+    recipe-type: CRAFT
+    result: decorheads:cave-diorama
+    ingredients:
+      A: LIGHT_BLUE_WOOL
+      B: STONE
+      C: GREEN_WOOL
+    grid:
+      - B B A
+      - B B B
+      - C B B
+  cave-diorama-default-craft-3:
+    recipe-type: CRAFT
+    result: decorheads:cave-diorama
+    ingredients:
+      A: LIGHT_BLUE_WOOL
+      B: STONE
+      C: GREEN_WOOL
+    grid:
+      - B B C
+      - B B B
+      - A B B
+  chimney-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:chimney
+    ingredients:
+      A: COBBLESTONE
+      B: SMOOTH_STONE_SLAB
+    grid:
+      - B B B
+      - / A /
+      - / A /
+  cyan-clock-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:cyan-clock
+    ingredients:
+      A: CYAN_CONCRETE
+      B: CLOCK
+    grid:
+      - A A A
+      - A B A
+      - A A A
+  cookie-jar-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:cookie-jar
+    ingredients:
+      A: GLASS_PANE
+      B: COOKIE
+    grid:
+      - A A A
+      - A B A
+      - A A A
+  dice-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:dice
+    ingredients:
+      A: BLACK_CONCRETE
+      B: WHITE_CONCRETE
+    grid:
+      - A B B
+      - B A B
+      - B B A
+  dice-default-craft-1:
+    recipe-type: CRAFT
+    result: decorheads:dice
+    ingredients:
+      A: BLACK_CONCRETE
+      B: WHITE_CONCRETE
+    grid:
+      - B B A
+      - B A B
+      - A B B
+  football-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:football
+    ingredients:
+      A: LEATHER
+      B: WHITE_DYE
+      C: BLACK_DYE
+    grid:
+      - C B C
+      - B A B
+      - C B C
+  footstool-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:footstool
+    ingredients:
+      A: OAK_PLANKS
+      B: ORANGE_WOOL
+    grid:
+      - / B /
+      - B B B
+      - A / A
+  gold-medal-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:gold-medal
+    ingredients:
+      A: STRING
+      B: GOLD_INGOT
+      C: IRON_BLOCK
+    grid:
+      - A
+      - B
+      - C
+  ink-jar-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:ink-jar
+    ingredients:
+      A: GLASS_BOTTLE
+      B: INK_SAC
+  newspapers-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:newspapers
+    ingredients:
+      A: PAPER
+      B: STRING
+    grid:
+      - / B /
+      - A A A
+      - / B /
+  picnic-basket-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:picnic-basket
+    ingredients:
+      A: OAK_PLANKS
+      B: STICK
+      C: RED_CARPET
+      D: WHITE_CARPET
+    grid:
+      - / B /
+      - C D C
+      - A A A
+  picnic-basket-default-craft-1:
+    recipe-type: CRAFT
+    result: decorheads:picnic-basket
+    ingredients:
+      A: OAK_PLANKS
+      B: STICK
+      C: RED_CARPET
+      D: WHITE_CARPET
+    grid:
+      - / B /
+      - D C D
+      - A A A
+  porcelain-vase-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:porcelain-vase
+    ingredients:
+      A: CLAY_BALL
+      B: BLUE_DYE
+    grid:
+      - B / B
+      - A / A
+      - B A B
+  potion-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:potion
+    ingredients:
+      A: POTION
+  potted-poppy-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:potted-poppy
+    ingredients:
+      A: OAK_PLANKS
+      B: POPPY
+      C: OAK_LEAVES
+    grid:
+      - C B C
+      - A A A
+  potted-dandelion-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:potted-dandelion
+    ingredients:
+      A: OAK_PLANKS
+      B: DANDELION
+      C: OAK_LEAVES
+    grid:
+      - C B C
+      - A A A
+  potted-daisy-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:potted-daisy
+    ingredients:
+      A: OAK_PLANKS
+      B: OXEYE_DAISY
+      C: OAK_LEAVES
+    grid:
+      - C B C
+      - A A A
+  present-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:present
+    ingredients:
+      A: RED_WOOL
+      B: YELLOW_WOOL
+    grid:
+      - A B A
+      - B B B
+      - A B A
+  stack-of-carrots-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:stack-of-carrots
+    ingredients:
+      A: CARROT
+    grid:
+      - A A
+      - A A
+  steve-plush-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:steve-plush
+    ingredients:
+      A: BROWN_WOOL
+      B: LIGHT_BLUE_WOOL
+      C: BLUE_WOOL
+    grid:
+      - A
+      - B
+      - C
+  stool-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:stool
+    ingredients:
+      A: OAK_PLANKS
+    grid:
+      - A A A
+      - A A A
+      - A / A
+  stool-log-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:stool-log
+    ingredients:
+      A: OAK_PLANKS
+      B: OAK_LOG
+    grid:
+      - B B B
+      - A A A
+      - A / A
+  television-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:television
+    ingredients:
+      A: BLACK_CONCRETE
+      B: GLASS_PANE
+    grid:
+      - A A A
+      - A B A
+      - A A A
+  toaster-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:toaster
+    ingredients:
+      A: IRON_INGOT
+      B: BREAD
+    grid:
+      - A B A
+      - A A A
+  toilet-paper-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:toilet-paper
+    ingredients:
+      A: OAK_PLANKS
+      B: PAPER
+    grid:
+      - B B B
+      - B A B
+      - B B B
+  wooden-clock-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:wooden-clock
+    ingredients:
+      A: SPRUCE_PLANKS
+      B: CLOCK
+    grid:
+      - A A A
+      - A B A
+      - A A A
+  wooden-crate-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:wooden-crate
+    ingredients:
+      A: OAK_PLANKS
+    grid:
+      - A A A
+      - A A A
+      - A A A
+  coffee-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:coffee
+    ingredients:
+      A: COCOA_BEANS
+      B: CLAY_BALL
+    grid:
+      - B A B
+      - B B B
+  tea-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:tea
+    ingredients:
+      A: OAK_LEAVES
+      B: CLAY_BALL
+    grid:
+      - B A B
+      - B B B
+  birch-crate-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:birch-crate
+    ingredients:
+      A: BIRCH_PLANKS
+    grid:
+      - A A A
+      - A A A
+      - A A A
+  spruce-crate-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:spruce-crate
+    ingredients:
+      A: SPRUCE_PLANKS
+    grid:
+      - A A A
+      - A A A
+      - A A A
+  jungle-crate-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:jungle-crate
+    ingredients:
+      A: JUNGLE_PLANKS
+    grid:
+      - A A A
+      - A A A
+      - A A A
+  acacia-crate-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:acacia-crate
+    ingredients:
+      A: ACACIA_PLANKS
+    grid:
+      - A A A
+      - A A A
+      - A A A
+  dark-oak-crate-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:dark-oak-crate
+    ingredients:
+      A: DARK_OAK_PLANKS
+    grid:
+      - A A A
+      - A A A
+      - A A A
+  crimson-crate-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:crimson-crate
+    ingredients:
+      A: CRIMSON_PLANKS
+    grid:
+      - A A A
+      - A A A
+      - A A A
+  warped-crate-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:warped-crate
+    ingredients:
+      A: WARPED_PLANKS
+    grid:
+      - A A A
+      - A A A
+      - A A A
+  pancakes-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:pancakes
+    ingredients:
+      A: EGG
+      B: MILK_BUCKET
+      C: WHEAT
+  mini-honey-block-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:mini-honey-block
+    ingredients:
+      A: HONEY_BOTTLE
+    grid:
+      - A A
+  mini-honey-block-default-craft-1:
+    recipe-type: CRAFT
+    result: decorheads:mini-honey-block
+    ingredients:
+      A: HONEY_BOTTLE
+    grid:
+      - A
+      - A
+  honey-pot-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:honey-pot
+    ingredients:
+      A: CLAY_BALL
+      B: HONEY_BOTTLE
+    grid:
+      - A B A
+      - A A A
+  warning-light-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:warning-light
+    ingredients:
+      A: IRON_BARS
+      B: REDSTONE_LAMP
+    grid:
+      - A A A
+      - A B A
+      - A A A
+  oak-bird-house-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:oak-bird-house
+    ingredients:
+      A: OAK_PLANKS
+      B: OAK_LOG
+    grid:
+      - / B /
+      - B A B
+      - A A A
+  birch-bird-house-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:birch-bird-house
+    ingredients:
+      A: BIRCH_PLANKS
+      B: BIRCH_LOG
+    grid:
+      - / B /
+      - B A B
+      - A A A
+  spruce-bird-house-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:spruce-bird-house
+    ingredients:
+      A: SPRUCE_PLANKS
+      B: SPRUCE_LOG
+    grid:
+      - / B /
+      - B A B
+      - A A A
+  jungle-bird-house-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:jungle-bird-house
+    ingredients:
+      A: JUNGLE_PLANKS
+      B: JUNGLE_LOG
+    grid:
+      - / B /
+      - B A B
+      - A A A
+  acacia-bird-house-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:acacia-bird-house
+    ingredients:
+      A: ACACIA_PLANKS
+      B: ACACIA_LOG
+    grid:
+      - / B /
+      - B A B
+      - A A A
+  dark-oak-bird-house-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:dark-oak-bird-house
+    ingredients:
+      A: DARK_OAK_PLANKS
+      B: DARK_OAK_LOG
+    grid:
+      - / B /
+      - B A B
+      - A A A
+  crimson-bird-house-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:crimson-bird-house
+    ingredients:
+      A: CRIMSON_PLANKS
+      B: CRIMSON_STEM
+    grid:
+      - / B /
+      - B A B
+      - A A A
+  warped-bird-house-default-craft-0:
+    recipe-type: CRAFT
+    result: decorheads:warped-bird-house
+    ingredients:
+      A: WARPED_PLANKS
+      B: WARPED_STEM
+    grid:
+      - / B /
+      - B A B
+      - A A A

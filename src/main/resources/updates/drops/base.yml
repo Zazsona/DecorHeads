@@ -1,0 +1,1023 @@
+version: 3.0.0
+drops:
+  player-default-pvp-drop:
+    drop-type: ENTITY_DEATH
+    result: decorheads:player
+    drop-rate: 0.075
+    entity:
+      - PLAYER
+    event-evoker:
+      - PLAYER
+  player-default-pve-drop:
+    drop-type: ENTITY_DEATH
+    result: decorheads:player
+    drop-rate: 0.02
+    entity:
+      - PLAYER
+    event-evoker:
+      - ENVIRONMENT
+  apple-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:apple
+    drop-rate: 0.002
+    block:
+      - ACACIA_LEAVES
+      - BIRCH_LEAVES
+      - DARK_OAK_LEAVES
+      - JUNGLE_LEAVES
+      - OAK_LEAVES
+      - SPRUCE_LEAVES
+  bag-of-bones-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:bag-of-bones
+    drop-rate: 0.0025
+    entity:
+      - SKELETON
+  beer-default-drop-0:
+    drop-type: BREW
+    result: decorheads:beer
+    drop-rate: 0.01
+  blaze-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:blaze
+    drop-rate: 0.015
+    entity:
+      - BLAZE
+  blueberry-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:blueberry
+    drop-rate: 0.002
+    block:
+      - ACACIA_LEAVES
+      - BIRCH_LEAVES
+      - DARK_OAK_LEAVES
+      - JUNGLE_LEAVES
+      - OAK_LEAVES
+      - SPRUCE_LEAVES
+  books-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:books
+    drop-rate: 0.05
+    block:
+      - BOOKSHELF
+  bread-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:bread
+    drop-rate: 0.001
+    recipe-result:
+      - BREAD
+  burger-default-drop-0:
+    drop-type: SMELT
+    result: decorheads:burger
+    drop-rate: 0.003
+    recipe-result:
+      - COOKED_BEEF
+  cave-spider-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:cave-spider
+    drop-rate: 0.01
+    entity:
+      - CAVE_SPIDER
+  chicken-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:chicken
+    drop-rate: 0.005
+    entity:
+      - CHICKEN
+  chicken-dinner-default-drop-0:
+    drop-type: SMELT
+    result: decorheads:chicken-dinner
+    drop-rate: 0.003
+    recipe-result:
+      - COOKED_CHICKEN
+  coconut-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:coconut
+    drop-rate: 0.005
+    block:
+      - JUNGLE_LOG
+  cookie-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:cookie
+    drop-rate: 5.0E-4
+    recipe-result:
+      - COOKIE
+  cow-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:cow
+    drop-rate: 0.01
+    entity:
+      - COW
+  creeper-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:creeper
+    drop-rate: 0.01
+    entity:
+      - CREEPER
+  cupcake-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:cupcake
+    drop-rate: 0.15
+    block:
+      - CAKE
+  dolphin-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:dolphin
+    drop-rate: 0.05
+    entity:
+      - DOLPHIN
+  drowned-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:drowned
+    drop-rate: 0.005
+    entity:
+      - DROWNED
+  elder-guardian-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:elder-guardian
+    drop-rate: 0.1
+    entity:
+      - ELDER_GUARDIAN
+  enderman-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:enderman
+    drop-rate: 0.01
+    entity:
+      - ENDERMAN
+  evoker-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:evoker
+    drop-rate: 0.33
+    entity:
+      - EVOKER
+  fox-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:fox
+    drop-rate: 0.05
+    entity:
+      - FOX
+  fruit-basket-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:fruit-basket
+    drop-rate: 0.0012
+    block:
+      - ACACIA_LEAVES
+      - BIRCH_LEAVES
+      - DARK_OAK_LEAVES
+      - JUNGLE_LEAVES
+      - OAK_LEAVES
+      - SPRUCE_LEAVES
+  ghast-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:ghast
+    drop-rate: 0.05
+    entity:
+      - GHAST
+  guardian-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:guardian
+    drop-rate: 0.02
+    entity:
+      - GUARDIAN
+  husk-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:husk
+    drop-rate: 0.005
+    entity:
+      - HUSK
+  iron-golem-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:iron-golem
+    drop-rate: 0.01
+    entity:
+      - IRON_GOLEM
+  magma-cube-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:magma-cube
+    drop-rate: 0.01
+    entity:
+      - MAGMA_CUBE
+  mini-bricks-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-bricks
+    drop-rate: 0.01
+    block:
+      - BRICKS
+      - BRICK_SLAB
+      - BRICK_STAIRS
+  mini-cactus-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-cactus
+    drop-rate: 0.01
+    block:
+      - CACTUS
+  mini-cauldron-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-cauldron
+    drop-rate: 0.05
+    block:
+      - CAULDRON
+  mini-coal-block-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-coal-block
+    drop-rate: 0.001
+    block:
+      - COAL_ORE
+      - DEEPSLATE_COAL_ORE
+      - COAL_BLOCK
+  mini-coal-block-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:mini-coal-block
+    drop-rate: 0.001
+    recipe-result:
+      - COAL_BLOCK
+  mini-cobblestone-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-cobblestone
+    drop-rate: 0.001
+    block:
+      - COBBLESTONE
+  mini-cobblestone-default-drop-1:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-cobblestone
+    drop-rate: 5.0E-4
+    block:
+      - STONE
+  mini-dirt-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-dirt
+    drop-rate: 5.0E-4
+    block:
+      - DIRT
+      - DIRT_PATH
+      - COARSE_DIRT
+      - ROOTED_DIRT
+      - GRASS_BLOCK
+      - PODZOL
+  mini-gravel-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-gravel
+    drop-rate: 0.002
+    block:
+      - GRAVEL
+  mini-hay-bale-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-hay-bale
+    drop-rate: 0.005
+    block:
+      - HAY_BLOCK
+  mini-oak-leaves-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-oak-leaves
+    drop-rate: 0.001
+    block:
+      - OAK_LEAVES
+      - DARK_OAK_LEAVES
+  mini-birch-leaves-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-birch-leaves
+    drop-rate: 0.001
+    block:
+      - BIRCH_LEAVES
+  mini-jungle-leaves-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-jungle-leaves
+    drop-rate: 0.001
+    block:
+      - JUNGLE_LEAVES
+  mini-acacia-leaves-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-acacia-leaves
+    drop-rate: 0.001
+    block:
+      - ACACIA_LEAVES
+  mini-spruce-leaves-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-spruce-leaves
+    drop-rate: 0.001
+    block:
+      - SPRUCE_LEAVES
+  mini-melon-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-melon
+    drop-rate: 0.001
+    block:
+      - MELON
+  mini-oak-log-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-oak-log
+    drop-rate: 7.5E-4
+    block:
+      - OAK_LOG
+  mini-birch-log-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-birch-log
+    drop-rate: 7.5E-4
+    block:
+      - BIRCH_LOG
+  mini-jungle-log-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-jungle-log
+    drop-rate: 7.5E-4
+    block:
+      - JUNGLE_LOG
+  mini-acacia-log-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-acacia-log
+    drop-rate: 7.5E-4
+    block:
+      - ACACIA_LOG
+  mini-dark-oak-log-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-dark-oak-log
+    drop-rate: 7.5E-4
+    block:
+      - DARK_OAK_LOG
+  mini-spruce-log-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-spruce-log
+    drop-rate: 7.5E-4
+    block:
+      - SPRUCE_LOG
+  mini-crimson-stem-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-crimson-stem
+    drop-rate: 7.5E-4
+    block:
+      - CRIMSON_STEM
+  mini-warped-stem-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-warped-stem
+    drop-rate: 7.5E-4
+    block:
+      - WARPED_STEM
+  mini-pumpkin-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-pumpkin
+    drop-rate: 0.005
+    block:
+      - PUMPKIN
+  mini-redstone-block-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-redstone-block
+    drop-rate: 0.0025
+    block:
+      - REDSTONE_BLOCK
+      - REDSTONE_ORE
+      - DEEPSLATE_REDSTONE_ORE
+  mini-redstone-block-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:mini-redstone-block
+    drop-rate: 0.001
+    recipe-result:
+      - REDSTONE_BLOCK
+  mini-sand-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-sand
+    drop-rate: 5.0E-4
+    block:
+      - SAND
+  mini-snow-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-snow
+    drop-rate: 5.0E-4
+    block:
+      - SNOW
+      - SNOW_BLOCK
+  mooshroom-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:mooshroom
+    drop-rate: 0.05
+    entity:
+      - MUSHROOM_COW
+  mushroom-brown-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mushroom-brown
+    drop-rate: 0.01
+    block:
+      - BROWN_MUSHROOM
+  mushroom-red-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mushroom-red
+    drop-rate: 0.01
+    block:
+      - RED_MUSHROOM
+  oak-character-down-arrow-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:oak-character-down-arrow
+    drop-rate: 0.0016
+    block:
+      - OAK_PLANKS
+      - SPRUCE_PLANKS
+      - BIRCH_PLANKS
+      - JUNGLE_PLANKS
+      - ACACIA_PLANKS
+      - DARK_OAK_PLANKS
+      - CRIMSON_PLANKS
+      - WARPED_PLANKS
+  oak-character-exclamation-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:oak-character-exclamation
+    drop-rate: 0.0016
+    block:
+      - OAK_PLANKS
+      - SPRUCE_PLANKS
+      - BIRCH_PLANKS
+      - JUNGLE_PLANKS
+      - ACACIA_PLANKS
+      - DARK_OAK_PLANKS
+      - CRIMSON_PLANKS
+      - WARPED_PLANKS
+  oak-character-left-arrow-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:oak-character-left-arrow
+    drop-rate: 0.0016
+    block:
+      - OAK_PLANKS
+      - SPRUCE_PLANKS
+      - BIRCH_PLANKS
+      - JUNGLE_PLANKS
+      - ACACIA_PLANKS
+      - DARK_OAK_PLANKS
+      - CRIMSON_PLANKS
+      - WARPED_PLANKS
+  oak-character-question-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:oak-character-question
+    drop-rate: 0.0016
+    block:
+      - OAK_PLANKS
+      - SPRUCE_PLANKS
+      - BIRCH_PLANKS
+      - JUNGLE_PLANKS
+      - ACACIA_PLANKS
+      - DARK_OAK_PLANKS
+      - CRIMSON_PLANKS
+      - WARPED_PLANKS
+  oak-character-right-arrow-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:oak-character-right-arrow
+    drop-rate: 0.0016
+    block:
+      - OAK_PLANKS
+      - SPRUCE_PLANKS
+      - BIRCH_PLANKS
+      - JUNGLE_PLANKS
+      - ACACIA_PLANKS
+      - DARK_OAK_PLANKS
+      - CRIMSON_PLANKS
+      - WARPED_PLANKS
+  oak-character-up-arrow-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:oak-character-up-arrow
+    drop-rate: 0.0016
+    block:
+      - OAK_PLANKS
+      - SPRUCE_PLANKS
+      - BIRCH_PLANKS
+      - JUNGLE_PLANKS
+      - ACACIA_PLANKS
+      - DARK_OAK_PLANKS
+      - CRIMSON_PLANKS
+      - WARPED_PLANKS
+  ocelot-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:ocelot
+    drop-rate: 0.075
+    entity:
+      - OCELOT
+  pig-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:pig
+    drop-rate: 0.01
+    entity:
+      - PIG
+  pillager-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:pillager
+    drop-rate: 0.02
+    entity:
+      - PILLAGER
+  potion-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:potion
+    drop-rate: 0.04
+    entity:
+      - WITCH
+  sand-bucket-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:sand-bucket
+    drop-rate: 0.002
+    block:
+      - SAND
+    biome:
+      - BEACH
+  sandcastle-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:sandcastle
+    drop-rate: 0.001
+    block:
+      - SAND
+    biome:
+      - BEACH
+  sheep-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:sheep
+    drop-rate: 0.01
+    entity:
+      - SHEEP
+  skeleton-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:skeleton
+    drop-rate: 0.005
+    entity:
+      - SKELETON
+  slime-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:slime
+    drop-rate: 0.01
+    entity:
+      - SLIME
+  slime-ball-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:slime-ball
+    drop-rate: 0.004
+    entity:
+      - SLIME
+  snowman-head-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:snowman-head
+    drop-rate: 0.01
+    block:
+      - SNOW_BLOCK
+  snowman-head-default-drop-1:
+    drop-type: ENTITY_DEATH
+    result: decorheads:snowman-head
+    drop-rate: 0.1
+    entity:
+      - SNOWMAN
+  spider-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:spider
+    drop-rate: 0.0075
+    entity:
+      - SPIDER
+  squid-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:squid
+    drop-rate: 0.013000000000000001
+    entity:
+      - SQUID
+  stray-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:stray
+    drop-rate: 0.015
+    entity:
+      - STRAY
+  sushi-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:sushi
+    drop-rate: 0.015
+    entity:
+      - PUFFERFISH
+      - SALMON
+      - COD
+      - TROPICAL_FISH
+  vex-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:vex
+    drop-rate: 0.15
+    entity:
+      - VEX
+  villager-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:villager
+    drop-rate: 0.05
+    entity:
+      - VILLAGER
+  wandering-trader-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:wandering-trader
+    drop-rate: 0.33
+    entity:
+      - WANDERING_TRADER
+  witch-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:witch
+    drop-rate: 0.04
+    entity:
+      - WITCH
+  wither-skeleton-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:wither-skeleton
+    drop-rate: 0.0
+    entity:
+      - WITHER_SKELETON
+  zombie-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:zombie
+    drop-rate: 0.005
+    entity:
+      - ZOMBIE
+  zombie-villager-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:zombie-villager
+    drop-rate: 0.015
+    entity:
+      - ZOMBIE_VILLAGER
+  piglin-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:piglin
+    drop-rate: 0.02
+    entity:
+      - PIGLIN
+      - PIGLIN_BRUTE
+  zombified-piglin-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:zombified-piglin
+    drop-rate: 0.02
+    entity:
+      - ZOMBIFIED_PIGLIN
+  strider-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:strider
+    drop-rate: 0.03
+    entity:
+      - STRIDER
+  mini-nether-wart-block-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-nether-wart-block
+    drop-rate: 0.002
+    block:
+      - NETHER_WART_BLOCK
+  mini-warped-wart-block-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-warped-wart-block
+    drop-rate: 0.002
+    block:
+      - WARPED_WART_BLOCK
+  snail-shell-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:snail-shell
+    drop-rate: 2.0E-4
+    biome:
+      - PLAINS
+      - FOREST
+      - BIRCH_FOREST
+      - DARK_FOREST
+      - FLOWER_FOREST
+      - OLD_GROWTH_BIRCH_FOREST
+      - SWAMP
+      - OLD_GROWTH_SPRUCE_TAIGA
+      - OLD_GROWTH_PINE_TAIGA
+      - WINDSWEPT_FOREST
+      - TAIGA
+      - MEADOW
+      - JUNGLE
+      - SPARSE_JUNGLE
+    block:
+      - DIRT
+      - DIRT_PATH
+      - COARSE_DIRT
+      - ROOTED_DIRT
+      - GRASS_BLOCK
+      - PODZOL
+      - ACACIA_LEAVES
+      - BIRCH_LEAVES
+      - DARK_OAK_LEAVES
+      - JUNGLE_LEAVES
+      - OAK_LEAVES
+      - SPRUCE_LEAVES
+  empty-bucket-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:empty-bucket
+    drop-rate: 0.001
+    entity:
+      - DROWNED
+      - VILLAGER
+      - ZOMBIE_VILLAGER
+  empty-bucket-default-drop-1:
+    drop-type: ENTITY_DEATH
+    result: decorheads:empty-bucket
+    drop-rate: 1.0E-4
+    entity:
+      - ZOMBIE
+  empty-bucket-default-drop-2:
+    drop-type: ENTITY_DEATH
+    result: decorheads:empty-bucket
+    drop-rate: 0.0015
+    entity:
+      - PIGLIN
+      - PIGLIN_BRUTE
+      - ZOMBIFIED_PIGLIN
+  empty-bucket-default-drop-3:
+    drop-type: CRAFT
+    result: decorheads:empty-bucket
+    drop-rate: 0.01
+    recipe-result:
+      - BUCKET
+  water-bucket-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:water-bucket
+    drop-rate: 0.0015
+    entity:
+      - DROWNED
+      - VILLAGER
+      - ZOMBIE_VILLAGER
+  lava-bucket-default-drop-0:
+    drop-type: ENTITY_DEATH
+    result: decorheads:lava-bucket
+    drop-rate: 0.003
+    entity:
+      - PIGLIN
+      - PIGLIN_BRUTE
+      - ZOMBIFIED_PIGLIN
+  mini-honey-block-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-honey-block
+    drop-rate: 1.0E-4
+    block:
+      - HONEY_BLOCK
+      - HONEYCOMB_BLOCK
+  white-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:white-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - WHITE_DYE
+  white-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:white-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - WHITE_DYE
+  orange-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:orange-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - ORANGE_DYE
+  orange-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:orange-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - ORANGE_DYE
+  magenta-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:magenta-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - MAGENTA_DYE
+  magenta-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:magenta-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - MAGENTA_DYE
+  light-blue-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:light-blue-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - LIGHT_BLUE_DYE
+  light-blue-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:light-blue-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - LIGHT_BLUE_DYE
+  yellow-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:yellow-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - YELLOW_DYE
+  yellow-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:yellow-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - YELLOW_DYE
+  lime-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:lime-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - LIME_DYE
+  lime-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:lime-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - LIME_DYE
+  pink-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:pink-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - PINK_DYE
+  pink-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:pink-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - PINK_DYE
+  gray-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:gray-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - GRAY_DYE
+  gray-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:gray-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - GRAY_DYE
+  light-gray-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:light-gray-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - LIGHT_GRAY_DYE
+  light-gray-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:light-gray-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - LIGHT_GRAY_DYE
+  cyan-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:cyan-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - CYAN_DYE
+  cyan-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:cyan-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - CYAN_DYE
+  purple-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:purple-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - PURPLE_DYE
+  purple-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:purple-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - PURPLE_DYE
+  blue-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:blue-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - BLUE_DYE
+  blue-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:blue-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - BLUE_DYE
+  brown-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:brown-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - BROWN_DYE
+  brown-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:brown-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - BROWN_DYE
+  green-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:green-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - GREEN_DYE
+  green-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:green-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - GREEN_DYE
+  red-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:red-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - RED_DYE
+  red-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:red-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - RED_DYE
+  black-paint-default-drop-0:
+    drop-type: CRAFT
+    result: decorheads:black-paint
+    drop-rate: 0.005
+    recipe-ingredients:
+      - BLACK_DYE
+  black-paint-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:black-paint
+    drop-rate: 0.0025
+    recipe-result:
+      - BLACK_DYE
+  mini-copper-block-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-copper-block
+    drop-rate: 0.015
+    block:
+      - COPPER_BLOCK
+      - WAXED_COPPER_BLOCK
+  mini-copper-block-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:mini-copper-block
+    drop-rate: 0.0095
+    recipe-result:
+      - COPPER_BLOCK
+      - WAXED_COPPER_BLOCK
+  mini-exposed-copper-block-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-exposed-copper-block
+    drop-rate: 0.015
+    block:
+      - EXPOSED_COPPER
+      - WAXED_EXPOSED_COPPER
+  mini-weathered-copper-block-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-weathered-copper-block
+    drop-rate: 0.015
+    block:
+      - WEATHERED_COPPER
+      - WAXED_WEATHERED_COPPER
+  mini-oxidized-copper-block-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-oxidized-copper-block
+    drop-rate: 0.015
+    block:
+      - OXIDIZED_COPPER
+      - WAXED_OXIDIZED_COPPER
+  mini-cut-copper-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-cut-copper
+    drop-rate: 0.015
+    block:
+      - CUT_COPPER
+      - WAXED_CUT_COPPER
+      - CUT_COPPER_SLAB
+      - WAXED_CUT_COPPER_SLAB
+      - CUT_COPPER_STAIRS
+      - WAXED_CUT_COPPER_STAIRS
+  mini-cut-copper-default-drop-1:
+    drop-type: CRAFT
+    result: decorheads:mini-cut-copper
+    drop-rate: 0.0095
+    recipe-result:
+      - CUT_COPPER
+      - WAXED_CUT_COPPER
+      - CUT_COPPER_SLAB
+      - WAXED_CUT_COPPER_SLAB
+      - CUT_COPPER_STAIRS
+      - WAXED_CUT_COPPER_STAIRS
+  mini-exposed-cut-copper-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-exposed-cut-copper
+    drop-rate: 0.015
+    block:
+      - EXPOSED_CUT_COPPER
+      - WAXED_EXPOSED_CUT_COPPER
+      - EXPOSED_CUT_COPPER_SLAB
+      - WAXED_EXPOSED_CUT_COPPER_SLAB
+      - EXPOSED_CUT_COPPER_STAIRS
+      - WAXED_EXPOSED_CUT_COPPER_STAIRS
+  mini-weathered-cut-copper-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-weathered-cut-copper
+    drop-rate: 0.015
+    block:
+      - WEATHERED_CUT_COPPER
+      - WAXED_WEATHERED_CUT_COPPER
+      - WEATHERED_CUT_COPPER_SLAB
+      - WAXED_WEATHERED_CUT_COPPER_SLAB
+      - WEATHERED_CUT_COPPER_STAIRS
+      - WAXED_WEATHERED_CUT_COPPER_STAIRS
+  mini-oxidized-cut-copper-default-drop-0:
+    drop-type: BLOCK_BREAK
+    result: decorheads:mini-oxidized-cut-copper
+    drop-rate: 0.015
+    block:
+      - OXIDIZED_CUT_COPPER
+      - WAXED_OXIDIZED_CUT_COPPER
+      - OXIDIZED_CUT_COPPER_SLAB
+      - WAXED_OXIDIZED_CUT_COPPER_SLAB
+      - OXIDIZED_CUT_COPPER_STAIRS
+      - WAXED_OXIDIZED_CUT_COPPER_STAIRS

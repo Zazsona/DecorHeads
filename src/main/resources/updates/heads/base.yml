@@ -1,0 +1,681 @@
+version: 3.0.0
+heads:
+  player:
+    head-type: PLAYER
+    name: '%PlayerName%''s Head'
+  alex-plush:
+    head-type: DECOR
+    name: Alex Plush
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjA3MzY1YmU1MDE5ZmZhZDg4NmM4OTVjOWE3MmYzOGNlZjZmYmZkOGMyMTVhNDg1MTUyMWY3MjFjMjUyZmIwNyJ9fX0=
+  apple:
+    head-type: DECOR
+    name: Apple
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjdiMTVmYzBmODk0NTNiYjljODY5ZGJjNDdhNjZjZjJlNzVlOGQzNzEzYjVmYmY3Yzg0Y2JmMmM2MzIxOTYifX19
+  aquarium:
+    head-type: DECOR
+    name: Aquarium
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzI4NDdjZDU3MTdlNWY1YTY0ZTFiYTljYjQ4MWRjOWUyMmM3OGNhMjNmODUxNmQ1NTNmNTU0MTJmYTExM2UwIn19fQ
+  bag-of-bones:
+    head-type: DECOR
+    name: Bag of Bones
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjQ1MTg0NTk0M2ZkMGMwN2Y2Mjk3MTFlMzQwMWE3MWEzMWNkMzcxY2MzY2IzNmYzZjk2MzdiMGU3NTljYzQ4YSJ9fX0=
+  beachball:
+    head-type: DECOR
+    name: Beach Ball
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWIyNTEzYzhkMDhjNjBhZDM3ODVkM2E5YTY1MWI3MzI5YzVmMjY5MzdhY2EyZmM4ZGZhZjM0NDFjOWJkOWRhMiJ9fX0
+  beer:
+    head-type: DECOR
+    name: Beer
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDA1M2UyNjg2N2JiNTc1MzhlOTc4OTEzN2RiYmI1Mzc3NGUxOGVkYTZmZWY1MWNiMmVkZjQyNmIzNzI2NCJ9fX0
+  blaze:
+    head-type: DECOR
+    name: Blaze
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjc4ZWYyZTRjZjJjNDFhMmQxNGJmZGU5Y2FmZjEwMjE5ZjViMWJmNWIzNWE0OWViNTFjNjQ2Nzg4MmNiNWYwIn19fQ
+  blueberry:
+    head-type: DECOR
+    name: Blueberry
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDFlOGUzNTJiM2ZiYWRjZTk5OGYxNTM1OTVkODM0MGRlZDI4NWMwNWFmNGFmNTdjNDQ1MWU4MjE0ZTFhZmIyIn19fQ
+  books:
+    head-type: DECOR
+    name: Books
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjFjNjNkOWI5ZmQ4NzQyZWFlYjA0YzY5MjE3MmNiOWRhNDM3ODE2OThhNTc1Y2RhYmUxYzA0ZGYxMmMzZiJ9fX0
+  bread:
+    head-type: DECOR
+    name: Bread
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjM0ODdkNDU3ZjkwNjJkNzg3YTNlNmNlMWM0NjY0YmY3NDAyZWM2N2RkMTExMjU2ZjE5YjM4Y2U0ZjY3MCJ9fX0
+  burger:
+    head-type: DECOR
+    name: Burger
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RhZGYxNzQ0NDMzZTFjNzlkMWQ1OWQyNzc3ZDkzOWRlMTU5YTI0Y2Y1N2U4YTYxYzgyYmM0ZmUzNzc3NTUzYyJ9fX0
+  cardboard-box:
+    head-type: DECOR
+    name: Cardboard Box
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWYyNTg0OWU4Y2Q1ZTUzMmMzMGNiYThkZThiZWQwNjQwY2ZiMmVlYzUwOTI5OTk4YjEwNzgzOWJmYjBmMjRkNyJ9fX0
+  cave-spider:
+    head-type: DECOR
+    name: Cave Spider
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDE2NDVkZmQ3N2QwOTkyMzEwN2IzNDk2ZTk0ZWViNWMzMDMyOWY5N2VmYzk2ZWQ3NmUyMjZlOTgyMjQifX19
+  cave-diorama:
+    head-type: DECOR
+    name: Cave Diorama
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWEzYWJlZjNhYzlmYjA3Y2NiMTAzNWVmZmNkYWIxMjdmZjI3YmFlYmE2ZDllODc2OTJjZTMxOGI1NjY0MWIyIn19fQ
+  chicken:
+    head-type: DECOR
+    name: Chicken
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTYzODQ2OWE1OTljZWVmNzIwNzUzNzYwMzI0OGE5YWIxMWZmNTkxZmQzNzhiZWE0NzM1YjM0NmE3ZmFlODkzIn19fQ
+  chicken-dinner:
+    head-type: DECOR
+    name: Chicken Dinner
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjA2NTU1NzA2YjY0MWZkYWY0MzZjMDc2NjNmOTIzYWZjNWVlNzIxNDZmOTAxOTVmYjMzN2I5ZGU3NjY1ODhkIn19fQ
+  chimney:
+    head-type: DECOR
+    name: Chimney
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGEyOWVlZjljYTM2OWVhZGQ5ODlhNjgzMmY1MDk3MGY4YjA3NGY5ZDcwNjU5NGUzNzhhOGI4ODRhZjRiZDllIn19fQ
+  cyan-clock:
+    head-type: DECOR
+    name: Cyan Clock
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmRlNGUyNzgzZjg1YTM5MTIyMWRkOTE2NTZiYTY4OGU3ZTQyZDE2ZjZhYmJmYmNmYWQ5Y2E1MzYxN2ZjYTYifX19
+  coconut:
+    head-type: DECOR
+    name: Coconut
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzJjNjJmZDhlNDc0ZDA5OTQwNjA0ZjgyNzEyYTQ0YWJiMjQ5ZDYzYWZmODdmOTk4Mzc0Y2E4NDlhYjE3NDEyIn19fQ
+  cookie:
+    head-type: DECOR
+    name: Cookie
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjU5MmNmOWY0MmE1YThjOTk1OTY4NDkzZmRkMWIxMWUwYjY5YWFkNjQ3M2ZmNDUzODRhYmU1OGI3ZmM3YzcifX19
+  cookie-jar:
+    head-type: DECOR
+    name: Cookie Jar
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTQ3NjY5NWRmY2MxNzBiZDc0ZWFkNGNiYWYxNzVlMTM3ODdjYmRmN2YzMmYwOGZmY2FhZmY2Mzg1OGUzYzEyMCJ9fX0
+  cow:
+    head-type: DECOR
+    name: Cow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWQ2YzZlZGE5NDJmN2Y1ZjcxYzMxNjFjNzMwNmY0YWVkMzA3ZDgyODk1ZjlkMmIwN2FiNDUyNTcxOGVkYzUifX19
+  creeper:
+    head-type: DECOR
+    name: Creeper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjQyNTQ4MzhjMzNlYTIyN2ZmY2EyMjNkZGRhYWJmZTBiMDIxNWY3MGRhNjQ5ZTk0NDQ3N2Y0NDM3MGNhNjk1MiJ9fX0
+  cupcake:
+    head-type: DECOR
+    name: Cupcake
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjkxMzY1MTRmMzQyZTdjNTIwOGExNDIyNTA2YTg2NjE1OGVmODRkMmIyNDkyMjAxMzllOGJmNjAzMmUxOTMifX19
+  dice:
+    head-type: DECOR
+    name: Dice
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzgzMTEzOGMyMDYxMWQzMDJjNDIzZmEzMjM3MWE3NDNkMTc0MzdhMTg5NzNjMzUxOTczNDQ3MGE3YWJiNCJ9fX0
+  dolphin:
+    head-type: DECOR
+    name: Dolphin
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU5Njg4Yjk1MGQ4ODBiNTViN2FhMmNmY2Q3NmU1YTBmYTk0YWFjNmQxNmY3OGU4MzNmNzQ0M2VhMjlmZWQzIn19fQ
+  drowned:
+    head-type: DECOR
+    name: Drowned
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzg0ZGY3OWM0OTEwNGIxOThjZGFkNmQ5OWZkMGQwYmNmMTUzMWM5MmQ0YWI2MjY5ZTQwYjdkM2NiYmI4ZTk4YyJ9fX0
+  elder-guardian:
+    head-type: DECOR
+    name: Elder Guardian
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWM3OTc0ODJhMTRiZmNiODc3MjU3Y2IyY2ZmMWI2ZTZhOGI4NDEzMzM2ZmZiNGMyOWE2MTM5Mjc4YjQzNmIifX19
+  enderman:
+    head-type: DECOR
+    name: Enderman
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2E1OWJiMGE3YTMyOTY1YjNkOTBkOGVhZmE4OTlkMTgzNWY0MjQ1MDllYWRkNGU2YjcwOWFkYTUwYjljZiJ9fX0
+  evoker:
+    head-type: DECOR
+    name: Evoker
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDk1NDEzNWRjODIyMTM5NzhkYjQ3ODc3OGFlMTIxMzU5MWI5M2QyMjhkMzZkZDU0ZjFlYTFkYTQ4ZTdjYmE2In19fQ==
+  football:
+    head-type: DECOR
+    name: Football
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU0YTcwYjdiYmNkN2E4YzMyMmQ1MjI1MjA0OTFhMjdlYTZiODNkNjBlY2Y5NjFkMmI0ZWZiYmY5ZjYwNWQifX19
+  footstool:
+    head-type: DECOR
+    name: Footstool
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjgyNjYyY2FkMTVmYjdiZmQwOTllNjIyMDVjNjZiNmM3Y2JhOWFjMjAxMmUzYWE3MjI2ZmVhOTM5MTJiNjk5MyJ9fX0=
+  fox:
+    head-type: DECOR
+    name: Fox
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDg5NTRhNDJlNjllMDg4MWFlNmQyNGQ0MjgxNDU5YzE0NGEwZDVhOTY4YWVkMzVkNmQzZDczYTNjNjVkMjZhIn19fQ
+  fruit-basket:
+    head-type: DECOR
+    name: Fruit Basket
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjU3ZTJjNTc1NmQ0ZjQ0ZDM4MzQ1ODI2NjNlNmQ4NDhlMTE2NDE2MzRjYjIwNWI3Y2EzZWE0YWQyODU3MzQxIn19fQ
+  ghast:
+    head-type: DECOR
+    name: Ghast
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGI2YTcyMTM4ZDY5ZmJiZDJmZWEzZmEyNTFjYWJkODcxNTJlNGYxYzk3ZTVmOTg2YmY2ODU1NzFkYjNjYzAifX19
+  gold-medal:
+    head-type: DECOR
+    name: Gold Medal
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzMxNzhkMDFhYWYxMWU1Y2NmYTM4YjE5MGQ3MDg1ZmYzN2RkMDQ4ZDA5YjY2NGYwMjU3MDc3NmY5Yjk4MTQ2NiJ9fX0
+  guardian:
+    head-type: DECOR
+    name: Guardian
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTBiZjM0YTcxZTc3MTViNmJhNTJkNWRkMWJhZTVjYjg1Zjc3M2RjOWIwZDQ1N2I0YmZjNWY5ZGQzY2M3Yzk0In19fQ
+  husk:
+    head-type: DECOR
+    name: Husk
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDY3NGM2M2M4ZGI1ZjRjYTYyOGQ2OWEzYjFmOGEzNmUyOWQ4ZmQ3NzVlMWE2YmRiNmNhYmI0YmU0ZGIxMjEifX19
+  ink-jar:
+    head-type: DECOR
+    name: Ink Jar
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTAyOGQ0NzRjNGEzMzJkY2Y4ZTM0Mzk1N2NlMGNhNGVlYmFjZTI1OGMzN2Y2ZDkwNGNmMjI4ZDM0NTY3ZjU1MSJ9fX0
+  iron-golem:
+    head-type: DECOR
+    name: Iron Golem
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODkwOTFkNzllYTBmNTllZjdlZjk0ZDdiYmE2ZTVmMTdmMmY3ZDQ1NzJjNDRmOTBmNzZjNDgxOWE3MTQifX19
+  magma-cube:
+    head-type: DECOR
+    name: Magma Cube
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzg5NTdkNTAyM2M5MzdjNGM0MWFhMjQxMmQ0MzQxMGJkYTIzY2Y3OWE5ZjZhYjM2Yjc2ZmVmMmQ3YzQyOSJ9fX0
+  mini-bricks:
+    head-type: DECOR
+    name: Mini Bricks
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGU2NDQwYThkNTk5MmMyNjdkMmEzMzYzODgyOTY0YWMyYmE1MjJmMmY5MTE0YTZmN2QxN2IzNTcyMmQyZjVmOCJ9fX0
+  mini-cactus:
+    head-type: DECOR
+    name: Mini Cactus
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjc0ZjU4YjAwMWJlZWJmNGVlMTU4MGQxN2UwZWMyOTdjNzY0OGIxNDhiNmVhOWMwNTc0ZTQ3ZjAwOGU1Y2QifX19
+  mini-cauldron:
+    head-type: DECOR
+    name: Mini Cauldron
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY1ZDc0NjY4YmRiNTRkMzRjNDgyNThkYjU2YTIxOGFjZGIzYjBmODMwOTZkYTY5MjIzZTZhMGMzNmM1ODZkIn19fQ
+  mini-coal-block:
+    head-type: DECOR
+    name: Mini Coal Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjAzYTUyNTE3YTgxNDMwMzViZTVjOGI4MWZkMjAxOTI4ZDY0MDc2Zjk2YjVkMjc2MDRjY2NjMzcwODVmMTdlNyJ9fX0
+  mini-cobblestone:
+    head-type: DECOR
+    name: Mini Cobblestone
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTk1NTM0ZTAyYzU5YjMzZWNlNTYxOTI4MDMzMTk3OTc3N2UwMjVmYTVmYTgxYWU3NWU5OWZkOGVmZGViYjgifX19
+  mini-dirt:
+    head-type: DECOR
+    name: Mini Dirt
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWFiNDNiOGMzZDM0ZjEyNWU1YTNmOGI5MmNkNDNkZmQxNGM2MjQwMmMzMzI5ODQ2MWQ0ZDRkN2NlMmQzYWVhIn19fQ
+  mini-gravel:
+    head-type: DECOR
+    name: Mini Gravel
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzc4OGI2MWZjZDQ2Y2FkOTIzNWNjMzJhYzU3YTU0ZjcwODExMDMyOTQ0N2JiMjRjMDg3Nzg4NmUzZjQ5MDdmMSJ9fX0
+  mini-hay-bale:
+    head-type: DECOR
+    name: Mini Hay Bale
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjY0NTliZTA5OTk4ZTUwYWJkMmNjZjRjZDM4M2U2YjM4YWI1YmM5MDVmYWNiNjZkY2UwZTE0ZTAzOGJhMTk2OCJ9fX0
+  mini-oak-leaves:
+    head-type: DECOR
+    name: Mini Oak Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTRjNjI4NDhhZTE0YmE2ZDczNjkyMWRhOWFjMWY1ZDQ2MDZjMWM0ZmUxM2RjODQzOTYxZDZiZmJiMzMwYmMifX19
+  mini-birch-leaves:
+    head-type: DECOR
+    name: Mini Birch Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjVmYjQyM2EwZjg5Nzc3YTVhNTNjYTJkZDJhOTZmYzMwMjMxMzgwNzA0M2ZkMjliMGUwODQ1YTM3NzA1Yzg5OCJ9fX0
+  mini-jungle-leaves:
+    head-type: DECOR
+    name: Mini Jungle Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjgzYWRmNDU2MGRlNDc0MTQwNDA5M2FjNjFjMzNmYjU1NmIzZDllZTUxNDBmNjIwMzYyNTg5ZmRkZWRlZmEyZCJ9fX0
+  mini-acacia-leaves:
+    head-type: DECOR
+    name: Mini Acacia Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjM2MTI3MjE0YWI0YTJlYjg1NTlmY2NmNGRlODZjODFkM2IyYjU5MjI0YzQyYzYyYzc3NDJhYzEyZGQ5NzBkNyJ9fX0
+  mini-spruce-leaves:
+    head-type: DECOR
+    name: Mini Spruce Leaves
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGFhOTFhODdiZGFlMjRmYzRmYTk1NjAxMjJjNWFlMWY3MmZlZjRkNDY5MDA1YjRiN2JhMTMwMWQ1ZjI2OTM1MCJ9fX0
+  mini-melon:
+    head-type: DECOR
+    name: Mini Melon
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjQxNDEyYjhjNmZkNTdlNGUxNjIxNjZkZGZkNzRiMTQ4YTU5NmY5ZWIxZDE1OTNjMDQ2OTYzOGM4ZDcxNCJ9fX0
+  mini-oak-log:
+    head-type: DECOR
+    name: Mini Oak Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmQyZTMxMDg3OWE2NDUwYWY1NjI1YmNkNDUwOTNkZDdlNWQ4ZjgyN2NjYmZlYWM2OWM4MTUzNzc2ODQwNmIifX19
+  mini-birch-log:
+    head-type: DECOR
+    name: Mini Birch Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTk5MWYzYjczZWJiOWRlYzkxZWRkYzgzNjFjYTJmZWNmNTI4MGQyYzczM2VkYTllY2I2OTVmODNkMTU4MCJ9fX0
+  mini-jungle-log:
+    head-type: DECOR
+    name: Mini Jungle Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODVlMWQzMDhkYzNkNzI1M2YzMmUzMDBlZGE0ZDAwMDNmZTY0YTU2YmYzYTU0NjZmZDIwMTFiMzVmNDAzZGEzYiJ9fX0
+  mini-acacia-log:
+    head-type: DECOR
+    name: Mini Acacia Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWMxMDBkZDJlMWUyZGMyOTM4NjVmODc0N2M5MDRjNzM3YmFhYjIzNmU2ZTU0Y2NjMmQzYmVkNmQxZmE0MmQzYSJ9fX0
+  mini-dark-oak-log:
+    head-type: DECOR
+    name: Mini Dark Oak Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjllOGE3YjM3ZjM0MmU4ZmI0NThhOWM5ODlmNTE5NmMyNjUxYjg3ODExZGU1NGZlMDVlNjFiZjRkMjg3Yjk5YiJ9fX0
+  mini-spruce-log:
+    head-type: DECOR
+    name: Mini Spruce Log
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY0YWYyODk4MjVlMTI3ZGFjMzIyMDhiMWUwMzg5YTkyN2VmNDA1NTk3YjZjOWE2NGNlZjAzZjIxZDkyNzNiNSJ9fX0
+  mini-crimson-stem:
+    head-type: DECOR
+    name: Mini Crimson Stem
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQzYjRjODdmOTc4MThkNzFmMTNhZmE2ZGI5NDZmYjBhMjM1Y2Q3NzFhZTg2OTkyNGM5OGIzZDE3ZDc2NDk5YiJ9fX0
+  mini-warped-stem:
+    head-type: DECOR
+    name: Mini Warped Stem
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGFhNGJiNGE3ODJhNjM2NzJhMzM5YTc0Y2QxNzMxMTlkYjA5YTA0NTY4NTA0MDVhMzRjN2MwZjRiZmRiOWQxNSJ9fX0
+  mini-pumpkin:
+    head-type: DECOR
+    name: Mini Pumpkin
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDdkN2FkMmRjYjU3ZGZhOWYwMjNkYmI5OWI2OThmYzUzMDc1YzNlOWQ2NTQ1MDYxMzlhNjQ3YWM5MDdmZGRjNSJ9fX0
+  mini-redstone-block:
+    head-type: DECOR
+    name: Mini Redstone Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDA4ZWU2ZWRmYTk4ZGI1ZWFlOWI5Yzk5MzZlOTQ0ODliMmQ0YmJiZDNkMmI0YjZiNDg4NWEzMjI0MDYxM2MifX19
+  mini-sand:
+    head-type: DECOR
+    name: Mini Sand
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTMzOThhYjNjYjY5NmIzNDQzMGJlOTQ0YjE0YWZiZDIyN2ZkODdlOTkwMjZiY2ZjOGI3Mzg3YTg2MWJkZSJ9fX0=
+  mini-snow:
+    head-type: DECOR
+    name: Mini Snow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q4YzgxZTdkMzgyNDNjMWE1YzBjZDc4YzcyYTA4MjQ3NjRiY2IxZWVjYjZkMmQ4OTA0MmQ3NzFkMjNmMjZiYiJ9fX0=
+  mooshroom:
+    head-type: DECOR
+    name: Mooshroom
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDBiYzYxYjk3NTdhN2I4M2UwM2NkMjUwN2EyMTU3OTEzYzJjZjAxNmU3YzA5NmE0ZDZjZjFmZTFiOGRiIn19fQ
+  mushroom-brown:
+    head-type: DECOR
+    name: Brown Mushroom
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzZlMTJjZmYxMzhmZDJmZGMzMWM2OTU1NmNjYWFlYzdhZWQxNmY1ZDMxOGQ3YmMwOGU1MTRhZDY2MTg2MWJiMSJ9fX0
+  mushroom-red:
+    head-type: DECOR
+    name: Red Mushroom
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDAyNDdkMjNhZDg3Nzg2YTI3NTNiM2Q4ZGY1ZGRkMzIzZDMyMjdkNTQ4NzE5YzZlZDQ0NmRhNzMwOTczNyJ9fX0
+  newspapers:
+    head-type: DECOR
+    name: Newspapers
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODNkODc0ZWI4YzRjNjk3YjNmODMyYmQ4NzQ0MjZmZGY2ZDIxYmFlMzM5ZjMxNzExMDgxZmRlNTk4MzgzODZlMSJ9fX0
+  oak-character-down-arrow:
+    head-type: DECOR
+    name: Down Arrow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmRhZGQ3NTVkMDg1MzczNTJiZjdhOTNlM2JiN2RkNGQ3MzMxMjFkMzlmMmZiNjcwNzNjZDQ3MWY1NjExOTRkZCJ9fX0
+  oak-character-exclamation:
+    head-type: DECOR
+    name: Exclamation Mark
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmE1M2JkZDE1NDU1MzFjOWViYjljNmY4OTViYzU3NjAxMmY2MTgyMGU2ZjQ4OTg4NTk4OGE3ZTg3MDlhM2Y0OCJ9fX0
+  oak-character-left-arrow:
+    head-type: DECOR
+    name: Left Arrow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ViZjkwNzQ5NGE5MzVlOTU1YmZjYWRhYjgxYmVhZmI5MGZiOWJlNDljNzAyNmJhOTdkNzk4ZDVmMWEyMyJ9fX0
+  oak-character-question:
+    head-type: DECOR
+    name: Question Mark
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTE2M2RhZmFjMWQ5MWE4YzkxZGI1NzZjYWFjNzg0MzM2NzkxYTZlMThkOGY3ZjYyNzc4ZmM0N2JmMTQ2YjYifX19
+  oak-character-right-arrow:
+    head-type: DECOR
+    name: Right Arrow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWI2ZjFhMjViNmJjMTk5OTQ2NDcyYWVkYjM3MDUyMjU4NGZmNmY0ZTgzMjIxZTU5NDZiZDJlNDFiNWNhMTNiIn19fQ
+  oak-character-up-arrow:
+    head-type: DECOR
+    name: Up Arrow
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDQ4Yjc2OGM2MjM0MzJkZmIyNTlmYjNjMzk3OGU5OGRlYzExMWY3OWRiZDZjZDg4ZjIxMTU1Mzc0YjcwYjNjIn19fQ
+  ocelot:
+    head-type: DECOR
+    name: Ocelot
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTY1N2NkNWMyOTg5ZmY5NzU3MGZlYzRkZGNkYzY5MjZhNjhhMzM5MzI1MGMxYmUxZjBiMTE0YTFkYjEifX19
+  picnic-basket:
+    head-type: DECOR
+    name: Picnic Basket
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTEwMDMzMTg5MzQyMDUwNTZjNWRhYWEzOGI3YjY2ZDgxZmI0NTAwYWZlMGJkYzQ0NzNhNGY4NmQ1MDI1Y2UzIn19fQ
+  pig:
+    head-type: DECOR
+    name: Pig
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjIxNjY4ZWY3Y2I3OWRkOWMyMmNlM2QxZjNmNGNiNmUyNTU5ODkzYjZkZjRhNDY5NTE0ZTY2N2MxNmFhNCJ9fX0
+  pillager:
+    head-type: DECOR
+    name: Pillager
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDk1NDEzNWRjODIyMTM5NzhkYjQ3ODc3OGFlMTIxMzU5MWI5M2QyMjhkMzZkZDU0ZjFlYTFkYTQ4ZTdjYmE2In19fQ
+  porcelain-vase:
+    head-type: DECOR
+    name: Porcelain Vase
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0NTA1NWZhNjQ4Y2RiYjJjNjIwYmE1NjUwYjI5ZWMwM2MwMzAyNmJhNGZhODhhZmYwNTUyOTc0NzM3YjJiNyJ9fX0
+  potion:
+    head-type: DECOR
+    name: Potion
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWFmODE1MWRlYjM5NTUzMjkyYjlhNjk2NzQ4MzJkZGE4MDAxNzgwY2E5ODE4MGEwNmVhZjliMzY4OTMwYjViYiJ9fX0
+  potted-poppy:
+    head-type: DECOR
+    name: Potted Poppy
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRiYTM4ZTlmYzY3ZjcyYzQ1OGZkYWM4ZWNkN2NhYmFlZDNlYjgzNzM3MTQzYTAxMjgzNTBhMWFiMzgxZTNlIn19fQ
+  potted-dandelion:
+    head-type: DECOR
+    name: Potted Dandelion
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjNmZmZjODk1NWIwZTgzMDI4OThmN2YwMTVkODQ5ZjBhMDFkYmJiMDQyNzQxNzUwNmZiODllYWQ1NGQ0NWY2In19fQ
+  potted-daisy:
+    head-type: DECOR
+    name: Potted Daisy
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWRjNGMxMmJmMjYxOWNiZmM4ZjIyZGM2MmMwMjJjZTE1MTI2Y2VhM2UyMTJjMjhkOWY5NmVhMzEwYWM0YzQyIn19fQ
+  present:
+    head-type: DECOR
+    name: Present
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNlZjlhYTE0ZTg4NDc3M2VhYzEzNGE0ZWU4OTcyMDYzZjQ2NmRlNjc4MzYzY2Y3YjFhMjFhODViNyJ9fX0
+  sand-bucket:
+    head-type: DECOR
+    name: Sand Bucket
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGQ0MzdkMTY4ODU5MjBjZTU1NzczM2Y0YzcxMGJiNTAwN2YwYTRmMWEwZGRkMzJkNTk0NjlhYmM0ZjdlN2JlMCJ9fX0
+  sandcastle:
+    head-type: DECOR
+    name: Sandcastle
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWE0YjdlODc4MjFkYjRlNmU0MmU3OGQ3ZjI2MGI2Mzc5OTNkNmJlOGRlOTRmNDNlNDMxNzViYWZmOTFmNSJ9fX0
+  sheep:
+    head-type: DECOR
+    name: Sheep
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjMxZjljY2M2YjNlMzJlY2YxM2I4YTExYWMyOWNkMzNkMThjOTVmYzczZGI4YTY2YzVkNjU3Y2NiOGJlNzAifX19
+  skeleton:
+    head-type: DECOR
+    name: Skeleton
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzAxMjY4ZTljNDkyZGExZjBkODgyNzFjYjQ5MmE0YjMwMjM5NWY1MTVhN2JiZjc3ZjRhMjBiOTVmYzAyZWIyIn19fQ
+  slime:
+    head-type: DECOR
+    name: Slime
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODk1YWVlYzZiODQyYWRhODY2OWY4NDZkNjViYzQ5NzYyNTk3ODI0YWI5NDRmMjJmNDViZjNiYmI5NDFhYmU2YyJ9fX0
+  slime-ball:
+    head-type: DECOR
+    name: Slime Ball
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDkzNGE5ZjVhYjE3ODlhN2Q4ZGQ5NmQzMjQ5M2NkYWNmZjU3N2Q4YzgxZTdiMjM5MTdkZmYyZTMyYmQwYmMxMCJ9fX0
+  snowman-head:
+    head-type: DECOR
+    name: Snowman Head
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGU4ZDIwNmY2MWU2ZGU4YTc5ZDBjYjBiY2Q5OGFjZWQ0NjRjYmZlZmM5MjFiNDE2MGEyNTI4MjE2MzExMmEifX19
+  spider:
+    head-type: DECOR
+    name: Spider
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Q1NDE1NDFkYWFmZjUwODk2Y2QyNThiZGJkZDRjZjgwYzNiYTgxNjczNTcyNjA3OGJmZTM5MzkyN2U1N2YxIn19fQ
+  squid:
+    head-type: DECOR
+    name: Squid
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMDE0MzNiZTI0MjM2NmFmMTI2ZGE0MzRiODczNWRmMWViNWIzY2IyY2VkZTM5MTQ1OTc0ZTljNDgzNjA3YmFjIn19fQ
+  stack-of-carrots:
+    head-type: DECOR
+    name: Stack of Carrots
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmVkMGI3NTZmYzYyMzg1NTEzYjU3MDE1OTY3NDZiZDdiMWRhYTE1ZDdhZGFiZjQ1ZWYxNWJkMzQzNzNkOWY1YyJ9fX0
+  steve-plush:
+    head-type: DECOR
+    name: Steve Plush
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjYyMjE3ZDkwMmVkYzkyOWRlNGY1MWI5MDcxZjU2YmFhYWMwNDVkMDRlYzA0Yjg0MGNjYzhlYzk5NjJmNjJlMyJ9fX0
+  stray:
+    head-type: DECOR
+    name: Stray
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzhkZGY3NmU1NTVkZDVjNGFhOGEwYTVmYzU4NDUyMGNkNjNkNDg5YzI1M2RlOTY5ZjdmMjJmODVhOWEyZDU2In19fQ
+  stool:
+    head-type: DECOR
+    name: Stool
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY0ODE5OTEzOWJmMmI2Y2Q0NGU3NGFhMjQ5OGJhY2M1MGQxZWRlYzgyMWVjOTM0NDlmMzlkNmMxYzZmOTkwZSJ9fX0
+  stool-log:
+    head-type: DECOR
+    name: Log Stool
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODE1MGMzYTczMTJhYWJkMWFkNzA0N2MxOGY3ZGE1OGY0ZWQxOTllMTBjNTZkMDYwNGExMmRjYzg2Yjk0YTJiYiJ9fX0
+  sushi:
+    head-type: DECOR
+    name: Sushi
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmUxMmYyNjc5NTNlNzZhZTY2YThkZDAyNWEzMjg2YWVjYmM2NGI0YWQ5OGVlYjEwYjNjNjdhNjlhYWUxNSJ9fX0
+  television:
+    head-type: DECOR
+    name: Television
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWQxZTk5NzkyODlmMDMwOTlhN2M1ODdkNTJkNDg4ZTI2ZTdiYjE3YWI1OTRiNjlmOTI0MzhkNzdlYWJjIn19fQ
+  toaster:
+    head-type: DECOR
+    name: Toaster
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmI1M2U4ZDM3NGI0ZjZmNTczZDEyODY2ODFiZjg0MTA1NWI4OWE0NjJmN2NkZDk5ZThlNjNkMmY1MTRlNDUifX19
+  toilet-paper:
+    head-type: DECOR
+    name: Toilet Paper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmM4YzIyOTg1YjAzMzZmODE3ZmMzMDdjYmE2YzE1ZGE0ODRiZjIzNjFjNjBmNWEzM2U2YTk1NTdlZTJkIn19fQ
+  vex:
+    head-type: DECOR
+    name: Vex
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzJlYzVhNTE2NjE3ZmYxNTczY2QyZjlkNWYzOTY5ZjU2ZDU1NzVjNGZmNGVmZWZhYmQyYTE4ZGM3YWI5OGNkIn19fQ
+  villager:
+    head-type: DECOR
+    name: Villager
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODIyZDhlNzUxYzhmMmZkNGM4OTQyYzQ0YmRiMmY1Y2E0ZDhhZThlNTc1ZWQzZWIzNGMxOGE4NmU5M2IifX19
+  wandering-trader:
+    head-type: DECOR
+    name: Wandering Trader
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWYxMzc5YTgyMjkwZDdhYmUxZWZhYWJiYzcwNzEwZmYyZWMwMmRkMzRhZGUzODZiYzAwYzkzMGM0NjFjZjkzMiJ9fX0
+  witch:
+    head-type: DECOR
+    name: Witch
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjBlMTNkMTg0NzRmYzk0ZWQ1NWFlYjcwNjk1NjZlNDY4N2Q3NzNkYWMxNmY0YzNmODcyMmZjOTViZjlmMmRmYSJ9fX0
+  wither-skeleton:
+    head-type: DECOR
+    name: Wither Skeleton
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzk1M2I2YzY4NDQ4ZTdlNmI2YmY4ZmIyNzNkNzIwM2FjZDhlMWJlMTllODE0ODFlYWQ1MWY0NWRlNTlhOCJ9fX0
+  wooden-clock:
+    head-type: DECOR
+    name: Wooden Clock
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQ3N2RhZmM4YzllYTA3OTk2MzMzODE3OTM4NjZkMTQ2YzlhMzlmYWQ0YzY2ODRlNzExN2Q5N2U5YjZjMyJ9fX0
+  wooden-crate:
+    head-type: DECOR
+    name: Wooden Crate
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmQ3NjFjYzE2NTYyYzg4ZDJmYmU0MGFkMzg1MDJiYzNiNGE4Nzg1OTg4N2RiYzM1ZjI3MmUzMGQ4MDcwZWVlYyJ9fX0
+  developer-plush:
+    head-type: DECOR
+    name: Zazsona Plush
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjE5NzU3OWVjY2Y5OWJiMjQ5ODVjM2U2ZmE3ZjRiOGEzNWM2NzE4YmIwNTI0MTExNDVhODRkMWZkMTBjZWYzYSIKICAgIH0KICB9Cn0=
+  zombie:
+    head-type: DECOR
+    name: Zombie
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTZmYzg1NGJiODRjZjRiNzY5NzI5Nzk3M2UwMmI3OWJjMTA2OTg0NjBiNTFhNjM5YzYwZTVlNDE3NzM0ZTExIn19fQ
+  zombie-villager:
+    head-type: DECOR
+    name: Zombie Villager
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTVlMDhhODc3NmMxNzY0YzNmZTZhNmRkZDQxMmRmY2I4N2Y0MTMzMWRhZDQ3OWFjOTZjMjFkZjRiZjNhYzg5YyJ9fX0
+  coffee:
+    head-type: DECOR
+    name: Coffee
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGYxMzIzYzlmZWYyMDY5Y2I0NWE0OTE0M2IzZjI1ZDg4NjRhYTY0YTQ5OTgxOWIxZjQyZDkzMzY3YTU5MzNlIn19fQ==
+  tea:
+    head-type: DECOR
+    name: Tea
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDhlOTRkZGQ3NjlhNWJlYTc0ODM3NmI0ZWM3MzgzZmQzNmQyNjc4OTRkN2MzYmVlMDExZThlNGY1ZmNkNyJ9fX0=
+  birch-crate:
+    head-type: DECOR
+    name: Birch Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDBiNDlhOTg1Zjc2ZWQ3Njk3MTFmYmQ4MGZiYWVmZjFlZWU3ZDY1YWNiZDE5OTViYzQ3YzZjZmU5MmIzYzkyYiIKICAgIH0KICB9Cn0=
+  spruce-crate:
+    head-type: DECOR
+    name: Spruce Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWMxOGRhOGRjYjNjMjFlZTk5NjFlMzViMjlhZTk0MzczYjNiOTUyZDQyMTIzZmFhMDQ5YTFiNTA4OTkyMDczMCIKICAgIH0KICB9Cn0=
+  jungle-crate:
+    head-type: DECOR
+    name: Jungle Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzcwNDNkZGNlYzkyYTAwNTkxYzZhNDI4MzM4Y2NhN2MxMWJkMDA2NjQ2ZGIyM2ZkOGJlMzhkMWI1MTZkMWFlYSIKICAgIH0KICB9Cn0=
+  acacia-crate:
+    head-type: DECOR
+    name: Acacia Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODVjNzQyZGEzMzc2MWI1NzVmMmY5MDNiYTdlMGMyZDUwZmM2ODkyZTBmOGIxNDNkNjUxNmI4NGMzMzQzNzBhNSIKICAgIH0KICB9Cn0=
+  dark-oak-crate:
+    head-type: DECOR
+    name: Dark Oak Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWEzMTA3NWViMjA2MDZmYmJmZGIzMTExODJiMDU0YmJiNzZhMzJkMzg5ZDgyYzk0ODUzMjQ3NTlmNWNiODM5YSIKICAgIH0KICB9Cn0=
+  crimson-crate:
+    head-type: DECOR
+    name: Crimson Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjcwMDFjNDkzOGE1Yjg4N2I1MzNmMzg3MDVhMTk1ZWIzM2ZmYTUzZTMwNjYwOGY1MDMyYjllZmE2MzMzNTlhNSIKICAgIH0KICB9Cn0=
+  warped-crate:
+    head-type: DECOR
+    name: Warped Wooden Crate
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNThiYmYwZDc3NjYwOTBhYTkwMzEzZDZlMTI5OTQwMzdmOGViNWYyZGMwYmIyM2FiZmIwM2JkOWE1NTI5Y2Y2NyIKICAgIH0KICB9Cn0=
+  piglin:
+    head-type: DECOR
+    name: Piglin
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWYxODEwN2QyNzVmMWNiM2E5Zjk3M2U1OTI4ZDU4NzlmYTQwMzI4ZmYzMjU4MDU0ZGI2ZGQzZTdjMGNhNjMzMCJ9fX0=
+  zombified-piglin:
+    head-type: DECOR
+    name: Zombified Piglin
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvN2VhYmFlY2M1ZmFlNWE4YTQ5Yzg4NjNmZjQ4MzFhYWEyODQxOThmMWEyMzk4ODkwYzc2NWUwYThkZTE4ZGE4YyJ9fX0=
+  strider:
+    head-type: DECOR
+    name: Strider
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMThhOWFkZjc4MGVjN2RkNDYyNWM5YzA3NzkwNTJlNmExNWE0NTE4NjY2MjM1MTFlNGM4MmU5NjU1NzE0YjNjMSJ9fX0=
+  mini-nether-wart-block:
+    head-type: DECOR
+    name: Mini Nether Wart Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjg5MTJiYzFhZDNkZGJlMzlhMTliNzM0YTQyZDg1NDg5NjRiYjBhOWNlNThhNTJmMWE2YWUzNzEyMTUyNCJ9fX0=
+  mini-warped-wart-block:
+    head-type: DECOR
+    name: Mini Warped Wart Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjAwYjExNGI4OWM3MzdiZjI3YjNhNzFlY2MxMmFjMGIzNGQ3NjUyZDg0ODU5NWE3ODg3M2ViMmQzMWEzYmQxNyJ9fX0=
+  snail-shell:
+    head-type: DECOR
+    name: Snail Shell
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjYxYTUxYmMxMTA2MDY5NjRmZTJhZTFlMzE1MTZkN2Y1MWJlYWJjYzU4ZDE0NDFiNjhjNWM0NzM3MjQ5NjkyMiJ9fX0=
+  empty-bucket:
+    head-type: DECOR
+    name: Empty Bucket
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTE3ZDg2ZTNmODFjYzE4MzdjNzBmMTBiZTQ4ODk4MzRjMDRmNTdhN2U5OGUwZGQwYjRiMjIzYjUwYzdhOGY5MCJ9fX0=
+  water-bucket:
+    head-type: DECOR
+    name: Water Bucket
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTQ0MjE3ODJmYTllMDQxY2E4Y2NlNmFhYzNhMGIzMzdlY2MxYjk3MWIxNjhlY2JlZWY2OGI4ODEzZWUzOTZkYiJ9fX0=
+  lava-bucket:
+    head-type: DECOR
+    name: Lava Bucket
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODkxMTgzZWZiOTQxYzU3YzZhMzdmNjFjOTRlMjViNDRiNjdhODA0NDUyZTAyYTBkMjk5NmRlZGE2ZDIwZDdjNiJ9fX0=
+  pancakes:
+    head-type: DECOR
+    name: Pancakes
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzRiMDgyMzhiMjdiZjZjMGM2MmE3NTAyYWFkZWQ4ZDlkNmZkNjAzNDViYzVmNzk5M2IyNjYxYjcxODBlMjIwYiJ9fX0=
+  mini-honey-block:
+    head-type: DECOR
+    name: Mini Honey Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWI3YjE0ZjNjNzg3ODVjMWZkMjQ0MjU1ZTA1ZDUzN2Q2YzU1MTIwNzI2MmE2MGMzODEyNWMwMWY2NjNhMDc1ZSJ9fX0=
+  honey-pot:
+    head-type: DECOR
+    name: Honey Pot
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOGI4OTQyYjIyZGRkMjQ0MWYyY2U2YWQ2NTY3Zjg3NzRhOTdjYTZiMmE4MzJhM2FhZjVlNWNjNmJhY2JmIn19fQ==
+  white-paint:
+    head-type: DECOR
+    name: White Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTg2Y2Q1MjljOWRjNTQ4ODRmNTRmMzdhZWNhMzBmNThhYTk5M2U2YjM1OTFkYTA1MmQ4Nzc1ZjFjNzkzOTAifX19
+  orange-paint:
+    head-type: DECOR
+    name: Orange Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjIzYzRiNjcxZjI0NzNlMzgyYzYzMWRmMTcxZTI3MWYxY2FmNDlhZmMxNTQ4ZWU2NzUzY2Y2MjdiZTBmZDcyIn19fQ==
+  magenta-paint:
+    head-type: DECOR
+    name: Magenta Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmMzMGNiMzViMzgzN2U0ZWE5ZmFkM2UxYTc4Nzg4ZGVkOWM1NTA2NDQwMWI0MTc0ODViMzI0NDU1ZDg5NmU3MSJ9fX0=
+  light-blue-paint:
+    head-type: DECOR
+    name: Light Blue Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmY5ZDQyYjY3NGE5MjBmODQ5MTA3NDEzYmE0MDcyN2ViMTU1MWQ3ZDU0NTkxZjRlMWU1Y2JjNmMwMjg3YTg3In19fQ==
+  yellow-paint:
+    head-type: DECOR
+    name: Yellow Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2UyY2JlNGQ2NDJkYjRkNzI3ODg5NzExNjM3YTI1YTNlNGE1NTI0OWU1MTY5NTIwZGY5MTVkMmQ1NTg1YmEifX19
+  lime-paint:
+    head-type: DECOR
+    name: Lime Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzA5NTEzODlmMTczMzI4ZThiMjZjMDhmNzExNmE0NTUxMThkYTNmMTdkOTg1YzRmNGI1YTVjN2RhNzZkZjEifX19
+  pink-paint:
+    head-type: DECOR
+    name: Pink Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzgzZGI4NmJiODZkYzJlYzQ5NGUyZmZjYTc3NzY1ODEwZWQxMWE1MmVmZWY0ZTVjODUyNTJlYzM5YTI2YzAifX19
+  gray-paint:
+    head-type: DECOR
+    name: Gray Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDYxODk5MmUxOGNkNjdiMDI2NjU5ZTUwYjEzMGIzYjI1MTc4OWUwYjkxYmQxNmJlNGI3ZTU5Njk3YTY4ZDdhIn19fQ==
+  light-gray-paint:
+    head-type: DECOR
+    name: Light Gray Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTk0YTE0NmY3ODViNmJmMzgxZTcyY2Q4YzI4MzhmMGU3ODkzNWZkZjUzNGRlYzliOTg4Zjc4N2Y5N2RiN2VkIn19fQ==
+  cyan-paint:
+    head-type: DECOR
+    name: Cyan Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzdhOGJmZmYwMjY5YzI1YTVhYzQ1NDI4YzQ2ZWZjZTkyODYwODI0YzE0ZDNjNTRjMjg0MmU1ZGUxODJjIn19fQ==
+  purple-paint:
+    head-type: DECOR
+    name: Purple Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzUyYTRiMWIyY2M1NTQwNzJhMDE5ZjkyNDI0ODE0YWI0Y2UyZmNiYTVmZDY1ZWM5NjY5YzZhZWE4Y2IifX19
+  blue-paint:
+    head-type: DECOR
+    name: Blue Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2RiMjU4YzcxZjE0NDFmN2E4YmM2NDZkNzRlZmYyNDgyMTI1YmY2OTg1ZDU4NjMxMzA2YzIzOTJmZGY2NTE1NyJ9fX0=
+  brown-paint:
+    head-type: DECOR
+    name: Brown Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWEyMTE4ODU2NTNlZjE2YjRkMjg3YzY0NjVmZDM2OWJlMTM5NGE4Nzk0ZDVjMTgxZjMzZjkyNjkzZWNjNTEifX19
+  green-paint:
+    head-type: DECOR
+    name: Green Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDNjNTBjYzc1ZWFkYTdhZDFkY2YwMjM4YTdmMzBlZTI3ZGM4NjFkNTFkMDU3ODJlMDJjN2U1NmU4NDE0YzZjIn19fQ==
+  red-paint:
+    head-type: DECOR
+    name: Red Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjcyYjVjZjRmYjJlM2Q5MTU4YTRmNWVjZTcxNDk3MGJjYzEzNzFjYTAyOWU2NDU1NTU5MjdmZDE1NmUxODQifX19
+  black-paint:
+    head-type: DECOR
+    name: Black Paint
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmY5ZGMxYTRjZTE5YThmOTliN2YxMjE1YzQ4NGE1NjU3N2M1MDFmODYzNDRmZTIyYzZlNWIxYmExYWQwIn19fQ==
+  warning-light:
+    head-type: DECOR
+    name: Warning Light
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDgzMDBjM2EyYjNhNGRmNDRhNmE1OWM3NTY2YjlhMmYxYTdkNWFlOTcxOWEwZWQzZGE1MGZmNWY4ZDViY2E4ZiJ9fX0=
+  oak-bird-house:
+    head-type: DECOR
+    name: Oak Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTdmODJhY2ViOThmZTA2OWU4YzE2NmNlZDAwMjQyYTc2NjYwYmJlMDcwOTFjOTJjZGRlNTRjNmVkMTBkY2ZmOSJ9fX0=
+  birch-bird-house:
+    head-type: DECOR
+    name: Birch Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTE5OTk3NTkzZjJjNTkyYjlmYmQ0ZjE1ZWFkMTY3M2I3NmY1MTlkN2FiM2VmYTE1ZWRkMTk0NDhkMWEyMGJmYyJ9fX0=
+  spruce-bird-house:
+    head-type: DECOR
+    name: Spruce Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDQxMjE1ZDEwNmNkNWFkZWRhZTcxNzM2NGY2NDNjNjE5YTBjODgyNmYyYzZhYzRlOTdlZThjOTQ0NTQwYjkwZSJ9fX0=
+  jungle-bird-house:
+    head-type: DECOR
+    name: Jungle Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVkYjg0OWExNWVmMDFhMDMyMTNkMzZjN2M2MmUwN2I4OGMyNzdkYmE4NjkzMTdiN2UyNzU3MWZkZGIyOTNkNCJ9fX0=
+  acacia-bird-house:
+    head-type: DECOR
+    name: Acacia Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTllMzE2YmE0OGU1MWM2ZWI3M2NiMDY4YTJkNDY4ZjY3OGVlZDgyZDQ1MjlkNGIxMmVlYzhiZmE3ODE5YWE4NiJ9fX0=
+  dark-oak-bird-house:
+    head-type: DECOR
+    name: Dark Oak Bird House
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmE2NDhlMzU3YTYwYzI1N2YzYmYzODQwZmE1MzJjZmQ2YWRjZTJmODhkYWI5ZmQwYzBmOTMwM2NmNWFlYjg4OSJ9fX0=
+  crimson-bird-house:
+    head-type: DECOR
+    name: Crimson Bird House
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmY1ZDRhNzY4ZDkzNTEzYTc0ZjBlNDFlOGY3ZDhmMGFmOTI3NDU2YzllYmMyOWEwMGJmNmYyMjM1ZWU4OTNjMSIKICAgIH0KICB9Cn0=
+  warped-bird-house:
+    head-type: DECOR
+    name: Warped Bird House
+    texture: ewogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTQzZDA0YTA4Mzc3ODZjNGMxNzJhZTQzOGVhMGY5ZjA2YzA4ZDQwOTY2MzI5ZTU4YTZhZjdjOTljYjBmYzgxNiIKICAgIH0KICB9Cn0=
+  mini-copper-block:
+    head-type: DECOR
+    name: Mini Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWRjMzUyNjA1N2IzYTcyZTM5OWY1NThlZmM0NzExNDc3MTUzNTY5ZWQ4NDlmMGQxYzlhYjg0YjhhYzA1MTkwYyJ9fX0=
+  mini-exposed-copper-block:
+    head-type: DECOR
+    name: Mini Exposed Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDc1MzA1NmVjYzEyYjY0MWJhNmE1Y2JkZjUwMzlkZWRlYzQ5MmFjNGZiNTgzNTQ1N2QzYTRlNDMyMmJkYjNkIn19fQ==
+  mini-weathered-copper-block:
+    head-type: DECOR
+    name: Mini Weathered Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTYxM2Y2MGU2ZWNmNmMyMWQ5MzA2NmIxYmQ2ZjdjNGI3YzQ4OGU2OGE2NDI1MTQ1Njc3Y2M2ZDVkYTMzYmE0OSJ9fX0=
+  mini-oxidized-copper-block:
+    head-type: DECOR
+    name: Mini Oxidized Copper Block
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWE1YjBjMGUyOGExMDE1NzcyNWVhMDBiZGYwMGYxNzY0MTRkNDBhMTgxMmM2MGI5MGQzZmUyMmNjMzJkMDMyMyJ9fX0=
+  mini-cut-copper:
+    head-type: DECOR
+    name: Mini Cut Copper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjU2NjlhZTM3MGU0MTRkOWExMGYzN2IwMjI5MzNmNjRlYzZkMWU5NzlmYWRiM2MxZjkwMDRiNDg1ZmRkZDIyNSJ9fX0=
+  mini-exposed-cut-copper:
+    head-type: DECOR
+    name: Mini Exposed Cut Copper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzIxOTU5YmJlN2Q0NjAyNzA4ODc4ZGM5ZTJmZmYwODJlMjg0MGM2YzQxOTRhNGQ0MmVlNDA3MDk5MmZhMjZkMiJ9fX0=
+  mini-weathered-cut-copper:
+    head-type: DECOR
+    name: Mini Weathered Cut Copper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDM4MDNjNDNjNjc5NWFhZjg3MzhmZTFkODNlOGUyNmJjNjY0OTdmMGUwNDA4MTM4NzEwYmE5MDNhODllY2VmYSJ9fX0=
+  mini-oxidized-cut-copper:
+    head-type: DECOR
+    name: Mini Oxidized Cut Copper
+    texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjRkYzViYzYwNDllYTgyYWFiYTE1NzkwM2E1YzZlODAyNTA2ZjQxNTE1NzkyNzAzZWQ1ZTUyNTJkMGM5YzFiMiJ9fX0=
