@@ -7,6 +7,7 @@ import com.zazsona.decorheads.config.load.HeadLoader;
 import com.zazsona.decorheads.config.load.HeadRecipeLoader;
 import com.zazsona.decorheads.crafting.IMetaRecipe;
 import com.zazsona.decorheads.crafting.MetaRecipeManager;
+import com.zazsona.decorheads.crafting.RecipePriority;
 import com.zazsona.decorheads.headdata.Head;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
@@ -137,7 +138,7 @@ public class HeadRepository
             HashMap<String, IMetaRecipe> recipes = recipeLoader.loadRecipes(recipeConfig, loadedHeads);
 
             for (IMetaRecipe recipe : recipes.values())
-                MetaRecipeManager.addRecipe(recipe);
+                loadRecipe(recipe);
 
             loadedRecipes.putAll(recipes);
             return true;
@@ -213,8 +214,7 @@ public class HeadRepository
                 recipeLoader = new HeadRecipeLoader();
 
             IMetaRecipe recipe = recipeLoader.loadRecipe(key, recipeYaml, loadedHeads);
-            MetaRecipeManager.addRecipe(recipe);
-            loadedRecipes.put(recipe.getKey().getKey(), recipe);
+            loadRecipe(recipe);
             return true;
         }
         catch (Exception e)
@@ -256,7 +256,8 @@ public class HeadRepository
      */
     public static boolean loadRecipe(IMetaRecipe recipe)
     {
-        MetaRecipeManager.addRecipe(recipe);
+        // TODO: Dynamically decide the priority of a recipe, depending on whether it's got heads or not.
+        MetaRecipeManager.addRecipe(recipe, RecipePriority.HIGH);
         loadedRecipes.put(recipe.getKey().getKey(), recipe);
         return true;
     }
