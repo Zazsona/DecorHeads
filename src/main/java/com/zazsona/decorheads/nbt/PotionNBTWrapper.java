@@ -19,8 +19,19 @@ public class PotionNBTWrapper extends NBTWrapper
 
     public PotionType getPotionType()
     {
-        String id = getPotionId();
-        String type = id.substring(id.indexOf("_"), id.length()).toUpperCase();
-        return PotionType.valueOf(type);
+        String typeName = getPotionId().toUpperCase()
+                .replace("STRONG_", "")
+                .replace("LONG_", "");
+        return PotionType.valueOf(typeName);
+    }
+
+    public boolean isExtended()
+    {
+        return getPotionId().toUpperCase().startsWith("LONG_");
+    }
+
+    public boolean isUpgraded()
+    {
+        return getPotionId().toUpperCase().startsWith("STRONG_");
     }
 }

@@ -65,7 +65,7 @@ public class ItemLoader
             {
                 PotionNBTWrapper potionNBT = new PotionNBTWrapper(tag);
                 PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
-                potionMeta.setBasePotionData(new PotionData(potionNBT.getPotionType()));
+                potionMeta.setBasePotionData(new PotionData(potionNBT.getPotionType(), potionNBT.isExtended(), potionNBT.isUpgraded()));
                 itemStack.setItemMeta(potionMeta);
             }
             return itemStack;
