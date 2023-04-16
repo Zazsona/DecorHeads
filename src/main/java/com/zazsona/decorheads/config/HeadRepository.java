@@ -64,7 +64,7 @@ public class HeadRepository
         if (headSuccess)
             dropSuccess = loadDrops(plugin, dropConfig);
         if (dropSuccess)
-            recipeSuccess = loadRecipes(recipeConfig);
+            recipeSuccess = loadRecipes(plugin, recipeConfig);
     }
 
     /**
@@ -128,7 +128,7 @@ public class HeadRepository
      * Additively loads recipes from the provided yaml
      * @param recipeConfig the recipes to load
      */
-    public static boolean loadRecipes(HeadRecipeConfig recipeConfig)
+    public static boolean loadRecipes(Plugin plugin, HeadRecipeConfig recipeConfig)
     {
         try
         {
@@ -138,7 +138,7 @@ public class HeadRepository
             HashMap<String, IMetaRecipe> recipes = recipeLoader.loadRecipes(recipeConfig, loadedHeads);
 
             for (IMetaRecipe recipe : recipes.values())
-                loadRecipe(recipe);
+                loadRecipe(plugin, recipe);
 
             loadedRecipes.putAll(recipes);
             return true;
@@ -206,7 +206,7 @@ public class HeadRepository
      * Additively loads a recipe from the provided yaml
      * @param recipeYaml the recipe to load
      */
-    public static boolean loadRecipe(String key, ConfigurationSection recipeYaml)
+    public static boolean loadRecipe(Plugin plugin, String key, ConfigurationSection recipeYaml)
     {
         try
         {
@@ -214,7 +214,7 @@ public class HeadRepository
                 recipeLoader = new HeadRecipeLoader();
 
             IMetaRecipe recipe = recipeLoader.loadRecipe(key, recipeYaml, loadedHeads);
-            loadRecipe(recipe);
+            loadRecipe(plugin, recipe);
             return true;
         }
         catch (Exception e)
@@ -254,10 +254,10 @@ public class HeadRepository
      * Additively loads a recipe
      * @param recipe the recipe to load
      */
-    public static boolean loadRecipe(IMetaRecipe recipe)
+    public static boolean loadRecipe(Plugin plugin, IMetaRecipe recipe)
     {
         // TODO: Dynamically decide the priority of a recipe, depending on whether it's got heads or not.
-        MetaRecipeManager.addRecipe(recipe, RecipePriority.HIGH);
+        MetaRecipeManager.getInstance(plugin).addRecipe(recipe, RecipePriority.HIGH);
         loadedRecipes.put(recipe.getKey().getKey(), recipe);
         return true;
     }
@@ -285,11 +285,11 @@ public class HeadRepository
     /**
      * Unloads all recipes.
      */
-    public static void unloadRecipes()
+    public static void unloadRecipes(Plugin plugin)
     {
         List<String> recipeKeys = new ArrayList<>(loadedRecipes.keySet());
         for (String key : recipeKeys)
-            unloadRecipe(key);
+            unloadRecipe(plugin, key);
     }
 
     /**
@@ -324,11 +324,11 @@ public class HeadRepository
      * @param recipeKey the key of the recipe to unload
      * @return the unloaded recipe, or null
      */
-    public static IMetaRecipe unloadRecipe(String recipeKey)
+    public static IMetaRecipe unloadRecipe(Plugin plugin, String recipeKey)
     {
         IMetaRecipe recipe = loadedRecipes.remove(recipeKey);
         if (recipe != null)
-            MetaRecipeManager.removeRecipe(recipe.getKey());
+            MetaRecipeManager.getInstance(plugin).removeRecipe(recipe.getKey());
         return recipe;
     }
 

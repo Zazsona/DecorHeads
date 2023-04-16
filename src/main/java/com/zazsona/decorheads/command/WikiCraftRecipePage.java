@@ -75,7 +75,7 @@ public class WikiCraftRecipePage implements IWikiPage
             ingredientMap.put(String.valueOf(i).charAt(0), orderedIngredients.get(i));
         }
         if (ingredientMap.size() < 9)
-            ingredientMap.put(' ', new MetaIngredient(new ItemStack(Material.AIR), (ingredient1, refIngredient) -> ingredient1.getType() == refIngredient.getType()));
+            ingredientMap.put(' ', MetaIngredient.NONE);
         return buildGridDisplay(shapelessSlotChar, shapeGrid, ingredientMap, orderedIngredients);
     }
 
@@ -95,7 +95,7 @@ public class WikiCraftRecipePage implements IWikiPage
                 for (int x = 0; x < 3; x++)
                 {
                     Character ingredientChar = (x < row.length) ? row[x].charAt(0) : ' ';
-                    MetaIngredient ingredient = (ingredientChar != ' ') ? ingredientMap.get(ingredientChar) : new MetaIngredient(new ItemStack(Material.AIR), (ingredient1, refIngredient) -> ingredient1.getType() == refIngredient.getType());
+                    MetaIngredient ingredient = (ingredientChar != ' ') ? ingredientMap.get(ingredientChar) : MetaIngredient.NONE;
                     int index = orderedIngredients.indexOf(ingredient);
                     ChatColor colour = (index > -1 && ingredientChar != ' ') ? ingredientColours[index] : neutralColour;
                     for (int slotX = 0; slotX < slotSize; slotX++)
