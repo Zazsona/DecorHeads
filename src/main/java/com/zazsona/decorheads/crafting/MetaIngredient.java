@@ -8,6 +8,11 @@ import java.util.Objects;
 
 public class MetaIngredient
 {
+    /**
+     * Used for empty slots. Acts as "AIR".
+     */
+    public static MetaIngredient NONE = new MetaIngredient(new ItemStack(Material.AIR), (ingredient, refIngredient) -> ingredient.getType().isAir());
+
     private ItemStack itemStack;
     private IngredientValidityComparator comparator;
 
