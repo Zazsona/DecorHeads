@@ -1,257 +1,228 @@
 package com.zazsona.decorheads.crafting;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Keyed;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.inventory.CraftingInventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.*;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
 public class MetaRecipeManager
 {
-    private static boolean initialised = false;
-    private static HashMap<NamespacedKey, IMetaRecipe> metaRecipes = new HashMap<>();
-    private static Listener listener = new Listener()
+    private static final int MIN_MATRIX_AXIS_LENGTH = 1; // Shortest axis in the game; single slot
+    private static final int MAX_MATRIX_AXIS_LENGTH = 3; // Longest axis in the game; currently a Crafting Table
+    private static MetaRecipeManager instance;
+
+    private HashMap<NamespacedKey, IMetaRecipe> metaRecipeByKey;
+    private HashMap<NamespacedKey, RecipePriority> priorityByMetaRecipeKey;
+    private HashMap<Integer, MetaRecipeCraftTree> shapedCraftTreeByAxisLength;
+    private MetaRecipeCraftTree shapelessCraftTree;
+
+    public static MetaRecipeManager getInstance(Plugin plugin)
+    {
+        if (instance == null)
+            instance = new MetaRecipeManager(plugin);
+        return instance;
+    }
+
+    private MetaRecipeManager(Plugin plugin)
+    {
+        metaRecipeByKey = new HashMap<>();
+        priorityByMetaRecipeKey = new HashMap<>();
+        shapedCraftTreeByAxisLength = new HashMap<>();
+        for (int i = MIN_MATRIX_AXIS_LENGTH; i <= MAX_MATRIX_AXIS_LENGTH; i++)
+            shapedCraftTreeByAxisLength.put(i, new MetaRecipeCraftTree());
+        shapelessCraftTree = new MetaRecipeCraftTree();
+
+        Bukkit.getPluginManager().registerEvents(listener, plugin);
+    }
+
+    private Listener listener = new Listener()
     {
         @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
         public void onPrepareItemCraft(PrepareItemCraftEvent e)
         {
-            if (e.getRecipe() != null)
-            {
-                Recipe recipe = e.getRecipe();
-                if (recipe instanceof Keyed)
-                {
-                    NamespacedKey recipeKey = ((Keyed) recipe).getKey();
-                    if (metaRecipes.containsKey(recipeKey))
-                    {
-                        Recipe metaRecipe = metaRecipes.get(recipeKey);
-                        boolean passed = false;
-                        if (metaRecipe instanceof ShapedMetaRecipe)
-                            passed = passShapedMetaRecipe(e.getInventory(), (ShapedMetaRecipe) metaRecipe);
+            // Get the highest priority recipe (vanilla & meta)...
+            Recipe recipe = getCraftingRecipe(e.getInventory().getMatrix(), e.getInventory().getLocation().getWorld());
 
-                        if (metaRecipe instanceof ShapelessMetaRecipe)
-                            passed = passShapelessMetaRecipe(e.getInventory(), (ShapelessMetaRecipe) metaRecipe);
+            // Recipes under crafting_special_* may return AIR for getResult(), whereas the Inventory will have the
+            // correct result. As such, we should only set the result when we need to, so we only modify for registered recipes.
+            if (metaRecipeByKey.containsKey(((Keyed) recipe).getKey()))
+                e.getInventory().setResult(recipe.getResult());
 
-                        if (!passed)
-                            e.getInventory().setResult(null);
-                    }
-                }
-            }
-        }
-
-        /**
-         * Gets if the ingredients placed in the inventory are valid for the provided recipe
-         * @param inventory the inventory with the ingredients
-         * @param recipe the recipe to check against
-         * @return boolean on recipe matched
-         */
-        private boolean passShapedMetaRecipe(CraftingInventory inventory, ShapedMetaRecipe recipe)
-        {
-            String[] rows = recipe.getShape();
-            HashMap<Character, MetaIngredient> mIngredients = recipe.getIngredientMap();
-            ItemStack[] matrix = inventory.getMatrix();
-            for (int i = 0; i < rows.length; i++)
-            {
-                char[] rowElements = rows[i].toCharArray();
-                for (int j = 0; j < rowElements.length; j++)
-                {
-                    char key = rowElements[j];
-                    int matrixIndex = (i * rowElements.length) + j; // Matrix is single-dimensional. To get the index it's (Row * Elements per Row) + Current Row Index
-                    ItemStack ingredient = matrix[matrixIndex];
-                    ingredient = (ingredient != null) ? ingredient : new ItemStack(Material.AIR);
-                    MetaIngredient mIngredient = mIngredients.get(key);
-
-                    if (!(mIngredient == null || mIngredient.getMaterial().isAir()) && !mIngredient.isItemStackIngredientMatch(ingredient))
-                        return false;
-                    else if ((mIngredient == null || mIngredient.getMaterial().isAir()) && !(ingredient == null || ingredient.getType().isAir()))
-                        return false;
-                }
-            }
-            // All ingredients matched...
-            return true;
-        }
-
-        /**
-         * Gets if the ingredients placed in the inventory are valid for the provided recipe
-         * @param inventory the inventory with the ingredients
-         * @param recipe the recipe to check against
-         * @return boolean on recipe matched
-         */
-        private boolean passShapelessMetaRecipe(CraftingInventory inventory, ShapelessMetaRecipe recipe)
-        {
-            ItemStack[] ingredientsMatrix = inventory.getMatrix();
-            List<ItemStack> ingredients = new LinkedList<>();
-            for (ItemStack ingredient : ingredientsMatrix)
-            {
-                if (ingredient != null && !ingredient.getType().isAir())
-                    ingredients.add(ingredient);
-            }
-
-            if (ingredients.size() == recipe.getIngredientList().size()) // Calling .length on ingredientsMatrix returns the slots in the matrix NOT the number of ingredients entered.
-            {
-                List<MetaIngredient> requirements = new LinkedList<>(recipe.getIngredientList());
-                Comparator<MetaIngredient> requirementsComparator = Comparator.comparing(req -> req.hashCode());
-                requirements.sort(requirementsComparator);
-                Comparator<ItemStack> ingredientsComparator = Comparator.comparing(ing -> ing.hashCode());
-                ingredients.sort(ingredientsComparator);
-
-                // Map out passes and failures on a table.
-                // If a test has no passes, cancel early.
-                int[][] resultMatrix = new int[requirements.size()][requirements.size()];
-                for (MetaIngredient requirement : requirements)
-                {
-                    boolean minimumPassesFound = false;
-                    for (ItemStack ingredient : ingredients)
-                    {
-                        boolean valid = requirement.isItemStackIngredientMatch(ingredient);
-                        if (valid)
-                        {
-                            int requirementIndex = Collections.binarySearch(requirements, requirement, requirementsComparator);
-                            int ingredientIndex = Collections.binarySearch(ingredients, ingredient, ingredientsComparator);
-                            resultMatrix[requirementIndex][ingredientIndex] = 1; // 1 = true, 0 (default) = false
-                            minimumPassesFound = true;
-                        }
-                    }
-                    if (!minimumPassesFound)
-                        return false;
-                }
-
-                //  Place requirements with the fewest passing values first for checking
-                //  Place ingredients with the fewest passes first for checking
-                List<MetaIngredient> prioritisedRequirements = new ArrayList<>(requirements);
-                prioritisedRequirements.sort((req1, req2) ->
-                                        {
-                                            int req1Index = Collections.binarySearch(requirements, req1, requirementsComparator);
-                                            int req1Score = 0;
-                                            int req2Index = Collections.binarySearch(requirements, req2, requirementsComparator);
-                                            int req2Score = 0;
-                                            for (int i = 0; i < resultMatrix[req1Index].length; i++)
-                                                req1Score += resultMatrix[req1Index][i];
-                                            for (int i = 0; i < resultMatrix[req2Index].length; i++)
-                                                req2Score += resultMatrix[req2Index][i];
-                                            return Integer.compare(req1Score, req2Score);
-                                        });
-                List<ItemStack> prioritisedIngredients = new ArrayList<>(ingredients);
-                prioritisedIngredients.sort((ing1, ing2) ->
-                                       {
-                                           int ing1Index = Collections.binarySearch(ingredients, ing1, ingredientsComparator);
-                                           int ing1Score = 0;
-                                           int ing2Index = Collections.binarySearch(ingredients, ing2, ingredientsComparator);
-                                           int ing2Score = 0;
-                                           for (int i = 0; i < resultMatrix.length; i++)
-                                               ing1Score += resultMatrix[i][ing1Index];
-                                           for (int i = 0; i < resultMatrix.length; i++)
-                                               ing2Score += resultMatrix[i][ing2Index];
-                                           return Integer.compare(ing1Score, ing2Score);
-                                       });
-
-                /*
-                    #1. Start with the requirement that has the fewest passing ingredients
-                    #2. Iterate over the ingredients, from ones that pass the least requirements to those that pass the most
-                           This means that requirements with only one passing ingredient take that ingredient first.
-                           Requirements will also take ingredients that satisfy the minimum number of other requirements while meeting their own
-                           Thus, ingredients are used as efficiently as possible. If a requirement cannot take any ingredients because all passing ingredients are reserved, the operation is impossible.
-                    #3a. If an ingredient is taken or fails the requirement, check the next.
-                        #3a-1. If no ingredients pass, the provided ingredients are invalid for this recipe. Fail the check.
-                    #3b. If an ingredient is not taken and passes, add it to the map and flag a passing value is found
-                    #4. If every requirement has a mapped ingredient, pass the check!
-                 */
-                List<ItemStack> remainingIngredients = new ArrayList<>(prioritisedIngredients);
-                for (MetaIngredient requirement : prioritisedRequirements)
-                {
-                    boolean mapped = false;
-                    int requirementIndex = Collections.binarySearch(requirements, requirement, requirementsComparator);
-                    Iterator<ItemStack> ingredientIterator = remainingIngredients.listIterator();
-                    while (ingredientIterator.hasNext())
-                    {
-                        ItemStack ingredient = ingredientIterator.next();
-                        int ingredientIndex = Collections.binarySearch(ingredients, ingredient, ingredientsComparator);
-                        if (resultMatrix[requirementIndex][ingredientIndex] > 0)
-                        {
-                            ingredientIterator.remove();
-                            mapped = true;
-                            break;
-                        }
-                    }
-
-                    if (!mapped)
-                        return false;
-                }
-
-                if (remainingIngredients.size() == 0) // i.e, if every ingredient is paired to a requirement...
-                    return true;
-            }
-            return false;
+            // Nothing we need to do if it's not a MetaRecipe; leave default behaviour.
         }
     };
 
     /**
-     * Initialises the RecipeManager
-     * @param plugin the plugin to register against
+     * Searches the provided {@link MetaRecipeCraftTree} for any recipes that are satisfied by the provided
+     * matrix array.<br>
+     * The tree is navigated such that each depth level denotes a position on the crafting grid, going from left to
+     * right before descending a row, starting from the top-left. For example, given the below crafting grid:<br>
+     * <br>
+     *  A  B  C <br>
+     *  D  E  F <br>
+     *  G  H  I <br>
+     * <br>
+     * This function will first check the root's children for any nodes that are satisfied by ingredient A, then check
+     * the children of that satisfied node for any child nodes satisfied by B, and so forth in the order A, B, C, D,
+     * E, F, G, H, and I, where I will be the tree's leaf node.
+     *
+     * @param srcMatrix - The ingredients to find the recipe for, where each index corresponds to a depth level in craftTree
+     * @return the recipes satisfied by the ingredients and positioning in srcMatrix.
      */
-    public static void initialise(Plugin plugin)
+    private List<IMetaRecipe> searchShapedMetaRecipe(ItemStack[] srcMatrix)
     {
-        Bukkit.getPluginManager().registerEvents(listener, plugin);
-        initialised = true;
+        // TODO: Test what happens if the recipe is in the bottom right. It should now work.
+        int axisLength = (int) Math.ceil(Math.sqrt(srcMatrix.length));
+        MetaRecipeCraftTree craftTree = shapedCraftTreeByAxisLength.get(axisLength);
+        return searchMetaRecipeTree(craftTree.getRoot(), srcMatrix, 0);
     }
 
     /**
-     * Checks the RecipeManager is initialised.
+     * Searches the provided {@link MetaRecipeCraftTree} for any recipes that are satisfied by the provided
+     * ingredients array.<br>
+     * The tree is navigated such that each depth level denotes an ingredient of the recipe, ordered by ascending
+     * value of the ingredient's {@link Material}, retrieved via {@link ItemStack#getType()}
+     *
+     * @param ingredients - The ingredients to find the recipe for, where each index corresponds to a depth level in craftTree
+     * @return the recipes satisfied by the ingredients in ingredients.
      */
-    private static void checkInitialisation()
+    private List<IMetaRecipe> searchShapelessMetaRecipe(ItemStack[] ingredients)
     {
-        if (!initialised)
-            throw new RuntimeException("RecipeManager has not yet been initialised. Call RecipeManager#initialise(Plugin) in onEnable().");
+        Arrays.sort(ingredients, Comparator.comparing(ItemStack::getType));
+        return searchMetaRecipeTree(shapelessCraftTree.getRoot(), ingredients, 0);
+    }
+
+    /**
+     * Searches the tree, starting from craftTreeNode and ingredientIndex, for recipes where the ingredients provided in the
+     * array match the recipe ingredient criteria.
+     * @param craftTreeNode The node to search. Depth of this node in the tree must match the value in ingredientIndex
+     * @param ingredients The array of ingredients to check against a recipe. The length of the array must match the depth of the tree
+     * @param ingredientIndex The current ingredient index to compare against the children of craftTreeNode. Must craftTreeNode's depth.
+     * @return a list of recipes for which the list of ingredients satisfy their conditions.
+     */
+    private List<IMetaRecipe> searchMetaRecipeTree(MetaRecipeCraftTreeNode craftTreeNode, ItemStack[] ingredients, int ingredientIndex)
+    {
+        ArrayList<IMetaRecipe> recipes = new ArrayList<>();
+        ItemStack ingredient = ingredients[ingredientIndex];
+        List<MetaRecipeCraftTreeNode> nodes = craftTreeNode.getChildrenOfType(ingredient.getType());
+        if (nodes.size() > 0)
+        {
+            for (MetaRecipeCraftTreeNode node : nodes)
+            {
+                if (node.getIngredient().isItemStackIngredientMatch(ingredient))
+                    recipes.addAll(searchMetaRecipeTree(node, ingredients, ++ingredientIndex));
+            }
+        }
+        else
+        {
+            NamespacedKey recipeKey = craftTreeNode.getAssociatedRecipe();
+            recipes.add((IMetaRecipe) getRecipe(recipeKey));
+        }
+        return recipes;
+    }
+
+    /**
+     * See: {@link Bukkit#recipeIterator()}.
+     * Gets an iterator on all recipes - both Meta & Vanilla
+     * @return a ReadOnlyIterator
+     */
+    public Iterator<Recipe> recipeIterator()
+    {
+        return recipeIterator(true, true);
     }
 
     /**
      * See: {@link Bukkit#recipeIterator()}
-     * @return
+     * @param includeVanilla - whether to include vanilla registered recipes or not
+     * @param includeMeta - whether to include {@link IMetaRecipe}s or not
+     * @return a ReadOnlyIterator
      */
-    public static Iterator<Recipe> recipeIterator()
+    public Iterator<Recipe> recipeIterator(boolean includeVanilla, boolean includeMeta)
     {
-        checkInitialisation();
         LinkedList<Recipe> recipes = new LinkedList<>();
-        Iterator<Recipe> recipesIterator = Bukkit.recipeIterator();
-        while (recipesIterator.hasNext())
+
+        if (includeMeta)
+            recipes.addAll(metaRecipeByKey.values());
+
+        if (includeVanilla)
         {
-            Recipe recipe = recipesIterator.next();
-            if (recipe instanceof Keyed)
-            {
-                NamespacedKey recipeKey = ((Keyed) recipe).getKey();
-                if (metaRecipes.containsKey(recipeKey))
-                {
-                    recipes.add(metaRecipes.get(recipeKey));
-                    continue;
-                }
-            }
-            recipes.add(recipe);
+            Iterator<Recipe> vanillaRecipeIterator = Bukkit.recipeIterator();
+            while (vanillaRecipeIterator.hasNext())
+                recipes.add(vanillaRecipeIterator.next());
         }
-        return recipes.iterator();
+        return Collections.unmodifiableList(recipes).iterator();
     }
 
     /**
-     * See: {@link Bukkit#addRecipe(Recipe)}
+     * See: {@link Bukkit#addRecipe(Recipe)}.
+     * Adds a Recipe with "NORMAL" priority.
      * @return
      */
-    public static boolean addRecipe(Recipe recipe)
+    public boolean addRecipe(Recipe recipe)
     {
-        checkInitialisation();
+        return addRecipe(recipe, RecipePriority.NORMAL);
+    }
+
+    public boolean addRecipe(Recipe recipe, RecipePriority priority)
+    {
+        // TODO: As Meta recipes are no longer recorded like normal recipes, remove craftbook support
+        // Also remove the related config setting.
+
+        // - Don't allow non-meta recipes to be overridden (Fixed w/ priorities?)
+        // - Don't allow recipes that match other existing conditions (Fixed w/ priorities?)
+
+        // First one may be hard, what if a new recipe is added? (Fixed w/ priorities?)
+        // Second point might not be possible, what if a more open recipe gets added second? (Fixed w/ priorities?)
+
         if (recipe instanceof IMetaRecipe)
         {
             IMetaRecipe metaRecipe = (IMetaRecipe) recipe;
-            boolean success = Bukkit.addRecipe(metaRecipe.getRawRecipe());
-            if (success)
-                metaRecipes.put(metaRecipe.getKey(), metaRecipe);
-            return success;
+            boolean isMetaRegistered = metaRecipeByKey.containsKey(metaRecipe.getKey());
+            if (!isMetaRegistered)
+            {
+                metaRecipeByKey.put(metaRecipe.getKey(), metaRecipe);
+                priorityByMetaRecipeKey.put(metaRecipe.getKey(), priority);
+
+                List<MetaIngredient> ingredients = null;
+                if (metaRecipe instanceof ShapelessMetaRecipe)
+                {
+                    ShapelessMetaRecipe slMetaRecipe = (ShapelessMetaRecipe) metaRecipe;
+                    ingredients = slMetaRecipe.getIngredientList();
+                    ingredients.sort(Comparator.comparing(ingredient -> ingredient.getMaterial()));
+                }
+
+                if (metaRecipe instanceof ShapedMetaRecipe)
+                {
+                    ShapedMetaRecipe sMetaRecipe = (ShapedMetaRecipe) metaRecipe;
+                    ingredients = new LinkedList<>();
+                    String[] shape = sMetaRecipe.getShape();
+                    for (String row : shape)
+                    {
+                        String[] rowElements = row.split("");
+                        for (String ingredientKey : rowElements)
+                            ingredients.add(sMetaRecipe.getIngredientMap().getOrDefault(ingredientKey, MetaIngredient.NONE));
+                    }
+                }
+
+                int axisLength = (int) Math.ceil(Math.sqrt(ingredients.size()));
+                MetaRecipeCraftTree craftTree = (metaRecipe instanceof ShapelessMetaRecipe) ? shapelessCraftTree : shapedCraftTreeByAxisLength.get(axisLength);
+                MetaRecipeCraftTreeNode currNode = craftTree.getRoot();
+                for (MetaIngredient ingredient : ingredients)
+                {
+                    MetaRecipeCraftTreeNode node = new MetaRecipeCraftTreeNode(ingredient, metaRecipe.getKey());
+                    currNode.addChild(node);
+                    currNode = node;
+                }
+
+
+                return true;
+            }
+            return false;
         }
         else
             return Bukkit.addRecipe(recipe);
@@ -261,51 +232,173 @@ public class MetaRecipeManager
      * See: {@link Bukkit#removeRecipe(NamespacedKey)}
      * @return
      */
-    public static void removeRecipe(NamespacedKey key)
+    public boolean removeRecipe(NamespacedKey key)
     {
-        checkInitialisation();
-        boolean removeSuccess = Bukkit.removeRecipe(key);
-        if (removeSuccess)
-            metaRecipes.remove(key);
+        boolean isMetaRegistered = metaRecipeByKey.containsKey(key);
+        if (isMetaRegistered)
+        {
+            metaRecipeByKey.remove(key);
+            priorityByMetaRecipeKey.remove(key);
+            // TODO: Remove from craftTree
+            return true;
+        }
+        else
+            return Bukkit.removeRecipe(key);
     }
 
     /**
      * See: {@link Bukkit#getRecipe(NamespacedKey)}
      * @return
      */
-    public static Recipe getRecipe(NamespacedKey key)
+    public Recipe getRecipe(NamespacedKey key)
     {
-        checkInitialisation();
-        if (metaRecipes.containsKey(key))
-            return metaRecipes.get(key);
+        if (metaRecipeByKey.containsKey(key))
+            return metaRecipeByKey.get(key);
         return Bukkit.getRecipe(key);
+    }
+
+    /**
+     * Sets the priority of a registered {@link IMetaRecipe}. Note that non-Meta recipes cannot have their priorities
+     * altered to keep the {@link EventPriority} levels relative.
+     * @param key - The NamespacedKey of a registered MetaRecipe
+     * @param priority - The priority to set
+     * @return true if the priority is updated, false if the key does not denote a registered {@link IMetaRecipe}
+     */
+    public boolean setRecipePriority(NamespacedKey key, RecipePriority priority)
+    {
+        if (priorityByMetaRecipeKey.containsKey(key))
+        {
+            priorityByMetaRecipeKey.put(key, priority);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the priority of the Recipe.
+     * @return Gets the {@link RecipePriority} of the recipe identified with the NamespacedKey.
+     * If the recipe is a registered {@link IMetaRecipe}, the set priority is returned.
+     * If the recipe is valid, but is not registered as a {@link IMetaRecipe}, the "NORMAL" priority is returned.
+     * If the recipe is invalid, or could not be found with the given key, null is returned.
+     */
+    public RecipePriority getRecipePriority(NamespacedKey key)
+    {
+        if (priorityByMetaRecipeKey.containsKey(key))
+            return priorityByMetaRecipeKey.get(key);
+
+        if (getRecipe(key) != null)
+            return RecipePriority.NORMAL;
+        else
+            return null;
+    }
+
+    /**
+     * See: {@link Bukkit#getCraftingRecipe(ItemStack[], World)}
+     * @throws IllegalStateException - There is more than one recipe satisfied by the craftingMatrix
+     * @return
+     */
+    public Recipe getCraftingRecipe(ItemStack[] craftingMatrix, World world) throws IllegalStateException
+    {
+        return getCraftingRecipe(craftingMatrix, world, true, true);
+    }
+
+    /**
+     * See: {@link Bukkit#getCraftingRecipe(ItemStack[], World)}
+     * @param includeVanilla - whether to include vanilla registered recipes or not
+     * @param includeMeta - whether to include {@link IMetaRecipe}s or not
+     * @return the recipe satisfied by the crafting matrix, or the highest priority one if multiple are satisfied.
+     */
+    public Recipe getCraftingRecipe(ItemStack[] craftingMatrix, World world, boolean includeVanilla, boolean includeMeta) throws IllegalStateException
+    {
+        List<Recipe> craftingRecipes = getCraftingRecipes(craftingMatrix, world, includeVanilla, includeMeta);
+
+        // TODO: Test priorities work
+        // Get the highest priority recipe...
+        Recipe topRecipe = null;
+        RecipePriority topPriority = null;
+        for (Recipe recipe : craftingRecipes)
+        {
+            NamespacedKey key = ((Keyed) recipe).getKey();
+            RecipePriority recipePriority = getRecipePriority(key);
+            if ((topRecipe == null && topPriority == null) || recipePriority.compareTo(topPriority) >= 1)
+            {
+                topRecipe = recipe;
+                topPriority = recipePriority;
+            }
+        }
+        return topRecipe;
+    }
+
+    /**
+     * Returns ALL recipes satisfied by the provided craftingMatrix.
+     * See: {@link Bukkit#getCraftingRecipe(ItemStack[], World)}
+     * @return
+     */
+    public List<Recipe> getCraftingRecipes(ItemStack[] craftingMatrix, World world)
+    {
+        return getCraftingRecipes(craftingMatrix, world, true, true);
+    }
+
+    /**
+     * Returns ALL recipes satisfied by the provided craftingMatrix.
+     * See: {@link Bukkit#getCraftingRecipe(ItemStack[], World)}
+     * @param includeVanilla - whether to include vanilla registered recipes or not
+     * @param includeMeta - whether to include {@link IMetaRecipe}s or not
+     * @return
+     */
+    public List<Recipe> getCraftingRecipes(ItemStack[] craftingMatrix, World world, boolean includeVanilla, boolean includeMeta)
+    {
+        // If there are MetaRecipe(s) for these materials, get the ones that apply.
+        List<Recipe> recipes = new ArrayList<>();
+        if (includeMeta)
+        {
+            List<IMetaRecipe> shapedRecipes = searchShapedMetaRecipe(craftingMatrix);
+            List<IMetaRecipe> shapelessRecipes = searchShapelessMetaRecipe(craftingMatrix);
+            recipes.addAll(shapedRecipes);
+            recipes.addAll(shapelessRecipes);
+        }
+        if (includeVanilla)
+        {
+            Recipe vanillaRecipe = Bukkit.getCraftingRecipe(craftingMatrix, world);
+            if (vanillaRecipe != null)
+                recipes.add(vanillaRecipe);
+        }
+        return (recipes.size() == 0) ? null : recipes;
     }
 
     /**
      * See: {@link Bukkit#getRecipesFor(ItemStack)}
      * @return
      */
-    public static List<Recipe> getRecipesFor(ItemStack result)
+    public List<Recipe> getRecipesFor(ItemStack result)
     {
-        checkInitialisation();
-        List<Recipe> recipes = Bukkit.getRecipesFor(result);
-        List<NamespacedKey> metaKeys = new ArrayList<>();
-        Iterator<Recipe> recipeIterator = recipes.iterator();
-        while (recipeIterator.hasNext())
+        return getRecipesFor(result, true, true);
+    }
+
+    /**
+     * See: {@link Bukkit#getRecipesFor(ItemStack)}
+     * @param includeVanilla - whether to include vanilla registered recipes or not
+     * @param includeMeta - whether to include {@link IMetaRecipe}s or not
+     * @return
+     */
+    public List<Recipe> getRecipesFor(ItemStack result, boolean includeVanilla, boolean includeMeta)
+    {
+        List<Recipe> recipes = new LinkedList<>();
+
+        if (includeVanilla)
+            recipes.addAll(Bukkit.getRecipesFor(result));
+
+        if (includeMeta)
         {
-            Recipe recipe = recipeIterator.next();
-            if (recipe instanceof Keyed)
+            Iterator<Recipe> iterator = recipeIterator(false, true);
+            while (iterator.hasNext())
             {
-                NamespacedKey recipeKey = ((Keyed) recipe).getKey();
-                if (metaRecipes.containsKey(recipeKey))
-                {
-                    metaKeys.add(recipeKey);
-                    recipeIterator.remove();
-                }
+                Recipe recipe = iterator.next();
+                if (recipe.getResult().equals(result))
+                    recipes.add(recipe);
             }
         }
-        for (NamespacedKey key : metaKeys)
-            recipes.add(metaRecipes.get(key));
+
         return recipes;
     }
 
@@ -313,25 +406,55 @@ public class MetaRecipeManager
      * See: {@link Bukkit#resetRecipes()}
      * @return
      */
-    public static void resetRecipes()
+    public void resetRecipes()
     {
-        checkInitialisation();
-        Set<NamespacedKey> keys = new HashSet<>(metaRecipes.keySet());
-        for (NamespacedKey key : keys)
-            removeRecipe(key);
-        Bukkit.resetRecipes();
+        resetRecipes(true, true);
+    }
+
+    /**
+     * See: {@link Bukkit#resetRecipes()}
+     * @param includeVanilla - whether to include vanilla registered recipes or not
+     * @param includeMeta - whether to include {@link IMetaRecipe}s or not
+     * @return
+     */
+    public void resetRecipes(boolean includeVanilla, boolean includeMeta)
+    {
+        if (includeVanilla)
+            Bukkit.resetRecipes();
+
+        if (includeMeta)
+        {
+            Set<NamespacedKey> keys = new HashSet<>(metaRecipeByKey.keySet());
+            for (NamespacedKey key : keys)
+                removeRecipe(key);
+        }
     }
 
     /**
      * See: {@link Bukkit#clearRecipes()}
      * @return
      */
-    public static void clearRecipes()
+    public void clearRecipes()
     {
-        checkInitialisation();
-        Set<NamespacedKey> keys = new HashSet<>(metaRecipes.keySet());
-        for (NamespacedKey key : keys)
-            removeRecipe(key);
-        Bukkit.clearRecipes();
+        clearRecipes(true, true);
+    }
+
+    /**
+     * See: {@link Bukkit#clearRecipes()}
+     * @param includeVanilla - whether to include vanilla registered recipes or not
+     * @param includeMeta - whether to include {@link IMetaRecipe}s or not
+     * @return
+     */
+    public void clearRecipes(boolean includeVanilla, boolean includeMeta)
+    {
+        if (includeVanilla)
+            Bukkit.clearRecipes();
+
+        if (includeMeta)
+        {
+            Set<NamespacedKey> keys = new HashSet<>(metaRecipeByKey.keySet());
+            for (NamespacedKey key : keys)
+                removeRecipe(key);
+        }
     }
 }
