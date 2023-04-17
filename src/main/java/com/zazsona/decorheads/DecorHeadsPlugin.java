@@ -9,16 +9,19 @@ import com.zazsona.decorheads.command.MasterCommand;
 import com.zazsona.decorheads.command.SpawnHeadCommand;
 import com.zazsona.decorheads.command.WikiCommand;
 import com.zazsona.decorheads.config.*;
-import com.zazsona.decorheads.config.update.HeadConfigUpdater;
-import com.zazsona.decorheads.config.update.HeadDropConfigUpdater;
-import com.zazsona.decorheads.config.update.HeadRecipeConfigUpdater;
-import com.zazsona.decorheads.config.update.PluginConfigUpdater;
-import com.zazsona.decorheads.event.block.BlockBreakByExplosionEventTrigger;
-import com.zazsona.decorheads.event.block.BlockPistonReactionEventTrigger;
-import org.bukkit.Bukkit;
+import com.zazsona.decorheads.config.update.*;
+import com.zazsona.decorheads.crafting.MetaRecipeManager;
+import com.zazsona.decorheads.event.BlockBreakByExplosionEventTrigger;
+import com.zazsona.decorheads.event.BlockPistonReactionEventTrigger;
+import com.zazsona.decorheads.event.RegionEventTrigger;
+import com.zazsona.decorheads.event.head.HeadEventTrigger;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.naming.ConfigurationException;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Map;
 
 public class DecorHeadsPlugin extends JavaPlugin
 {
@@ -68,35 +71,63 @@ public class DecorHeadsPlugin extends JavaPlugin
             // ============================================
             // Initialisers
             // ============================================
-            MaterialUtil.indexMaterials();
-            pluginConfig = new PluginConfig(getConfig(), Paths.get(getDataFolder().toString(), "config.yml").toFile()); // Call getConfig() here to match reference stored by Bukkit internally
-            headConfig = new HeadConfig(Paths.get(getDataFolder().toString(), "heads.yml").toFile());
-            headDropConfig = new HeadDropConfig(Paths.get(getDataFolder().toString(), "drops.yml").toFile());
-            headRecipeConfig = new HeadRecipeConfig(Paths.get(getDataFolder().toString(), "recipes.yml").toFile());
+            MetaRecipeManager.getInstance(this); // Call constructor
+            File pluginConfigFile = Paths.get(getDataFolder().toString(), "config.yml").toFile();
+            File headConfigFile = Paths.get(getDataFolder().getAbsolutePath(), "heads.yml").toFile();
+            File dropsConfigFile = Paths.get(getDataFolder().toString(), "drops.yml").toFile();
+            File recipesConfigFile = Paths.get(getDataFolder().toString(), "recipes.yml").toFile();
+
+            if (LegacyHeadConfig.isLegacyConfig(headConfigFile))
+            {
+                LegacyHeadConfig legacyHeadConfig = new LegacyHeadConfig(headConfigFile);
+                LegacyHeadConfigUpdater updater = new LegacyHeadConfigUpdater();
+                legacyHeadConfig = updater.update(legacyHeadConfig);
+                LegacyHeadConfigMigrator migrator = new LegacyHeadConfigMigrator();
+                Map<Class<? extends VersionedYamlConfigWrapper>, VersionedYamlConfigWrapper> migratedConfigs = migrator.migrate(legacyHeadConfig, headConfigFile, dropsConfigFile, recipesConfigFile);
+                migratedConfigs.forEach((aClass, configWrapper) -> { try { configWrapper.save(); } catch (IOException e) { e.printStackTrace(); } });
+            }
+
+            pluginConfig = new PluginConfig(getConfig(), pluginConfigFile); // Call getConfig() here to match reference stored by Bukkit internally
+            headConfig = new HeadConfig(headConfigFile);
+            headDropConfig = new HeadDropConfig(dropsConfigFile);
+            headRecipeConfig = new HeadRecipeConfig(recipesConfigFile);
 
             // ============================================
             // Updaters
             // ============================================
             PluginConfigUpdater pluginConfigUpdater = new PluginConfigUpdater();
-            pluginConfigUpdater.update(pluginConfig, PluginConfig.MAX_CONFIG_VERSION);
-            pluginConfig.save();
+            pluginConfigUpdater.update(pluginConfig, PluginConfig.getMaxConfigVersion());
+            if (pluginConfig.validateConfigData())
+                pluginConfig.save();
+            else
+                throw new ConfigurationException("Plugin Config is invalid.");
 
             HeadConfigUpdater headConfigUpdater = new HeadConfigUpdater();
-            headConfigUpdater.update(headConfig, HeadConfig.MAX_CONFIG_VERSION);
-            headConfig.save();
+            headConfigUpdater.update(headConfig, HeadConfig.getMaxConfigVersion());
+            if (headConfig.validateConfigData())
+                headConfig.save();
+            else
+                throw new ConfigurationException("Heads Config is invalid.");
 
             HeadDropConfigUpdater headDropConfigUpdater = new HeadDropConfigUpdater();
-            headDropConfigUpdater.update(headDropConfig, HeadDropConfig.MAX_CONFIG_VERSION);
-            headDropConfig.save();
+            headDropConfigUpdater.update(headDropConfig, HeadDropConfig.getMaxConfigVersion());
+            if (headDropConfig.validateConfigData())
+                headDropConfig.save();
+            else
+                throw new ConfigurationException("Drops Config is invalid.");
 
             HeadRecipeConfigUpdater headRecipeConfigUpdater = new HeadRecipeConfigUpdater();
-            headRecipeConfigUpdater.update(headRecipeConfig, HeadRecipeConfig.MAX_CONFIG_VERSION);
-            headRecipeConfig.save();
+            headRecipeConfigUpdater.update(headRecipeConfig, HeadRecipeConfig.getMaxConfigVersion());
+            if (headRecipeConfig.validateConfigData())
+                headRecipeConfig.save();
+            else
+                throw new ConfigurationException("Recipes Config is invalid.");
 
-            HeadUpdaterLegacy headUpdater = HeadUpdaterLegacy.getInstance();
-            headUpdater.updateHeadsFile();
-
+            // ============================================
+            // Asset Loaders
+            // ============================================
             HeadRepository.loadConfig(this);
+            MaterialUtil.indexMaterials();
 
             // ============================================
             // Permissions
@@ -133,6 +164,12 @@ public class DecorHeadsPlugin extends JavaPlugin
             BlockPistonReactionEventTrigger blockPistonReactionEventTrigger = new BlockPistonReactionEventTrigger();
             getServer().getPluginManager().registerEvents(blockPistonReactionEventTrigger, this);
 
+            HeadEventTrigger headEventTrigger = new HeadEventTrigger();
+            getServer().getPluginManager().registerEvents(headEventTrigger, this);
+
+            RegionEventTrigger regionEventTrigger = new RegionEventTrigger();
+            getServer().getPluginManager().registerEvents(regionEventTrigger, this);
+
             // ============================================
             // Block Metadata
             // ============================================
@@ -160,13 +197,14 @@ public class DecorHeadsPlugin extends JavaPlugin
     {
         HeadRepository.unloadHeads();
         HeadRepository.unloadDrops();
-        HeadRepository.unloadRecipes();
+        HeadRepository.unloadRecipes(this);
     }
 
     @Override
     public void reloadConfig()
     {
         super.reloadConfig();
-        pluginConfig.setConfigData(getConfig());
+        if (pluginConfig != null)
+            pluginConfig.setConfigData(getConfig());
     }
 }
