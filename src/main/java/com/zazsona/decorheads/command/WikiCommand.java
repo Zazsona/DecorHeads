@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+// TODO: Player's Head is listed twice; likely due to the SpawnHeadCommand's version
 public class WikiCommand implements CommandExecutor
 {
     public static final String COMMAND_KEY = "dhwiki";
@@ -64,7 +65,8 @@ public class WikiCommand implements CommandExecutor
         }
     }
 
-    private void sendHeadSource(CommandSender sender, String[] args)    // This is a pretty long-winded method, but honestly, everything with user input seems to wind up this way. Can't see any approaches to minimising it.
+    // TODO: Seems buggered. Does nothing.
+    private void sendHeadSource(CommandSender sender, String[] args)    // This is a pretty long-winded method, but honestly, everything with user input seems to wind up this way.
     {
         boolean pageSpecified = args[args.length-1].matches("[0-9]+");
         int headNameEnd = (pageSpecified) ? args.length-1 : args.length;
@@ -106,12 +108,6 @@ public class WikiCommand implements CommandExecutor
             String pageContent = (isDisabled) ? disabledNotice + "\n" + wikiPage.getPage() : wikiPage.getPage();
             String message = CommandUtil.addHeader(headerText, pageContent);
             sender.sendMessage("\n"+message); // New line to make it easier to read against previously opened pages.
-
-            if (DecorHeadsPlugin.getInstanceConfig().isLearnRecipesFromWikiEnabled() && recipe != null && sender instanceof Player)
-            {
-                Player player = (Player) sender;                 // They've got Wiki page access, may as well give the recipe in the prettier UI
-                player.discoverRecipe(recipe.getKey());
-            }
         }
         else if (headName == null || headName.equals(""))
             sender.sendMessage(ChatColor.RED+String.format("Usage: /%s %s", COMMAND_KEY, SOURCES_USAGE));
@@ -122,7 +118,7 @@ public class WikiCommand implements CommandExecutor
     private boolean isRecipeEnabled(IMetaRecipe recipe)
     {
         PluginConfig config = DecorHeadsPlugin.getInstanceConfig();
-        return (config.isPluginEnabled() && config.isCraftingEnabled() && MetaRecipeManager.getRecipe(recipe.getKey()) != null);
+        return (config.isPluginEnabled() && config.isCraftingEnabled() && MetaRecipeManager.getInstance(DecorHeadsPlugin.getInstance()).getRecipe(recipe.getKey()) != null);
     }
 
     private boolean isDropEnabled(IDrop drop)
@@ -151,6 +147,7 @@ public class WikiCommand implements CommandExecutor
         sender.sendMessage(page);
     }
 
+    // TODO: Using head names doesn't work. Keys only.
     private void sendHeadPreview(CommandSender sender, String[] args)
     {
         if (!(sender instanceof Player))

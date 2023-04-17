@@ -18,7 +18,6 @@ public class PluginConfig extends VersionedYamlConfigWrapper
     public static final String DROPS_KEY = "drops";
     public static final String DROP_TYPES_KEY = "drop-types";
     public static final String ENVIRONMENTAL_DROPS_KEY = "environmental-drops";
-    public static final String WIKI_RECIPE_LEARN_KEY = "learn-recipes-from-wiki";
     public static final String UPDATE_NOTIFICATIONS_KEY = "update-notifications";
     public static final String HEAD_META_PATCHER_KEY = "head-meta-patcher";
 
@@ -70,16 +69,6 @@ public class PluginConfig extends VersionedYamlConfigWrapper
     public boolean isEnvironmentalDropsEnabled()
     {
         return config.getBoolean(ENVIRONMENTAL_DROPS_KEY);
-    }
-
-    public void setLearnRecipesFromWikiEnabled(boolean newEnabled)
-    {
-        config.set(WIKI_RECIPE_LEARN_KEY, newEnabled);
-    }
-
-    public boolean isLearnRecipesFromWikiEnabled()
-    {
-        return config.getBoolean(WIKI_RECIPE_LEARN_KEY);
     }
 
     public void setUpdateNotificationsLevel(UpdateNotificationLevel level)

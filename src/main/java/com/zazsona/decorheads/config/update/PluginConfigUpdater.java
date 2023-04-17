@@ -64,6 +64,7 @@ public class PluginConfigUpdater implements IVersionedYamlConfigUpdater<PluginCo
         boolean environmentalDrops = config.getBoolean("playerless-drop-events");
         config.set("environmental-drops", environmentalDrops);
         config.set("playerless-drop-events", null);
+        config.set("learn-recipes-from-wiki", null);
 
         boolean mineDrops = config.getBoolean("drop-sources.mine-drop");
         boolean brewDrops = config.getBoolean("drop-sources.brew-drop");

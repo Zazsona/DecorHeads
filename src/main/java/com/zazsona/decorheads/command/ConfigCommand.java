@@ -87,9 +87,6 @@ public class ConfigCommand implements CommandExecutor
             case PluginConfig.ENVIRONMENTAL_DROPS_KEY:
                 config.setEnvironmentalDropsEnabled(value.equalsIgnoreCase(onText));
                 break;
-            case PluginConfig.WIKI_RECIPE_LEARN_KEY:
-                config.setLearnRecipesFromWikiEnabled(value.equalsIgnoreCase(onText));
-                break;
             case PluginConfig.HEAD_META_PATCHER_KEY:
                 config.setHeadMetaPatcherEnabled(value.equalsIgnoreCase(onText));
                 break;
@@ -141,7 +138,6 @@ public class ConfigCommand implements CommandExecutor
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.CRAFTING_KEY)).append((config.isCraftingEnabled()) ? onColour : offColour).append((config.isCraftingEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.DROPS_KEY)).append((config.isDropsEnabled()) ? onColour : offColour).append((config.isDropsEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.ENVIRONMENTAL_DROPS_KEY)).append((config.isEnvironmentalDropsEnabled()) ? onColour : offColour).append((config.isEnvironmentalDropsEnabled()) ? onText : offText).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.WIKI_RECIPE_LEARN_KEY)).append((config.isLearnRecipesFromWikiEnabled()) ? onColour : offColour).append((config.isLearnRecipesFromWikiEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.UPDATE_NOTIFICATIONS_KEY)).append((config.getUpdateNotificationsLevel() != UpdateNotificationLevel.DISABLED) ? onColour : offColour).append(DecorHeadsUtil.capitaliseName(config.getUpdateNotificationsLevel().toString())).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.HEAD_META_PATCHER_KEY)).append((config.isHeadMetaPatcherEnabled()) ? onColour : offColour).append((config.isHeadMetaPatcherEnabled()) ? onText : offText);
         String contentWithHeader = CommandUtil.addHeader(String.format("%s Config", DecorHeadsPlugin.PLUGIN_NAME), contentBuilder.toString());

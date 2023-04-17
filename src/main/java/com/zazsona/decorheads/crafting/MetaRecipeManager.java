@@ -170,62 +170,49 @@ public class MetaRecipeManager
 
     public boolean addRecipe(Recipe recipe, RecipePriority priority)
     {
-        // TODO: As Meta recipes are no longer recorded like normal recipes, remove craftbook support
-        // Also remove the related config setting.
-
-        // - Don't allow non-meta recipes to be overridden (Fixed w/ priorities?)
-        // - Don't allow recipes that match other existing conditions (Fixed w/ priorities?)
-
-        // First one may be hard, what if a new recipe is added? (Fixed w/ priorities?)
-        // Second point might not be possible, what if a more open recipe gets added second? (Fixed w/ priorities?)
-
-        if (recipe instanceof IMetaRecipe)
-        {
-            IMetaRecipe metaRecipe = (IMetaRecipe) recipe;
-            boolean isMetaRegistered = metaRecipeByKey.containsKey(metaRecipe.getKey());
-            if (!isMetaRegistered)
-            {
-                metaRecipeByKey.put(metaRecipe.getKey(), metaRecipe);
-                priorityByMetaRecipeKey.put(metaRecipe.getKey(), priority);
-
-                List<MetaIngredient> ingredients = null;
-                if (metaRecipe instanceof ShapelessMetaRecipe)
-                {
-                    ShapelessMetaRecipe slMetaRecipe = (ShapelessMetaRecipe) metaRecipe;
-                    ingredients = slMetaRecipe.getIngredientList();
-                    ingredients.sort(Comparator.comparing(ingredient -> ingredient.getMaterial()));
-                }
-
-                if (metaRecipe instanceof ShapedMetaRecipe)
-                {
-                    ShapedMetaRecipe sMetaRecipe = (ShapedMetaRecipe) metaRecipe;
-                    ingredients = new LinkedList<>();
-                    String[] shape = sMetaRecipe.getShape();
-                    for (String row : shape)
-                    {
-                        String[] rowElements = row.split("");
-                        for (String ingredientKey : rowElements)
-                            ingredients.add(sMetaRecipe.getIngredientMap().getOrDefault(ingredientKey, MetaIngredient.NONE));
-                    }
-                }
-
-                int axisLength = (int) Math.ceil(Math.sqrt(ingredients.size()));
-                MetaRecipeCraftTree craftTree = (metaRecipe instanceof ShapelessMetaRecipe) ? shapelessCraftTree : shapedCraftTreeByAxisLength.get(axisLength);
-                MetaRecipeCraftTreeNode currNode = craftTree.getRoot();
-                for (MetaIngredient ingredient : ingredients)
-                {
-                    MetaRecipeCraftTreeNode node = new MetaRecipeCraftTreeNode(ingredient, metaRecipe.getKey());
-                    currNode.addChild(node);
-                    currNode = node;
-                }
-
-
-                return true;
-            }
-            return false;
-        }
-        else
+        if (!(recipe instanceof IMetaRecipe))
             return Bukkit.addRecipe(recipe);
+
+        IMetaRecipe metaRecipe = (IMetaRecipe) recipe;
+        boolean isMetaRegistered = metaRecipeByKey.containsKey(metaRecipe.getKey());
+        if (isMetaRegistered)
+            return false;
+
+        metaRecipeByKey.put(metaRecipe.getKey(), metaRecipe);
+        priorityByMetaRecipeKey.put(metaRecipe.getKey(), priority);
+
+        List<MetaIngredient> ingredients = null;
+        if (metaRecipe instanceof ShapelessMetaRecipe)
+        {
+            ShapelessMetaRecipe slMetaRecipe = (ShapelessMetaRecipe) metaRecipe;
+            ingredients = slMetaRecipe.getIngredientList();
+            ingredients.sort(Comparator.comparing(ingredient -> ingredient.getMaterial()));
+        }
+
+        if (metaRecipe instanceof ShapedMetaRecipe)
+        {
+            ShapedMetaRecipe sMetaRecipe = (ShapedMetaRecipe) metaRecipe;
+            ingredients = new LinkedList<>();
+            String[] shape = sMetaRecipe.getShape();
+            for (String row : shape)
+            {
+                String[] rowElements = row.split("");
+                for (String ingredientKey : rowElements)
+                    ingredients.add(sMetaRecipe.getIngredientMap().getOrDefault(ingredientKey, MetaIngredient.NONE));
+            }
+        }
+
+        int axisLength = (int) Math.ceil(Math.sqrt(ingredients.size()));
+        MetaRecipeCraftTree craftTree = (metaRecipe instanceof ShapelessMetaRecipe) ? shapelessCraftTree : shapedCraftTreeByAxisLength.get(axisLength);
+        MetaRecipeCraftTreeNode currNode = craftTree.getRoot();
+        for (MetaIngredient ingredient : ingredients)
+        {
+            MetaRecipeCraftTreeNode node = new MetaRecipeCraftTreeNode(ingredient, metaRecipe.getKey());
+            currNode.addChild(node);
+            currNode = node;
+        }
+
+        return true;
     }
 
     /**
