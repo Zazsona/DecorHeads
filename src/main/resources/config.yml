@@ -2,6 +2,7 @@
 
 version: 3.0.0
 plugin-enabled: true
+debug: false
 crafting: true
 drops: true
 environmental-drops: true

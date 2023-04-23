@@ -14,6 +14,7 @@ public class PluginConfig extends VersionedYamlConfigWrapper
 {
     public static final String VERSION_KEY = "version";
     public static final String PLUGIN_ENABLED_KEY = "plugin-enabled";
+    public static final String DEBUG_KEY = "debug";
     public static final String CRAFTING_KEY = "crafting";
     public static final String DROPS_KEY = "drops";
     public static final String DROP_TYPES_KEY = "drop-types";
@@ -39,6 +40,16 @@ public class PluginConfig extends VersionedYamlConfigWrapper
     public boolean isPluginEnabled()
     {
         return config.getBoolean(PLUGIN_ENABLED_KEY);
+    }
+
+    public void setDebugEnabled(boolean newEnabled)
+    {
+        config.set(DEBUG_KEY, newEnabled);
+    }
+
+    public boolean isDebugEnabled()
+    {
+        return config.getBoolean(DEBUG_KEY);
     }
 
     public void setCraftingEnabled(boolean newEnabled)

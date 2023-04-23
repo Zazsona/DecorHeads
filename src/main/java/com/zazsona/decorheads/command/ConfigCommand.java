@@ -78,6 +78,9 @@ public class ConfigCommand implements CommandExecutor
             case PluginConfig.PLUGIN_ENABLED_KEY:
                 config.setPluginEnabled(value.equalsIgnoreCase(onText));
                 break;
+            case PluginConfig.DEBUG_KEY:
+                config.setDebugEnabled(value.equalsIgnoreCase(onText));
+                break;
             case PluginConfig.CRAFTING_KEY:
                 config.setCraftingEnabled(value.equalsIgnoreCase(onText));
                 break;
@@ -135,6 +138,7 @@ public class ConfigCommand implements CommandExecutor
         contentBuilder.append(ChatColor.DARK_GRAY).append(String.format("Use /%s %s to get drop types config.", COMMAND_KEY, PluginConfig.DROP_TYPES_KEY)).append("\n");
         contentBuilder.append(ChatColor.GRAY).append(String.format("Use /%s [Name] [%s|%s] to change setting.", COMMAND_KEY, onText, offText)).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.PLUGIN_ENABLED_KEY)).append((config.isPluginEnabled()) ? onColour : offColour).append((config.isPluginEnabled()) ? onText : offText).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.DEBUG_KEY)).append((config.isDebugEnabled()) ? onColour : offColour).append((config.isPluginEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.CRAFTING_KEY)).append((config.isCraftingEnabled()) ? onColour : offColour).append((config.isCraftingEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.DROPS_KEY)).append((config.isDropsEnabled()) ? onColour : offColour).append((config.isDropsEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.ENVIRONMENTAL_DROPS_KEY)).append((config.isEnvironmentalDropsEnabled()) ? onColour : offColour).append((config.isEnvironmentalDropsEnabled()) ? onText : offText).append("\n");

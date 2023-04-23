@@ -61,6 +61,8 @@ public class PluginConfigUpdater implements IVersionedYamlConfigUpdater<PluginCo
         if (config.getString(PluginConfig.VERSION_KEY).compareTo("3.0.0") >= 0)
             return;
 
+        config.set("debug", false);
+
         boolean environmentalDrops = config.getBoolean("playerless-drop-events");
         config.set("environmental-drops", environmentalDrops);
         config.set("playerless-drop-events", null);
@@ -72,7 +74,6 @@ public class PluginConfigUpdater implements IVersionedYamlConfigUpdater<PluginCo
         boolean craftDrops = config.getBoolean("drop-sources.craft-drop");
         boolean entityDeathDrops = config.getBoolean("drop-sources.entity-death-drop");
 
-        // TODO: Test "mine" becomes "block-break"
         config.createSection("drop-types");
         config.set("drop-types.block-break", mineDrops);
         config.set("drop-types.brew", brewDrops);
