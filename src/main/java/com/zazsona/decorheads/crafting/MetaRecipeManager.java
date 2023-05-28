@@ -80,9 +80,23 @@ public class MetaRecipeManager
     private List<IMetaRecipe> searchShapedMetaRecipe(ItemStack[] srcMatrix)
     {
         // TODO: Test what happens if the recipe is in the bottom right. It should now work.
+        if (debug)
+            Bukkit.getLogger().info("Searching ShapedMetaRecipes...");
+
+        ArrayList<IMetaRecipe> recipes = new ArrayList<>();
+        if (srcMatrix.length == 0 || Arrays.stream(srcMatrix).allMatch(itemStack -> itemStack == null))
+            return recipes;
+
         int axisLength = (int) Math.ceil(Math.sqrt(srcMatrix.length));
-        MetaRecipeCraftTree craftTree = shapedCraftTreeByAxisLength.get(axisLength);
-        return searchMetaRecipeTree(craftTree.getRoot(), srcMatrix, 0);
+        for (int i = CraftMatrixScaler.getMinimumAxisLength(srcMatrix, true); i <= axisLength; i++)
+        {
+            if (debug)
+                Bukkit.getLogger().info("Searching " + i + "x" + i + " matrix recipes.");
+            MetaRecipeCraftTree craftTree = shapedCraftTreeByAxisLength.get(i);
+            ItemStack[] scaledMatrix = CraftMatrixScaler.scaleCraftMatrix(srcMatrix, i, true);
+            recipes.addAll(searchMetaRecipeTree(craftTree.getRoot(), scaledMatrix, 0));
+        }
+        return recipes;
     }
 
     /**
@@ -96,10 +110,16 @@ public class MetaRecipeManager
      */
     private List<IMetaRecipe> searchShapelessMetaRecipe(ItemStack[] ingredients)
     {
+        if (debug)
+            Bukkit.getLogger().info("Searching ShapelessMetaRecipes...");
+
         ItemStack[] nonNullIngredients = Arrays.stream(ingredients)
                 .filter(itemStack -> itemStack != null)
                 .sorted(Comparator.comparing(o -> o.getType().getKey().toString()))
                 .toArray(ItemStack[]::new);
+
+        if (nonNullIngredients.length == 0)
+            return new ArrayList<>();
 
         return searchMetaRecipeTree(shapelessCraftTree.getRoot(), nonNullIngredients, 0);
     }
@@ -129,7 +149,7 @@ public class MetaRecipeManager
         {
             ItemStack ingredient = ingredients[ingredientIndex];
             if (debug)
-                Bukkit.getLogger().info("Slot " + (ingredientIndex + 1) + "/"+ ingredients.length + ": " + ((ingredient == null) ? "EMPTY" : ingredient.getType()));
+                Bukkit.getLogger().info("Depth " + ingredientIndex + " | Slot " + (ingredientIndex + 1) + "/" + ingredients.length + ": " + ((ingredient == null) ? "EMPTY" : ingredient.getType()));
 
             List<MetaRecipeCraftTreeNode> nodes = craftTreeNode.getChildrenOfType(ingredient);
             if (nodes.size() > 0)
@@ -220,10 +240,12 @@ public class MetaRecipeManager
                 char[] rowElements = row.toCharArray();
                 for (char ingredientKey : rowElements)
                     ingredients.add(sMetaRecipe.getIngredientMap().get(ingredientKey));
-
             }
         }
 
+        // I think this works? Nulls are included in the ingredients array, so there shouldn't be any worries such as
+        // having four entries, which would normally fit in a 2x2 grid, but the shape requiring 3 on the top row & 1 on
+        // the 2nd, which would require a 3x3 grid.
         int axisLength = (int) Math.ceil(Math.sqrt(ingredients.size()));
         MetaRecipeCraftTree craftTree = (metaRecipe instanceof ShapelessMetaRecipe) ? shapelessCraftTree : shapedCraftTreeByAxisLength.get(axisLength);
         MetaRecipeCraftTreeNode currNode = craftTree.getRoot();

@@ -1,6 +1,5 @@
 package com.zazsona.decorheads.crafting;
 
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -33,6 +32,25 @@ public class CraftMatrixScaler
     }
 
     /**
+     * Gets the smallest grid axis length the contents of the matrix can be placed in
+     * @param srcMatrix the matrix to measure
+     * @param isShaped  set to true if this matrix represents a {@link ShapedRecipe}, false for a {@link ShapelessRecipe}
+     * @return the minimum axis length required to display the non-Null contents
+     */
+    public static int getMinimumAxisLength(ItemStack[] srcMatrix, boolean isShaped)
+    {
+        if (!isShaped)
+        {
+            ItemStack[] srcMatrixNoNulls = Arrays.stream(srcMatrix).filter(itemStack -> itemStack != null).toArray(ItemStack[]::new);
+            return (int) Math.ceil(Math.sqrt(srcMatrixNoNulls.length));
+        }
+        else
+        {
+            return getMinimumSubmatrix(srcMatrix).getAxisLength();
+        }
+    }
+
+    /**
      * Scales up the crafting matrix such that it is of the set size, anchoring current contents to the top left.
      * @param srcMatrix - the matrix to format
      * @param targetAxisLength - The axis length to target
@@ -48,25 +66,34 @@ public class CraftMatrixScaler
         if (srcAxisLength > targetAxisLength)
             throw new IllegalArgumentException("Target Axis Length must be >= the current matrix axis length.");
 
-        ItemStack[] newMatrix;
         if (isShaped)
-        {
-            newMatrix = new ItemStack[targetAxisLength * targetAxisLength];
-            for (int i = 0; i < newMatrix.length; i++)
-            {
-                // Map the recipe to the new size, such that it's in the top left of the grid.
-                int targetColumn = i % targetAxisLength;
-                int targetRow = (i - targetColumn) / targetAxisLength;
-                if (targetColumn < srcAxisLength && targetRow < srcAxisLength)
-                    newMatrix[i] = srcMatrix[targetRow * targetColumn];
-                else
-                    newMatrix[i] = null;
-            }
-        }
+            return upscaleShapedCraftMatrix(srcMatrix, targetAxisLength, srcAxisLength);
         else
+            return upscaleShapelessCraftMatrix(srcMatrix, targetAxisLength);
+    }
+
+    @NotNull
+    private static ItemStack[] upscaleShapelessCraftMatrix(ItemStack[] srcMatrix, int targetAxisLength)
+    {
+        ItemStack[] newMatrix = Arrays.copyOf(srcMatrix, targetAxisLength * targetAxisLength);
+        Arrays.fill(newMatrix, srcMatrix.length, newMatrix.length, null);
+        return newMatrix;
+    }
+
+    @NotNull
+    private static ItemStack[] upscaleShapedCraftMatrix(ItemStack[] srcMatrix, int targetAxisLength, int srcAxisLength)
+    {
+        ItemStack[] newMatrix;
+        newMatrix = new ItemStack[targetAxisLength * targetAxisLength];
+        for (int i = 0; i < newMatrix.length; i++)
         {
-            newMatrix = Arrays.copyOf(srcMatrix, targetAxisLength * targetAxisLength);
-            Arrays.fill(newMatrix, srcMatrix.length, newMatrix.length, null);
+            // Map the recipe to the new size, such that it's in the top left of the grid.
+            int targetColumn = i % targetAxisLength;
+            int targetRow = (i - targetColumn) / targetAxisLength;
+            if (targetColumn < srcAxisLength && targetRow < srcAxisLength)
+                newMatrix[i] = srcMatrix[targetRow * targetColumn];
+            else
+                newMatrix[i] = null;
         }
         return newMatrix;
     }
@@ -85,76 +112,108 @@ public class CraftMatrixScaler
 
         int srcAxisLength = (int) Math.ceil(Math.sqrt(srcMatrix.length));
         if (srcAxisLength < targetAxisLength)
-            throw new IllegalArgumentException("Target Axis Length must be <= the current matrix axis length.");
+            throw new IllegalArgumentException("Target Axis Length must be <= the source matrix axis length.");
 
-        ItemStack[] srcMatrixNoNull = (ItemStack[]) Arrays.stream(srcMatrix).filter(itemStack -> itemStack != null).toArray();
-        if (srcMatrixNoNull.length > targetAxisLength * targetAxisLength)
-            throw new IllegalArgumentException("The count of contents in the matrix exceed the new matrix size.");
+        if (getMinimumAxisLength(srcMatrix, isShaped) > targetAxisLength)
+            throw new IllegalArgumentException("The source matrix contents exceed the target matrix.");
 
-        ItemStack[] newMatrix;
         if (isShaped)
-        {
-            newMatrix = new ItemStack[targetAxisLength * targetAxisLength];
-            int contentsStartIndex = getInitialContentsIndex(srcMatrix);
-            int contentsStartColumn = contentsStartIndex % srcAxisLength;
-            int contentsStartRow = (contentsStartIndex - contentsStartColumn) / srcAxisLength;
-
-            int contentsEndIndex = getFinalContentsIndex(srcMatrix);
-            int contentsEndColumn = contentsEndIndex % srcAxisLength;
-            int contentsEndRow = (contentsEndIndex - contentsEndColumn) / srcAxisLength;
-
-            int width = (contentsEndColumn + 1 - contentsStartColumn);
-            int height = (contentsEndRow + 1 - contentsStartRow);
-            if ((width > targetAxisLength) || (height > targetAxisLength))
-                throw new IllegalArgumentException("The shape of contents in the matrix exceed the new matrix width/height.");
-
-            int targetMatrixIndex = 0;
-            for (int i = contentsStartIndex; i <= contentsEndIndex; i++)
-            {
-                int srcColumn = i % srcAxisLength;
-                int srcRow = (i - srcColumn) / srcAxisLength;
-                if (srcColumn < contentsStartColumn || srcColumn > contentsEndColumn)
-                    continue;
-                if (srcRow < contentsStartRow || srcRow > contentsEndRow)
-                    continue;
-
-                newMatrix[targetMatrixIndex] = srcMatrix[i];
-                targetMatrixIndex++;
-            }
-        }
+            return downscaleShapedCraftMatrix(srcMatrix, targetAxisLength, srcAxisLength);
         else
+            return downscaleShapelessCraftMatrix(srcMatrix, targetAxisLength);
+    }
+
+    private static ItemStack[] downscaleShapelessCraftMatrix(ItemStack[] srcMatrix, int targetAxisLength)
+    {
+        ItemStack[] srcMatrixNoNulls = Arrays.stream(srcMatrix).filter(itemStack -> itemStack != null).toArray(ItemStack[]::new);
+        ItemStack[] newMatrix = upscaleShapelessCraftMatrix(srcMatrixNoNulls, targetAxisLength);
+        return newMatrix;
+    }
+
+    @NotNull
+    private static ItemStack[] downscaleShapedCraftMatrix(ItemStack[] srcMatrix, int targetAxisLength, int srcAxisLength)
+    {
+        ItemStack[] newMatrix;
+        newMatrix = new ItemStack[targetAxisLength * targetAxisLength];
+        CraftSubmatrix submatrix = getMinimumSubmatrix(srcMatrix);
+
+        int contentsStartColumn = submatrix.getStartColumn();
+        int contentsStartRow = submatrix.getStartRow();
+
+        int contentsEndColumn = contentsStartColumn + (submatrix.getAxisLength() - 1);
+        int contentsEndRow = contentsStartRow + (submatrix.getAxisLength() - 1);
+
+        for (int srcColumn = contentsStartColumn; srcColumn <= contentsEndColumn; srcColumn++)
         {
-            newMatrix = Arrays.copyOf(srcMatrixNoNull, targetAxisLength * targetAxisLength);
-            Arrays.fill(newMatrix, srcMatrixNoNull.length, newMatrix.length, null);
+            int targetColumn = srcColumn - contentsStartColumn;
+            for (int srcRow = contentsStartRow; srcRow <= contentsEndRow; srcRow++)
+            {
+                int targetRow = srcRow - contentsStartRow;
+
+                int srcIndex = (srcRow * srcAxisLength) + srcColumn;
+                int targetIndex = (targetRow * targetAxisLength) + targetColumn;
+                newMatrix[targetIndex] = srcMatrix[srcIndex];
+            }
         }
         return newMatrix;
     }
 
-    /**
-     * Gets the index of the first non-Null item in the matrix.
-     * @param srcMatrix the matrix to search
-     */
-    private static int getInitialContentsIndex(ItemStack[] srcMatrix)
+    // TODO: Remove if not required
+    /*private static CraftSubmatrix getSubmatrix(ItemStack[] srcMatrix, int targetAxisLength)
     {
+        int srcAxisLength = (int) Math.ceil(Math.sqrt(srcMatrix.length));
+        if (srcAxisLength < targetAxisLength)
+            throw new IllegalArgumentException("Target Axis Length must be <= the source matrix axis length.");
+
+        CraftSubmatrix submatrix = getMinimumSubmatrix(srcMatrix);
+        if (submatrix.getAxisLength() == targetAxisLength)
+            return submatrix;
+        if (submatrix.getAxisLength() > targetAxisLength)
+            throw new IllegalArgumentException("The shape of contents in the matrix exceed the target matrix width/height.");
+
+        int startRow = submatrix.getStartRow();
+        int startColumn = submatrix.getStartColumn();
+        int subAxisLength = submatrix.getAxisLength();
+        int offset = targetAxisLength - subAxisLength;
+        if (((startColumn + subAxisLength) >= srcAxisLength) || ((startRow + subAxisLength) >= srcAxisLength))
+        {
+            if (((startRow + subAxisLength) >= srcAxisLength))
+                submatrix.setStartRow(startRow - offset);
+            if (((startColumn + subAxisLength) >= srcAxisLength))
+                submatrix.setStartColumn(startColumn - offset);
+        }
+        else
+            submatrix.setAxisLength(subAxisLength + offset);
+
+
+    }*/
+
+    private static CraftSubmatrix getMinimumSubmatrix(ItemStack[] srcMatrix)
+    {
+        int srcAxisLength = (int) Math.ceil(Math.sqrt(srcMatrix.length));
+        int minRow = srcAxisLength;
+        int minColumn = srcAxisLength;
+        int maxRow = 0;
+        int maxColumn = 0;
         for (int i = 0; i < srcMatrix.length; i++)
         {
-            if (srcMatrix[i] != null)
-                return i;
-        }
-        throw new IllegalArgumentException("Could not find contents index: Matrix is empty.");
-    }
+            // Get the row & column this index maps to in the matrix...
+            int column = i % srcAxisLength;
+            int row = (i - column) / srcAxisLength;
 
-    /**
-     * Gets the index of the final non-Null item in the matrix.
-     * @param srcMatrix the matrix to search
-     */
-    private static int getFinalContentsIndex(ItemStack[] srcMatrix)
-    {
-        for (int i = srcMatrix.length - 1; i >= 0; i--)
-        {
+            // If the index has an item, make sure the row & column are included.
             if (srcMatrix[i] != null)
-                return i;
+            {
+                minRow = Math.min(row, minRow);
+                maxRow = Math.max(row, maxRow);
+                minColumn = Math.min(column, minColumn);
+                maxColumn = Math.max(column, maxColumn);
+            }
         }
-        throw new IllegalArgumentException("Could not find contents index: Matrix is empty.");
+        int rowLength = (maxRow + 1) - minRow;
+        int columnLength = (maxColumn + 1) - minColumn;
+        int axisLength = Math.max(rowLength, columnLength);
+
+        return new CraftSubmatrix(minRow, minColumn, axisLength);
     }
 }
