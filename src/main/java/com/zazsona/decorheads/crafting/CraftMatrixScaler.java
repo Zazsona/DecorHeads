@@ -60,13 +60,13 @@ public class CraftMatrixScaler
                 if (targetColumn < srcAxisLength && targetRow < srcAxisLength)
                     newMatrix[i] = srcMatrix[targetRow * targetColumn];
                 else
-                    newMatrix[i] = new ItemStack(Material.AIR);
+                    newMatrix[i] = null;
             }
         }
         else
         {
             newMatrix = Arrays.copyOf(srcMatrix, targetAxisLength * targetAxisLength);
-            Arrays.fill(newMatrix, srcMatrix.length, newMatrix.length, new ItemStack(Material.AIR));
+            Arrays.fill(newMatrix, srcMatrix.length, newMatrix.length, null);
         }
         return newMatrix;
     }
@@ -87,8 +87,8 @@ public class CraftMatrixScaler
         if (srcAxisLength < targetAxisLength)
             throw new IllegalArgumentException("Target Axis Length must be <= the current matrix axis length.");
 
-        ItemStack[] srcMatrixNoAir = (ItemStack[]) Arrays.stream(srcMatrix).filter(itemStack -> !itemStack.getType().isAir()).toArray();
-        if (srcMatrixNoAir.length > targetAxisLength * targetAxisLength)
+        ItemStack[] srcMatrixNoNull = (ItemStack[]) Arrays.stream(srcMatrix).filter(itemStack -> itemStack != null).toArray();
+        if (srcMatrixNoNull.length > targetAxisLength * targetAxisLength)
             throw new IllegalArgumentException("The count of contents in the matrix exceed the new matrix size.");
 
         ItemStack[] newMatrix;
@@ -124,42 +124,37 @@ public class CraftMatrixScaler
         }
         else
         {
-            newMatrix = Arrays.copyOf(srcMatrixNoAir, targetAxisLength * targetAxisLength);
-            Arrays.fill(newMatrix, srcMatrixNoAir.length, newMatrix.length, new ItemStack(Material.AIR));
+            newMatrix = Arrays.copyOf(srcMatrixNoNull, targetAxisLength * targetAxisLength);
+            Arrays.fill(newMatrix, srcMatrixNoNull.length, newMatrix.length, null);
         }
         return newMatrix;
     }
 
     /**
-     * Gets the index of the first non-Air item in the matrix.
+     * Gets the index of the first non-Null item in the matrix.
      * @param srcMatrix the matrix to search
      */
     private static int getInitialContentsIndex(ItemStack[] srcMatrix)
     {
         for (int i = 0; i < srcMatrix.length; i++)
         {
-            if (!srcMatrix[i].getType().isAir())
+            if (srcMatrix[i] != null)
                 return i;
         }
-        throw new IllegalArgumentException("Could not find contents index: Matrix is empty or air.");
+        throw new IllegalArgumentException("Could not find contents index: Matrix is empty.");
     }
 
     /**
-     * Gets the index of the final non-Air item in the matrix.
+     * Gets the index of the final non-Null item in the matrix.
      * @param srcMatrix the matrix to search
      */
     private static int getFinalContentsIndex(ItemStack[] srcMatrix)
     {
-        int lastNonAirIndex = -1;
-        for (int i = 0; i < srcMatrix.length; i++)
+        for (int i = srcMatrix.length - 1; i >= 0; i--)
         {
-            if (!srcMatrix[i].getType().isAir())
-                return lastNonAirIndex;
+            if (srcMatrix[i] != null)
+                return i;
         }
-
-        if (lastNonAirIndex == -1)
-            throw new IllegalArgumentException("Could not find contents index: Matrix is empty or air.");
-        else
-            return lastNonAirIndex;
+        throw new IllegalArgumentException("Could not find contents index: Matrix is empty.");
     }
 }

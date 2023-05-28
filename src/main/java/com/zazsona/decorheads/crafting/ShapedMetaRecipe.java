@@ -27,7 +27,8 @@ public class ShapedMetaRecipe implements IMetaRecipe, Listener
 
     public ShapedMetaRecipe(NamespacedKey key, ItemStack result)
     {
-        Preconditions.checkArgument(key != null, "key");
+        Preconditions.checkArgument(key != null, "Key cannot be null");
+        Preconditions.checkArgument(result != null, "Recipe must have non-Null result.");
         Preconditions.checkArgument(!result.getType().isAir(), "Recipe must have non-AIR result.");
         this.key = key;
         this.result = new ItemStack(result);
@@ -96,7 +97,9 @@ public class ShapedMetaRecipe implements IMetaRecipe, Listener
      */
     public MetaIngredient setIngredient(char key, ItemStack itemStack)
     {
-        MetaIngredient ingredient = new MetaIngredient(itemStack, (item, refItem) -> refItem.getType() == item.getType() && refItem.getItemMeta().equals(item.getItemMeta()));
+        MetaIngredient ingredient = new MetaIngredient(itemStack, (item, refItem) ->
+                ((item == null && refItem == null) || (refItem.getType() == item.getType() && refItem.getItemMeta().equals(item.getItemMeta())))
+        );
         return setIngredient(key, ingredient);
     }
 
@@ -176,7 +179,7 @@ public class ShapedMetaRecipe implements IMetaRecipe, Listener
         recipe.setGroup(group);
         recipe.shape(rows);
         for (Map.Entry<Character, MetaIngredient> entry : ingredientsMap.entrySet())
-            recipe.setIngredient(entry.getKey(), (entry.getValue() != null) ? entry.getValue().getMaterial() : Material.AIR);
+            recipe.setIngredient(entry.getKey(), (entry.getValue() != null) ? entry.getValue().getMaterial() : null);
         return recipe;
     }
 

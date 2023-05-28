@@ -27,7 +27,8 @@ public class ShapelessMetaRecipe implements IMetaRecipe, Listener
 
     public ShapelessMetaRecipe(NamespacedKey key, ItemStack result)
     {
-        Preconditions.checkArgument(key != null, "key");
+        Preconditions.checkArgument(key != null, "Key cannot be null.");
+        Preconditions.checkArgument(result != null, "Recipe must have non-Null result.");
         Preconditions.checkArgument(!result.getType().isAir(), "Recipe must have non-AIR result.");
         this.key = key;
         this.result = new ItemStack(result);
@@ -55,7 +56,9 @@ public class ShapelessMetaRecipe implements IMetaRecipe, Listener
      */
     public MetaIngredient addIngredient(ItemStack itemStack)
     {
-        MetaIngredient ingredient = new MetaIngredient(itemStack, (item, refItem) -> refItem.getType() == item.getType() && refItem.getItemMeta().equals(item.getItemMeta()));
+        MetaIngredient ingredient = new MetaIngredient(itemStack, (item, refItem) ->
+                ((item == null && refItem == null) || (refItem.getType() == item.getType() && refItem.getItemMeta().equals(item.getItemMeta())))
+        );
         return addIngredient(ingredient);
     }
 
@@ -152,7 +155,7 @@ public class ShapelessMetaRecipe implements IMetaRecipe, Listener
         ShapelessRecipe recipe = new ShapelessRecipe(key, result);
         recipe.setGroup(group);
         for (MetaIngredient ingredient : ingredients)
-            recipe.addIngredient((ingredient != null) ? ingredient.getMaterial() : Material.AIR);
+            recipe.addIngredient((ingredient != null) ? ingredient.getMaterial() : null);
         return recipe;
     }
 

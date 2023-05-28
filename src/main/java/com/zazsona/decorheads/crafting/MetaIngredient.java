@@ -3,15 +3,13 @@ package com.zazsona.decorheads.crafting;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class MetaIngredient
+public class MetaIngredient implements Comparable<MetaIngredient>
 {
-    /**
-     * Used for empty slots. Acts as "AIR".
-     */
-    public static MetaIngredient NONE = new MetaIngredient(new ItemStack(Material.AIR), (ingredient, refIngredient) -> ingredient.getType().isAir());
+    public static MetaIngredient NONE = new MetaIngredient(null, (ingredient, refIngredient) -> ingredient == refIngredient);
 
     private ItemStack itemStack;
     private IngredientValidityComparator comparator;
@@ -75,5 +73,20 @@ public class MetaIngredient
     public int hashCode()
     {
         return Objects.hash(itemStack, comparator);
+    }
+
+    @Override
+    public int compareTo(@NotNull MetaIngredient oIngredient)
+    {
+        int materialCmp;
+        if (this.getItemStack() == null)
+            materialCmp = (oIngredient.getItemStack() == null) ? 0 : -1;
+        else
+            materialCmp = (oIngredient.getItemStack() == null) ? 1 : oIngredient.getMaterial().getKey().toString().compareTo(oIngredient.getMaterial().getKey().toString());
+
+        if (materialCmp == 0)
+            return Integer.compare(this.hashCode(), oIngredient.hashCode());
+        else
+            return materialCmp;
     }
 }

@@ -2,12 +2,21 @@ package com.zazsona.decorheads.crafting;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
 public class MetaRecipeCraftTreeNode
 {
-    private Comparator<MetaRecipeCraftTreeNode> childComparator = Comparator.comparing(o -> o.getIngredient().getMaterial());
+    private Comparator<MetaRecipeCraftTreeNode> childComparator = (o1, o2) ->
+    {
+        MetaIngredient currentIngredient = o1.getIngredient();
+        MetaIngredient incomingIngredient = o2.getIngredient();
+        if (currentIngredient == null)
+            return (incomingIngredient == null) ? 0 : -1;
+        else
+            return (incomingIngredient == null) ? 1 : currentIngredient.getMaterial().getKey().toString().compareTo(incomingIngredient.getMaterial().getKey().toString());
+    };
 
     private MetaIngredient ingredient;
     private NamespacedKey associatedRecipeKey;
@@ -112,17 +121,30 @@ public class MetaRecipeCraftTreeNode
         return children.contains(node);
     }
 
+    public List<MetaRecipeCraftTreeNode> getChildrenOfType(ItemStack searchStack)
+    {
+        Material material = (searchStack == null) ? null : searchStack.getType();
+        return getChildrenOfType(material);
+    }
+
     public List<MetaRecipeCraftTreeNode> getChildrenOfType(Material searchMaterial)
     {
+        //Bukkit.getLogger().info("Searching For: " + ((searchMaterial == null) ? "null" : searchMaterial.getKey()));
         int lowerIndex = 0;
-        int upperIndex = children.size();
+        int upperIndex = children.size() - 1;
 
-        while (lowerIndex < upperIndex)
+        while (lowerIndex <= upperIndex)
         {
-            int currentIndex = (lowerIndex + upperIndex) / 2;
+            int currentIndex = (int) Math.floor((lowerIndex + upperIndex) / 2);
             MetaRecipeCraftTreeNode currentNode = children.get(currentIndex);
-            Material currentMaterial = currentNode.getIngredient().getMaterial();
-            int currentCompare = currentMaterial.compareTo(searchMaterial);
+            MetaIngredient currentIngredient = currentNode.getIngredient();
+            //Bukkit.getLogger().info("Current Index: " + currentIndex + " (Low: " + lowerIndex+"; High: "+upperIndex+") - "+((currentIngredient == null) ? "null" : currentIngredient.getMaterial().toString()));
+            int currentCompare;
+            if (currentIngredient == null)
+                currentCompare = (searchMaterial == null) ? 0 : -1;
+            else
+                currentCompare = (searchMaterial == null) ? 1 : currentIngredient.getMaterial().getKey().toString().compareTo(searchMaterial.getKey().toString());
+
             if (currentCompare < 0)
                 lowerIndex = currentIndex + 1;
             else if (currentCompare > 0)
@@ -132,22 +154,27 @@ public class MetaRecipeCraftTreeNode
                 ArrayList<MetaRecipeCraftTreeNode> nodes = new ArrayList<>();
                 int materialMatchStartIndex = currentIndex;
                 int materialMatchEndIndex = currentIndex;
-                for (int i = (currentCompare - 1); i >= 0; i--)
+                for (int i = (currentIndex - 1); i >= 0; i--)
                 {
-                    if (children.get(i).getIngredient().getMaterial().equals(searchMaterial))
+                    MetaIngredient childIngredient = children.get(i).getIngredient();
+                    if ((childIngredient != null && childIngredient.getMaterial().equals(searchMaterial)) || (childIngredient == null && searchMaterial == null))
                         materialMatchStartIndex = i;
                     else
                         break;
                 }
-                for (int i = (currentCompare + 1); i < children.size(); i++)
+                for (int i = (currentIndex + 1); i < children.size(); i++)
                 {
-                    if (children.get(i).getIngredient().getMaterial().equals(searchMaterial))
+                    MetaIngredient childIngredient = children.get(i).getIngredient();
+                    if ((childIngredient != null && childIngredient.getMaterial().equals(searchMaterial)) || (childIngredient == null && searchMaterial == null))
                         materialMatchEndIndex = i;
                     else
                         break;
                 }
                 for (int i = materialMatchStartIndex; i <= materialMatchEndIndex; i++)
                     nodes.add(children.get(i));
+
+                //for (MetaRecipeCraftTreeNode treeNode : nodes)
+                //    Bukkit.getLogger().info("Found: " + treeNode.getAssociatedRecipe().getKey());
                 return nodes;
             }
         }

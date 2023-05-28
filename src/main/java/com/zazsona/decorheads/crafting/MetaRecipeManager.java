@@ -20,6 +20,7 @@ public class MetaRecipeManager
     private HashMap<NamespacedKey, RecipePriority> priorityByMetaRecipeKey;
     private HashMap<Integer, MetaRecipeCraftTree> shapedCraftTreeByAxisLength;
     private MetaRecipeCraftTree shapelessCraftTree;
+    private boolean debug;
 
     public static MetaRecipeManager getInstance(Plugin plugin)
     {
@@ -38,6 +39,8 @@ public class MetaRecipeManager
         shapelessCraftTree = new MetaRecipeCraftTree();
 
         Bukkit.getPluginManager().registerEvents(listener, plugin);
+        if (plugin.getConfig().contains("debug") && plugin.getConfig().isBoolean("debug"))
+            debug = plugin.getConfig().getBoolean("debug");
     }
 
     private Listener listener = new Listener()
@@ -50,7 +53,7 @@ public class MetaRecipeManager
 
             // Recipes under crafting_special_* may return AIR for getResult(), whereas the Inventory will have the
             // correct result. As such, we should only set the result when we need to, so we only modify for registered recipes.
-            if (metaRecipeByKey.containsKey(((Keyed) recipe).getKey()))
+            if (recipe != null && metaRecipeByKey.containsKey(((Keyed) recipe).getKey()))
                 e.getInventory().setResult(recipe.getResult());
 
             // Nothing we need to do if it's not a MetaRecipe; leave default behaviour.
@@ -93,8 +96,12 @@ public class MetaRecipeManager
      */
     private List<IMetaRecipe> searchShapelessMetaRecipe(ItemStack[] ingredients)
     {
-        Arrays.sort(ingredients, Comparator.comparing(ItemStack::getType));
-        return searchMetaRecipeTree(shapelessCraftTree.getRoot(), ingredients, 0);
+        ItemStack[] nonNullIngredients = Arrays.stream(ingredients)
+                .filter(itemStack -> itemStack != null)
+                .sorted(Comparator.comparing(o -> o.getType().getKey().toString()))
+                .toArray(ItemStack[]::new);
+
+        return searchMetaRecipeTree(shapelessCraftTree.getRoot(), nonNullIngredients, 0);
     }
 
     /**
@@ -108,20 +115,32 @@ public class MetaRecipeManager
     private List<IMetaRecipe> searchMetaRecipeTree(MetaRecipeCraftTreeNode craftTreeNode, ItemStack[] ingredients, int ingredientIndex)
     {
         ArrayList<IMetaRecipe> recipes = new ArrayList<>();
-        ItemStack ingredient = ingredients[ingredientIndex];
-        List<MetaRecipeCraftTreeNode> nodes = craftTreeNode.getChildrenOfType(ingredient.getType());
-        if (nodes.size() > 0)
-        {
-            for (MetaRecipeCraftTreeNode node : nodes)
-            {
-                if (node.getIngredient().isItemStackIngredientMatch(ingredient))
-                    recipes.addAll(searchMetaRecipeTree(node, ingredients, ++ingredientIndex));
-            }
-        }
-        else
+        if (craftTreeNode.getChildren().size() == 0 && (ingredientIndex >= ingredients.length || Arrays.stream(ingredients, ingredientIndex, ingredients.length).allMatch(itemStack -> itemStack == null)))
         {
             NamespacedKey recipeKey = craftTreeNode.getAssociatedRecipe();
-            recipes.add((IMetaRecipe) getRecipe(recipeKey));
+            if (recipeKey != null)
+            {
+                recipes.add((IMetaRecipe) getRecipe(recipeKey));
+                if (debug)
+                    Bukkit.getLogger().info("Found recipe: " + recipeKey);
+            }
+        }
+        else if ((craftTreeNode.getChildren().size() > 0) && (ingredientIndex < ingredients.length))
+        {
+            ItemStack ingredient = ingredients[ingredientIndex];
+            if (debug)
+                Bukkit.getLogger().info("Slot " + (ingredientIndex + 1) + "/"+ ingredients.length + ": " + ((ingredient == null) ? "EMPTY" : ingredient.getType()));
+
+            List<MetaRecipeCraftTreeNode> nodes = craftTreeNode.getChildrenOfType(ingredient);
+            if (nodes.size() > 0)
+            {
+                for (MetaRecipeCraftTreeNode node : nodes)
+                {
+                    MetaIngredient nodeIngredient = node.getIngredient();
+                    if ((nodeIngredient == null && ingredient == null) || nodeIngredient.isItemStackIngredientMatch(ingredient))
+                        recipes.addAll(searchMetaRecipeTree(node, ingredients, ++ingredientIndex));
+                }
+            }
         }
         return recipes;
     }
@@ -178,6 +197,8 @@ public class MetaRecipeManager
         if (isMetaRegistered)
             return false;
 
+        if (debug)
+            Bukkit.getLogger().info("Loading Meta Recipe: " + metaRecipe.getKey());
         metaRecipeByKey.put(metaRecipe.getKey(), metaRecipe);
         priorityByMetaRecipeKey.put(metaRecipe.getKey(), priority);
 
@@ -186,7 +207,7 @@ public class MetaRecipeManager
         {
             ShapelessMetaRecipe slMetaRecipe = (ShapelessMetaRecipe) metaRecipe;
             ingredients = slMetaRecipe.getIngredientList();
-            ingredients.sort(Comparator.comparing(ingredient -> ingredient.getMaterial()));
+            ingredients.sort(Comparator.naturalOrder());
         }
 
         if (metaRecipe instanceof ShapedMetaRecipe)
@@ -196,9 +217,10 @@ public class MetaRecipeManager
             String[] shape = sMetaRecipe.getShape();
             for (String row : shape)
             {
-                String[] rowElements = row.split("");
-                for (String ingredientKey : rowElements)
-                    ingredients.add(sMetaRecipe.getIngredientMap().getOrDefault(ingredientKey, MetaIngredient.NONE));
+                char[] rowElements = row.toCharArray();
+                for (char ingredientKey : rowElements)
+                    ingredients.add(sMetaRecipe.getIngredientMap().get(ingredientKey));
+
             }
         }
 
@@ -313,6 +335,11 @@ public class MetaRecipeManager
                 topPriority = recipePriority;
             }
         }
+
+        if (debug)
+            Bukkit.getLogger().info(String.format("Highest Priority Recipe: %s (Priority: %s)",
+                                                  ((topRecipe == null) ? "None" : ((Keyed) topRecipe).getKey()),
+                                                  ((topPriority == null) ? "None" : topPriority)));
         return topRecipe;
     }
 
@@ -346,11 +373,17 @@ public class MetaRecipeManager
         }
         if (includeVanilla)
         {
-            Recipe vanillaRecipe = Bukkit.getCraftingRecipe(craftingMatrix, world);
+            // Vanilla getCraftingRecipe() demands a length of 9.
+            ItemStack[] vanillaCraftingMatrix = Arrays.copyOf(craftingMatrix, MAX_MATRIX_AXIS_LENGTH * MAX_MATRIX_AXIS_LENGTH);
+
+            Recipe vanillaRecipe = Bukkit.getCraftingRecipe(vanillaCraftingMatrix, world);
             if (vanillaRecipe != null)
                 recipes.add(vanillaRecipe);
         }
-        return (recipes.size() == 0) ? null : recipes;
+
+        if (debug)
+            Bukkit.getLogger().info("Found " + recipes.size() + " matching recipes.");
+        return recipes;
     }
 
     /**
@@ -385,7 +418,6 @@ public class MetaRecipeManager
                     recipes.add(recipe);
             }
         }
-
         return recipes;
     }
 
@@ -443,5 +475,15 @@ public class MetaRecipeManager
             for (NamespacedKey key : keys)
                 removeRecipe(key);
         }
+    }
+
+    public boolean isDebuggingEnabled()
+    {
+        return debug;
+    }
+
+    public void setDebuggingEnabled(boolean enableDebugging)
+    {
+        this.debug = enableDebugging;
     }
 }

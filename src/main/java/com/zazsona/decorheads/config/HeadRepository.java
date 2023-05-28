@@ -146,6 +146,7 @@ public class HeadRepository
         catch (Exception e)
         {
             Bukkit.getLogger().severe(String.format("[%s] Error when loading recipes: %s", DecorHeadsPlugin.PLUGIN_NAME, e.getMessage()));
+            e.printStackTrace();
             return false;
         }
     }
