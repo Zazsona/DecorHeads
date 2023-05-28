@@ -121,6 +121,16 @@ public class MetaRecipeCraftTreeNode
         return children.contains(node);
     }
 
+    public MetaRecipeCraftTreeNode getChildByAssociatedRecipe(NamespacedKey recipeKey)
+    {
+        for (MetaRecipeCraftTreeNode child : children)
+        {
+            if (child.isAssociatedRecipe(recipeKey))
+                return child;
+        }
+        return null;
+    }
+
     public List<MetaRecipeCraftTreeNode> getChildrenOfType(ItemStack searchStack)
     {
         Material material = (searchStack == null) ? null : searchStack.getType();

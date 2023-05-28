@@ -268,9 +268,25 @@ public class MetaRecipeManager
         boolean isMetaRegistered = metaRecipeByKey.containsKey(key);
         if (isMetaRegistered)
         {
+            IMetaRecipe recipe = metaRecipeByKey.get(key);
             metaRecipeByKey.remove(key);
             priorityByMetaRecipeKey.remove(key);
-            // TODO: Remove from craftTree
+            if (recipe instanceof ShapelessMetaRecipe)
+            {
+                MetaRecipeCraftTreeNode childNode = shapelessCraftTree.getRoot().getChildByAssociatedRecipe(key);
+                shapelessCraftTree.getRoot().removeChild(childNode);
+            }
+
+            if (recipe instanceof ShapedMetaRecipe)
+            {
+                ShapedMetaRecipe shapedRecipe = (ShapedMetaRecipe) recipe;
+                String[] shape = shapedRecipe.getShape();
+                int axisLength = (int) Math.ceil(Math.sqrt(shape.length * shape[0].length()));
+                MetaRecipeCraftTree tree = shapedCraftTreeByAxisLength.get(axisLength);
+                MetaRecipeCraftTreeNode childNode = tree.getRoot().getChildByAssociatedRecipe(key);
+                tree.getRoot().removeChild(childNode);
+            }
+            // TODO: Test
             return true;
         }
         else
