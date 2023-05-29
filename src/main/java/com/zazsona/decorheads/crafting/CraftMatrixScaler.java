@@ -158,36 +158,6 @@ public class CraftMatrixScaler
         return newMatrix;
     }
 
-    // TODO: Remove if not required
-    /*private static CraftSubmatrix getSubmatrix(ItemStack[] srcMatrix, int targetAxisLength)
-    {
-        int srcAxisLength = (int) Math.ceil(Math.sqrt(srcMatrix.length));
-        if (srcAxisLength < targetAxisLength)
-            throw new IllegalArgumentException("Target Axis Length must be <= the source matrix axis length.");
-
-        CraftSubmatrix submatrix = getMinimumSubmatrix(srcMatrix);
-        if (submatrix.getAxisLength() == targetAxisLength)
-            return submatrix;
-        if (submatrix.getAxisLength() > targetAxisLength)
-            throw new IllegalArgumentException("The shape of contents in the matrix exceed the target matrix width/height.");
-
-        int startRow = submatrix.getStartRow();
-        int startColumn = submatrix.getStartColumn();
-        int subAxisLength = submatrix.getAxisLength();
-        int offset = targetAxisLength - subAxisLength;
-        if (((startColumn + subAxisLength) >= srcAxisLength) || ((startRow + subAxisLength) >= srcAxisLength))
-        {
-            if (((startRow + subAxisLength) >= srcAxisLength))
-                submatrix.setStartRow(startRow - offset);
-            if (((startColumn + subAxisLength) >= srcAxisLength))
-                submatrix.setStartColumn(startColumn - offset);
-        }
-        else
-            submatrix.setAxisLength(subAxisLength + offset);
-
-
-    }*/
-
     private static CraftSubmatrix getMinimumSubmatrix(ItemStack[] srcMatrix)
     {
         int srcAxisLength = (int) Math.ceil(Math.sqrt(srcMatrix.length));

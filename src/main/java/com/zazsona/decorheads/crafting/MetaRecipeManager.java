@@ -79,7 +79,6 @@ public class MetaRecipeManager
      */
     private List<IMetaRecipe> searchShapedMetaRecipe(ItemStack[] srcMatrix)
     {
-        // TODO: Test what happens if the recipe is in the bottom right. It should now work.
         if (debug)
             Bukkit.getLogger().info("Searching ShapedMetaRecipes...");
 
@@ -218,7 +217,7 @@ public class MetaRecipeManager
             return false;
 
         if (debug)
-            Bukkit.getLogger().info("Loading Meta Recipe: " + metaRecipe.getKey());
+            Bukkit.getLogger().info("Adding Meta Recipe: " + metaRecipe.getKey() + " (Priority: " + priority + ")");
         metaRecipeByKey.put(metaRecipe.getKey(), metaRecipe);
         priorityByMetaRecipeKey.put(metaRecipe.getKey(), priority);
 
@@ -268,6 +267,9 @@ public class MetaRecipeManager
         boolean isMetaRegistered = metaRecipeByKey.containsKey(key);
         if (isMetaRegistered)
         {
+            if (debug)
+                Bukkit.getLogger().info("Removing Meta Recipe: " + key);
+
             IMetaRecipe recipe = metaRecipeByKey.get(key);
             metaRecipeByKey.remove(key);
             priorityByMetaRecipeKey.remove(key);
@@ -286,7 +288,7 @@ public class MetaRecipeManager
                 MetaRecipeCraftTreeNode childNode = tree.getRoot().getChildByAssociatedRecipe(key);
                 tree.getRoot().removeChild(childNode);
             }
-            // TODO: Test
+
             return true;
         }
         else
@@ -359,8 +361,6 @@ public class MetaRecipeManager
     {
         List<Recipe> craftingRecipes = getCraftingRecipes(craftingMatrix, world, includeVanilla, includeMeta);
 
-        // TODO: Test priorities work
-        // Get the highest priority recipe...
         Recipe topRecipe = null;
         RecipePriority topPriority = null;
         for (Recipe recipe : craftingRecipes)

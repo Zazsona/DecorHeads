@@ -48,7 +48,6 @@ public class ItemLoader
      */
     private static ItemStack loadItem(NamespacedKey key, String snbt, HashMap<String, IHead> headMap) throws IllegalArgumentException, IOException
     {
-        //TODO: Test potion loading - minecraft:potion{Potion:luck}
         String namespace = key.getNamespace();
         if (namespace.equalsIgnoreCase(NamespacedKey.MINECRAFT) || namespace.equalsIgnoreCase(NamespacedKey.BUKKIT))
         {

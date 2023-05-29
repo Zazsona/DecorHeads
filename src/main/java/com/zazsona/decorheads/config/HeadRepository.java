@@ -5,9 +5,7 @@ import com.zazsona.decorheads.config.load.DropFilterLoader;
 import com.zazsona.decorheads.config.load.HeadDropLoader;
 import com.zazsona.decorheads.config.load.HeadLoader;
 import com.zazsona.decorheads.config.load.HeadRecipeLoader;
-import com.zazsona.decorheads.crafting.IMetaRecipe;
-import com.zazsona.decorheads.crafting.MetaRecipeManager;
-import com.zazsona.decorheads.crafting.RecipePriority;
+import com.zazsona.decorheads.crafting.*;
 import com.zazsona.decorheads.headdata.Head;
 import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
@@ -17,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
@@ -257,8 +256,37 @@ public class HeadRepository
      */
     public static boolean loadRecipe(Plugin plugin, IMetaRecipe recipe)
     {
-        // TODO: Dynamically decide the priority of a recipe, depending on whether it's got heads or not.
-        MetaRecipeManager.getInstance(plugin).addRecipe(recipe, RecipePriority.HIGH);
+        // Get the ingredients of the recipe...
+        List<MetaIngredient> ingredients = null;
+        if (recipe instanceof ShapedMetaRecipe)
+        {
+            ShapedMetaRecipe shapedRecipe = (ShapedMetaRecipe) recipe;
+            ingredients = new ArrayList<>(shapedRecipe.getIngredientMap().values());
+        }
+        else if (recipe instanceof ShapelessMetaRecipe)
+        {
+            ShapelessMetaRecipe shapelessRecipe = (ShapelessMetaRecipe) recipe;
+            ingredients = shapelessRecipe.getIngredientList();
+        }
+
+        // If the recipe requires a DecorHeads head, set the priority to HIGH to indicate we're being more specific
+        // than just "any head will do the job", a la vanilla behaviour.
+        RecipePriority priority = RecipePriority.NORMAL;
+        for (MetaIngredient ingredient : ingredients)
+        {
+            if (ingredient == null || ingredient.getItemStack() == null)
+                continue;
+
+            PersistentDataContainer dataContainer = ingredient.getItemStack().getItemMeta().getPersistentDataContainer();
+            if (dataContainer.has(Head.getSkullHeadKeyKey(), PersistentDataType.STRING))
+            {
+                priority = RecipePriority.HIGH;
+                break;
+            }
+        }
+
+        // Add the recipe
+        MetaRecipeManager.getInstance(plugin).addRecipe(recipe, priority);
         loadedRecipes.put(recipe.getKey().getKey(), recipe);
         return true;
     }
