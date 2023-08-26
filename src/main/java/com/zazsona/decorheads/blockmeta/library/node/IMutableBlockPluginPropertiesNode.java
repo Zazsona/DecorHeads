@@ -2,7 +2,7 @@ package com.zazsona.decorheads.blockmeta.library.node;
 
 import org.bukkit.Location;
 
-public interface IMutableNode extends INode
+public interface IMutableBlockPluginPropertiesNode extends IBlockPluginPropertiesNode
 {
     /**
      * Sets the plugin property identified by the key for the block at the given {@link Location}

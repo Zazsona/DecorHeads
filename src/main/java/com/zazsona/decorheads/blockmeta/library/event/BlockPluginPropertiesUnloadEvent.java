@@ -1,12 +1,12 @@
 package com.zazsona.decorheads.blockmeta.library.event;
 
-import com.zazsona.decorheads.blockmeta.library.container.IBlockPluginPropertiesContainer;
+import com.zazsona.decorheads.blockmeta.library.node.IBlockPluginPropertiesNode;
 
-public class BlockPluginPropertiesUnloadEvent extends BlockPluginPropertyEvent
+public class BlockPluginPropertiesUnloadEvent
 {
-    private IBlockPluginPropertiesContainer propertiesContainer;
+    private IBlockPluginPropertiesNode propertiesContainer;
 
-    public BlockPluginPropertiesUnloadEvent(IBlockPluginPropertiesContainer propertiesContainer)
+    public BlockPluginPropertiesUnloadEvent(IBlockPluginPropertiesNode propertiesContainer)
     {
         this.propertiesContainer = propertiesContainer;
     }
@@ -15,7 +15,7 @@ public class BlockPluginPropertiesUnloadEvent extends BlockPluginPropertyEvent
      * Gets propertiesContainer
      * @return propertiesContainer
      */
-    public IBlockPluginPropertiesContainer getPropertiesContainer()
+    public IBlockPluginPropertiesNode getPropertiesContainer()
     {
         return propertiesContainer;
     }

@@ -2,13 +2,11 @@ package com.zazsona.decorheads.blockmeta.library.node;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.Location;
-import org.bukkit.World;
 
 import java.util.*;
 
-public class BlockNode extends Node implements IMutableNode
+public class BlockPluginPropertiesNode extends Node implements IMutableBlockPluginPropertiesNode
 {
     protected static final String SERIALIZED_NAME_KEY = "properties";
 
@@ -16,13 +14,13 @@ public class BlockNode extends Node implements IMutableNode
     @SerializedName(SERIALIZED_NAME_KEY)
     private HashMap<String, String> properties;
 
-    public BlockNode()
+    public BlockPluginPropertiesNode()
     {
         super();
         properties = new HashMap<>();
     }
 
-    public BlockNode(Node parent)
+    public BlockPluginPropertiesNode(Node parent)
     {
         super(parent);
         properties = new HashMap<>();

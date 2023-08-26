@@ -9,21 +9,21 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class ServerNode extends Node implements IMutableNode, IMutableWorldNodeParent
+public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlockPluginPropertiesNode, IMutableWorldBlockPluginPropertiesNodeParent
 {
     protected static final String SERIALIZED_NAME_KEY = "worlds";
 
     @Expose
     @SerializedName(SERIALIZED_NAME_KEY)
-    private HashMap<UUID, WorldNode> children;
+    private HashMap<UUID, WorldBlockPluginPropertiesNode> children;
 
-    public ServerNode()
+    public ServerBlockPluginPropertiesNode()
     {
         super();
         children = new HashMap<>();
     }
 
-    public ServerNode(Node parent)
+    public ServerBlockPluginPropertiesNode(Node parent)
     {
         super(parent);
         children = new HashMap<>();
@@ -48,7 +48,7 @@ public class ServerNode extends Node implements IMutableNode, IMutableWorldNodeP
 
     public String removeBlockProperty(Vector vector, World world, String key)
     {
-        WorldNode worldNode = getWorldNode(world, false);
+        WorldBlockPluginPropertiesNode worldNode = getWorldNode(world, false);
         if (worldNode != null)
             return worldNode.removeBlockProperty(vector, key);
         else
@@ -63,7 +63,7 @@ public class ServerNode extends Node implements IMutableNode, IMutableWorldNodeP
 
     public String getBlockProperty(Vector vector, World world, String key)
     {
-        WorldNode worldNode = getWorldNode(world, false);
+        WorldBlockPluginPropertiesNode worldNode = getWorldNode(world, false);
         if (worldNode != null)
             return worldNode.getBlockProperty(vector, key);
         else
@@ -71,7 +71,7 @@ public class ServerNode extends Node implements IMutableNode, IMutableWorldNodeP
     }
 
     @Override
-    public WorldNode putWorldNode(Location location, WorldNode worldNode)
+    public WorldBlockPluginPropertiesNode putWorldNode(Location location, WorldBlockPluginPropertiesNode worldNode)
     {
         if (worldNode == null)
             throw new NullArgumentException("worldNode");
@@ -81,13 +81,13 @@ public class ServerNode extends Node implements IMutableNode, IMutableWorldNodeP
     }
 
     /**
-     * Sets the {@link WorldNode}, including all its children, for the provided {@link World}, overwriting any
+     * Sets the {@link WorldBlockPluginPropertiesNode}, including all its children, for the provided {@link World}, overwriting any
      * previously set values.
      *
      * @param world the world
      * @param worldNode the WorldNode to set
      */
-    public WorldNode putWorldNode(World world, WorldNode worldNode)
+    public WorldBlockPluginPropertiesNode putWorldNode(World world, WorldBlockPluginPropertiesNode worldNode)
     {
         if (worldNode == null)
             throw new NullArgumentException("worldNode");
@@ -97,18 +97,18 @@ public class ServerNode extends Node implements IMutableNode, IMutableWorldNodeP
     }
 
     @Override
-    public WorldNode removeWorldNode(Location location)
+    public WorldBlockPluginPropertiesNode removeWorldNode(Location location)
     {
         UUID key = getWorldKey(location);
         return children.remove(key);
     }
 
     /**
-     * Removes the {@link WorldNode}, including all its children, for the provided {@link World}.
+     * Removes the {@link WorldBlockPluginPropertiesNode}, including all its children, for the provided {@link World}.
      *
      * @param world the world
      */
-    public WorldNode removeWorldNode(World world)
+    public WorldBlockPluginPropertiesNode removeWorldNode(World world)
     {
         UUID key = getWorldKey(world);
         return children.remove(key);
@@ -133,25 +133,25 @@ public class ServerNode extends Node implements IMutableNode, IMutableWorldNodeP
     }
 
     /**
-     * Returns a new list of contained {@link WorldNode} values
-     * @return a list of contained {@link WorldNode} values
+     * Returns a new list of contained {@link WorldBlockPluginPropertiesNode} values
+     * @return a list of contained {@link WorldBlockPluginPropertiesNode} values
      */
-    public List<WorldNode> getWorldValues()
+    public List<WorldBlockPluginPropertiesNode> getWorldValues()
     {
         return new ArrayList<>(children.values());
     }
 
     /**
-     * Returns a new list of {@link WorldNode} key:value pairs
+     * Returns a new list of {@link WorldBlockPluginPropertiesNode} key:value pairs
      * @return a list of property key:value pairs, with the key a world GUID,
-     * and the value a {@link WorldNode}
+     * and the value a {@link WorldBlockPluginPropertiesNode}
      */
-    public List<Map.Entry<UUID, WorldNode>> getWorldEntries()
+    public List<Map.Entry<UUID, WorldBlockPluginPropertiesNode>> getWorldEntries()
     {
         return new ArrayList<>(children.entrySet());
     }
 
-    public WorldNode getWorldNode(Location location)
+    public WorldBlockPluginPropertiesNode getWorldNode(Location location)
     {
         if (location == null)
             throw new NullArgumentException("location");
@@ -160,11 +160,11 @@ public class ServerNode extends Node implements IMutableNode, IMutableWorldNodeP
     }
 
     /**
-     * Gets the {@link WorldNode} for the world.
+     * Gets the {@link WorldBlockPluginPropertiesNode} for the world.
      * @param world the world
      * @return the WorldNode
      */
-    public WorldNode getWorldNode(World world)
+    public WorldBlockPluginPropertiesNode getWorldNode(World world)
     {
         if (world == null)
             throw new NullArgumentException("world");
@@ -172,11 +172,11 @@ public class ServerNode extends Node implements IMutableNode, IMutableWorldNodeP
         return getWorldNode(world, false);
     }
 
-    private WorldNode getWorldNode(World world, boolean createIfNotExists)
+    private WorldBlockPluginPropertiesNode getWorldNode(World world, boolean createIfNotExists)
     {
         UUID key = getWorldKey(world);
         if (!children.containsKey(key) && createIfNotExists)
-            children.put(key, new WorldNode(this));
+            children.put(key, new WorldBlockPluginPropertiesNode(this));
 
         return children.get(key);
     }

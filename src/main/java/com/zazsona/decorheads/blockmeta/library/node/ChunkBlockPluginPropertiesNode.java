@@ -11,21 +11,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChunkNode extends Node implements IMutableNode, IMutableBlockNodeParent
+public class ChunkBlockPluginPropertiesNode extends Node implements IMutableBlockPluginPropertiesNode, IMutableBlockPluginPropertiesNodeParent
 {
     protected static final String SERIALIZED_NAME_KEY = "blocks";
 
     @Expose
     @SerializedName(SERIALIZED_NAME_KEY)
-    private HashMap<Vector, BlockNode> children;
+    private HashMap<Vector, BlockPluginPropertiesNode> children;
 
-    public ChunkNode()
+    public ChunkBlockPluginPropertiesNode()
     {
         super();
         children = new HashMap<>();
     }
 
-    public ChunkNode(Node parent)
+    public ChunkBlockPluginPropertiesNode(Node parent)
     {
         super(parent);
         children = new HashMap<>();
@@ -50,7 +50,7 @@ public class ChunkNode extends Node implements IMutableNode, IMutableBlockNodePa
 
     public String removeBlockProperty(Vector vector, String key)
     {
-        BlockNode blockNode = getBlockNode(vector, false);
+        BlockPluginPropertiesNode blockNode = getBlockNode(vector, false);
         if (blockNode != null)
             return blockNode.removeBlockProperty(key);
         else
@@ -65,7 +65,7 @@ public class ChunkNode extends Node implements IMutableNode, IMutableBlockNodePa
 
     public String getBlockProperty(Vector vector, String key)
     {
-        BlockNode blockNode = getBlockNode(vector, false);
+        BlockPluginPropertiesNode blockNode = getBlockNode(vector, false);
         if (blockNode != null)
             return blockNode.getBlockProperty(key);
         else
@@ -73,7 +73,7 @@ public class ChunkNode extends Node implements IMutableNode, IMutableBlockNodePa
     }
 
     @Override
-    public BlockNode putBlockNode(Location location, BlockNode blockNode)
+    public BlockPluginPropertiesNode putBlockNode(Location location, BlockPluginPropertiesNode blockNode)
     {
         if (location == null)
             throw new NullArgumentException("location");
@@ -81,7 +81,7 @@ public class ChunkNode extends Node implements IMutableNode, IMutableBlockNodePa
         return putBlockNode(location.toVector(), blockNode);
     }
 
-    public BlockNode putBlockNode(Vector vector, BlockNode blockNode)
+    public BlockPluginPropertiesNode putBlockNode(Vector vector, BlockPluginPropertiesNode blockNode)
     {
         if (vector == null)
             throw new NullArgumentException("vector");
@@ -93,23 +93,23 @@ public class ChunkNode extends Node implements IMutableNode, IMutableBlockNodePa
     }
 
     @Override
-    public BlockNode removeBlockNode(Location location)
+    public BlockPluginPropertiesNode removeBlockNode(Location location)
     {
         return removeBlockNode(location.toVector());
     }
 
-    public BlockNode removeBlockNode(Vector vector)
+    public BlockPluginPropertiesNode removeBlockNode(Vector vector)
     {
         Vector key = getBlockKey(vector);
         return children.remove(key);
     }
 
     @Override
-    public BlockNode getBlockNode(Location location)
+    public BlockPluginPropertiesNode getBlockNode(Location location)
     {
         return getBlockNode(location.toVector());
     }
-    public BlockNode getBlockNode(Vector vector)
+    public BlockPluginPropertiesNode getBlockNode(Vector vector)
     {
         return getBlockNode(vector, false);
     }
@@ -133,29 +133,29 @@ public class ChunkNode extends Node implements IMutableNode, IMutableBlockNodePa
     }
 
     /**
-     * Returns a new list of contained {@link BlockNode} values
-     * @return a list of contained {@link BlockNode} values
+     * Returns a new list of contained {@link BlockPluginPropertiesNode} values
+     * @return a list of contained {@link BlockPluginPropertiesNode} values
      */
-    public List<BlockNode> getBlockValues()
+    public List<BlockPluginPropertiesNode> getBlockValues()
     {
         return new ArrayList<>(children.values());
     }
 
     /**
-     * Returns a new list of {@link BlockNode} key:value pairs
+     * Returns a new list of {@link BlockPluginPropertiesNode} key:value pairs
      * @return a list of property key:value pairs, with the key a representation of block location,
-     * and the value a {@link BlockNode}
+     * and the value a {@link BlockPluginPropertiesNode}
      */
-    public List<Map.Entry<Vector, BlockNode>> getBlockEntries()
+    public List<Map.Entry<Vector, BlockPluginPropertiesNode>> getBlockEntries()
     {
         return new ArrayList<>(children.entrySet());
     }
 
-    private BlockNode getBlockNode(Vector vector, boolean createIfNotExists)
+    private BlockPluginPropertiesNode getBlockNode(Vector vector, boolean createIfNotExists)
     {
         Vector key = getBlockKey(vector);
         if (!children.containsKey(key) && createIfNotExists)
-            children.put(key, new BlockNode(this));
+            children.put(key, new BlockPluginPropertiesNode(this));
 
         return children.get(key);
     }

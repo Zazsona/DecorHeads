@@ -11,21 +11,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WorldNode extends Node implements IMutableNode, IMutableRegionNodeParent
+public class WorldBlockPluginPropertiesNode extends Node implements IMutableBlockPluginPropertiesNode, IMutableRegionBlockPluginPropertiesNodeParent
 {
     protected static final String SERIALIZED_NAME_KEY = "regions";
 
     @Expose
     @SerializedName(SERIALIZED_NAME_KEY)
-    private HashMap<Vector, RegionNode> children;
+    private HashMap<Vector, RegionBlockPluginPropertiesNode> children;
 
-    public WorldNode()
+    public WorldBlockPluginPropertiesNode()
     {
         super();
         children = new HashMap<>();
     }
 
-    public WorldNode(Node parent)
+    public WorldBlockPluginPropertiesNode(Node parent)
     {
         super(parent);
         children = new HashMap<>();
@@ -50,7 +50,7 @@ public class WorldNode extends Node implements IMutableNode, IMutableRegionNodeP
 
     public String removeBlockProperty(Vector vector, String key)
     {
-        RegionNode regionNode = getRegionNode(vector, false);
+        RegionBlockPluginPropertiesNode regionNode = getRegionNode(vector, false);
         if (regionNode != null)
             return regionNode.removeBlockProperty(vector, key);
         else
@@ -65,7 +65,7 @@ public class WorldNode extends Node implements IMutableNode, IMutableRegionNodeP
 
     public String getBlockProperty(Vector vector, String key)
     {
-        RegionNode regionNode = getRegionNode(vector, false);
+        RegionBlockPluginPropertiesNode regionNode = getRegionNode(vector, false);
         if (regionNode != null)
             return regionNode.getBlockProperty(vector, key);
         else
@@ -73,7 +73,7 @@ public class WorldNode extends Node implements IMutableNode, IMutableRegionNodeP
     }
 
     @Override
-    public RegionNode putRegionNode(Location location, RegionNode regionNode)
+    public RegionBlockPluginPropertiesNode putRegionNode(Location location, RegionBlockPluginPropertiesNode regionNode)
     {
         if (location == null)
             throw new NullArgumentException("location");
@@ -81,7 +81,7 @@ public class WorldNode extends Node implements IMutableNode, IMutableRegionNodeP
         return putRegionNode(location.toVector(), regionNode);
     }
 
-    public RegionNode putRegionNode(Vector vector, RegionNode regionNode)
+    public RegionBlockPluginPropertiesNode putRegionNode(Vector vector, RegionBlockPluginPropertiesNode regionNode)
     {
         if (vector == null)
             throw new NullArgumentException("vector");
@@ -93,12 +93,12 @@ public class WorldNode extends Node implements IMutableNode, IMutableRegionNodeP
     }
 
     @Override
-    public RegionNode removeRegionNode(Location location)
+    public RegionBlockPluginPropertiesNode removeRegionNode(Location location)
     {
         return removeRegionNode(location.toVector());
     }
 
-    public RegionNode removeRegionNode(Vector vector)
+    public RegionBlockPluginPropertiesNode removeRegionNode(Vector vector)
     {
         Vector key = getRegionKey(vector);
         return children.remove(key);
@@ -124,39 +124,39 @@ public class WorldNode extends Node implements IMutableNode, IMutableRegionNodeP
     }
 
     /**
-     * Returns a new list of contained {@link RegionNode} values
-     * @return a list of contained {@link RegionNode} values
+     * Returns a new list of contained {@link RegionBlockPluginPropertiesNode} values
+     * @return a list of contained {@link RegionBlockPluginPropertiesNode} values
      */
-    public List<RegionNode> getRegionValues()
+    public List<RegionBlockPluginPropertiesNode> getRegionValues()
     {
         return new ArrayList<>(children.values());
     }
 
     /**
-     * Returns a new list of {@link RegionNode} key:value pairs
+     * Returns a new list of {@link RegionBlockPluginPropertiesNode} key:value pairs
      * @return a list of property key:value pairs, with the key a representation of region location,
-     * and the value a {@link RegionNode}
+     * and the value a {@link RegionBlockPluginPropertiesNode}
      */
-    public List<Map.Entry<Vector, RegionNode>> getRegionEntries()
+    public List<Map.Entry<Vector, RegionBlockPluginPropertiesNode>> getRegionEntries()
     {
         return new ArrayList<>(children.entrySet());
     }
 
-    public RegionNode getRegionNode(Location location)
+    public RegionBlockPluginPropertiesNode getRegionNode(Location location)
     {
         return getRegionNode(location.toVector());
     }
 
-    public RegionNode getRegionNode(Vector vector)
+    public RegionBlockPluginPropertiesNode getRegionNode(Vector vector)
     {
         return getRegionNode(vector, false);
     }
 
-    private RegionNode getRegionNode(Vector vector, boolean createIfNotExists)
+    private RegionBlockPluginPropertiesNode getRegionNode(Vector vector, boolean createIfNotExists)
     {
         Vector key = getRegionKey(vector);
         if (!children.containsKey(key) && createIfNotExists)
-            children.put(key, new RegionNode(this));
+            children.put(key, new RegionBlockPluginPropertiesNode(this));
 
         return children.get(key);
     }

@@ -2,11 +2,6 @@ package com.zazsona.decorheads.blockmeta.library.node;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.zazsona.decorheads.blockmeta.library.container.IMutableBlockPluginPropertiesContainer;
-import com.zazsona.decorheads.blockmeta.library.container.IMutableChunkBlockPluginPropertiesContainer;
-import com.zazsona.decorheads.blockmeta.library.container.IMutableRegionBlockPluginPropertiesContainer;
-import com.zazsona.decorheads.blockmeta.library.event.BlockPluginPropertiesLoadEvent;
-import com.zazsona.decorheads.blockmeta.library.event.BlockPluginPropertiesUnloadEvent;
 import com.zazsona.decorheads.blockmeta.library.event.IBlockPluginPropertiesLoadHandler;
 import com.zazsona.decorheads.blockmeta.library.event.IBlockPluginPropertiesUnloadHandler;
 import org.apache.commons.lang.NullArgumentException;
@@ -17,8 +12,8 @@ import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
-import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
@@ -27,35 +22,46 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
-import java.util.function.Predicate;
-
-// TODO: Attach this so it gets listened to
 
 /**
  * Stores the Block Plugin Properties of all blocks that are currently loaded by the server.
  * (i.e, those in loaded chunks visible to players)
  */
-public class LoadedBlocksPluginProperties implements Listener, IMutableNode
+public class LoadedBlockPluginProperties implements Listener, IMutableBlockPluginPropertiesNode
 {
+    private static HashMap<Plugin, LoadedBlockPluginProperties> instances;
+
     private Plugin plugin;
-    private ServerNode propertiesTree;
+    private ServerBlockPluginPropertiesNode propertiesTree;
     private Gson gson;
     private List<IBlockPluginPropertiesLoadHandler> loadListeners;
     private List<IBlockPluginPropertiesUnloadHandler> unloadListeners;
 
-    public LoadedBlocksPluginProperties(Plugin plugin)
+    public static LoadedBlockPluginProperties getInstance(Plugin plugin)
     {
-        this.propertiesTree = new ServerNode();
+        if (instances.containsKey(plugin))
+            return instances.get(plugin);
+
+        LoadedBlockPluginProperties newInstance = new LoadedBlockPluginProperties(plugin);
+        instances.put(plugin, newInstance);
+        return newInstance;
+    }
+
+    private LoadedBlockPluginProperties(Plugin plugin)
+    {
+        this.plugin = plugin;
+        this.propertiesTree = new ServerBlockPluginPropertiesNode();
         this.gson = new GsonBuilder()
                     .excludeFieldsWithoutExposeAnnotation()
                     .create();
 
         this.loadListeners = new ArrayList<>();
         this.unloadListeners = new ArrayList<>();
+
+        instances.put(plugin, this);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -66,9 +72,9 @@ public class LoadedBlocksPluginProperties implements Listener, IMutableNode
             Chunk chunk = e.getChunk();
             Location location = chunk.getBlock(0, 0, 0).getLocation();
 
-            WorldNode worldNode = propertiesTree.getWorldNode(location);
+            WorldBlockPluginPropertiesNode worldNode = propertiesTree.getWorldNode(location);
             if (worldNode == null)
-                propertiesTree.putWorldNode(location, new WorldNode(propertiesTree));
+                propertiesTree.putWorldNode(location, new WorldBlockPluginPropertiesNode(propertiesTree));
 
             if (worldNode.isRegionInChildren(location))
                 return; // Data present in cache; nothing for us to do.
@@ -77,11 +83,11 @@ public class LoadedBlocksPluginProperties implements Listener, IMutableNode
             if (regionFile.exists())
             {
                 String jsonText = new String(Files.readAllBytes(regionFile.toPath()));
-                RegionNode regionNodeFromFile = gson.fromJson(jsonText, RegionNode.class);
+                RegionBlockPluginPropertiesNode regionNodeFromFile = gson.fromJson(jsonText, RegionBlockPluginPropertiesNode.class);
                 worldNode.putRegionNode(location, regionNodeFromFile);
             }
             else
-                worldNode.putRegionNode(location, new RegionNode(worldNode));
+                worldNode.putRegionNode(location, new RegionBlockPluginPropertiesNode(worldNode));
         }
         catch (IOException ex)
         {
@@ -93,48 +99,17 @@ public class LoadedBlocksPluginProperties implements Listener, IMutableNode
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldSave(WorldSaveEvent e)
     {
-        World world = e.getWorld();
-        WorldNode worldNode = propertiesTree.getWorldNode(world);
-        int initialCachedRegions = worldNode.getRegionValues().size();
-        plugin.getLogger().fine("Saving Block Plugin Properties for " + world.getName() + ". (Regions to save: " + initialCachedRegions + ")");
+        saveWorld(e.getWorld());
+    }
 
-        try
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPluginDisable(PluginDisableEvent e)
+    {
+        if (e.getPlugin() == plugin)
         {
-            Chunk[] loadedChunks = world.getLoadedChunks();
-            for (Map.Entry<Vector, RegionNode> regionEntry : worldNode.getRegionEntries())
-            {
-                // Get the Region Co-ordinates
-                int regionX = regionEntry.getKey().getBlockX();
-                int regionZ = regionEntry.getKey().getBlockZ();
-
-                // Write the Region Node to file
-                File regionFile = getRegionFile(plugin, world, regionX, regionZ);
-                RegionNode regionNode = regionEntry.getValue();
-                String jsonText = gson.toJson(regionNode);
-                BufferedWriter writer = Files.newBufferedWriter(regionFile.toPath(), StandardOpenOption.WRITE);
-                writer.write(jsonText);
-                writer.flush();
-                writer.close();
-
-                // Remove region from cache if it's no longer loaded on the server
-                boolean isRegionActive = false;
-                for (Chunk chunk : loadedChunks)
-                {
-                    Vector chunkVector = chunk.getBlock(0, 0, 0).getLocation().toVector();
-                    isRegionActive = regionNode.isChunkInChildren(chunkVector);
-                    if (isRegionActive)
-                        break;
-                }
-                if (!isRegionActive)
-                    worldNode.removeRegionNode(regionEntry.getKey());
-            }
-            int remainingCachedRegions = worldNode.getRegionValues().size();
-            plugin.getLogger().fine("Successfully saved Block Plugin Properties for " + world.getName() + ". (Cached region count: " + initialCachedRegions + " => " + remainingCachedRegions + ")");
-        }
-        catch (IOException ex)
-        {
-            plugin.getLogger().severe("Failed to save Block Plugin Properties for World \"" + e.getWorld().getName() + "\": " + ex.getMessage());
-            ex.printStackTrace();
+            List<World> worlds = Bukkit.getWorlds();
+            for (World world : worlds)
+                saveWorld(world);
         }
     }
 
@@ -183,6 +158,52 @@ public class LoadedBlocksPluginProperties implements Listener, IMutableNode
             return propertiesTree.getBlockProperty(location, key);
         else
             throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+    }
+
+    private void saveWorld(World world)
+    {
+        WorldBlockPluginPropertiesNode worldNode = propertiesTree.getWorldNode(world);
+        int initialCachedRegions = worldNode.getRegionValues().size();
+        plugin.getLogger().fine("Saving Block Plugin Properties for " + world.getName() + ". (Regions to save: " + initialCachedRegions + ")");
+
+        try
+        {
+            Chunk[] loadedChunks = world.getLoadedChunks();
+            for (Map.Entry<Vector, RegionBlockPluginPropertiesNode> regionEntry : worldNode.getRegionEntries())
+            {
+                // Get the Region Co-ordinates
+                int regionX = regionEntry.getKey().getBlockX();
+                int regionZ = regionEntry.getKey().getBlockZ();
+
+                // Write the Region Node to file
+                File regionFile = getRegionFile(plugin, world, regionX, regionZ);
+                RegionBlockPluginPropertiesNode regionNode = regionEntry.getValue();
+                String jsonText = gson.toJson(regionNode);
+                BufferedWriter writer = Files.newBufferedWriter(regionFile.toPath(), StandardOpenOption.WRITE);
+                writer.write(jsonText);
+                writer.flush();
+                writer.close();
+
+                // Remove region from cache if it's no longer loaded on the server
+                boolean isRegionActive = false;
+                for (Chunk chunk : loadedChunks)
+                {
+                    Vector chunkVector = chunk.getBlock(0, 0, 0).getLocation().toVector();
+                    isRegionActive = regionNode.isChunkInChildren(chunkVector);
+                    if (isRegionActive)
+                        break;
+                }
+                if (!isRegionActive)
+                    worldNode.removeRegionNode(regionEntry.getKey());
+            }
+            int remainingCachedRegions = worldNode.getRegionValues().size();
+            plugin.getLogger().fine("Successfully saved Block Plugin Properties for " + world.getName() + ". (Cached region count: " + initialCachedRegions + " => " + remainingCachedRegions + ")");
+        }
+        catch (IOException ex)
+        {
+            plugin.getLogger().severe("Failed to save Block Plugin Properties for World \"" + world.getName() + "\": " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
     private File getRegionFile(Plugin plugin, World world, int regionX, int regionZ)

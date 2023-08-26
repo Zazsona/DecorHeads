@@ -3,7 +3,6 @@ package com.zazsona.decorheads.blockmeta.library.node;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.NullArgumentException;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
@@ -12,21 +11,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RegionNode extends Node implements IMutableNode, IMutableChunkNodeParent
+public class RegionBlockPluginPropertiesNode extends Node implements IMutableBlockPluginPropertiesNode, IMutableChunkBlockPluginPropertiesNodeParent
 {
     protected static final String SERIALIZED_NAME_KEY = "chunks";
 
     @Expose
     @SerializedName(SERIALIZED_NAME_KEY)
-    private HashMap<Vector, ChunkNode> children;
+    private HashMap<Vector, ChunkBlockPluginPropertiesNode> children;
 
-    public RegionNode()
+    public RegionBlockPluginPropertiesNode()
     {
         super();
         children = new HashMap<>();
     }
 
-    public RegionNode(Node parent)
+    public RegionBlockPluginPropertiesNode(Node parent)
     {
         super(parent);
         children = new HashMap<>();
@@ -51,7 +50,7 @@ public class RegionNode extends Node implements IMutableNode, IMutableChunkNodeP
 
     public String removeBlockProperty(Vector vector, String key)
     {
-        ChunkNode chunkNode = getChunkNode(vector, false);
+        ChunkBlockPluginPropertiesNode chunkNode = getChunkNode(vector, false);
         if (chunkNode != null)
             return chunkNode.removeBlockProperty(vector, key);
         else
@@ -66,7 +65,7 @@ public class RegionNode extends Node implements IMutableNode, IMutableChunkNodeP
 
     public String getBlockProperty(Vector vector, String key)
     {
-        ChunkNode chunkNode = getChunkNode(vector, false);
+        ChunkBlockPluginPropertiesNode chunkNode = getChunkNode(vector, false);
         if (chunkNode != null)
             return chunkNode.getBlockProperty(vector, key);
         else
@@ -74,7 +73,7 @@ public class RegionNode extends Node implements IMutableNode, IMutableChunkNodeP
     }
 
     @Override
-    public ChunkNode putChunkNode(Location location, ChunkNode chunkNode)
+    public ChunkBlockPluginPropertiesNode putChunkNode(Location location, ChunkBlockPluginPropertiesNode chunkNode)
     {
         if (location == null)
             throw new NullArgumentException("location");
@@ -82,7 +81,7 @@ public class RegionNode extends Node implements IMutableNode, IMutableChunkNodeP
         return putChunkNode(location.toVector(), chunkNode);
     }
 
-    public ChunkNode putChunkNode(Vector vector, ChunkNode chunkNode)
+    public ChunkBlockPluginPropertiesNode putChunkNode(Vector vector, ChunkBlockPluginPropertiesNode chunkNode)
     {
         if (vector == null)
             throw new NullArgumentException("vector");
@@ -94,12 +93,12 @@ public class RegionNode extends Node implements IMutableNode, IMutableChunkNodeP
     }
 
     @Override
-    public ChunkNode removeChunkNode(Location location)
+    public ChunkBlockPluginPropertiesNode removeChunkNode(Location location)
     {
         return removeChunkNode(location.toVector());
     }
 
-    public ChunkNode removeChunkNode(Vector vector)
+    public ChunkBlockPluginPropertiesNode removeChunkNode(Vector vector)
     {
         Vector key = getChunkKey(vector);
         return children.remove(key);
@@ -125,38 +124,38 @@ public class RegionNode extends Node implements IMutableNode, IMutableChunkNodeP
     }
 
     /**
-     * Returns a new list of contained {@link ChunkNode} values
-     * @return a list of contained {@link ChunkNode} values
+     * Returns a new list of contained {@link ChunkBlockPluginPropertiesNode} values
+     * @return a list of contained {@link ChunkBlockPluginPropertiesNode} values
      */
-    public List<ChunkNode> getChunkValues()
+    public List<ChunkBlockPluginPropertiesNode> getChunkValues()
     {
         return new ArrayList<>(children.values());
     }
 
     /**
-     * Returns a new list of {@link ChunkNode} key:value pairs
+     * Returns a new list of {@link ChunkBlockPluginPropertiesNode} key:value pairs
      * @return a list of property key:value pairs, with the key a representation of chunk location,
-     * and the value a {@link ChunkNode}
+     * and the value a {@link ChunkBlockPluginPropertiesNode}
      */
-    public List<Map.Entry<Vector, ChunkNode>> getChunkEntries()
+    public List<Map.Entry<Vector, ChunkBlockPluginPropertiesNode>> getChunkEntries()
     {
         return new ArrayList<>(children.entrySet());
     }
 
-    public ChunkNode getChunkNode(Location location)
+    public ChunkBlockPluginPropertiesNode getChunkNode(Location location)
     {
         return getChunkNode(location.toVector());
     }
-    public ChunkNode getChunkNode(Vector vector)
+    public ChunkBlockPluginPropertiesNode getChunkNode(Vector vector)
     {
         return getChunkNode(vector, false);
     }
 
-    private ChunkNode getChunkNode(Vector vector, boolean createIfNotExists)
+    private ChunkBlockPluginPropertiesNode getChunkNode(Vector vector, boolean createIfNotExists)
     {
         Vector key = getChunkKey(vector);
         if (!children.containsKey(key) && createIfNotExists)
-            children.put(key, new ChunkNode(this));
+            children.put(key, new ChunkBlockPluginPropertiesNode(this));
 
         return children.get(key);
     }
