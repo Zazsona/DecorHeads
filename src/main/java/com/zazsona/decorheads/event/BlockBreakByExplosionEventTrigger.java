@@ -21,6 +21,8 @@ public class BlockBreakByExplosionEventTrigger implements Listener
             Block block = (Block) blockIterator.next();
             BlockBreakByExplosionEvent blockBrokenEvent = new BlockBreakByExplosionEvent(block, e.getBlock(), e.blockList(), e.getYield());
             Bukkit.getPluginManager().callEvent(blockBrokenEvent);
+            if (blockBrokenEvent.isCancelled())
+                blockIterator.remove();
         }
     }
 
@@ -33,6 +35,8 @@ public class BlockBreakByExplosionEventTrigger implements Listener
             Block block = (Block) blockIterator.next();
             BlockBreakByExplosionEvent blockBrokenEvent = new BlockBreakByExplosionEvent(block, e.getEntity(), e.blockList(), e.getYield());
             Bukkit.getPluginManager().callEvent(blockBrokenEvent);
+            if (blockBrokenEvent.isCancelled())
+                blockIterator.remove();
         }
     }
 }
