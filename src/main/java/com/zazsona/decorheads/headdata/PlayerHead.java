@@ -2,8 +2,8 @@ package com.zazsona.decorheads.headdata;
 
 import com.google.gson.Gson;
 import com.zazsona.decorheads.DecorHeadsPlugin;
-import com.zazsona.decorheads.DecorHeadsUtil;
-import com.zazsona.decorheads.apiresponse.ProfileResponse;
+import com.zazsona.decorheads.api.PlayerProfileAPI;
+import com.zazsona.decorheads.api.response.ProfileResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 public class PlayerHead extends Head
 {
@@ -41,6 +42,36 @@ public class PlayerHead extends Head
         return new NamespacedKey(DecorHeadsPlugin.getInstance(), "Texture");
     }
 
+    /**
+     * Attempts to extract a Player's Name from a head name, using the provided template
+     * @param headInstanceName - The name of a head, e.g "Zazsona's Head"
+     * @param headNameTemplate - The template for a head's name, e.g "%PlayerName%'s Head"
+     * @return the player's name, or null if no valid extract could be found.
+     */
+    public static String getPlayerNameFromHead(String headInstanceName, String headNameTemplate)
+    {
+        try
+        {
+            String playerName = null;
+            String headTemplateLwr = headNameTemplate.toLowerCase();
+            String playerNamePlaceholderLwr = PlayerHead.PLAYER_NAME_PLACEHOLDER.toLowerCase();
+            if (headTemplateLwr.contains(playerNamePlaceholderLwr))
+            {
+                int startIndex = headTemplateLwr.indexOf(playerNamePlaceholderLwr);
+                char endChar = headNameTemplate.charAt(startIndex + playerNamePlaceholderLwr.length()); // Using "headNameTemplate" here to get the case-matching terminating char
+                playerName = headInstanceName.substring(startIndex).substring(0, headInstanceName.indexOf(endChar));
+                if (Pattern.matches("[a-zA-Z0-9_]{2,16}", playerName))
+                    return playerName;
+            }
+            return playerName;
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            // Head Instance's Name does not comply with the Head Name Template; name cannot be extracted.
+            throw new IllegalArgumentException("The provided headInstanceName does not follow the headNameTemplate pattern.");
+        }
+    }
+
     @Override
     public String getName()
     {
@@ -58,10 +89,9 @@ public class PlayerHead extends Head
         return StringUtils.replaceIgnoreCase(headNameFormat, PLAYER_NAME_PLACEHOLDER, playerName);
     }
 
-    @Override
-    public String getTexture()
+    public String getPlayerNameFromHead(String headInstanceName)
     {
-        return PLAYER_SKIN_PLACEHOLDER;
+        return getPlayerNameFromHead(headInstanceName, headNameFormat);
     }
 
     @Override
@@ -80,7 +110,7 @@ public class PlayerHead extends Head
     {
         try
         {
-            String uuid = DecorHeadsUtil.fetchPlayerUUID(playerName);
+            String uuid = PlayerProfileAPI.fetchPlayerUUID(playerName);
             return createItem(UUID.fromString(uuid));
         }
         catch (IOException | NullPointerException e)
@@ -98,7 +128,7 @@ public class PlayerHead extends Head
     {
         try
         {
-            ProfileResponse pr = DecorHeadsUtil.fetchPlayerProfile(uuid);
+            ProfileResponse pr = PlayerProfileAPI.fetchPlayerProfile(uuid);
             String encodedTextureData = pr.getPropertyByName(TEXTURES_KEY).getValue();
             String textureDataJson = new String(Base64.getDecoder().decode(encodedTextureData));
             Gson gson = new Gson();
@@ -124,7 +154,7 @@ public class PlayerHead extends Head
     {
         try
         {
-            ProfileResponse pr = DecorHeadsUtil.fetchPlayerProfile(uuid);
+            ProfileResponse pr = PlayerProfileAPI.fetchPlayerProfile(uuid);
             String skullName = getPrettyName(pr.getName());
             ItemStack skull = createSkull(skullName, texture);
             ItemMeta meta = applyDecorHeadsPlayerSkullMeta(skull.getItemMeta(), uuid.toString(), texture);

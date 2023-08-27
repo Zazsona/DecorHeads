@@ -1,4 +1,4 @@
-package com.zazsona.decorheads.apiresponse;
+package com.zazsona.decorheads.api.response;
 
 public class Property
 {

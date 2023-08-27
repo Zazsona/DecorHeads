@@ -1,7 +1,6 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
-import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.exceptions.InvalidHeadException;
 import com.zazsona.decorheads.headdata.IHead;
@@ -68,7 +67,7 @@ public class SpawnHeadCommand implements CommandExecutor
             {
                 String headIdentifier = StringUtils.join(args, " ", 0, args.length);
                 IHead head = HeadRepository.matchLoadedHead(headIdentifier.trim());
-                String playerName = DecorHeadsUtil.extractPlayerNameFromHead(headIdentifier, head.getName());
+                String playerName = PlayerHead.getPlayerNameFromHead(headIdentifier, head.getName());
                 ItemStack headStack = getHeadItem(head, playerName);
                 spawnHead((Player) sender, headStack);
             }

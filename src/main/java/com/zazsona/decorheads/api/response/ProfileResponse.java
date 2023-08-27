@@ -1,9 +1,10 @@
-package com.zazsona.decorheads.apiresponse;
+package com.zazsona.decorheads.api.response;
 
-public class NameUUIDResponse
+public class ProfileResponse
 {
     private String id;
     private String name;
+    private Property[] properties;
     private String error;
 
     /**
@@ -24,6 +25,26 @@ public class NameUUIDResponse
     public String getName()
     {
         return name;
+    }
+
+    /**
+     * Gets properties
+     *
+     * @return properties
+     */
+    public Property[] getProperties()
+    {
+        return properties;
+    }
+
+    public Property getPropertyByName(String name)
+    {
+        for (Property property : properties)
+        {
+            if (property.getName().equalsIgnoreCase(name))
+                return property;
+        }
+        return null;
     }
 
     public boolean isSuccess()

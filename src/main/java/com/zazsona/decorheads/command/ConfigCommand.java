@@ -1,10 +1,10 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
-import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.DropType;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.UpdateNotificationLevel;
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -104,7 +104,7 @@ public class ConfigCommand implements CommandExecutor
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append("Invalid notification level. Supported levels:\n");
                     for (UpdateNotificationLevel level : UpdateNotificationLevel.values())
-                        stringBuilder.append(DecorHeadsUtil.capitaliseName(level.toString())).append(", ");
+                        stringBuilder.append(WordUtils.capitalizeFully(level.toString().replace('_', ' '))).append(", ");
                     stringBuilder.setLength(stringBuilder.length() - 2);
                     throw new IllegalArgumentException(stringBuilder.toString());
                 }
@@ -142,7 +142,7 @@ public class ConfigCommand implements CommandExecutor
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.CRAFTING_KEY)).append((config.isCraftingEnabled()) ? onColour : offColour).append((config.isCraftingEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.DROPS_KEY)).append((config.isDropsEnabled()) ? onColour : offColour).append((config.isDropsEnabled()) ? onText : offText).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.ENVIRONMENTAL_DROPS_KEY)).append((config.isEnvironmentalDropsEnabled()) ? onColour : offColour).append((config.isEnvironmentalDropsEnabled()) ? onText : offText).append("\n");
-        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.UPDATE_NOTIFICATIONS_KEY)).append((config.getUpdateNotificationsLevel() != UpdateNotificationLevel.DISABLED) ? onColour : offColour).append(DecorHeadsUtil.capitaliseName(config.getUpdateNotificationsLevel().toString())).append("\n");
+        contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.UPDATE_NOTIFICATIONS_KEY)).append((config.getUpdateNotificationsLevel() != UpdateNotificationLevel.DISABLED) ? onColour : offColour).append(WordUtils.capitalizeFully(config.getUpdateNotificationsLevel().toString().replace('_', ' '))).append("\n");
         contentBuilder.append(ChatColor.WHITE).append(String.format("%s: ", PluginConfig.HEAD_META_PATCHER_KEY)).append((config.isHeadMetaPatcherEnabled()) ? onColour : offColour).append((config.isHeadMetaPatcherEnabled()) ? onText : offText);
         String contentWithHeader = CommandUtil.addHeader(String.format("%s Config", DecorHeadsPlugin.PLUGIN_NAME), contentBuilder.toString());
         return contentWithHeader;

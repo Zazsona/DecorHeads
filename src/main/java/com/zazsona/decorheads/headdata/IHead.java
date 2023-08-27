@@ -23,12 +23,6 @@ public interface IHead
     String getPrettyName();
 
     /**
-     * The head's texture, in base64
-     * @return base64 head data string
-     */
-    String getTexture();
-
-    /**
      * Creates an {@link ItemStack} of this head
      * @return the ItemStack
      */

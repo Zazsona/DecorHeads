@@ -1,7 +1,6 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
-import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.config.HeadRepository;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.crafting.IMetaRecipe;
@@ -173,7 +172,7 @@ public class WikiCommand implements CommandExecutor
             return;
         }
 
-        String playerName = DecorHeadsUtil.extractPlayerNameFromHead(headName, head.getName());
+        String playerName = PlayerHead.getPlayerNameFromHead(headName, head.getName());
         PreviewInventory previewInventory = getPreviewInventory(head, playerName);
         Player player = (Player) sender;
         previewInventory.showInventory(player);

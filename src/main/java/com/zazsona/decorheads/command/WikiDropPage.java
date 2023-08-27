@@ -1,11 +1,12 @@
 package com.zazsona.decorheads.command;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
-import com.zazsona.decorheads.DecorHeadsUtil;
 import com.zazsona.decorheads.DropType;
+import com.zazsona.decorheads.api.PlayerProfileAPI;
 import com.zazsona.decorheads.drops.drops.IDrop;
 import com.zazsona.decorheads.drops.filters.BlockFilter;
 import com.zazsona.decorheads.drops.filters.IDropFilter;
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 
@@ -32,7 +33,7 @@ public class WikiDropPage implements IWikiPage
     private String buildPage(IDrop drop)
     {
         StringBuilder pageBuilder = new StringBuilder();
-        pageBuilder.append(borderChar).append(" Drop Type: ").append(formatScalar(DecorHeadsUtil.capitaliseName(drop.getDropType().toString()))).append("\n");
+        pageBuilder.append(borderChar).append(" Drop Type: ").append(formatScalar(drop.getDropType().toString())).append("\n");
         pageBuilder.append(borderChar).append(" Drop Rate: ").append(formatScalar((drop.getDropRate() * 100.0f)+"%")).append("\n");
         pageBuilder.append(CommandUtil.addHeader("How to Drop", ""));
         List<IDropFilter> dropFilters = drop.getDropFilters();
@@ -94,7 +95,7 @@ public class WikiDropPage implements IWikiPage
     {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(ChatColor.ITALIC);
-        stringBuilder.append(DecorHeadsUtil.capitaliseName(value.toString()));
+        stringBuilder.append(WordUtils.capitalizeFully(value.toString().replace('_', ' ')));
         stringBuilder.append(ChatColor.RESET);
         return stringBuilder.toString();
     }
@@ -115,7 +116,7 @@ public class WikiDropPage implements IWikiPage
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(ChatColor.ITALIC);
         for (Enum enumEntry : enums)
-            stringBuilder.append(DecorHeadsUtil.capitaliseName(enumEntry.toString())).append(", ");
+            stringBuilder.append(WordUtils.capitalizeFully(enumEntry.toString().replace('_', ' '))).append(", ");
         stringBuilder.setLength(stringBuilder.length()-2); //Remove final ", "
         stringBuilder.append(ChatColor.RESET);
         return stringBuilder.toString();
@@ -128,7 +129,7 @@ public class WikiDropPage implements IWikiPage
         for (NamespacedKey keyEntry : keys)
         {
             String suffix = (keyEntry.getNamespace().equalsIgnoreCase(DecorHeadsPlugin.PLUGIN_NAME)) ? " (Head)" : "";
-            stringBuilder.append(DecorHeadsUtil.capitaliseName(keyEntry.getKey())).append(suffix).append(", ");
+            stringBuilder.append(WordUtils.capitalizeFully(keyEntry.getKey().replace('_', ' '))).append(suffix).append(", ");
         }
         stringBuilder.setLength(stringBuilder.length()-2); //Remove final ", "
         stringBuilder.append(ChatColor.RESET);
@@ -153,7 +154,7 @@ public class WikiDropPage implements IWikiPage
         stringBuilder.append(ChatColor.ITALIC);
         for (String uuid : uuids)
         {
-            String playerName = DecorHeadsUtil.fetchPlayerName(UUID.fromString(uuid));
+            String playerName = PlayerProfileAPI.fetchPlayerName(UUID.fromString(uuid));
             if (playerName != null)
                 stringBuilder.append(playerName).append(", ");
         }

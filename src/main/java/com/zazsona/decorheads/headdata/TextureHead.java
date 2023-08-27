@@ -20,7 +20,10 @@ public class TextureHead extends Head
         return name;
     }
 
-    @Override
+    /**
+     * The head's texture, in base64
+     * @return base64 head data string
+     */
     public String getTexture()
     {
         return texture;

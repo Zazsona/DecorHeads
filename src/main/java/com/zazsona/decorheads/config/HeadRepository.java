@@ -11,6 +11,9 @@ import com.zazsona.decorheads.headdata.IHead;
 import com.zazsona.decorheads.headdata.PlayerHead;
 import com.zazsona.decorheads.drops.drops.IDrop;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -402,7 +405,27 @@ public class HeadRepository
     }
 
     /**
-     * Gets a loaded head.<br>
+     * Gets a loaded head through approximation. For exact matches, use {@link HeadRepository#getLoadedHead(String)}<br>
+     * This first attempts to match by the head key (case-insensitive)<br>
+     * If that fails, then a match is attempting the head's name (case-insensitive).
+     * For heads that utilise the %PlayerName% variable in their names, matches will be made provided that the stand-in
+     * value satisfies the following RegExp: [a-zA-Z0-9_]{2,16}
+     * @param block the block with the head
+     * @return the matched head, or null if no match is found.
+     */
+    @SuppressWarnings("deprecation") // Skull::getOwner() usage is required here, as the head name is custom. It does not belong to a player.
+    public static IHead matchLoadedHead(Block block)
+    {
+        if (block.getBlockData().getMaterial() != Material.PLAYER_HEAD && block.getBlockData().getMaterial() != Material.PLAYER_WALL_HEAD)
+            return null;
+
+        Skull blockSkull = (Skull) block.getState();
+        String instanceName = blockSkull.getOwner();
+        return matchLoadedHead(instanceName);
+    }
+
+    /**
+     * Gets a loaded head through approximation. For exact matches, use {@link HeadRepository#getLoadedHead(String)}<br>
      * This first attempts to match by the head key (case-insensitive)<br>
      * If that fails, then a match is attempting the head's name (case-insensitive).
      * For heads that utilise the %PlayerName% variable in their names, matches will be made provided that the stand-in
