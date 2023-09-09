@@ -143,6 +143,15 @@ public class LoadedBlockPluginProperties implements Listener, IMutableBlockPlugi
     }
 
     @Override
+    public void putBlockProperties(Location location, Map<String, String> keyValueMap)
+    {
+        if (location.getChunk().isLoaded())
+            propertiesTree.putBlockProperties(location, keyValueMap);
+        else
+            throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+    }
+
+    @Override
     public String removeBlockProperty(Location location, String key)
     {
         if (location.getChunk().isLoaded())
@@ -152,10 +161,28 @@ public class LoadedBlockPluginProperties implements Listener, IMutableBlockPlugi
     }
 
     @Override
+    public void removeBlockProperties(Location location, String... keys)
+    {
+        if (location.getChunk().isLoaded())
+            propertiesTree.removeBlockProperties(location, keys);
+        else
+            throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+    }
+
+    @Override
     public String getBlockProperty(Location location, String key)
     {
         if (location.getChunk().isLoaded())
             return propertiesTree.getBlockProperty(location, key);
+        else
+            throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+    }
+
+    @Override
+    public Map<String, String> getBlockProperties(Location location, String... keys)
+    {
+        if (location.getChunk().isLoaded())
+            return propertiesTree.getBlockProperties(location, keys);
         else
             throw new IllegalArgumentException("Location is not loaded by the server: " + location);
     }

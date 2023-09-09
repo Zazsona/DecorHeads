@@ -37,15 +37,32 @@ public class ChunkBlockPluginPropertiesNode extends Node implements IMutableBloc
         return putBlockProperty(location.toVector(), key, value);
     }
 
+    @Override
+    public void putBlockProperties(Location location, Map<String, String> keyValueMap)
+    {
+        putBlockProperties(location.toVector(), keyValueMap);
+    }
+
     public String putBlockProperty(Vector vector, String key, String value)
     {
         return getBlockNode(vector, true).putBlockProperty(key, value);
+    }
+
+    public void putBlockProperties(Vector vector, Map<String, String> keyValueMap)
+    {
+        getBlockNode(vector, true).putBlockProperties(keyValueMap);
     }
 
     @Override
     public String removeBlockProperty(Location location, String key)
     {
         return removeBlockProperty(location.toVector(), key);
+    }
+
+    @Override
+    public void removeBlockProperties(Location location, String... keys)
+    {
+        removeBlockProperties(location.toVector(), keys);
     }
 
     public String removeBlockProperty(Vector vector, String key)
@@ -57,10 +74,23 @@ public class ChunkBlockPluginPropertiesNode extends Node implements IMutableBloc
             return null;
     }
 
+    public void removeBlockProperties(Vector vector, String... keys)
+    {
+        BlockPluginPropertiesNode blockNode = getBlockNode(vector, false);
+        if (blockNode != null)
+            blockNode.removeBlockProperties(keys);
+    }
+
     @Override
     public String getBlockProperty(Location location, String key)
     {
         return getBlockProperty(location.toVector(), key);
+    }
+
+    @Override
+    public Map<String, String> getBlockProperties(Location location, String... keys)
+    {
+        return getBlockProperties(location.toVector(), keys);
     }
 
     public String getBlockProperty(Vector vector, String key)
@@ -70,6 +100,15 @@ public class ChunkBlockPluginPropertiesNode extends Node implements IMutableBloc
             return blockNode.getBlockProperty(key);
         else
             return null;
+    }
+
+    public Map<String, String> getBlockProperties(Vector vector, String... keys)
+    {
+        BlockPluginPropertiesNode blockNode = getBlockNode(vector, false);
+        if (blockNode != null)
+            return blockNode.getBlockProperties(keys);
+        else
+            return new HashMap<>();
     }
 
     @Override

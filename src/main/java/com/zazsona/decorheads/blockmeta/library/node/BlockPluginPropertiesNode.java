@@ -32,9 +32,20 @@ public class BlockPluginPropertiesNode extends Node implements IMutableBlockPlug
         return properties.put(key, value);
     }
 
+    @Override
+    public void putBlockProperties(Location location, Map<String, String> keyValueMap)
+    {
+        putBlockProperties(keyValueMap);
+    }
+
     public String putBlockProperty(String key, String value)
     {
         return properties.put(key, value);
+    }
+
+    public void putBlockProperties(Map<String, String> keyValueMap)
+    {
+        properties.putAll(keyValueMap);
     }
 
     @Override
@@ -43,11 +54,22 @@ public class BlockPluginPropertiesNode extends Node implements IMutableBlockPlug
         return properties.remove(key);
     }
 
+    @Override
+    public void removeBlockProperties(Location location, String... keys)
+    {
+        removeBlockProperties(keys);
+    }
+
     public String removeBlockProperty(String key)
     {
         return properties.remove(key);
     }
 
+    public void removeBlockProperties(String... keys)
+    {
+        for (String key : keys)
+            properties.remove(key);
+    }
 
     @Override
     public String getBlockProperty(Location location, String key)
@@ -55,9 +77,26 @@ public class BlockPluginPropertiesNode extends Node implements IMutableBlockPlug
         return properties.get(key);
     }
 
+    @Override
+    public Map<String, String> getBlockProperties(Location location, String... keys)
+    {
+        return getBlockProperties(keys);
+    }
+
     public String getBlockProperty(String key)
     {
         return properties.get(key);
+    }
+
+    public Map<String, String> getBlockProperties(String... keys)
+    {
+        HashMap<String, String> requestedProperties = new HashMap<>();
+        for (String key : keys)
+        {
+            if (properties.containsKey(key))
+                requestedProperties.put(key, properties.get(key));
+        }
+        return requestedProperties;
     }
 
     public boolean isPropertyInChildren(String key)

@@ -35,15 +35,32 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
         return putBlockProperty(location.toVector(), location.getWorld(), key, value);
     }
 
+    @Override
+    public void putBlockProperties(Location location, Map<String, String> keyValueMap)
+    {
+        putBlockProperties(location.toVector(), location.getWorld(), keyValueMap);
+    }
+
     public String putBlockProperty(Vector vector, World world, String key, String value)
     {
         return getWorldNode(world, true).putBlockProperty(vector, key, value);
+    }
+
+    public void putBlockProperties(Vector vector, World world, Map<String, String> keyValueMap)
+    {
+        getWorldNode(world, true).putBlockProperties(vector, keyValueMap);
     }
 
     @Override
     public String removeBlockProperty(Location location, String key)
     {
         return removeBlockProperty(location.toVector(), location.getWorld(), key);
+    }
+
+    @Override
+    public void removeBlockProperties(Location location, String... keys)
+    {
+        removeBlockProperties(location.toVector(), location.getWorld(), keys);
     }
 
     public String removeBlockProperty(Vector vector, World world, String key)
@@ -55,10 +72,23 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
             return null;
     }
 
+    public void removeBlockProperties(Vector vector, World world, String... keys)
+    {
+        WorldBlockPluginPropertiesNode worldNode = getWorldNode(world, false);
+        if (worldNode != null)
+            worldNode.removeBlockProperties(vector, keys);
+    }
+
     @Override
     public String getBlockProperty(Location location, String key)
     {
         return getBlockProperty(location.toVector(), location.getWorld(), key);
+    }
+
+    @Override
+    public Map<String, String> getBlockProperties(Location location, String... keys)
+    {
+        return getBlockProperties(location.toVector(), location.getWorld(), keys);
     }
 
     public String getBlockProperty(Vector vector, World world, String key)
@@ -68,6 +98,15 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
             return worldNode.getBlockProperty(vector, key);
         else
             return null;
+    }
+
+    public Map<String, String> getBlockProperties(Vector vector, World world, String... keys)
+    {
+        WorldBlockPluginPropertiesNode worldNode = getWorldNode(world, false);
+        if (worldNode != null)
+            return worldNode.getBlockProperties(vector, keys);
+        else
+            return new HashMap<>();
     }
 
     @Override
