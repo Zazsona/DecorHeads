@@ -2,16 +2,16 @@ package com.zazsona.decorheads.drops.drops;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.Permissions;
-import com.zazsona.decorheads.blockmeta.BlockMetaRegionData;
-import com.zazsona.decorheads.blockmeta.BlockMetaKeys;
-import com.zazsona.decorheads.blockmeta.BlockMetaRepository;
+import com.zazsona.decorheads.blockmeta.InventoryBlockUtil;
 import com.zazsona.decorheads.DropType;
+import com.zazsona.decorheads.blockmeta.library.node.LoadedBlockPluginProperties;
 import com.zazsona.decorheads.config.PluginConfig;
 import com.zazsona.decorheads.drops.filters.IDropFilter;
 import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,10 +19,7 @@ import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class SmeltDrop extends Drop
 {
@@ -63,19 +60,12 @@ public class SmeltDrop extends Drop
 
             if (enabledPass && rollPass && isFiltersPass(e))
             {
-                Location location = e.getBlock().getLocation();
+                Block block = e.getBlock();
+                Location location = block.getLocation();
 
-                BlockMetaRepository repo = BlockMetaRepository.getInstance();
-                BlockMetaRegionData regionMeta = repo.getRegionData(e.getBlock().getChunk());
-                Map<String, String> blockMeta = regionMeta.getBlockMeta(e.getBlock().getLocation());
-                String playerId = blockMeta.get(BlockMetaKeys.INVENTORY_OWNER_ID_KEY);
-                Player player = null;
-                if (playerId != null)
-                {
-                    UUID playerUuid = UUID.fromString(playerId);
-                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerUuid);
-                    player = (offlinePlayer != null) ? offlinePlayer.getPlayer() : null;
-                }
+                LoadedBlockPluginProperties blockPluginProperties = LoadedBlockPluginProperties.getInstance(DecorHeadsPlugin.getInstance());
+                OfflinePlayer offlinePlayer = InventoryBlockUtil.getInventoryOwner(blockPluginProperties, e.getBlock());
+                Player player = (offlinePlayer.isOnline()) ? offlinePlayer.getPlayer() : null;
 
                 if (player != null && player.hasPermission(Permissions.DROP_HEADS))
                 {
@@ -89,7 +79,7 @@ public class SmeltDrop extends Drop
                 }
             }
         }
-        catch (IllegalArgumentException | IOException ex)
+        catch (IllegalArgumentException ex)
         {
             Bukkit.getLogger().warning(String.format("[%s] %s drop event failed: %s", DecorHeadsPlugin.PLUGIN_NAME, getDropType().toString(), ex.getMessage()));
         }

@@ -31,16 +31,16 @@ public class HeadBlockPropertiesUpdater implements Listener
         Block block = e.getBlock();
         Location blockLoc = block.getLocation();
 
-        blockProperties.putBlockProperty(blockLoc, DecorHeadsBlockPluginPropertyKey.HEAD_ID_KEY, head.getKey());
+        blockProperties.putBlockProperty(blockLoc, HeadBlockUtil.HEAD_ID_KEY, head.getKey());
         if (dataContainer.has(PlayerHead.getSkullTextureKey(), PersistentDataType.STRING))
         {
             String texture = dataContainer.get(PlayerHead.getSkullTextureKey(), PersistentDataType.STRING);
-            blockProperties.putBlockProperty(blockLoc, DecorHeadsBlockPluginPropertyKey.HEAD_TEXTURE_KEY, texture);
+            blockProperties.putBlockProperty(blockLoc, HeadBlockUtil.HEAD_TEXTURE_KEY, texture);
         }
         if (dataContainer.has(PlayerHead.getSkullUUIDKey(), PersistentDataType.STRING))
         {
             String uuid = dataContainer.get(PlayerHead.getSkullUUIDKey(), PersistentDataType.STRING);
-            blockProperties.putBlockProperty(blockLoc, DecorHeadsBlockPluginPropertyKey.PLAYER_ID_KEY, uuid);
+            blockProperties.putBlockProperty(blockLoc, HeadBlockUtil.PLAYER_ID_KEY, uuid);
         }
     }
 
@@ -50,8 +50,8 @@ public class HeadBlockPropertiesUpdater implements Listener
         Block block = e.getBlock();
         Location blockLoc = block.getLocation();
 
-        blockProperties.removeBlockProperty(blockLoc, DecorHeadsBlockPluginPropertyKey.HEAD_ID_KEY);
-        blockProperties.removeBlockProperty(blockLoc, DecorHeadsBlockPluginPropertyKey.HEAD_TEXTURE_KEY);
-        blockProperties.removeBlockProperty(blockLoc, DecorHeadsBlockPluginPropertyKey.PLAYER_ID_KEY);
+        blockProperties.removeBlockProperty(blockLoc, HeadBlockUtil.HEAD_ID_KEY);
+        blockProperties.removeBlockProperty(blockLoc, HeadBlockUtil.HEAD_TEXTURE_KEY);
+        blockProperties.removeBlockProperty(blockLoc, HeadBlockUtil.PLAYER_ID_KEY);
     }
 }

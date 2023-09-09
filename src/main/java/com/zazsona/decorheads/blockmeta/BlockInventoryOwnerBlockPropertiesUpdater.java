@@ -26,8 +26,8 @@ public class BlockInventoryOwnerBlockPropertiesUpdater implements Listener
         Location blockLoc = block.getLocation();
 
         if (newOwnerId != null)
-            blockProperties.putBlockProperty(blockLoc, DecorHeadsBlockPluginPropertyKey.INVENTORY_OWNER_PLAYER_ID_KEY, newOwnerId.toString());
+            blockProperties.putBlockProperty(blockLoc, InventoryBlockUtil.INVENTORY_OWNER_PLAYER_ID_KEY, newOwnerId.toString());
         else
-            blockProperties.removeBlockProperty(blockLoc, DecorHeadsBlockPluginPropertyKey.INVENTORY_OWNER_PLAYER_ID_KEY);
+            blockProperties.removeBlockProperty(blockLoc, InventoryBlockUtil.INVENTORY_OWNER_PLAYER_ID_KEY);
     }
 }

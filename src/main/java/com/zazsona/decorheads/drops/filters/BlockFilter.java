@@ -1,10 +1,9 @@
 package com.zazsona.decorheads.drops.filters;
 
 import com.zazsona.decorheads.DecorHeadsPlugin;
-import com.zazsona.decorheads.blockmeta.BlockMetaRegionData;
-import com.zazsona.decorheads.blockmeta.BlockMetaKeys;
-import com.zazsona.decorheads.blockmeta.BlockMetaRepository;
+import com.zazsona.decorheads.blockmeta.HeadBlockUtil;
 import com.zazsona.decorheads.DropType;
+import com.zazsona.decorheads.blockmeta.library.node.LoadedBlockPluginProperties;
 import com.zazsona.decorheads.event.BlockBreakByExplosionEvent;
 import com.zazsona.decorheads.event.BlockPistonReactionEvent;
 import org.bukkit.Bukkit;
@@ -18,9 +17,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -78,10 +75,8 @@ public class BlockFilter extends DropFilter
             NamespacedKey blockKey = blockType.getKey();
             if (blockType == Material.PLAYER_HEAD && blockType == Material.PLAYER_WALL_HEAD)
             {
-                BlockMetaRepository metaRepo = BlockMetaRepository.getInstance();
-                BlockMetaRegionData regionMeta = metaRepo.getRegionData(block.getChunk());
-                HashMap<String, String> blockMeta = regionMeta.getBlockMeta(block.getLocation());
-                String headId = blockMeta.get(BlockMetaKeys.HEAD_ID_KEY);
+                LoadedBlockPluginProperties blockPluginProperties = LoadedBlockPluginProperties.getInstance(DecorHeadsPlugin.getInstance());
+                String headId = blockPluginProperties.getBlockProperty(block.getLocation(), HeadBlockUtil.HEAD_ID_KEY);
                 if (headId != null)
                 {
                     NamespacedKey headKey = new NamespacedKey(DecorHeadsPlugin.getInstance(), headId);
@@ -90,7 +85,7 @@ public class BlockFilter extends DropFilter
             }
             return (blockKeys.contains(blockKey));
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             Bukkit.getLogger().warning(String.format("[%s] Block filter failed: %s", DecorHeadsPlugin.PLUGIN_NAME, ex.getMessage()));
             return false;
