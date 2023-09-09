@@ -11,10 +11,11 @@ import com.zazsona.decorheads.config.*;
 import com.zazsona.decorheads.config.update.*;
 import com.zazsona.decorheads.crafting.MetaRecipeManager;
 import com.zazsona.decorheads.event.BlockBreakByExplosionEventTrigger;
-import com.zazsona.decorheads.event.BlockInventoryOwnerChangeEventTrigger;
+import com.zazsona.decorheads.event.BlockInventoryOwnerUpdateEventTrigger;
 import com.zazsona.decorheads.event.BlockPistonReactionEventTrigger;
 import com.zazsona.decorheads.event.RegionEventTrigger;
-import com.zazsona.decorheads.event.head.HeadEventTrigger;
+import com.zazsona.decorheads.event.head.HeadDestroyEventTrigger;
+import com.zazsona.decorheads.event.head.HeadPlaceEventTrigger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.naming.ConfigurationException;
@@ -135,6 +136,18 @@ public class DecorHeadsPlugin extends JavaPlugin
             getServer().getPluginManager().registerEvents(new HeadCraftBlocker(), this);
 
             // ============================================
+            // Block Metadata
+            // ============================================
+            LoadedBlockPluginProperties blockPluginProperties = LoadedBlockPluginProperties.getInstance(this);
+            getServer().getPluginManager().registerEvents(blockPluginProperties, this);
+
+            BlockInventoryOwnerBlockPropertiesUpdater inventoryOwnerMetaListener = new BlockInventoryOwnerBlockPropertiesUpdater(blockPluginProperties);
+            getServer().getPluginManager().registerEvents(inventoryOwnerMetaListener, this);
+
+            HeadBlockPropertiesUpdater headBlockMetaListener = new HeadBlockPropertiesUpdater(blockPluginProperties);
+            getServer().getPluginManager().registerEvents(headBlockMetaListener, this);
+
+            // ============================================
             // Commands
             // ============================================
             MasterCommand masterCommand = new MasterCommand();
@@ -158,8 +171,8 @@ public class DecorHeadsPlugin extends JavaPlugin
             // ============================================
             // Bukkit Events
             // ============================================
-            BlockInventoryOwnerChangeEventTrigger blockInventoryOwnerChangeEventTrigger = new BlockInventoryOwnerChangeEventTrigger();
-            getServer().getPluginManager().registerEvents(blockInventoryOwnerChangeEventTrigger, this);
+            BlockInventoryOwnerUpdateEventTrigger blockInventoryOwnerUpdateEventTrigger = new BlockInventoryOwnerUpdateEventTrigger();
+            getServer().getPluginManager().registerEvents(blockInventoryOwnerUpdateEventTrigger, this);
 
             BlockBreakByExplosionEventTrigger blockBreakByExplosionEventTrigger = new BlockBreakByExplosionEventTrigger();
             getServer().getPluginManager().registerEvents(blockBreakByExplosionEventTrigger, this);
@@ -167,23 +180,14 @@ public class DecorHeadsPlugin extends JavaPlugin
             BlockPistonReactionEventTrigger blockPistonReactionEventTrigger = new BlockPistonReactionEventTrigger();
             getServer().getPluginManager().registerEvents(blockPistonReactionEventTrigger, this);
 
-            HeadEventTrigger headEventTrigger = new HeadEventTrigger();
-            getServer().getPluginManager().registerEvents(headEventTrigger, this);
+            HeadPlaceEventTrigger headPlaceEventTrigger = new HeadPlaceEventTrigger(blockPluginProperties);
+            getServer().getPluginManager().registerEvents(headPlaceEventTrigger, this);
+
+            HeadDestroyEventTrigger headDestroyEventTrigger = new HeadDestroyEventTrigger(blockPluginProperties);
+            getServer().getPluginManager().registerEvents(headDestroyEventTrigger, this);
 
             RegionEventTrigger regionEventTrigger = new RegionEventTrigger();
             getServer().getPluginManager().registerEvents(regionEventTrigger, this);
-
-            // ============================================
-            // Block Metadata
-            // ============================================
-            LoadedBlockPluginProperties blockPluginProperties = LoadedBlockPluginProperties.getInstance(this);
-            getServer().getPluginManager().registerEvents(blockPluginProperties, this);
-
-            BlockInventoryOwnerBlockPropertiesUpdater inventoryOwnerMetaListener = new BlockInventoryOwnerBlockPropertiesUpdater();
-            getServer().getPluginManager().registerEvents(inventoryOwnerMetaListener, this);
-
-            HeadBlockPropertiesUpdater headBlockMetaListener = new HeadBlockPropertiesUpdater();
-            getServer().getPluginManager().registerEvents(headBlockMetaListener, this);
         }
         catch (Exception e)
         {
