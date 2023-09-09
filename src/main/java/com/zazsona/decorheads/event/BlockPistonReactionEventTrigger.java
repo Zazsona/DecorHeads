@@ -18,8 +18,11 @@ public class BlockPistonReactionEventTrigger implements Listener
         while (blocks.hasNext())
         {
             Block movingBlock = blocks.next();
-            BlockPistonReactionEvent reactionEvent = new BlockPistonReactionEvent(movingBlock, movingBlock.getPistonMoveReaction(), e);
+            BlockPistonReactionEvent reactionEvent = new BlockPistonReactionEvent(movingBlock, movingBlock.getPistonMoveReaction());
             Bukkit.getPluginManager().callEvent(reactionEvent);
+
+            if (reactionEvent.isCancelled())
+                e.setCancelled(true);
         }
     }
 }

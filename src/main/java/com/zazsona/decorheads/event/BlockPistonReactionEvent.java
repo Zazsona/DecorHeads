@@ -15,24 +15,13 @@ public class BlockPistonReactionEvent extends BlockEvent implements Cancellable
 {
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private BlockPistonExtendEvent extendEvent;
     private PistonMoveReaction reaction;
     private boolean isCancelled = false;
 
-    public BlockPistonReactionEvent(@NotNull Block theBlock, PistonMoveReaction reaction, BlockPistonExtendEvent extendEvent)
+    public BlockPistonReactionEvent(@NotNull Block theBlock, PistonMoveReaction reaction)
     {
         super(theBlock);
         this.reaction = reaction;
-        this.extendEvent = extendEvent;
-    }
-
-    /**
-     * Gets the root event causing this block to be pushed, resulting in this block being broken
-     * @return
-     */
-    public BlockPistonExtendEvent getRootPistonExtendEvent()
-    {
-        return extendEvent;
     }
 
     /**
@@ -64,7 +53,6 @@ public class BlockPistonReactionEvent extends BlockEvent implements Cancellable
     @Override
     public void setCancelled(boolean cancel)
     {
-        this.getRootPistonExtendEvent().setCancelled(cancel);
         this.isCancelled = cancel;
     }
 }

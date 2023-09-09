@@ -4,20 +4,18 @@ import org.bukkit.block.Block;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.BlockEvent;
-import org.bukkit.metadata.Metadatable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.UUID;
 
-public class BlockInventoryOwnerChangeEvent extends BlockEvent implements Cancellable
+public class BlockInventoryOwnerUpdateEvent extends BlockEvent implements Cancellable
 {
     private static final HandlerList HANDLERS = new HandlerList();
 
     private UUID newOwnerId;
     private boolean isCancelled = false;
 
-    public BlockInventoryOwnerChangeEvent(@NotNull Block theBlock, UUID newOwnerId)
+    public BlockInventoryOwnerUpdateEvent(@NotNull Block theBlock, UUID newOwnerId)
     {
         super(theBlock);
         this.newOwnerId = newOwnerId;

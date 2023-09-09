@@ -1,10 +1,7 @@
 package com.zazsona.decorheads.event;
 
-import com.zazsona.decorheads.DecorHeadsPlugin;
 import com.zazsona.decorheads.MaterialUtil;
-import com.zazsona.decorheads.blockmeta.DecorHeadsBlockPluginPropertyKey;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Campfire;
@@ -21,10 +18,9 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.Iterator;
 
-public class BlockInventoryOwnerChangeEventTrigger implements Listener
+public class BlockInventoryOwnerUpdateEventTrigger implements Listener
 {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e)
@@ -40,7 +36,7 @@ public class BlockInventoryOwnerChangeEventTrigger implements Listener
         if (usedItem == null || !MaterialUtil.isCookableFood(usedItem.getType()))
             return;
 
-        BlockInventoryOwnerChangeEvent event = new BlockInventoryOwnerChangeEvent(clickedBlock, player.getUniqueId());
+        BlockInventoryOwnerUpdateEvent event = new BlockInventoryOwnerUpdateEvent(clickedBlock, player.getUniqueId());
         Bukkit.getPluginManager().callEvent(event);
     }
 
@@ -58,14 +54,14 @@ public class BlockInventoryOwnerChangeEventTrigger implements Listener
         Block block = blockState.getBlock();
         Player player = (Player) e.getWhoClicked();
 
-        BlockInventoryOwnerChangeEvent event = new BlockInventoryOwnerChangeEvent(block, player.getUniqueId());
+        BlockInventoryOwnerUpdateEvent event = new BlockInventoryOwnerUpdateEvent(block, player.getUniqueId());
         Bukkit.getPluginManager().callEvent(event);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e)
     {
-        BlockInventoryOwnerChangeEvent event = createOwnerRemovedEvent(e.getBlock());
+        BlockInventoryOwnerUpdateEvent event = createOwnerRemovedEvent(e.getBlock());
         Bukkit.getPluginManager().callEvent(event);
     }
 
@@ -76,7 +72,7 @@ public class BlockInventoryOwnerChangeEventTrigger implements Listener
         while (blockIterator.hasNext())
         {
             Block block = (Block) blockIterator.next();
-            BlockInventoryOwnerChangeEvent event = createOwnerRemovedEvent(block);
+            BlockInventoryOwnerUpdateEvent event = createOwnerRemovedEvent(block);
             Bukkit.getPluginManager().callEvent(event);
         }
     }
@@ -88,7 +84,7 @@ public class BlockInventoryOwnerChangeEventTrigger implements Listener
         while (blockIterator.hasNext())
         {
             Block block = (Block) blockIterator.next();
-            BlockInventoryOwnerChangeEvent event = createOwnerRemovedEvent(block);
+            BlockInventoryOwnerUpdateEvent event = createOwnerRemovedEvent(block);
             Bukkit.getPluginManager().callEvent(event);
         }
     }
@@ -103,7 +99,7 @@ public class BlockInventoryOwnerChangeEventTrigger implements Listener
             if (movingBlock.getPistonMoveReaction() == PistonMoveReaction.IGNORE)
                 continue;
 
-            BlockInventoryOwnerChangeEvent event = createOwnerRemovedEvent(movingBlock);
+            BlockInventoryOwnerUpdateEvent event = createOwnerRemovedEvent(movingBlock);
             Bukkit.getPluginManager().callEvent(event);
         }
     }
@@ -111,19 +107,19 @@ public class BlockInventoryOwnerChangeEventTrigger implements Listener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent e)
     {
-        BlockInventoryOwnerChangeEvent event = createOwnerRemovedEvent(e.getBlock());
+        BlockInventoryOwnerUpdateEvent event = createOwnerRemovedEvent(e.getBlock());
         Bukkit.getPluginManager().callEvent(event);
     }
 
     /**
-     * Creates a {@link BlockInventoryOwnerChangeEvent} that indicated the owner data has been removed
+     * Creates a {@link BlockInventoryOwnerUpdateEvent} that indicated the owner data has been removed
      * @param block the inventory-owning block
      * @return the event
      */
     @NotNull
-    private static BlockInventoryOwnerChangeEvent createOwnerRemovedEvent(Block block)
+    private static BlockInventoryOwnerUpdateEvent createOwnerRemovedEvent(Block block)
     {
-        BlockInventoryOwnerChangeEvent event = new BlockInventoryOwnerChangeEvent(block, null);
+        BlockInventoryOwnerUpdateEvent event = new BlockInventoryOwnerUpdateEvent(block, null);
         return event;
     }
 }

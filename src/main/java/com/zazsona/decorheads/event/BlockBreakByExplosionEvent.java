@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class BlockBreakByExplosionEvent extends BlockEvent implements Cancellable
+public class BlockBreakByExplosionEvent extends BlockEvent implements Cancellable, IBlockBreakByExplosionEvent
 {
     private static final HandlerList HANDLERS = new HandlerList();
 
@@ -30,6 +30,7 @@ public class BlockBreakByExplosionEvent extends BlockEvent implements Cancellabl
      * Gets the object that exploded, resulting in this block being broken
      * @return
      */
+    @Override
     public Metadatable getExplosionSource()
     {
         return explosionSource;
