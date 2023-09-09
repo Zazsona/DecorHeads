@@ -2,31 +2,39 @@ package com.zazsona.decorheads.event.head;
 
 import com.zazsona.decorheads.headdata.IHead;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class HeadPlaceEvent extends HeadBlockEvent
+public class HeadPlaceEvent extends HeadBlockEvent implements Cancellable
 {
-    private Event causingEvent;
+    private boolean cancelled;
+    private ItemStack placedItem;
 
-    public HeadPlaceEvent(@NotNull Block block, @NotNull IHead head, Event causingEvent)
+    public HeadPlaceEvent(@NotNull Block block, @NotNull IHead head, ItemStack placedItem)
     {
         super(block, head);
-        this.causingEvent = causingEvent;
+        this.placedItem = placedItem;
     }
 
     /**
-     * Gets the event causing the placement of the head.
-     * @return the creative event
+     * Gets the placed head in {@link ItemStack} form
+     * @return the head's ItemStack
      */
-    public Event getCausingEvent()
+    public ItemStack getPlacedItem()
     {
-        return causingEvent;
+        return placedItem;
+    }
+
+    @Override
+    public boolean isCancelled()
+    {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancel)
+    {
+        this.cancelled = cancel;
     }
 }
