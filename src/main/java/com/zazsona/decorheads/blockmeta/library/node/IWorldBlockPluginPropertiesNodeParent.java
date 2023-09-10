@@ -1,13 +1,13 @@
 package com.zazsona.decorheads.blockmeta.library.node;
 
-import org.bukkit.Location;
+import org.bukkit.World;
 
 public interface IWorldBlockPluginPropertiesNodeParent extends IBlockPluginPropertiesNode
 {
     /**
-     * Gets the {@link WorldBlockPluginPropertiesNode} for the world at the provided blockLocation.
-     * @param blockLocation a block location with world data
-     * @return the WorldNode
+     * Gets the {@link IRegionBlockPluginPropertiesNodeParent} for the world at the provided world.
+     * @param world the world
+     * @return the world node
      */
-    IRegionBlockPluginPropertiesNodeParent getWorldNode(Location blockLocation);
+    IRegionBlockPluginPropertiesNodeParent getWorldNode(World world);
 }

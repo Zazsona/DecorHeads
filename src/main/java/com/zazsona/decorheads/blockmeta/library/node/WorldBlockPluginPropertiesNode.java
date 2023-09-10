@@ -112,56 +112,93 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
     }
 
     @Override
+    public RegionBlockPluginPropertiesNode putRegionNode(int regionX, int regionZ, RegionBlockPluginPropertiesNode regionNode)
+    {
+        return putRegionNode(getRegionVector(regionX, regionZ), regionNode);
+    }
+
     public RegionBlockPluginPropertiesNode putRegionNode(Location blockLocation, RegionBlockPluginPropertiesNode regionNode)
     {
         if (blockLocation == null)
             throw new NullArgumentException("location");
 
-        return putRegionNode(blockLocation.toVector(), regionNode);
+        return putRegionNode(getRegionVector(blockLocation.toVector()), regionNode);
     }
 
-    public RegionBlockPluginPropertiesNode putRegionNode(Vector blockVector, RegionBlockPluginPropertiesNode regionNode)
+    private RegionBlockPluginPropertiesNode putRegionNode(Vector regionVector, RegionBlockPluginPropertiesNode regionNode)
     {
-        if (blockVector == null)
-            throw new NullArgumentException("blockVector");
+        if (regionVector == null)
+            throw new NullArgumentException("regionVector");
         if (regionNode == null)
             throw new NullArgumentException("regionNode");
 
-        Vector key = getRegionKey(blockVector);
         regionNode.setParent(this);
-        return children.put(key, regionNode);
+        return children.put(regionVector, regionNode);
     }
 
     @Override
-    public RegionBlockPluginPropertiesNode removeRegionNode(Location blockLocation)
+    public RegionBlockPluginPropertiesNode removeRegionNode(int regionX, int regionZ)
     {
-        return removeRegionNode(blockLocation.toVector());
+        return removeRegionNode(getRegionVector(regionX, regionZ));
     }
 
-    public RegionBlockPluginPropertiesNode removeRegionNode(Vector blockVector)
+    public RegionBlockPluginPropertiesNode removeRegionNode(Location blockLocation)
     {
-        Vector key = getRegionKey(blockVector);
-        RegionBlockPluginPropertiesNode regionNode = children.remove(key);
+        return removeRegionNode(getRegionVector(blockLocation.toVector()));
+    }
+
+    private RegionBlockPluginPropertiesNode removeRegionNode(Vector regionVector)
+    {
+        RegionBlockPluginPropertiesNode regionNode = children.remove(regionVector);
         if (regionNode != null)
             regionNode.setParent(null);
         return regionNode;
     }
 
-    public boolean isRegionInChildren(Location location)
+    @Override
+    public RegionBlockPluginPropertiesNode getRegionNode(int regionX, int regionZ)
     {
-        return isRegionInChildren(location.toVector());
+        return getRegionNode(getRegionVector(regionX, regionZ));
     }
 
-    public boolean isRegionInChildren(Vector blockVector)
+    public RegionBlockPluginPropertiesNode getRegionNode(Location blockLocation)
     {
-        return getRegionNode(blockVector, false) != null;
+        return getRegionNode(getRegionVector(blockLocation.toVector()));
+    }
+
+    public RegionBlockPluginPropertiesNode getRegionNode(Vector regionVector)
+    {
+        return getRegionNode(regionVector, false);
+    }
+
+    private RegionBlockPluginPropertiesNode getRegionNode(Vector regionVector, boolean createIfNotExists)
+    {
+        if (!children.containsKey(regionVector) && createIfNotExists)
+            children.put(regionVector, new RegionBlockPluginPropertiesNode(this));
+
+        return children.get(regionVector);
+    }
+
+    public boolean isRegionInChildren(int regionX, int regionZ)
+    {
+        return isRegionInChildren(getRegionVector(regionX, regionZ));
+    }
+
+    public boolean isRegionInChildren(Location blockLocation)
+    {
+        return isRegionInChildren(getRegionVector(blockLocation.toVector()));
+    }
+
+    private boolean isRegionInChildren(Vector regionVector)
+    {
+        return getRegionNode(regionVector) != null;
     }
 
     /**
-     * Returns a new list of contained region location keys
-     * @return a list of contained region location keys
+     * Returns a new list of contained region co-ordinate vectors
+     * @return a list of contained region co-ordinate keys
      */
-    public List<Vector> getRegionKeys()
+    public List<Vector> getRegionVectors()
     {
         return new ArrayList<>(children.keySet());
     }
@@ -185,26 +222,7 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
         return new ArrayList<>(children.entrySet());
     }
 
-    public RegionBlockPluginPropertiesNode getRegionNode(Location blockLocation)
-    {
-        return getRegionNode(blockLocation.toVector());
-    }
-
-    public RegionBlockPluginPropertiesNode getRegionNode(Vector blockVector)
-    {
-        return getRegionNode(blockVector, false);
-    }
-
-    private RegionBlockPluginPropertiesNode getRegionNode(Vector blockVector, boolean createIfNotExists)
-    {
-        Vector key = getRegionKey(blockVector);
-        if (!children.containsKey(key) && createIfNotExists)
-            children.put(key, new RegionBlockPluginPropertiesNode(this));
-
-        return children.get(key);
-    }
-
-    private Vector getRegionKey(Vector blockVector)
+    private Vector getRegionVector(Vector blockVector)
     {
         // Get Chunk Co-ordinates
         int chunkX = (int) Math.floor(blockVector.getBlockX() / 16);
@@ -214,6 +232,11 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
         int regionX = (int) Math.floor(chunkX / 32);
         int regionZ = (int) Math.floor(chunkZ / 32);
 
+        return getRegionVector(regionX, regionZ);
+    }
+
+    private Vector getRegionVector(int regionX, int regionZ)
+    {
         return new Vector(regionX, 0, regionZ);
     }
 }

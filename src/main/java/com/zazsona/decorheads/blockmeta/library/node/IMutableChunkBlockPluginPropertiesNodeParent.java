@@ -1,22 +1,24 @@
 package com.zazsona.decorheads.blockmeta.library.node;
 
-import org.bukkit.Location;
-
 public interface IMutableChunkBlockPluginPropertiesNodeParent extends IChunkBlockPluginPropertiesNodeParent, IMutableBlockPluginPropertiesNode
 {
     /**
-     * Sets the {@link ChunkBlockPluginPropertiesNode}, including all its children, for the provided {@link Location}, overwriting any
-     * previously set values.
+     * Sets the {@link IBlockPluginPropertiesNodeParent}, including all its children, for the provided co-ordinates,
+     * overwriting any previously set values.
      *
-     * @param blockLocation a block location in the Chunk
-     * @param chunkNode the ChunkNode to set
+     * @param chunkX the chunk's X co-ordinate
+     * @param chunkZ the chunk's Z co-ordinate
+     * @param chunkNode the chunk node
+     * @return the replaced chunk node, if any.
      */
-    ChunkBlockPluginPropertiesNode putChunkNode(Location blockLocation, ChunkBlockPluginPropertiesNode chunkNode);
+    IBlockPluginPropertiesNodeParent putChunkNode(int chunkX, int chunkZ, ChunkBlockPluginPropertiesNode chunkNode);
 
     /**
-     * Removes the {@link ChunkBlockPluginPropertiesNode}, including all its children, for the provided {@link Location}.
+     * Removes the {@link IBlockPluginPropertiesNodeParent}, including all its children, for the provided co-ordinates.
      *
-     * @param blockLocation a block location in the Chunk
+     * @param chunkX the chunk's X co-ordinate
+     * @param chunkZ the chunk's Z co-ordinate
+     * @return the removed chunk node
      */
-    ChunkBlockPluginPropertiesNode removeChunkNode(Location blockLocation);
+    IBlockPluginPropertiesNodeParent removeChunkNode(int chunkX, int chunkZ);
 }

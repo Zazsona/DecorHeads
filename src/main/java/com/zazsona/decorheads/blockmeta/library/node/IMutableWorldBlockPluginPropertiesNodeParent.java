@@ -1,22 +1,24 @@
 package com.zazsona.decorheads.blockmeta.library.node;
 
-import org.bukkit.Location;
+import org.bukkit.World;
 
 public interface IMutableWorldBlockPluginPropertiesNodeParent extends IWorldBlockPluginPropertiesNodeParent, IMutableBlockPluginPropertiesNode
 {
     /**
-     * Sets the {@link WorldBlockPluginPropertiesNode}, including all its children, for the provided {@link Location}, overwriting any
-     * previously set values.
+     * Sets the {@link IRegionBlockPluginPropertiesNodeParent}, including all its children, for the provided world,
+     * overwriting any previously set values.
      *
-     * @param blockLocation a block location in the world
-     * @param worldNode the WorldNode to set
+     * @param world the world
+     * @param worldNode the world node
+     * @return the replaced world node, if any.
      */
-    WorldBlockPluginPropertiesNode putWorldNode(Location blockLocation, WorldBlockPluginPropertiesNode worldNode);
+    IRegionBlockPluginPropertiesNodeParent putWorldNode(World world, WorldBlockPluginPropertiesNode worldNode);
 
     /**
-     * Removes the {@link WorldBlockPluginPropertiesNode}, including all its children, for the provided {@link Location}.
+     * Removes the {@link IRegionBlockPluginPropertiesNodeParent}, including all its children, for the provided world.
      *
-     * @param blockLocation a block location in the world
+     * @param world the world
+     * @return the removed world node
      */
-    WorldBlockPluginPropertiesNode removeWorldNode(Location blockLocation);
+    IRegionBlockPluginPropertiesNodeParent removeWorldNode(World world);
 }

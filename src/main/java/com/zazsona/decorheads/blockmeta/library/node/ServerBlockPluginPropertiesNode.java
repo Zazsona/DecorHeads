@@ -110,62 +110,80 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
     }
 
     @Override
-    public WorldBlockPluginPropertiesNode putWorldNode(Location blockLocation, WorldBlockPluginPropertiesNode worldNode)
-    {
-        return putWorldNode(blockLocation.getWorld(), worldNode);
-    }
-
-    /**
-     * Sets the {@link WorldBlockPluginPropertiesNode}, including all its children, for the provided {@link World}, overwriting any
-     * previously set values.
-     *
-     * @param world the world
-     * @param worldNode the WorldNode to set
-     */
     public WorldBlockPluginPropertiesNode putWorldNode(World world, WorldBlockPluginPropertiesNode worldNode)
     {
         if (worldNode == null)
             throw new NullArgumentException("worldNode");
 
-        UUID key = getWorldKey(world);
+        UUID key = getWorldId(world);
         worldNode.setParent(this);
         return children.put(key, worldNode);
     }
 
-    @Override
-    public WorldBlockPluginPropertiesNode removeWorldNode(Location blockLocation)
+    public WorldBlockPluginPropertiesNode putWorldNode(Location blockLocation, WorldBlockPluginPropertiesNode worldNode)
     {
-        return removeWorldNode(blockLocation.getWorld());
+        return putWorldNode(blockLocation.getWorld(), worldNode);
     }
 
-    /**
-     * Removes the {@link WorldBlockPluginPropertiesNode}, including all its children, for the provided {@link World}.
-     *
-     * @param world the world
-     */
+    @Override
     public WorldBlockPluginPropertiesNode removeWorldNode(World world)
     {
-        UUID key = getWorldKey(world);
+        UUID key = getWorldId(world);
         WorldBlockPluginPropertiesNode worldNode = children.remove(key);
         if (worldNode != null)
             worldNode.setParent(null);
         return worldNode;
     }
 
-    public boolean isWorldInChildren(Location location)
+    public WorldBlockPluginPropertiesNode removeWorldNode(Location blockLocation)
     {
-        return isWorldInChildren(location.getWorld());
+        return removeWorldNode(blockLocation.getWorld());
     }
-    public boolean isWorldInChildren(World world)
+
+    public WorldBlockPluginPropertiesNode getWorldNode(Location blockLocation)
     {
-        return getWorldNode(world, false) != null;
+        if (blockLocation == null)
+            throw new NullArgumentException("location");
+
+        return getWorldNode(blockLocation.getWorld());
     }
 
     /**
-     * Returns a new list of contained world GUID keys
+     * Gets the {@link WorldBlockPluginPropertiesNode} for the world.
+     * @param world the world
+     * @return the WorldNode
+     */
+    public WorldBlockPluginPropertiesNode getWorldNode(World world)
+    {
+        if (world == null)
+            throw new NullArgumentException("world");
+
+        return getWorldNode(world, false);
+    }
+
+    private WorldBlockPluginPropertiesNode getWorldNode(World world, boolean createIfNotExists)
+    {
+        UUID key = getWorldId(world);
+        if (!children.containsKey(key) && createIfNotExists)
+            children.put(key, new WorldBlockPluginPropertiesNode(this));
+
+        return children.get(key);
+    }
+
+    public boolean isWorldInChildren(Location blockLocation)
+    {
+        return isWorldInChildren(blockLocation.getWorld());
+    }
+    public boolean isWorldInChildren(World world)
+    {
+        return getWorldNode(world) != null;
+    }
+
+    /**
+     * Returns a new list of contained world GUIDs
      * @return a list of contained world GUID keys
      */
-    public List<UUID> getWorldKeys()
+    public List<UUID> getWorldIds()
     {
         return new ArrayList<>(children.keySet());
     }
@@ -189,45 +207,15 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
         return new ArrayList<>(children.entrySet());
     }
 
-    public WorldBlockPluginPropertiesNode getWorldNode(Location blockLocation)
+    private UUID getWorldId(Location blockLocation)
     {
         if (blockLocation == null)
-            throw new NullArgumentException("location");
+            throw new NullArgumentException("blockLocation");
 
-        return getWorldNode(blockLocation.getWorld(), false);
+        return getWorldId(blockLocation.getWorld());
     }
 
-    /**
-     * Gets the {@link WorldBlockPluginPropertiesNode} for the world.
-     * @param world the world
-     * @return the WorldNode
-     */
-    public WorldBlockPluginPropertiesNode getWorldNode(World world)
-    {
-        if (world == null)
-            throw new NullArgumentException("world");
-
-        return getWorldNode(world, false);
-    }
-
-    private WorldBlockPluginPropertiesNode getWorldNode(World world, boolean createIfNotExists)
-    {
-        UUID key = getWorldKey(world);
-        if (!children.containsKey(key) && createIfNotExists)
-            children.put(key, new WorldBlockPluginPropertiesNode(this));
-
-        return children.get(key);
-    }
-
-    private UUID getWorldKey(Location location)
-    {
-        if (location == null)
-            throw new NullArgumentException("location");
-
-        return getWorldKey(location.getWorld());
-    }
-
-    private UUID getWorldKey(World world)
+    private UUID getWorldId(World world)
     {
         if (world == null)
             throw new NullArgumentException("world");

@@ -2,7 +2,6 @@ package com.zazsona.decorheads.blockmeta.library.node;
 
 import org.bukkit.Location;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public interface IBlockPluginPropertiesNode

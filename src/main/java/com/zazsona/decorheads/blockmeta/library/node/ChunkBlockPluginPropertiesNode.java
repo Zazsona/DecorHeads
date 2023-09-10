@@ -167,10 +167,10 @@ public class ChunkBlockPluginPropertiesNode extends Node implements IMutableBloc
     }
 
     /**
-     * Returns a new list of contained block location keys
-     * @return a list of contained block location keys
+     * Returns a new list of contained block co-ordinates
+     * @return a list of contained block co-ordinates keys
      */
-    public List<Vector> getBlockKeys()
+    public List<Vector> getBlockVectors()
     {
         return new ArrayList<>(children.keySet());
     }

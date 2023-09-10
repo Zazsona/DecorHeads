@@ -112,56 +112,93 @@ public class RegionBlockPluginPropertiesNode extends Node implements IMutableBlo
     }
 
     @Override
+    public ChunkBlockPluginPropertiesNode putChunkNode(int chunkX, int chunkZ, ChunkBlockPluginPropertiesNode chunkNode)
+    {
+        return putChunkNode(getChunkVector(chunkX, chunkZ), chunkNode);
+    }
+
     public ChunkBlockPluginPropertiesNode putChunkNode(Location blockLocation, ChunkBlockPluginPropertiesNode chunkNode)
     {
         if (blockLocation == null)
             throw new NullArgumentException("location");
 
-        return putChunkNode(blockLocation.toVector(), chunkNode);
+        return putChunkNode(getChunkVector(blockLocation.toVector()), chunkNode);
     }
 
-    public ChunkBlockPluginPropertiesNode putChunkNode(Vector blockVector, ChunkBlockPluginPropertiesNode chunkNode)
+    private ChunkBlockPluginPropertiesNode putChunkNode(Vector chunkVector, ChunkBlockPluginPropertiesNode chunkNode)
     {
-        if (blockVector == null)
-            throw new NullArgumentException("blockVector");
+        if (chunkVector == null)
+            throw new NullArgumentException("chunkVector");
         if (chunkNode == null)
             throw new NullArgumentException("chunkNode");
 
-        Vector key = getChunkKey(blockVector);
         chunkNode.setParent(this);
-        return children.put(key, chunkNode);
+        return children.put(chunkVector, chunkNode);
     }
 
     @Override
-    public ChunkBlockPluginPropertiesNode removeChunkNode(Location blockLocation)
+    public ChunkBlockPluginPropertiesNode removeChunkNode(int chunkX, int chunkZ)
     {
-        return removeChunkNode(blockLocation.toVector());
+        return removeChunkNode(getChunkVector(chunkX, chunkZ));
     }
 
-    public ChunkBlockPluginPropertiesNode removeChunkNode(Vector blockVector)
+    public ChunkBlockPluginPropertiesNode removeChunkNode(Location blockLocation)
     {
-        Vector key = getChunkKey(blockVector);
-        ChunkBlockPluginPropertiesNode chunkNode = children.remove(key);
+        return removeChunkNode(getChunkVector(blockLocation.toVector()));
+    }
+
+    private ChunkBlockPluginPropertiesNode removeChunkNode(Vector chunkVector)
+    {
+        ChunkBlockPluginPropertiesNode chunkNode = children.remove(chunkVector);
         if (chunkNode != null)
             chunkNode.setParent(null);
         return chunkNode;
     }
 
-    public boolean isChunkInChildren(Location location)
+    @Override
+    public ChunkBlockPluginPropertiesNode getChunkNode(int chunkX, int chunkZ)
     {
-        return isChunkInChildren(location.toVector());
+        return getChunkNode(getChunkVector(chunkX, chunkZ));
     }
 
-    public boolean isChunkInChildren(Vector blockVector)
+    public ChunkBlockPluginPropertiesNode getChunkNode(Location blockLocation)
     {
-        return getChunkNode(blockVector, false) != null;
+        return getChunkNode(getChunkVector(blockLocation.toVector()));
+    }
+
+    private ChunkBlockPluginPropertiesNode getChunkNode(Vector chunkVector)
+    {
+        return getChunkNode(chunkVector, false);
+    }
+
+    private ChunkBlockPluginPropertiesNode getChunkNode(Vector chunkVector, boolean createIfNotExists)
+    {
+        if (!children.containsKey(chunkVector) && createIfNotExists)
+            children.put(chunkVector, new ChunkBlockPluginPropertiesNode(this));
+
+        return children.get(chunkVector);
+    }
+
+    public boolean isChunkInChildren(int chunkX, int chunkZ)
+    {
+        return isChunkInChildren(getChunkVector(chunkX, chunkZ));
+    }
+
+    public boolean isChunkInChildren(Location blockLocation)
+    {
+        return isChunkInChildren(getChunkVector(blockLocation.toVector()));
+    }
+
+    private boolean isChunkInChildren(Vector chunkVector)
+    {
+        return getChunkNode(chunkVector) != null;
     }
 
     /**
-     * Returns a new list of contained chunk location keys
-     * @return a list of contained chunk location keys
+     * Returns a new list of contained chunk co-ordinates
+     * @return a list of contained chunk co-ordinate keys
      */
-    public List<Vector> getChunkKeys()
+    public List<Vector> getChunkVectors()
     {
         return new ArrayList<>(children.keySet());
     }
@@ -185,29 +222,16 @@ public class RegionBlockPluginPropertiesNode extends Node implements IMutableBlo
         return new ArrayList<>(children.entrySet());
     }
 
-    public ChunkBlockPluginPropertiesNode getChunkNode(Location blockLocation)
-    {
-        return getChunkNode(blockLocation.toVector());
-    }
-    public ChunkBlockPluginPropertiesNode getChunkNode(Vector blockVector)
-    {
-        return getChunkNode(blockVector, false);
-    }
-
-    private ChunkBlockPluginPropertiesNode getChunkNode(Vector blockVector, boolean createIfNotExists)
-    {
-        Vector key = getChunkKey(blockVector);
-        if (!children.containsKey(key) && createIfNotExists)
-            children.put(key, new ChunkBlockPluginPropertiesNode(this));
-
-        return children.get(key);
-    }
-
-    private Vector getChunkKey(Vector blockVector)
+    private Vector getChunkVector(Vector blockVector)
     {
         int chunkX = (int) Math.floor(blockVector.getBlockX() / 16);
         int chunkZ = (int) Math.floor(blockVector.getBlockZ() / 16);
 
+        return getChunkVector(chunkX, chunkZ);
+    }
+
+    private Vector getChunkVector(int chunkX, int chunkZ)
+    {
         return new Vector(chunkX, 0, chunkZ);
     }
 }

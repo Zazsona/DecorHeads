@@ -1,22 +1,24 @@
 package com.zazsona.decorheads.blockmeta.library.node;
 
-import org.bukkit.Location;
-
 public interface IMutableRegionBlockPluginPropertiesNodeParent extends IRegionBlockPluginPropertiesNodeParent, IMutableBlockPluginPropertiesNode
 {
     /**
-     * Sets the {@link RegionBlockPluginPropertiesNode}, including all its children, for the provided {@link Location}, overwriting any
-     * previously set values.
+     * Sets the {@link IChunkBlockPluginPropertiesNodeParent}, including all its children, for the provided co-ordinates,
+     * overwriting any previously set values.
      *
-     * @param blockLocation a block location in the region
-     * @param regionNode the RegionNode to set
+     * @param regionX the region's X co-ordinate
+     * @param regionZ the region's Z co-ordinate
+     * @param regionNode the region node
+     * @return the replaced region node, if any.
      */
-    RegionBlockPluginPropertiesNode putRegionNode(Location blockLocation, RegionBlockPluginPropertiesNode regionNode);
+    IChunkBlockPluginPropertiesNodeParent putRegionNode(int regionX, int regionZ, RegionBlockPluginPropertiesNode regionNode);
 
     /**
-     * Removes the {@link RegionBlockPluginPropertiesNode}, including all its children, for the provided {@link Location}.
+     * Removes the {@link IChunkBlockPluginPropertiesNodeParent}, including all its children, for the provided co-ordinates.
      *
-     * @param blockLocation a block location in the region
+     * @param regionX the region's X co-ordinate
+     * @param regionZ the region's Z co-ordinate
+     * @return the removed region node
      */
-    RegionBlockPluginPropertiesNode removeRegionNode(Location blockLocation);
+    IChunkBlockPluginPropertiesNodeParent removeRegionNode(int regionX, int regionZ);
 }
