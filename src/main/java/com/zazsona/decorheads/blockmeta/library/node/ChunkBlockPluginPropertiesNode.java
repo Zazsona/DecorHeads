@@ -25,86 +25,86 @@ public class ChunkBlockPluginPropertiesNode extends Node implements IMutableBloc
         children = new HashMap<>();
     }
 
-    public ChunkBlockPluginPropertiesNode(Node parent)
+    ChunkBlockPluginPropertiesNode(Node parent)
     {
         super(parent);
         children = new HashMap<>();
     }
 
     @Override
-    public String putBlockProperty(Location location, String key, String value)
+    public String putBlockProperty(Location blockLocation, String key, String value)
     {
-        return putBlockProperty(location.toVector(), key, value);
+        return putBlockProperty(blockLocation.toVector(), key, value);
     }
 
     @Override
-    public void putBlockProperties(Location location, Map<String, String> keyValueMap)
+    public void putBlockProperties(Location blockLocation, Map<String, String> keyValueMap)
     {
-        putBlockProperties(location.toVector(), keyValueMap);
+        putBlockProperties(blockLocation.toVector(), keyValueMap);
     }
 
-    public String putBlockProperty(Vector vector, String key, String value)
+    public String putBlockProperty(Vector blockVector, String key, String value)
     {
-        return getBlockNode(vector, true).putBlockProperty(key, value);
+        return getBlockNode(blockVector, true).putBlockProperty(key, value);
     }
 
-    public void putBlockProperties(Vector vector, Map<String, String> keyValueMap)
+    public void putBlockProperties(Vector blockVector, Map<String, String> keyValueMap)
     {
-        getBlockNode(vector, true).putBlockProperties(keyValueMap);
-    }
-
-    @Override
-    public String removeBlockProperty(Location location, String key)
-    {
-        return removeBlockProperty(location.toVector(), key);
+        getBlockNode(blockVector, true).putBlockProperties(keyValueMap);
     }
 
     @Override
-    public void removeBlockProperties(Location location, String... keys)
+    public String removeBlockProperty(Location blockLocation, String key)
     {
-        removeBlockProperties(location.toVector(), keys);
+        return removeBlockProperty(blockLocation.toVector(), key);
     }
 
-    public String removeBlockProperty(Vector vector, String key)
+    @Override
+    public void removeBlockProperties(Location blockLocation, String... keys)
     {
-        BlockPluginPropertiesNode blockNode = getBlockNode(vector, false);
+        removeBlockProperties(blockLocation.toVector(), keys);
+    }
+
+    public String removeBlockProperty(Vector blockVector, String key)
+    {
+        BlockPluginPropertiesNode blockNode = getBlockNode(blockVector, false);
         if (blockNode != null)
             return blockNode.removeBlockProperty(key);
         else
             return null;
     }
 
-    public void removeBlockProperties(Vector vector, String... keys)
+    public void removeBlockProperties(Vector blockVector, String... keys)
     {
-        BlockPluginPropertiesNode blockNode = getBlockNode(vector, false);
+        BlockPluginPropertiesNode blockNode = getBlockNode(blockVector, false);
         if (blockNode != null)
             blockNode.removeBlockProperties(keys);
     }
 
     @Override
-    public String getBlockProperty(Location location, String key)
+    public String getBlockProperty(Location blockLocation, String key)
     {
-        return getBlockProperty(location.toVector(), key);
+        return getBlockProperty(blockLocation.toVector(), key);
     }
 
     @Override
-    public Map<String, String> getBlockProperties(Location location, String... keys)
+    public Map<String, String> getBlockProperties(Location blockLocation, String... keys)
     {
-        return getBlockProperties(location.toVector(), keys);
+        return getBlockProperties(blockLocation.toVector(), keys);
     }
 
-    public String getBlockProperty(Vector vector, String key)
+    public String getBlockProperty(Vector blockVector, String key)
     {
-        BlockPluginPropertiesNode blockNode = getBlockNode(vector, false);
+        BlockPluginPropertiesNode blockNode = getBlockNode(blockVector, false);
         if (blockNode != null)
             return blockNode.getBlockProperty(key);
         else
             return null;
     }
 
-    public Map<String, String> getBlockProperties(Vector vector, String... keys)
+    public Map<String, String> getBlockProperties(Vector blockVector, String... keys)
     {
-        BlockPluginPropertiesNode blockNode = getBlockNode(vector, false);
+        BlockPluginPropertiesNode blockNode = getBlockNode(blockVector, false);
         if (blockNode != null)
             return blockNode.getBlockProperties(keys);
         else
@@ -112,54 +112,58 @@ public class ChunkBlockPluginPropertiesNode extends Node implements IMutableBloc
     }
 
     @Override
-    public BlockPluginPropertiesNode putBlockNode(Location location, BlockPluginPropertiesNode blockNode)
+    public BlockPluginPropertiesNode putBlockNode(Location blockLocation, BlockPluginPropertiesNode blockNode)
     {
-        if (location == null)
+        if (blockLocation == null)
             throw new NullArgumentException("location");
 
-        return putBlockNode(location.toVector(), blockNode);
+        return putBlockNode(blockLocation.toVector(), blockNode);
     }
 
-    public BlockPluginPropertiesNode putBlockNode(Vector vector, BlockPluginPropertiesNode blockNode)
+    public BlockPluginPropertiesNode putBlockNode(Vector blockVector, BlockPluginPropertiesNode blockNode)
     {
-        if (vector == null)
-            throw new NullArgumentException("vector");
+        if (blockVector == null)
+            throw new NullArgumentException("blockVector");
         if (blockNode == null)
             throw new NullArgumentException("blockNode");
 
-        Vector key = getBlockKey(vector);
+        Vector key = getBlockKey(blockVector);
+        blockNode.setParent(this);
         return children.put(key, blockNode);
     }
 
     @Override
-    public BlockPluginPropertiesNode removeBlockNode(Location location)
+    public BlockPluginPropertiesNode removeBlockNode(Location blockLocation)
     {
-        return removeBlockNode(location.toVector());
+        return removeBlockNode(blockLocation.toVector());
     }
 
-    public BlockPluginPropertiesNode removeBlockNode(Vector vector)
+    public BlockPluginPropertiesNode removeBlockNode(Vector blockVector)
     {
-        Vector key = getBlockKey(vector);
-        return children.remove(key);
+        Vector key = getBlockKey(blockVector);
+        BlockPluginPropertiesNode blockNode = children.remove(key);
+        if (blockNode != null)
+            blockNode.setParent(null);
+        return blockNode;
     }
 
     @Override
-    public BlockPluginPropertiesNode getBlockNode(Location location)
+    public BlockPluginPropertiesNode getBlockNode(Location blockLocation)
     {
-        return getBlockNode(location.toVector());
+        return getBlockNode(blockLocation.toVector());
     }
-    public BlockPluginPropertiesNode getBlockNode(Vector vector)
+    public BlockPluginPropertiesNode getBlockNode(Vector blockVector)
     {
-        return getBlockNode(vector, false);
+        return getBlockNode(blockVector, false);
     }
 
     public boolean isBlockInChildren(Location location)
     {
         return isBlockInChildren(location.toVector());
     }
-    public boolean isBlockInChildren(Vector vector)
+    public boolean isBlockInChildren(Vector blockVector)
     {
-        return getBlockNode(vector, false) != null;
+        return getBlockNode(blockVector, false) != null;
     }
 
     /**
@@ -190,17 +194,17 @@ public class ChunkBlockPluginPropertiesNode extends Node implements IMutableBloc
         return new ArrayList<>(children.entrySet());
     }
 
-    private BlockPluginPropertiesNode getBlockNode(Vector vector, boolean createIfNotExists)
+    private BlockPluginPropertiesNode getBlockNode(Vector blockVector, boolean createIfNotExists)
     {
-        Vector key = getBlockKey(vector);
+        Vector key = getBlockKey(blockVector);
         if (!children.containsKey(key) && createIfNotExists)
             children.put(key, new BlockPluginPropertiesNode(this));
 
         return children.get(key);
     }
 
-    private Vector getBlockKey(Vector vector)
+    private Vector getBlockKey(Vector blockVector)
     {
-        return vector.clone();
+        return blockVector.clone();
     }
 }

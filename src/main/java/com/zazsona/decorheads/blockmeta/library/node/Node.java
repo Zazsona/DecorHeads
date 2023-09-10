@@ -9,8 +9,18 @@ public class Node
         this.parent = null;
     }
 
-    public Node(Node parent)
+    Node(Node parent)
     {
         this.parent = parent;
+    }
+
+    public Node getParent()
+    {
+        return parent;
+    }
+
+    void setParent(Node node)
+    {
+        this.parent = node;
     }
 }

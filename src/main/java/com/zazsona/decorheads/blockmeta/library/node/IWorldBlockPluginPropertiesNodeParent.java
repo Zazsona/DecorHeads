@@ -5,9 +5,9 @@ import org.bukkit.Location;
 public interface IWorldBlockPluginPropertiesNodeParent extends IBlockPluginPropertiesNode
 {
     /**
-     * Gets the {@link WorldBlockPluginPropertiesNode} for the world at the provided location.
-     * @param location a location with world data
+     * Gets the {@link WorldBlockPluginPropertiesNode} for the world at the provided blockLocation.
+     * @param blockLocation a block location with world data
      * @return the WorldNode
      */
-    WorldBlockPluginPropertiesNode getWorldNode(Location location);
+    IRegionBlockPluginPropertiesNodeParent getWorldNode(Location blockLocation);
 }

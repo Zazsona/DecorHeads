@@ -9,33 +9,33 @@ public interface IMutableBlockPluginPropertiesNode extends IBlockPluginPropertie
     /**
      * Sets the plugin property identified by the key for the block at the given {@link Location}
      *
-     * @param location the location of the block
+     * @param blockLocation the block location of the block
      * @param key      the property key
      * @param value    the property value
      */
-    String putBlockProperty(Location location, String key, String value);
+    String putBlockProperty(Location blockLocation, String key, String value);
 
     /**
      * Sets the plugin properties identified by the key for the block at the given {@link Location}
      *
-     * @param location the location of the block
+     * @param blockLocation the block location of the block
      * @param keyValueMap the properties to set
      */
-    void putBlockProperties(Location location, Map<String, String> keyValueMap);
+    void putBlockProperties(Location blockLocation, Map<String, String> keyValueMap);
 
     /**
      * Removes the plugin property identified by the key for the block at the given {@link Location}
      *
-     * @param location the location of the block
+     * @param blockLocation the block location of the block
      * @param key      the property key
      */
-    String removeBlockProperty(Location location, String key);
+    String removeBlockProperty(Location blockLocation, String key);
 
     /**
      * Removes the plugin properties identified by the keys for the block at the given {@link Location}
      *
-     * @param location the location of the block
+     * @param blockLocation the block location of the block
      * @param keys      the property keys
      */
-    void removeBlockProperties(Location location, String... keys);
+    void removeBlockProperties(Location blockLocation, String... keys);
 }

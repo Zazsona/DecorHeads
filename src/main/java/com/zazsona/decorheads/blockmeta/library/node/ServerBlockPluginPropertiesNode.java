@@ -23,100 +23,96 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
         children = new HashMap<>();
     }
 
-    public ServerBlockPluginPropertiesNode(Node parent)
+    ServerBlockPluginPropertiesNode(Node parent)
     {
         super(parent);
         children = new HashMap<>();
     }
 
     @Override
-    public String putBlockProperty(Location location, String key, String value)
+    public String putBlockProperty(Location blockLocation, String key, String value)
     {
-        return putBlockProperty(location.toVector(), location.getWorld(), key, value);
+        return putBlockProperty(blockLocation.toVector(), blockLocation.getWorld(), key, value);
     }
 
     @Override
-    public void putBlockProperties(Location location, Map<String, String> keyValueMap)
+    public void putBlockProperties(Location blockLocation, Map<String, String> keyValueMap)
     {
-        putBlockProperties(location.toVector(), location.getWorld(), keyValueMap);
+        putBlockProperties(blockLocation.toVector(), blockLocation.getWorld(), keyValueMap);
     }
 
-    public String putBlockProperty(Vector vector, World world, String key, String value)
+    public String putBlockProperty(Vector blockVector, World world, String key, String value)
     {
-        return getWorldNode(world, true).putBlockProperty(vector, key, value);
+        return getWorldNode(world, true).putBlockProperty(blockVector, key, value);
     }
 
-    public void putBlockProperties(Vector vector, World world, Map<String, String> keyValueMap)
+    public void putBlockProperties(Vector blockVector, World world, Map<String, String> keyValueMap)
     {
-        getWorldNode(world, true).putBlockProperties(vector, keyValueMap);
-    }
-
-    @Override
-    public String removeBlockProperty(Location location, String key)
-    {
-        return removeBlockProperty(location.toVector(), location.getWorld(), key);
+        getWorldNode(world, true).putBlockProperties(blockVector, keyValueMap);
     }
 
     @Override
-    public void removeBlockProperties(Location location, String... keys)
+    public String removeBlockProperty(Location blockLocation, String key)
     {
-        removeBlockProperties(location.toVector(), location.getWorld(), keys);
+        return removeBlockProperty(blockLocation.toVector(), blockLocation.getWorld(), key);
     }
 
-    public String removeBlockProperty(Vector vector, World world, String key)
+    @Override
+    public void removeBlockProperties(Location blockLocation, String... keys)
+    {
+        removeBlockProperties(blockLocation.toVector(), blockLocation.getWorld(), keys);
+    }
+
+    public String removeBlockProperty(Vector blockVector, World world, String key)
     {
         WorldBlockPluginPropertiesNode worldNode = getWorldNode(world, false);
         if (worldNode != null)
-            return worldNode.removeBlockProperty(vector, key);
+            return worldNode.removeBlockProperty(blockVector, key);
         else
             return null;
     }
 
-    public void removeBlockProperties(Vector vector, World world, String... keys)
+    public void removeBlockProperties(Vector blockVector, World world, String... keys)
     {
         WorldBlockPluginPropertiesNode worldNode = getWorldNode(world, false);
         if (worldNode != null)
-            worldNode.removeBlockProperties(vector, keys);
+            worldNode.removeBlockProperties(blockVector, keys);
     }
 
     @Override
-    public String getBlockProperty(Location location, String key)
+    public String getBlockProperty(Location blockLocation, String key)
     {
-        return getBlockProperty(location.toVector(), location.getWorld(), key);
+        return getBlockProperty(blockLocation.toVector(), blockLocation.getWorld(), key);
     }
 
     @Override
-    public Map<String, String> getBlockProperties(Location location, String... keys)
+    public Map<String, String> getBlockProperties(Location blockLocation, String... keys)
     {
-        return getBlockProperties(location.toVector(), location.getWorld(), keys);
+        return getBlockProperties(blockLocation.toVector(), blockLocation.getWorld(), keys);
     }
 
-    public String getBlockProperty(Vector vector, World world, String key)
+    public String getBlockProperty(Vector blockVector, World world, String key)
     {
         WorldBlockPluginPropertiesNode worldNode = getWorldNode(world, false);
         if (worldNode != null)
-            return worldNode.getBlockProperty(vector, key);
+            return worldNode.getBlockProperty(blockVector, key);
         else
             return null;
     }
 
-    public Map<String, String> getBlockProperties(Vector vector, World world, String... keys)
+    public Map<String, String> getBlockProperties(Vector blockVector, World world, String... keys)
     {
         WorldBlockPluginPropertiesNode worldNode = getWorldNode(world, false);
         if (worldNode != null)
-            return worldNode.getBlockProperties(vector, keys);
+            return worldNode.getBlockProperties(blockVector, keys);
         else
             return new HashMap<>();
     }
 
     @Override
-    public WorldBlockPluginPropertiesNode putWorldNode(Location location, WorldBlockPluginPropertiesNode worldNode)
+    public WorldBlockPluginPropertiesNode putWorldNode(Location blockLocation, WorldBlockPluginPropertiesNode worldNode)
     {
-        if (worldNode == null)
-            throw new NullArgumentException("worldNode");
-
-        UUID key = getWorldKey(location);
-        return children.put(key, worldNode);
+        return putWorldNode(blockLocation.getWorld(), worldNode);
     }
 
     /**
@@ -132,14 +128,14 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
             throw new NullArgumentException("worldNode");
 
         UUID key = getWorldKey(world);
+        worldNode.setParent(this);
         return children.put(key, worldNode);
     }
 
     @Override
-    public WorldBlockPluginPropertiesNode removeWorldNode(Location location)
+    public WorldBlockPluginPropertiesNode removeWorldNode(Location blockLocation)
     {
-        UUID key = getWorldKey(location);
-        return children.remove(key);
+        return removeWorldNode(blockLocation.getWorld());
     }
 
     /**
@@ -150,7 +146,10 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
     public WorldBlockPluginPropertiesNode removeWorldNode(World world)
     {
         UUID key = getWorldKey(world);
-        return children.remove(key);
+        WorldBlockPluginPropertiesNode worldNode = children.remove(key);
+        if (worldNode != null)
+            worldNode.setParent(null);
+        return worldNode;
     }
 
     public boolean isWorldInChildren(Location location)
@@ -190,12 +189,12 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
         return new ArrayList<>(children.entrySet());
     }
 
-    public WorldBlockPluginPropertiesNode getWorldNode(Location location)
+    public WorldBlockPluginPropertiesNode getWorldNode(Location blockLocation)
     {
-        if (location == null)
+        if (blockLocation == null)
             throw new NullArgumentException("location");
 
-        return getWorldNode(location.getWorld(), false);
+        return getWorldNode(blockLocation.getWorld(), false);
     }
 
     /**

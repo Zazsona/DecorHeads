@@ -20,20 +20,20 @@ public class BlockPluginPropertiesNode extends Node implements IMutableBlockPlug
         properties = new HashMap<>();
     }
 
-    public BlockPluginPropertiesNode(Node parent)
+    BlockPluginPropertiesNode(Node parent)
     {
         super(parent);
         properties = new HashMap<>();
     }
 
     @Override
-    public String putBlockProperty(Location location, String key, String value)
+    public String putBlockProperty(Location blockLocation, String key, String value)
     {
         return properties.put(key, value);
     }
 
     @Override
-    public void putBlockProperties(Location location, Map<String, String> keyValueMap)
+    public void putBlockProperties(Location blockLocation, Map<String, String> keyValueMap)
     {
         putBlockProperties(keyValueMap);
     }
@@ -49,13 +49,13 @@ public class BlockPluginPropertiesNode extends Node implements IMutableBlockPlug
     }
 
     @Override
-    public String removeBlockProperty(Location location, String key)
+    public String removeBlockProperty(Location blockLocation, String key)
     {
         return properties.remove(key);
     }
 
     @Override
-    public void removeBlockProperties(Location location, String... keys)
+    public void removeBlockProperties(Location blockLocation, String... keys)
     {
         removeBlockProperties(keys);
     }
@@ -72,13 +72,13 @@ public class BlockPluginPropertiesNode extends Node implements IMutableBlockPlug
     }
 
     @Override
-    public String getBlockProperty(Location location, String key)
+    public String getBlockProperty(Location blockLocation, String key)
     {
         return properties.get(key);
     }
 
     @Override
-    public Map<String, String> getBlockProperties(Location location, String... keys)
+    public Map<String, String> getBlockProperties(Location blockLocation, String... keys)
     {
         return getBlockProperties(keys);
     }

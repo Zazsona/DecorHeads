@@ -8,15 +8,15 @@ public interface IMutableWorldBlockPluginPropertiesNodeParent extends IWorldBloc
      * Sets the {@link WorldBlockPluginPropertiesNode}, including all its children, for the provided {@link Location}, overwriting any
      * previously set values.
      *
-     * @param location a location in the world
+     * @param blockLocation a block location in the world
      * @param worldNode the WorldNode to set
      */
-    WorldBlockPluginPropertiesNode putWorldNode(Location location, WorldBlockPluginPropertiesNode worldNode);
+    WorldBlockPluginPropertiesNode putWorldNode(Location blockLocation, WorldBlockPluginPropertiesNode worldNode);
 
     /**
      * Removes the {@link WorldBlockPluginPropertiesNode}, including all its children, for the provided {@link Location}.
      *
-     * @param location a location in the world
+     * @param blockLocation a block location in the world
      */
-    WorldBlockPluginPropertiesNode removeWorldNode(Location location);
+    WorldBlockPluginPropertiesNode removeWorldNode(Location blockLocation);
 }

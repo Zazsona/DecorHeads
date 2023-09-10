@@ -8,15 +8,15 @@ public interface IMutableBlockPluginPropertiesNodeParent extends IBlockPluginPro
      * Sets the {@link BlockPluginPropertiesNode}, including all its children, for the provided {@link Location}, overwriting any
      * previously set values.
      *
-     * @param location the location of the chunk
+     * @param blockLocation the block location
      * @param blockNode the BlockNode to set
      */
-    BlockPluginPropertiesNode putBlockNode(Location location, BlockPluginPropertiesNode blockNode);
+    BlockPluginPropertiesNode putBlockNode(Location blockLocation, BlockPluginPropertiesNode blockNode);
 
     /**
      * Removes the {@link BlockPluginPropertiesNode}, including all its children, for the provided {@link Location}.
      *
-     * @param location the location of the chunk
+     * @param blockLocation the block location
      */
-    BlockPluginPropertiesNode removeBlockNode(Location location);
+    BlockPluginPropertiesNode removeBlockNode(Location blockLocation);
 }

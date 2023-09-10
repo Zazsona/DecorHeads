@@ -6,9 +6,9 @@ import org.bukkit.block.Block;
 public interface IBlockPluginPropertiesNodeParent extends IBlockPluginPropertiesNode
 {
     /**
-     * Gets the {@link BlockPluginPropertiesNode} for the block at the provided location.
-     * @param location a location for a {@link Block}
+     * Gets the {@link BlockPluginPropertiesNode} for the block at the provided blockLocation.
+     * @param blockLocation a location for a {@link Block}
      * @return the BlockNode
      */
-    BlockPluginPropertiesNode getBlockNode(Location location);
+    IBlockPluginPropertiesNode getBlockNode(Location blockLocation);
 }

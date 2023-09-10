@@ -6,9 +6,9 @@ import org.bukkit.Location;
 public interface IChunkBlockPluginPropertiesNodeParent extends IBlockPluginPropertiesNode
 {
     /**
-     * Gets the {@link ChunkBlockPluginPropertiesNode} for the chunk at the provided location.
-     * @param location a location contained within the {@link Chunk}
+     * Gets the {@link ChunkBlockPluginPropertiesNode} for the chunk at the provided blockLocation.
+     * @param blockLocation a block location contained within the {@link Chunk}
      * @return the ChunkNode
      */
-    ChunkBlockPluginPropertiesNode getChunkNode(Location location);
+    IBlockPluginPropertiesNodeParent getChunkNode(Location blockLocation);
 }

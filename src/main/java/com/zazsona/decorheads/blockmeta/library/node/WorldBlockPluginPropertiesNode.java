@@ -25,122 +25,126 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
         children = new HashMap<>();
     }
 
-    public WorldBlockPluginPropertiesNode(Node parent)
+    WorldBlockPluginPropertiesNode(Node parent)
     {
         super(parent);
         children = new HashMap<>();
     }
 
     @Override
-    public String putBlockProperty(Location location, String key, String value)
+    public String putBlockProperty(Location blockLocation, String key, String value)
     {
-        return putBlockProperty(location.toVector(), key, value);
+        return putBlockProperty(blockLocation.toVector(), key, value);
     }
 
     @Override
-    public void putBlockProperties(Location location, Map<String, String> keyValueMap)
+    public void putBlockProperties(Location blockLocation, Map<String, String> keyValueMap)
     {
-        putBlockProperties(location.toVector(), keyValueMap);
+        putBlockProperties(blockLocation.toVector(), keyValueMap);
     }
 
-    public String putBlockProperty(Vector vector, String key, String value)
+    public String putBlockProperty(Vector blockVector, String key, String value)
     {
-        return getRegionNode(vector, true).putBlockProperty(vector, key, value);
+        return getRegionNode(blockVector, true).putBlockProperty(blockVector, key, value);
     }
 
-    public void putBlockProperties(Vector vector, Map<String, String> keyValueMap)
+    public void putBlockProperties(Vector blockVector, Map<String, String> keyValueMap)
     {
-        getRegionNode(vector, true).putBlockProperties(vector, keyValueMap);
-    }
-
-    @Override
-    public String removeBlockProperty(Location location, String key)
-    {
-        return removeBlockProperty(location.toVector(), key);
+        getRegionNode(blockVector, true).putBlockProperties(blockVector, keyValueMap);
     }
 
     @Override
-    public void removeBlockProperties(Location location, String... keys)
+    public String removeBlockProperty(Location blockLocation, String key)
     {
-        removeBlockProperties(location.toVector(), keys);
+        return removeBlockProperty(blockLocation.toVector(), key);
     }
 
-    public String removeBlockProperty(Vector vector, String key)
+    @Override
+    public void removeBlockProperties(Location blockLocation, String... keys)
     {
-        RegionBlockPluginPropertiesNode regionNode = getRegionNode(vector, false);
+        removeBlockProperties(blockLocation.toVector(), keys);
+    }
+
+    public String removeBlockProperty(Vector blockVector, String key)
+    {
+        RegionBlockPluginPropertiesNode regionNode = getRegionNode(blockVector, false);
         if (regionNode != null)
-            return regionNode.removeBlockProperty(vector, key);
+            return regionNode.removeBlockProperty(blockVector, key);
         else
             return null;
     }
 
-    public void removeBlockProperties(Vector vector, String... keys)
+    public void removeBlockProperties(Vector blockVector, String... keys)
     {
-        RegionBlockPluginPropertiesNode regionNode = getRegionNode(vector, false);
+        RegionBlockPluginPropertiesNode regionNode = getRegionNode(blockVector, false);
         if (regionNode != null)
-            regionNode.removeBlockProperties(vector, keys);
+            regionNode.removeBlockProperties(blockVector, keys);
     }
 
     @Override
-    public String getBlockProperty(Location location, String key)
+    public String getBlockProperty(Location blockLocation, String key)
     {
-        return getBlockProperty(location.toVector(), key);
+        return getBlockProperty(blockLocation.toVector(), key);
     }
 
     @Override
-    public Map<String, String> getBlockProperties(Location location, String... keys)
+    public Map<String, String> getBlockProperties(Location blockLocation, String... keys)
     {
-        return getBlockProperties(location.toVector(), keys);
+        return getBlockProperties(blockLocation.toVector(), keys);
     }
 
-    public String getBlockProperty(Vector vector, String key)
+    public String getBlockProperty(Vector blockVector, String key)
     {
-        RegionBlockPluginPropertiesNode regionNode = getRegionNode(vector, false);
+        RegionBlockPluginPropertiesNode regionNode = getRegionNode(blockVector, false);
         if (regionNode != null)
-            return regionNode.getBlockProperty(vector, key);
+            return regionNode.getBlockProperty(blockVector, key);
         else
             return null;
     }
 
-    public Map<String, String> getBlockProperties(Vector vector, String... keys)
+    public Map<String, String> getBlockProperties(Vector blockVector, String... keys)
     {
-        RegionBlockPluginPropertiesNode regionNode = getRegionNode(vector, false);
+        RegionBlockPluginPropertiesNode regionNode = getRegionNode(blockVector, false);
         if (regionNode != null)
-            return regionNode.getBlockProperties(vector, keys);
+            return regionNode.getBlockProperties(blockVector, keys);
         else
             return new HashMap<>();
     }
 
     @Override
-    public RegionBlockPluginPropertiesNode putRegionNode(Location location, RegionBlockPluginPropertiesNode regionNode)
+    public RegionBlockPluginPropertiesNode putRegionNode(Location blockLocation, RegionBlockPluginPropertiesNode regionNode)
     {
-        if (location == null)
+        if (blockLocation == null)
             throw new NullArgumentException("location");
 
-        return putRegionNode(location.toVector(), regionNode);
+        return putRegionNode(blockLocation.toVector(), regionNode);
     }
 
-    public RegionBlockPluginPropertiesNode putRegionNode(Vector vector, RegionBlockPluginPropertiesNode regionNode)
+    public RegionBlockPluginPropertiesNode putRegionNode(Vector blockVector, RegionBlockPluginPropertiesNode regionNode)
     {
-        if (vector == null)
-            throw new NullArgumentException("vector");
+        if (blockVector == null)
+            throw new NullArgumentException("blockVector");
         if (regionNode == null)
             throw new NullArgumentException("regionNode");
 
-        Vector key = getRegionKey(vector);
+        Vector key = getRegionKey(blockVector);
+        regionNode.setParent(this);
         return children.put(key, regionNode);
     }
 
     @Override
-    public RegionBlockPluginPropertiesNode removeRegionNode(Location location)
+    public RegionBlockPluginPropertiesNode removeRegionNode(Location blockLocation)
     {
-        return removeRegionNode(location.toVector());
+        return removeRegionNode(blockLocation.toVector());
     }
 
-    public RegionBlockPluginPropertiesNode removeRegionNode(Vector vector)
+    public RegionBlockPluginPropertiesNode removeRegionNode(Vector blockVector)
     {
-        Vector key = getRegionKey(vector);
-        return children.remove(key);
+        Vector key = getRegionKey(blockVector);
+        RegionBlockPluginPropertiesNode regionNode = children.remove(key);
+        if (regionNode != null)
+            regionNode.setParent(null);
+        return regionNode;
     }
 
     public boolean isRegionInChildren(Location location)
@@ -148,9 +152,9 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
         return isRegionInChildren(location.toVector());
     }
 
-    public boolean isRegionInChildren(Vector vector)
+    public boolean isRegionInChildren(Vector blockVector)
     {
-        return getRegionNode(vector, false) != null;
+        return getRegionNode(blockVector, false) != null;
     }
 
     /**
@@ -181,30 +185,30 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
         return new ArrayList<>(children.entrySet());
     }
 
-    public RegionBlockPluginPropertiesNode getRegionNode(Location location)
+    public RegionBlockPluginPropertiesNode getRegionNode(Location blockLocation)
     {
-        return getRegionNode(location.toVector());
+        return getRegionNode(blockLocation.toVector());
     }
 
-    public RegionBlockPluginPropertiesNode getRegionNode(Vector vector)
+    public RegionBlockPluginPropertiesNode getRegionNode(Vector blockVector)
     {
-        return getRegionNode(vector, false);
+        return getRegionNode(blockVector, false);
     }
 
-    private RegionBlockPluginPropertiesNode getRegionNode(Vector vector, boolean createIfNotExists)
+    private RegionBlockPluginPropertiesNode getRegionNode(Vector blockVector, boolean createIfNotExists)
     {
-        Vector key = getRegionKey(vector);
+        Vector key = getRegionKey(blockVector);
         if (!children.containsKey(key) && createIfNotExists)
             children.put(key, new RegionBlockPluginPropertiesNode(this));
 
         return children.get(key);
     }
 
-    private Vector getRegionKey(Vector vector)
+    private Vector getRegionKey(Vector blockVector)
     {
         // Get Chunk Co-ordinates
-        int chunkX = (int) Math.floor(vector.getBlockX() / 16);
-        int chunkZ = (int) Math.floor(vector.getBlockZ() / 16);
+        int chunkX = (int) Math.floor(blockVector.getBlockX() / 16);
+        int chunkZ = (int) Math.floor(blockVector.getBlockZ() / 16);
 
         // Get Region Co-ordinates
         int regionX = (int) Math.floor(chunkX / 32);
