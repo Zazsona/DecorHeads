@@ -5,18 +5,24 @@ import org.bukkit.Location;
 public interface IMutableBlockPluginPropertiesNodeParent extends IBlockPluginPropertiesNodeParent, IMutableBlockPluginPropertiesNode
 {
     /**
-     * Sets the {@link BlockPluginPropertiesNode}, including all its children, for the provided {@link Location}, overwriting any
+     * Sets the {@link BlockPluginPropertiesNode}, including all its children, for the provided co-ordinates, overwriting any
      * previously set values.
      *
-     * @param blockLocation the block location
-     * @param blockNode the BlockNode to set
+     * @param blockX the block's X co-ordinate
+     * @param blockY the block's Y co-ordinate
+     * @param blockZ the block's Z co-ordinate
+     * @param blockNode the block node to set
+     * @return the previously associated block node
      */
-    BlockPluginPropertiesNode putBlockNode(Location blockLocation, BlockPluginPropertiesNode blockNode);
+    BlockPluginPropertiesNode putBlockNode(int blockX, int blockY, int blockZ, BlockPluginPropertiesNode blockNode);
 
     /**
-     * Removes the {@link BlockPluginPropertiesNode}, including all its children, for the provided {@link Location}.
+     * Removes the {@link BlockPluginPropertiesNode}, including all its children, for the provided co-ordinates
      *
-     * @param blockLocation the block location
+     * @param blockX the block's X co-ordinate
+     * @param blockY the block's Y co-ordinate
+     * @param blockZ the block's Z co-ordinate
+     * @return the removed block node
      */
-    BlockPluginPropertiesNode removeBlockNode(Location blockLocation);
+    BlockPluginPropertiesNode removeBlockNode(int blockX, int blockY, int blockZ);
 }

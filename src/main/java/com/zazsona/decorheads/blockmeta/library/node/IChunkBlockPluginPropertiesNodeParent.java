@@ -1,5 +1,9 @@
 package com.zazsona.decorheads.blockmeta.library.node;
 
+import org.bukkit.util.Vector;
+
+import java.util.List;
+
 public interface IChunkBlockPluginPropertiesNodeParent extends IBlockPluginPropertiesNode
 {
     /**
@@ -9,4 +13,10 @@ public interface IChunkBlockPluginPropertiesNodeParent extends IBlockPluginPrope
      * @return the chunk node
      */
     IBlockPluginPropertiesNodeParent getChunkNode(int chunkX, int chunkZ);
+
+    /**
+     * Returns a new list of contained chunk co-ordinates
+     * @return a list of contained chunk co-ordinates
+     */
+    List<Vector> getChunkVectors();
 }

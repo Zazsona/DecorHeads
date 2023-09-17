@@ -29,6 +29,16 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
         children = new HashMap<>();
     }
 
+    public String putBlockProperty(int blockX, int blockY, int blockZ, World world, String key, String value)
+    {
+        return putBlockProperty(new Vector(blockX, blockY, blockZ), world, key, value);
+    }
+
+    public void putBlockProperties(int blockX, int blockY, int blockZ, World world, Map<String, String> keyValueMap)
+    {
+        putBlockProperties(new Vector(blockX, blockY, blockZ), world, keyValueMap);
+    }
+
     @Override
     public String putBlockProperty(Location blockLocation, String key, String value)
     {
@@ -49,6 +59,16 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
     public void putBlockProperties(Vector blockVector, World world, Map<String, String> keyValueMap)
     {
         getWorldNode(world, true).putBlockProperties(blockVector, keyValueMap);
+    }
+
+    public String removeBlockProperty(int blockX, int blockY, int blockZ, World world, String key)
+    {
+        return removeBlockProperty(new Vector(blockX, blockY, blockZ), world, key);
+    }
+
+    public void removeBlockProperties(int blockX, int blockY, int blockZ, World world, String... keys)
+    {
+        removeBlockProperties(new Vector(blockX, blockY, blockZ), world, keys);
     }
 
     @Override
@@ -77,6 +97,16 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
         WorldBlockPluginPropertiesNode worldNode = getWorldNode(world, false);
         if (worldNode != null)
             worldNode.removeBlockProperties(blockVector, keys);
+    }
+
+    public String getBlockProperty(int blockX, int blockY, int blockZ, World world, String key)
+    {
+        return getBlockProperty(new Vector(blockX, blockY, blockZ), world, key);
+    }
+
+    public Map<String, String> getBlockProperties(int blockX, int blockY, int blockZ, World world, String... keys)
+    {
+        return getBlockProperties(new Vector(blockX, blockY, blockZ), world, keys);
     }
 
     @Override
@@ -183,6 +213,7 @@ public class ServerBlockPluginPropertiesNode extends Node implements IMutableBlo
      * Returns a new list of contained world GUIDs
      * @return a list of contained world GUID keys
      */
+    @Override
     public List<UUID> getWorldIds()
     {
         return new ArrayList<>(children.keySet());

@@ -31,10 +31,20 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
         children = new HashMap<>();
     }
 
+    public String putBlockProperty(int blockX, int blockY, int blockZ, String key, String value)
+    {
+        return putBlockProperty(new Vector(blockX, blockY, blockZ), key, value);
+    }
+
     @Override
     public String putBlockProperty(Location blockLocation, String key, String value)
     {
         return putBlockProperty(blockLocation.toVector(), key, value);
+    }
+
+    public void putBlockProperties(int blockX, int blockY, int blockZ, Map<String, String> keyValueMap)
+    {
+        putBlockProperties(new Vector(blockX, blockY, blockZ), keyValueMap);
     }
 
     @Override
@@ -53,10 +63,20 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
         getRegionNode(blockVector, true).putBlockProperties(blockVector, keyValueMap);
     }
 
+    public String removeBlockProperty(int blockX, int blockY, int blockZ, String key)
+    {
+        return removeBlockProperty(new Vector(blockX, blockY, blockZ), key);
+    }
+
     @Override
     public String removeBlockProperty(Location blockLocation, String key)
     {
         return removeBlockProperty(blockLocation.toVector(), key);
+    }
+
+    public void removeBlockProperties(int blockX, int blockY, int blockZ, String... keys)
+    {
+        removeBlockProperties(new Vector(blockX, blockY, blockZ), keys);
     }
 
     @Override
@@ -81,10 +101,20 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
             regionNode.removeBlockProperties(blockVector, keys);
     }
 
+    public String getBlockProperty(int blockX, int blockY, int blockZ, String key)
+    {
+        return getBlockProperty(new Vector(blockX, blockY, blockZ), key);
+    }
+
     @Override
     public String getBlockProperty(Location blockLocation, String key)
     {
         return getBlockProperty(blockLocation.toVector(), key);
+    }
+
+    public Map<String, String> getBlockProperties(int blockX, int blockY, int blockZ, String... keys)
+    {
+        return getBlockProperties(new Vector(blockX, blockY, blockZ), keys);
     }
 
     @Override
@@ -198,6 +228,7 @@ public class WorldBlockPluginPropertiesNode extends Node implements IMutableBloc
      * Returns a new list of contained region co-ordinate vectors
      * @return a list of contained region co-ordinate keys
      */
+    @Override
     public List<Vector> getRegionVectors()
     {
         return new ArrayList<>(children.keySet());
