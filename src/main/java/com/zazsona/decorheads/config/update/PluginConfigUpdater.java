@@ -10,8 +10,6 @@ import java.util.regex.Pattern;
 
 public class PluginConfigUpdater implements IVersionedYamlConfigUpdater<PluginConfig>
 {
-    // TODO: Migrate blockMetaLogger.json file
-
     @Override
     public PluginConfig update(PluginConfig config) throws IOException
     {

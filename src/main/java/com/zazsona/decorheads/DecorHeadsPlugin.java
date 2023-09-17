@@ -1,6 +1,7 @@
 package com.zazsona.decorheads;
 
 import com.zazsona.decorheads.blockmeta.BlockInventoryOwnerBlockPropertiesUpdater;
+import com.zazsona.decorheads.blockmeta.BlockPluginPropertiesUpdater;
 import com.zazsona.decorheads.blockmeta.HeadBlockPropertiesUpdater;
 import com.zazsona.decorheads.blockmeta.library.node.LoadedBlockPluginProperties;
 import com.zazsona.decorheads.command.ConfigCommand;
@@ -123,6 +124,8 @@ public class DecorHeadsPlugin extends JavaPlugin
                 headRecipeConfig.save();
             else
                 throw new ConfigurationException("Recipes Config is invalid.");
+
+            BlockPluginPropertiesUpdater.migrateBlockMetadataFileToBlockPluginProperties();
 
             // ============================================
             // Asset Loaders
