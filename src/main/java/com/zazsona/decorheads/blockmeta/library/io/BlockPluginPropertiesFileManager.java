@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-class BlockPluginPropertiesFileManager
+public class BlockPluginPropertiesFileManager
         implements
         IServerBlockPluginPropertiesSaver, IServerBlockPluginPropertiesLoader,
         IWorldBlockPluginPropertiesSaver, IWorldBlockPluginPropertiesLoader,

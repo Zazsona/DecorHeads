@@ -1,10 +1,10 @@
 package com.zazsona.decorheads.blockmeta.library.node;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.zazsona.decorheads.blockmeta.library.event.IBlockPluginPropertiesLoadHandler;
 import com.zazsona.decorheads.blockmeta.library.event.IBlockPluginPropertiesUnloadHandler;
-import org.apache.commons.lang.NullArgumentException;
+import com.zazsona.decorheads.blockmeta.library.io.BlockPluginPropertiesFileManager;
+import com.zazsona.decorheads.blockmeta.library.io.IRegionBlockPluginPropertiesLoader;
+import com.zazsona.decorheads.blockmeta.library.io.IWorldBlockPluginPropertiesSaver;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -18,12 +18,7 @@ import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 /**
@@ -32,11 +27,12 @@ import java.util.*;
  */
 public class LoadedBlockPluginProperties implements Listener, IMutableBlockPluginPropertiesNode
 {
-    private static HashMap<Plugin, LoadedBlockPluginProperties> instances;
+    private static HashMap<Plugin, LoadedBlockPluginProperties> instances = new HashMap<>();
 
     private Plugin plugin;
     private ServerBlockPluginPropertiesNode propertiesTree;
-    private Gson gson;
+    private IWorldBlockPluginPropertiesSaver worldSaver;
+    private IRegionBlockPluginPropertiesLoader regionLoader;
     private List<IBlockPluginPropertiesLoadHandler> loadListeners;
     private List<IBlockPluginPropertiesUnloadHandler> unloadListeners;
 
@@ -45,18 +41,18 @@ public class LoadedBlockPluginProperties implements Listener, IMutableBlockPlugi
         if (instances.containsKey(plugin))
             return instances.get(plugin);
 
-        LoadedBlockPluginProperties newInstance = new LoadedBlockPluginProperties(plugin);
+        BlockPluginPropertiesFileManager fileManager = new BlockPluginPropertiesFileManager(plugin);
+        LoadedBlockPluginProperties newInstance = new LoadedBlockPluginProperties(plugin, fileManager, fileManager);
         instances.put(plugin, newInstance);
         return newInstance;
     }
 
-    private LoadedBlockPluginProperties(Plugin plugin)
+    private LoadedBlockPluginProperties(Plugin plugin, IWorldBlockPluginPropertiesSaver worldSaver, IRegionBlockPluginPropertiesLoader regionLoader)
     {
         this.plugin = plugin;
         this.propertiesTree = new ServerBlockPluginPropertiesNode();
-        this.gson = new GsonBuilder()
-                    .excludeFieldsWithoutExposeAnnotation()
-                    .create();
+        this.worldSaver = worldSaver;
+        this.regionLoader = regionLoader;
 
         this.loadListeners = new ArrayList<>();
         this.unloadListeners = new ArrayList<>();
@@ -69,25 +65,26 @@ public class LoadedBlockPluginProperties implements Listener, IMutableBlockPlugi
     {
         try
         {
+            // Get region...
             Chunk chunk = e.getChunk();
-            Location location = chunk.getBlock(0, 0, 0).getLocation();
+            World world = chunk.getWorld();
+            int regionX = (int) Math.floor(chunk.getX() / 32);
+            int regionZ = (int) Math.floor(chunk.getZ() / 32);
 
-            WorldBlockPluginPropertiesNode worldNode = propertiesTree.getWorldNode(location);
+            // Get world node...
+            WorldBlockPluginPropertiesNode worldNode = propertiesTree.getWorldNode(world);
             if (worldNode == null)
-                propertiesTree.putWorldNode(location, new WorldBlockPluginPropertiesNode(propertiesTree));
+                propertiesTree.putWorldNode(world, new WorldBlockPluginPropertiesNode(propertiesTree));
 
-            if (worldNode.isRegionInChildren(location))
+            // Do nothing if region already loaded; otherwise load & cache
+            if (worldNode.isRegionInChildren(regionX, regionZ))
                 return; // Data present in cache; nothing for us to do.
 
-            File regionFile = getRegionFile(plugin, location);
-            if (regionFile.exists())
-            {
-                String jsonText = new String(Files.readAllBytes(regionFile.toPath()));
-                RegionBlockPluginPropertiesNode regionNodeFromFile = gson.fromJson(jsonText, RegionBlockPluginPropertiesNode.class);
-                worldNode.putRegionNode(location, regionNodeFromFile);
-            }
-            else
-                worldNode.putRegionNode(location, new RegionBlockPluginPropertiesNode(worldNode));
+            RegionBlockPluginPropertiesNode regionNode = regionLoader.loadRegion(world, regionX, regionZ);
+            if (regionNode == null)
+                regionNode = new RegionBlockPluginPropertiesNode(worldNode);
+
+            worldNode.putRegionNode(regionX, regionZ, regionNode);
         }
         catch (IOException ex)
         {
@@ -133,58 +130,118 @@ public class LoadedBlockPluginProperties implements Listener, IMutableBlockPlugi
         return unloadListeners.remove(listener);
     }
 
-    @Override
-    public String putBlockProperty(Location location, String key, String value)
+    public String putBlockProperty(int blockX, int blockY, int blockZ, World world, String key, String value)
     {
-        if (location.getChunk().isLoaded())
-            return propertiesTree.putBlockProperty(location, key, value);
-        else
-            throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+        return putBlockProperty(new Location(world, blockX, blockY, blockZ), key, value);
+    }
+
+    public void putBlockProperties(int blockX, int blockY, int blockZ, World world, Map<String, String> keyValueMap)
+    {
+        putBlockProperties(new Location(world, blockX, blockY, blockZ), keyValueMap);
     }
 
     @Override
-    public void putBlockProperties(Location location, Map<String, String> keyValueMap)
+    public String putBlockProperty(Location blockLocation, String key, String value)
     {
-        if (location.getChunk().isLoaded())
-            propertiesTree.putBlockProperties(location, keyValueMap);
+        if (blockLocation.getChunk().isLoaded())
+            return propertiesTree.putBlockProperty(blockLocation, key, value);
         else
-            throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+            throw new IllegalArgumentException("Location is not loaded by the server: " + blockLocation);
     }
 
     @Override
-    public String removeBlockProperty(Location location, String key)
+    public void putBlockProperties(Location blockLocation, Map<String, String> keyValueMap)
     {
-        if (location.getChunk().isLoaded())
-            return propertiesTree.removeBlockProperty(location, key);
+        if (blockLocation.getChunk().isLoaded())
+            propertiesTree.putBlockProperties(blockLocation, keyValueMap);
         else
-            throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+            throw new IllegalArgumentException("Location is not loaded by the server: " + blockLocation);
+    }
+
+    public String putBlockProperty(Vector blockVector, World world, String key, String value)
+    {
+        return putBlockProperty(blockVector.toLocation(world), key, value);
+    }
+
+    public void putBlockProperties(Vector blockVector, World world, Map<String, String> keyValueMap)
+    {
+        putBlockProperties(blockVector.toLocation(world), keyValueMap);
+    }
+
+    public String removeBlockProperty(int blockX, int blockY, int blockZ, World world, String key)
+    {
+        return removeBlockProperty(new Location(world, blockX, blockY, blockZ), key);
+    }
+
+    public void removeBlockProperties(int blockX, int blockY, int blockZ, World world, String... keys)
+    {
+        removeBlockProperties(new Location(world, blockX, blockY, blockZ), keys);
     }
 
     @Override
-    public void removeBlockProperties(Location location, String... keys)
+    public String removeBlockProperty(Location blockLocation, String key)
     {
-        if (location.getChunk().isLoaded())
-            propertiesTree.removeBlockProperties(location, keys);
+        if (blockLocation.getChunk().isLoaded())
+            return propertiesTree.removeBlockProperty(blockLocation, key);
         else
-            throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+            throw new IllegalArgumentException("Location is not loaded by the server: " + blockLocation);
     }
 
     @Override
-    public String getBlockProperty(Location location, String key)
+    public void removeBlockProperties(Location blockLocation, String... keys)
     {
-        if (location.getChunk().isLoaded())
-            return propertiesTree.getBlockProperty(location, key);
+        if (blockLocation.getChunk().isLoaded())
+            propertiesTree.removeBlockProperties(blockLocation, keys);
         else
-            throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+            throw new IllegalArgumentException("Location is not loaded by the server: " + blockLocation);
+    }
+
+    public String removeBlockProperty(Vector blockVector, World world, String key)
+    {
+        return removeBlockProperty(blockVector.toLocation(world), key);
+    }
+
+    public void removeBlockProperties(Vector blockVector, World world, String... keys)
+    {
+        removeBlockProperties(blockVector.toLocation(world), keys);
+    }
+
+    public String getBlockProperty(int blockX, int blockY, int blockZ, World world, String key)
+    {
+        return getBlockProperty(new Location(world, blockX, blockY, blockZ), key);
+    }
+
+    public Map<String, String> getBlockProperties(int blockX, int blockY, int blockZ, World world, String... keys)
+    {
+        return getBlockProperties(new Location(world, blockX, blockY, blockZ), keys);
     }
 
     @Override
-    public Map<String, String> getBlockProperties(Location location, String... keys)
+    public String getBlockProperty(Location blockLocation, String key)
     {
-        if (location.getChunk().isLoaded())
-            return propertiesTree.getBlockProperties(location, keys);
+        if (blockLocation.getChunk().isLoaded())
+            return propertiesTree.getBlockProperty(blockLocation, key);
         else
-            throw new IllegalArgumentException("Location is not loaded by the server: " + location);
+            throw new IllegalArgumentException("Location is not loaded by the server: " + blockLocation);
+    }
+
+    @Override
+    public Map<String, String> getBlockProperties(Location blockLocation, String... keys)
+    {
+        if (blockLocation.getChunk().isLoaded())
+            return propertiesTree.getBlockProperties(blockLocation, keys);
+        else
+            throw new IllegalArgumentException("Location is not loaded by the server: " + blockLocation);
+    }
+
+    public String getBlockProperty(Vector blockVector, World world, String key)
+    {
+        return getBlockProperty(blockVector.toLocation(world), key);
+    }
+
+    public Map<String, String> getBlockProperties(Vector blockVector, World world, String... keys)
+    {
+        return getBlockProperties(blockVector.toLocation(world), keys);
     }
 
     private void saveWorld(World world)
@@ -195,33 +252,26 @@ public class LoadedBlockPluginProperties implements Listener, IMutableBlockPlugi
 
         try
         {
+            worldSaver.saveWorld(worldNode, world);
+
             Chunk[] loadedChunks = world.getLoadedChunks();
             for (Map.Entry<Vector, RegionBlockPluginPropertiesNode> regionEntry : worldNode.getRegionEntries())
             {
-                // Get the Region Co-ordinates
-                int regionX = regionEntry.getKey().getBlockX();
-                int regionZ = regionEntry.getKey().getBlockZ();
-
-                // Write the Region Node to file
-                File regionFile = getRegionFile(plugin, world, regionX, regionZ);
+                Vector regionVector = regionEntry.getKey();
+                int regionX = regionVector.getBlockX();
+                int regionZ = regionVector.getBlockZ();
                 RegionBlockPluginPropertiesNode regionNode = regionEntry.getValue();
-                String jsonText = gson.toJson(regionNode);
-                BufferedWriter writer = Files.newBufferedWriter(regionFile.toPath(), StandardOpenOption.WRITE);
-                writer.write(jsonText);
-                writer.flush();
-                writer.close();
 
                 // Remove region from cache if it's no longer loaded on the server
                 boolean isRegionActive = false;
                 for (Chunk chunk : loadedChunks)
                 {
-                    Vector chunkVector = chunk.getBlock(0, 0, 0).getLocation().toVector();
-                    isRegionActive = regionNode.isChunkInChildren(chunkVector);
+                    isRegionActive = regionNode.isChunkInChildren(chunk.getX(), chunk.getZ());
                     if (isRegionActive)
                         break;
                 }
                 if (!isRegionActive)
-                    worldNode.removeRegionNode(regionEntry.getKey());
+                    worldNode.removeRegionNode(regionX, regionZ);
             }
             int remainingCachedRegions = worldNode.getRegionValues().size();
             plugin.getLogger().fine("Successfully saved Block Plugin Properties for " + world.getName() + ". (Cached region count: " + initialCachedRegions + " => " + remainingCachedRegions + ")");
@@ -231,35 +281,5 @@ public class LoadedBlockPluginProperties implements Listener, IMutableBlockPlugi
             plugin.getLogger().severe("Failed to save Block Plugin Properties for World \"" + world.getName() + "\": " + ex.getMessage());
             ex.printStackTrace();
         }
-    }
-
-    private File getRegionFile(Plugin plugin, World world, int regionX, int regionZ)
-    {
-        if (plugin == null)
-            throw new NullArgumentException("plugin");
-        if (world == null)
-            throw new NullArgumentException("world");
-
-        String worldFolderPath = world.getWorldFolder().getAbsolutePath();
-        String pluginFolderName = plugin.getName();
-        String regionFileName = String.format("r.{x}.{z}.json", regionX, regionZ);
-
-        File regionFile = Paths.get(worldFolderPath, pluginFolderName, regionFileName).toFile();
-        return regionFile;
-    }
-
-    private File getRegionFile(Plugin plugin, Location location)
-    {
-        if (plugin == null)
-            throw new NullArgumentException("plugin");
-        if (location == null)
-            throw new NullArgumentException("location");
-        if (location.getWorld() == null)
-            throw new IllegalArgumentException("The Location's world cannot be null.");
-
-        int regionXVal = (int) Math.floor(location.getChunk().getX() / 32.0);
-        int regionZVal = (int) Math.floor(location.getChunk().getZ() / 32.0);
-
-        return getRegionFile(plugin, location.getWorld(), regionXVal, regionZVal);
     }
 }
